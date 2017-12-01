@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+	<dubbo:reference interface="com.dsj.modules.other.service.HouseDirectoryService"
+		id="houseDirectoryServiceImpl" check="false" version="1.0" />
+	<dubbo:reference
+		interface="com.dsj.modules.oldhouse.service.OldHouseMasterService" id="oldHouseMasterServiceImpl"
+		check="false" version="1.0" />
+	<dubbo:reference
+		interface="com.dsj.modules.oldhouse.service.OldHousePictureService"
+		id="oldHousePictureServiceImpl" check="false" version="1.0" />
+	<dubbo:reference
+		interface="com.dsj.modules.oldhouse.service.OldHouseAgentService" id="oldHouseAgentServiceImpl"
+		check="false" version="1.0" />
+	<dubbo:reference
+		interface="com.dsj.modules.oldhouse.service.OldMasterAgentRecommendService"
+		id="oldMasterAgentRecommendServiceImpl" check="false" version="1.0" />
+</beans>  

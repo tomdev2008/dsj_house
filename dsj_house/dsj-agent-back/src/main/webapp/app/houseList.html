@@ -1,0 +1,307 @@
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<script type="text/javascript" src="js/fles.js"></script>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/dsj_agent2.css">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<!-- 进程 -->
+	<div class="PGress">
+		<ul>
+			<li>大搜家首页
+				<div class="progressTriangle">
+					<div></div>
+				</div>
+			</li>
+			<li>新房
+				<div class="progressTriangle">
+					<div></div>
+				</div>
+			</li>
+			<li>新房编辑</li>
+		</ul>
+	</div>
+	<!-- 户型进程 -->
+	<div class="row houseList_course">
+		<div class="col-xs-6 col-sm-4 group active">
+			<div class="courseLeft">
+				<img src="img/greencorrect.png" style="width: 57px; height: 57px;">
+				<p>基本信息</p>
+			</div>
+			<div class="courseRight"></div>
+		</div>
+		<div class="col-xs-6 col-sm-4 group active">
+			<div class="courseLeft">
+				<img src="img/greencorrect.png" style="width: 57px; height: 57px;">
+				<p>楼盘相册</p>
+			</div>
+			<div class="courseRight"></div>
+		</div>
+		<!-- Optional: clear the XS cols if their content doesn't match in height -->
+		<div class="clearfix visible-xs-block"></div>
+		<div class="col-xs-6 col-sm-4 group">
+			<div class="courseLeft">
+				<img src="img/greenadd_doc.png">
+				<p>楼盘户型</p>
+			</div>
+		</div>
+	</div>
+	<form id="dsj_form" class="form-horizontal dsj_form"
+		onsubmit="return false">
+		<script id="master_add" type="text/x-handlebars-template">
+      <!-- 楼盘户型 -->
+      <h2 class="HeadLine">楼盘户型</h2>
+      <!-- 楼盘主体 -->
+      <div class="main">
+          <!-- 楼盘户型 -->  
+          <div class="row selectDeleteAdd">
+            <ul>
+              <li><button class="dsj_btn btn btn-default" type="button" onclick="selectAll()">全选</button></li>
+              <li><button class="dsj_btn btn btn-default" type="button" onclick="delNewHouseType({{newHouseId}})">删除</button></li>
+              <li style="background: none"><button class="dsj_btn btn btn-success" type="button" onclick="addHouseType({{newHouseId}})">新增户型</button></li>
+            </ul>
+          </div>
+          <div class="row nav typeList nav nav-tabs" role="tablist">
+            <div class="active" aria-controls="tab1" data-target="#tab1" role="tab" data-toggle="tab">1室户型（{{count1}}）
+              <span class="activeTriangle" >
+              </span>
+            </div>
+            <div aria-controls="tab2" data-target="#tab2" role="tab2" data-toggle="tab" >2室户型（{{count2}}）
+              <span class="activeTriangle">
+              </span>
+            </div>
+            <div aria-controls="tab3" data-target="#tab3" role="tab3" data-toggle="tab">3室户型（{{count3}}）
+              <span class="activeTriangle">
+              </span>
+            </div>
+            <div aria-controls="tab4" data-target="#tab4" role="tab4" data-toggle="tab">4室户型（{{count4}}）
+            <!-- 三角形样式 -->
+              <span class="activeTriangle">
+              </span>
+            </div>
+            <div aria-controls="tab5" data-target="#tab5" role="tab5" data-toggle="tab">5室及以上（{{count5}}）
+              <span class="activeTriangle">
+              </span>
+            </div>
+          </div>
+		  <div class="tab-content">
+   			<div class="row typeListImg tab-pane" role="tabpanel" class="tab-pane active" id="tab1">
+            {{#if houseTypeList1}}
+              {{#each houseTypeList1}}
+            <div class="col-xs-6 col-md-3">
+			<input type="checkbox" class="dsj_houselist_checkbox" value="{{this.id}}" name="layoutName">
+             <a href="javascript:void(0)" onclick="findOneLayOut({{this.id}});"><img src="{{this.imgUrl}}"></a>
+              <div class="typeDetails">
+                <div class="typeDetailsTop">
+                <p>{{this.houseName}}{{room}}室{{hall}}厅{{toilet}}卫</p>
+                <div class="staySale">
+                   {{#compare this.houseStatus '==' 1}}                            
+                                                                 主推
+                   {{/compare}}
+                   {{#compare this.houseStatus '==' 2}}                            
+                                                                 待售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 3}}                            
+                                                                 在售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 4}}                            
+                                                                 售完
+                   {{/compare}}
+                  </div>
+                </div>
+                <p>
+                   {{this.wyTypeName}}                          
+                                     建筑面积：{{this.builtUp}}</p>
+              </div>
+            </div>
+                {{/each}}
+            {{/if}}
+          </div>
+		  <div class="row typeListImg tab-pane" role="tabpanel" class="tab-pane active" id="tab2">
+            {{#if houseTypeList2}}
+           {{#each houseTypeList2}}
+            <div class="col-xs-6 col-md-3">
+			  <input type="checkbox" class="dsj_houselist_checkbox" value="{{this.id}}" name="layoutName">
+              <a href="javascript:void(0)" onclick="findOneLayOut({{this.id}});"><img src="{{this.imgUrl}}"></a>
+              <div class="typeDetails">
+                <div class="typeDetailsTop">
+                <p>{{this.houseName}}{{room}}室{{hall}}厅{{toilet}}卫</p>
+                <div class="staySale">
+                   {{#compare this.houseStatus '==' 1}}                            
+                                                                 主推
+                   {{/compare}}
+                   {{#compare this.houseStatus '==' 2}}                            
+                                                                 待售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 3}}                            
+                                                                 在售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 4}}                            
+                                                                 售完
+                   {{/compare}}                     
+                  </div>
+                </div>
+                <p>
+                  {{this.wyTypeName}}                       
+                                     建筑面积：{{this.builtUp}}</p>
+              </div>
+            </div>
+                {{/each}}
+              {{/if}}
+          </div>
+           <div class="row typeListImg tab-pane" role="tabpanel" class="tab-pane active" id="tab3">
+            {{#if houseTypeList3}}
+            {{#each houseTypeList3}}
+            <div class="col-xs-6 col-md-3">
+             <input type="checkbox" class="dsj_houselist_checkbox" value="{{this.id}}" name="layoutName">
+              <a href="javascript:void(0)" onclick="findOneLayOut({{this.id}});"><img src="{{this.imgUrl}}"></a>
+              <div class="typeDetails">
+                <div class="typeDetailsTop">
+                <p>{{this.houseName}}{{room}}室{{hall}}厅{{toilet}}卫</p>
+                <div class="staySale">
+                   {{#compare this.houseStatus '==' 1}}                            
+                                                                 主推
+                   {{/compare}}
+                   {{#compare this.houseStatus '==' 2}}                            
+                                                                 待售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 3}}                            
+                                                                 在售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 4}}                            
+                                                                 售完
+                   {{/compare}}                         
+                  </div>
+                </div>
+                <p>
+                  {{this.wyTypeName}}                      
+                                     建筑面积：{{this.builtUp}}</p>
+              </div>
+            </div>
+                {{/each}}
+            {{/if}}
+          </div>
+          <div class="row typeListImg tab-pane" role="tabpanel" class="tab-pane active" id="tab4">
+            {{#if houseTypeList4}}
+            {{#each houseTypeList4}}
+            <div class="col-xs-6 col-md-3">
+              <input type="checkbox" class="dsj_houselist_checkbox" value="{{this.id}}" name="layoutName">
+              <a href="javascript:void(0)" onclick="findOneLayOut({{this.id}});"><img src="{{this.imgUrl}}"></a>
+              <div class="typeDetails">
+                <div class="typeDetailsTop">
+                <p>{{this.houseName}}{{room}}室{{hall}}厅{{toilet}}卫</p>
+                <div class="staySale">
+                    {{#compare this.houseStatus '==' 1}}                            
+                                                                 主推
+                   {{/compare}}
+                   {{#compare this.houseStatus '==' 2}}                            
+                                                                 待售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 3}}                            
+                                                                 在售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 4}}                            
+                                                                 售完
+                   {{/compare}}                        
+                  </div>
+                </div>
+                <p>
+                  {{this.wyTypeName}}                        
+                                     建筑面积：{{this.builtUp}}</p>
+              </div>
+            </div>
+                {{/each}}
+           {{/if}}
+          </div>
+          <div class="row typeListImg tab-pane" role="tabpanel" class="tab-pane active" id="tab5">
+            {{#if houseTypeList5}}
+            {{#each houseTypeList5}}
+            <div class="col-xs-6 col-md-3">
+              <input type="checkbox" class="dsj_houselist_checkbox" value="{{this.id}}" name="layoutName">
+              <a href="javascript:void(0)" onclick="findOneLayOut({{this.id}});"><img src="{{this.imgUrl}}"></a>
+              <div class="typeDetails">
+                <div class="typeDetailsTop">
+                <p>{{this.houseName}}{{room}}室{{hall}}厅{{toilet}}卫</p>
+                <div class="staySale">
+                    {{#compare this.houseStatus '==' 1}}                            
+                                                                 主推
+                   {{/compare}}
+                   {{#compare this.houseStatus '==' 2}}                            
+                                                                 待售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 3}}                            
+                                                                 在售
+                   {{/compare}} 
+                   {{#compare this.houseStatus '==' 4}}                            
+                                                                 售完
+                   {{/compare}}                        
+                  </div>
+                </div>
+                <p>
+                   {{this.wyTypeName}}                        
+                                     建筑面积：{{this.builtUp}}</p>
+              </div>
+            </div>
+                {{/each}}
+           {{/if}}
+          </div>
+		  </div>
+          
+          <div class="row typebutton">
+            <ul class=" buttons">
+              <li>
+                 <button type="button" class="btn btn-primary" onclick="cancle()">取消</button>
+              </li>
+              <li>
+                  <button type="button" class="btn btn-primary" onclick="submitAddNewHouse({{newHouseId}},{{totalCount}})">提交</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+       </div>
+         </script>
+	</form>
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/dsj_tags.js"></script>
+	<script src="js/newHouse/newHouse_typeList.js"></script>
+	<script type="text/javascript" src="js/webuploader.js"></script>
+	<script type="text/javascript" src="js/single-upload.js"></script>
+	<script type="text/javascript" src="js/selectize.min.js"></script>
+	<script src="lib/validate/verify.notify.js"></script>
+	<script src="lib/validate/verify.notify.ext.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/common/header.js"></script>
+	<script src="js/common/base.js"></script>
+	<script type="text/javascript">
+    $(document).ready(function(){
+      $(document).on("click",'.typeList [data-toggle="tab"]',function(argument) {
+        $(this).addClass("active").siblings(".active").removeClass("active");
+      })
+  		var id=GetQueryString("id");
+  		var	p_url = _url+"/agent/back/newHouse/newHouse_houseTypeList?newHouseId="+id
+  		var option = { url : p_url }
+  		var fun = new $.fn.originAdd(option);
+  		fun._init();
+  		$(".active").click();
+    })
+    </script>
+</body>
+</html>

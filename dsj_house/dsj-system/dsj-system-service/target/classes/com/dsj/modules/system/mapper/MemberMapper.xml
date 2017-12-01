@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.MemberDaoImpl">
+    
+    <sql id="tableName"> dsj_member a </sql>
+    <sql id="tableNameUpdate"> dsj_member </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.member_code AS "memberCode",
+		a.signup_origin AS "signupOrigin",
+		a.nikename AS "nikename",
+		a.tell_phone AS "tellPhone",
+		a.is_black AS "isBlack",
+		a.black_num AS "blackNum",
+		a.black_time AS "blackTime",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.operate_person AS "operatePerson",
+		a.operate_time AS "operateTime"
+	</sql>
+	
+	
+	<sql id="tableColumnsVo">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.member_code AS "memberCode",
+		a.signup_origin AS "signupOrigin",
+		a.nikename AS "nikename",
+		a.tell_phone AS "tellPhone",
+		a.is_black AS "isBlack",
+		a.black_num AS "blackNum",
+		a.black_time AS "blackTime",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.operate_person AS "operatePerson",
+		a.operate_time AS "operateTime",
+		case a.is_black
+			WHEN 1 THEN '是'
+			WHEN 0 THEN '否'
+		end  AS "isBlackName",
+		case a.signup_origin
+			WHEN 1 THEN 'PC'
+			WHEN 2 THEN 'WAP'
+		end  AS "signupOriginName"
+		
+	</sql>
+	
+	<resultMap id="beanMap" type="MemberPo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="member_code" property="memberCode" />
+		<result column="signup_origin" property="signupOrigin" />
+		<result column="nikename" property="nikename" />
+		<result column="tell_phone" property="tellPhone" />
+		<result column="is_black" property="isBlack" />
+		<result column="black_num" property="blackNum" />
+		<result column="black_time" property="blackTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="operate_person" property="operatePerson" />
+		<result column="operate_time" property="operateTime" />
+	</resultMap>
+	
+	<sql id="memberJoins">
+	</sql>
+    
+    <sql id="condition_sql">
+    	<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>	
+		<if test="memberCode != null and memberCode!= ''"> AND a.member_code = #{memberCode}</if>
+		<if test="signupOrigin != null and signupOrigin!= ''"> AND a.signup_origin = #{signupOrigin}</if>
+		<if test="nikename != null and nikename!= ''"> AND a.nikename = #{nikename}</if>
+		<if test="tellPhone != null and tellPhone!= ''"> AND a.tell_phone = #{tellPhone}</if>
+		<if test="isBlack != null and isBlack!= ''"> AND a.is_black = #{isBlack}</if>
+		<if test="blackNum != null and blackNum!= ''"> AND a.black_num = #{blackNum}</if>
+		<if test="blackTime != null and blackTime!= ''"> AND a.black_time = #{blackTime}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="createTimeStart != null and createTimeStart!= ''">
+			<![CDATA[AND a.create_time > #{createTimeStart}]]>
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!= ''">
+			<![CDATA[AND a.create_time < #{createTimeEnd}]]>
+		</if>
+		<if test="operatePerson != null and operatePerson!= ''"> AND a.operate_person = #{operatePerson}</if>
+		<if test="operateTime != null and operateTime!= ''"> AND a.operate_time = #{operateTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="MemberPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="memberJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.MemberVo">
+		SELECT 
+    		<include refid="tableColumnsVo"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="MemberPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			user_id,
+			member_code,
+			signup_origin,
+			nikename,
+			tell_phone,
+			is_black,
+			black_num,
+			black_time,
+			create_time,
+			update_time,
+			operate_person,
+			operate_time
+		) VALUES (
+			#{id},
+			#{userId},
+			#{memberCode},
+			#{signupOrigin},
+			#{nikename},
+			#{tellPhone},
+			#{isBlack},
+			#{blackNum},
+			#{blackTime},
+			#{createTime},
+			#{updateTime},
+			#{operatePerson},
+			#{operateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="MemberPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="memberCode != null">member_code,</if>
+					<if test="signupOrigin != null">signup_origin,</if>
+					<if test="nikename != null">nikename,</if>
+					<if test="tellPhone != null">tell_phone,</if>
+					<if test="isBlack != null">is_black,</if>
+					<if test="blackNum != null">black_num,</if>
+					<if test="blackTime != null">black_time,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="operatePerson != null">operate_person,</if>
+					<if test="operateTime != null">operate_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="memberCode != null">#{memberCode},</if>
+			<if test="signupOrigin != null">#{signupOrigin},</if>
+			<if test="nikename != null">#{nikename},</if>
+			<if test="tellPhone != null">#{tellPhone},</if>
+			<if test="isBlack != null">#{isBlack},</if>
+			<if test="blackNum != null">#{blackNum},</if>
+			<if test="blackTime != null">#{blackTime},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="operatePerson != null">#{operatePerson},</if>
+			<if test="operateTime != null">#{operateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="MemberPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 
+			user_id = #{userId},	
+			member_code = #{memberCode},
+			signup_origin = #{signupOrigin},
+			nikename = #{nikename},
+			tell_phone = #{tellPhone},
+			is_black = #{isBlack},
+			black_num = #{blackNum},
+			black_time = #{blackTime},
+			update_time = #{updateTime},
+			operate_person = #{operatePerson},
+			operate_time = #{operateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="MemberPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+    	 	<if test="userId != null">user_id = #{userId},</if>
+			<if test="memberCode != null">member_code = #{memberCode},</if>
+			<if test="signupOrigin != null">signup_origin = #{signupOrigin},</if>
+			<if test="nikename != null">nikename = #{nikename},</if>
+			<if test="tellPhone != null">tell_phone = #{tellPhone},</if>
+			<if test="isBlack != null">is_black = #{isBlack},</if>
+			<if test="blackNum != null">black_num = #{blackNum},</if>
+			<if test="blackTime != null">black_time = #{blackTime},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="operatePerson != null">operate_person = #{operatePerson},</if>
+			<if test="operateTime != null">operate_time = #{operateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateBlackMany" parameterType="java.util.Map">
+		update dsj_member
+		set
+			is_black = #{isBlack},
+			black_num = black_num+1,
+			update_time = #{updateTime}
+		where id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	<update id="updateRemoveBlack" parameterType="java.util.Map">
+		update dsj_member
+		set
+			is_black = #{isBlack},
+			update_time = #{updateTime}
+		where id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	
+</mapper>

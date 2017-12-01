@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.dsj</groupId>
+		<artifactId>dsj-common-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../dsj-common-parent</relativePath>
+	</parent>
+
+	<artifactId>dsj-common-config</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>dsj-common-config</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<profiles>
+	  <profile> <!-- 可以通过 -P ID 来激活 -->
+	    <id>dev</id> <!-- ID 标识符 -->
+	    <properties>
+	      <env>dev</env> <!-- properties 定义 key-value, 这里 key 是 env, value 是 PROD -->
+	    </properties>
+	    <activation>
+	      <activeByDefault>true</activeByDefault> <!-- 默认激活 -->
+	    </activation>
+	  </profile>
+	  <profile> <!-- 可以通过 -P ID 来激活 -->
+	    <id>prop</id> <!-- ID 标识符 -->
+	    <properties>
+	      <env>prop</env> <!-- properties 定义 key-value, 这里 key 是 env, value 是 PROD -->
+	    </properties>
+	    <activation>
+	      <activeByDefault>true</activeByDefault> <!-- 默认激活 -->
+	    </activation>
+	  </profile>
+	  <profile> <!-- 可以通过 -P ID 来激活 -->
+	    <id>prop1</id> <!-- ID 标识符 -->
+	    <properties>
+	      <env>prop1</env> <!-- properties 定义 key-value, 这里 key 是 env, value 是 PROD -->
+	    </properties>
+	    <activation>
+	      <activeByDefault>true</activeByDefault> <!-- 默认激活 -->
+	    </activation>
+	  </profile>
+	  <profile>
+	    <id>minitest</id>
+	    <properties>
+	      <env>minitest</env>
+	    </properties>
+	  </profile>
+	  <profile>
+	    <id>minitest1</id>
+	    <properties>
+	      <env>minitest1</env>
+	    </properties>
+	  </profile>
+	  <profile>
+	    <id>test1</id>
+	    <properties>
+	      <env>test1</env>
+	    </properties>
+	  </profile>
+	   <profile> 
+	    <id>prod1</id>
+	    <properties>
+	      <env>prod1</env>
+	    </properties>
+	  </profile>
+	   <profile>
+	    <id>prod</id>
+	    <properties>
+	      <env>prod</env>
+	    </properties>
+	  </profile>
+		<profile>
+	    <id>yufabu</id>
+	    <properties>
+	      <env>yufabu</env>
+	    </properties>
+	  </profile>
+	</profiles>
+
+	<build>
+		<finalName>dsj-common-config</finalName>
+		<resources>
+			<!-- 指定 src/main/resources下所有文件及文件夹为资源文件 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>${project.build.directory}/classes</targetPath>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		
+		<plugins>
+		    <plugin>
+		      <artifactId>maven-assembly-plugin</artifactId> <!-- 官网给出的配置，没有配置 groupId，这里也不配置 -->
+		      <version>2.4</version>
+		      <executions>
+		        <execution>
+		          <id>make-assembly</id> <!-- ID 标识，命名随意 -->
+		          <phase>package</phase> <!-- 绑定到 PACKAGE 生命周期阶段 -->
+		          <goals>
+		            <goal>single</goal>  <!-- 在 PACKAGE 生命周期阶段仅执行一次 -->
+		          </goals>
+		        </execution>
+		      </executions>
+		      <configuration>
+		        <descriptors>
+		          <descriptor>assembly.xml</descriptor> <!-- 自定义打包的配置文件 -->
+		        </descriptors>
+		        <appendAssemblyId>false</appendAssemblyId> <!-- 设为 FALSE, 防止 WAR 包名加入 assembly.xml 中的 ID -->
+		      </configuration>
+		    </plugin>
+		  </plugins>
+		
+	</build>
+
+</project>

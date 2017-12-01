@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.mobile400.dao.impl.MobileDetailDaoImpl">
+    
+    <sql id="tableName"> dsj_mobile_detail a </sql>
+    <sql id="tableNameUpdate"> dsj_mobile_detail </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.extcode AS "extcode",
+		a.ani AS "ani",
+		a.dni AS "dni",
+		a.callertime AS "callertime",
+		a.callresult AS "callresult",
+		a.cityname AS "cityname",
+		a.startdate AS "startdate",
+		a.agent_code AS "agentCode",
+		a.agent_name AS "agentName",
+		a.house_code AS "houseCode",
+		a.house_name AS "houseName",
+		a.recorderwav AS "recorderwav",
+		a.type AS "type",
+		a.channel AS "channel",
+		a.lastid
+	</sql>
+	
+	<resultMap id="beanMap" type="MobileDetailPo">
+		<id column="id" property="id" />
+		<result column="extcode" property="extcode" />
+		<result column="ani" property="ani" />
+		<result column="dni" property="dni" />
+		<result column="callertime" property="callertime" />
+		<result column="callresult" property="callresult" />
+		<result column="cityname" property="cityname" />
+		<result column="startdate" property="startdate" />
+		<result column="agent_code" property="agentCode" />
+		<result column="agent_name" property="agentName" />
+		<result column="house_code" property="houseCode" />
+		<result column="house_name" property="houseName" />
+		<result column="recorderwav" property="recorderwav" />
+		<result column="type" property="type" />
+		<result column="channel" property="channel" />
+		<result column="lastid" property="lastid" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<sql id="mobileDetailJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="extcode != null and extcode!= ''"> AND a.extcode = #{extcode}</if>
+		<if test="ani != null and ani!= ''"> AND a.ani = #{ani}</if>
+		<if test="dni != null and dni!= ''"> AND a.dni = #{dni}</if>
+		<if test="callertime != null and callertime!= ''"> AND a.callertime = #{callertime}</if>
+		<if test="callresult != null and callresult!= ''"> AND a.callresult = #{callresult}</if>
+		<if test="cityname != null and cityname!= ''"> AND a.cityname = #{cityname}</if>
+		
+		<if test="startTime != null and startTime != ''"><![CDATA[  AND a.startdate >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.startdate <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+		
+		<if test="agentCode != null and agentCode!= ''"> AND a.agent_code = #{agentCode}</if>
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name like concat('%',#{agentName},'%') </if>
+		<if test="houseCode != null and houseCode!= ''"> AND a.house_code like concat('%',#{houseCode},'%') </if>
+		<if test="houseName != null and houseName!= ''"> AND a.house_name like concat('%', #{houseName} ,'%')</if>
+		<if test="propertyCode != null and propertyCode != ''"> AND a.property_code = #{propertyCode}</if>
+		<if test="propertyName != null and propertyName != ''"> AND a.property_name like concat('%', #{propertyName} ,'%')</if>
+		<if test="recorderwav != null and recorderwav!= ''"> AND a.recorderwav = #{recorderwav}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		<if test="channel != null and channel != ''"> AND a.channel = #{channel}</if>
+	</sql>
+    
+	<select id="getById" resultType="MobileDetailPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="mobileDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="MobileDetailPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			extcode,
+			ani,
+			dni,
+			callertime,
+			callresult,
+			cityname,
+			startdate,
+			agent_code,
+			agent_name,
+			house_code,
+			house_name,
+			recorderwav,
+			type
+		) VALUES (
+			#{id},
+			#{extcode},
+			#{ani},
+			#{dni},
+			#{callertime},
+			#{callresult},
+			#{cityname},
+			#{startdate},
+			#{agentCode},
+			#{agentName},
+			#{houseCode},
+			#{houseName},
+			#{recorderwav},
+			#{type}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="MobileDetailPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="extcode != null">extcode,</if>
+					<if test="channel != null">channel,</if>
+					<if test="ani != null">ani,</if>
+					<if test="dni != null">dni,</if>
+					<if test="callertime != null">callertime,</if>
+					<if test="callresult != null">callresult,</if>
+					<if test="cityname != null">cityname,</if>
+					<if test="startdate != null">startdate,</if>
+					<if test="agentCode != null">agent_code,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="houseCode != null">house_code,</if>
+					<if test="houseName != null">house_name,</if>
+					<if test="recorderwav != null">recorderwav,</if>
+					<if test="type != null">type,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="lastid != null">lastid,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="extcode != null">#{extcode},</if>
+			<if test="channel != null">#{channel},</if>
+			<if test="ani != null">#{ani},</if>
+			<if test="dni != null">#{dni},</if>
+			<if test="callertime != null">#{callertime},</if>
+			<if test="callresult != null">#{callresult},</if>
+			<if test="cityname != null">#{cityname},</if>
+			<if test="startdate != null">#{startdate},</if>
+			<if test="agentCode != null">#{agentCode},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="houseCode != null">#{houseCode},</if>
+			<if test="houseName != null">#{houseName},</if>
+			<if test="recorderwav != null">#{recorderwav},</if>
+			<if test="type != null">#{type},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="lastid != null">#{lastid},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="MobileDetailPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			extcode = #{extcode},
+			ani = #{ani},
+			dni = #{dni},
+			callertime = #{callertime},
+			callresult = #{callresult},
+			cityname = #{cityname},
+			startdate = #{startdate},
+			agent_code = #{agentCode},
+			agent_name = #{agentName},
+			house_code = #{houseCode},
+			house_name = #{houseName},
+			recorderwav = #{recorderwav},
+			type = #{type},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="MobileDetailPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="extcode != null">extcode = #{extcode},</if>
+			<if test="ani != null">ani = #{ani},</if>
+			<if test="dni != null">dni = #{dni},</if>
+			<if test="callertime != null">callertime = #{callertime},</if>
+			<if test="callresult != null">callresult = #{callresult},</if>
+			<if test="cityname != null">cityname = #{cityname},</if>
+			<if test="startdate != null">startdate = #{startdate},</if>
+			<if test="agentCode != null">agent_code = #{agentCode},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="houseCode != null">house_code = #{houseCode},</if>
+			<if test="houseName != null">house_name = #{houseName},</if>
+			<if test="recorderwav != null">recorderwav = #{recorderwav},</if>
+			<if test="type != null">type = #{type},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getLastMobileDetailPo"  resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC limit 1
+	</select>
+	
+</mapper>

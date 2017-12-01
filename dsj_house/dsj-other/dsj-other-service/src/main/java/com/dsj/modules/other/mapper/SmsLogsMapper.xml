@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.other.dao.impl.SmsLogsDaoImpl">
+    
+    <sql id="tableName"> dsj_sms_logs a </sql>
+    <sql id="tableNameUpdate"> dsj_sms_logs </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.phone AS "phone",
+		a.content AS "content",
+		a.create_time AS "createTime",
+		a.is_sussess AS "isSussess"
+	</sql>
+	
+	<resultMap id="beanMap" type="SmsLogsPo">
+		<id column="id" property="id" />
+		<result column="phone" property="phone" />
+		<result column="content" property="content" />
+		<result column="create_time" property="createTime" />
+		<result column="is_sussess" property="isSussess" />
+	</resultMap>
+	
+	<sql id="smsLogsJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="phone != null and phone!= ''"> AND a.phone = #{phone}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="isSussess != null and isSussess!= ''"> AND a.is_sussess = #{isSussess}</if>
+	</sql>
+    
+	<select id="getById" resultType="SmsLogsPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="smsLogsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="SmsLogsPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			phone,
+			content,
+			create_time,
+			is_sussess
+		) VALUES (
+			#{id},
+			#{phone},
+			#{content},
+			#{createTime},
+			#{isSussess}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="SmsLogsPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="phone != null">phone,</if>
+					<if test="content != null">content,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="isSussess != null">is_sussess,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="content != null">#{content},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="isSussess != null">#{isSussess},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="SmsLogsPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			phone = #{phone},
+			content = #{content},
+			is_sussess = #{isSussess},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="SmsLogsPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="isSussess != null">is_sussess = #{isSussess},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

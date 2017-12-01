@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.im.dao.impl.IMContactDaoImpl">
+    
+    <sql id="tableName"> dsj_im_contact a </sql>
+    <sql id="tableNameUpdate"> dsj_im_contact </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.user_id AS "userId",
+		a.agent_id AS "agentId",
+		a.count AS "count",
+		a.update_time AS "updateTime",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.create_person AS "createPerson"
+	</sql>
+	
+	<resultMap id="beanMap" type="ImContactPo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="user_id" property="userId" />
+		<result column="agent_id" property="agentId" />
+		<result column="count" property="count" />
+		<result column="update_time" property="updateTime" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="create_person" property="createPerson" />
+	</resultMap>
+	
+	<sql id="imContactJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="count != null and count!= ''"> AND a.count = #{count}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+	</sql>
+    
+	<select id="getById" resultType="ImContactPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="imContactJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+    
+    <select id="listLimitBy" resultMap="beanMap">
+      SELECT 
+        <include refid="tableColumns"/>
+      FROM <include refid="tableName"/> 
+      <where>
+      <include refid="condition_sql" />
+    </where>
+      ORDER BY a.update_time DESC 
+    </select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="ImContactPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_id,
+			user_id,
+			agent_id,
+			count,
+			update_time,
+			update_person,
+			create_time,
+			create_person
+		) VALUES (
+			#{id},
+			#{houseId},
+			#{userId},
+			#{agentId},
+			#{count},
+			NOW(),
+			#{updatePerson},
+			NOW(),
+			#{createPerson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="ImContactPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="count != null">count,</if>
+					update_time,
+					<if test="updatePerson != null">update_person,</if>
+					create_time,
+					<if test="createPerson != null">create_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="count != null">#{count},</if>
+			NOW(),
+			<if test="updatePerson != null">#{updatePerson},</if>
+			NOW(),
+			<if test="createPerson != null">#{createPerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="ImContactPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_id = #{houseId},
+			user_id = #{userId},
+			agent_id = #{agentId},
+			count = #{count},
+			update_time = NOW(),
+			update_person = #{updatePerson},
+			create_person = #{createPerson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="ImContactPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="count != null">count = #{count},</if>
+			update_time = NOW(),
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+  
+    <update id="deleteMoreLimitBy">
+      DELETE FROM <include refid="tableNameUpdate"/>
+      WHERE user_id = #{userId} 
+        <![CDATA[AND UNIX_TIMESTAMP(update_time) < #{limitTime}]]> 
+    </update>
+	
+</mapper>

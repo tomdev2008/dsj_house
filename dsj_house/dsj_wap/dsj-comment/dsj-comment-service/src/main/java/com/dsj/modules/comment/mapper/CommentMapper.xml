@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.comment.dao.impl.CommentDaoImpl">
+    
+    <sql id="tableName"> dsj_comment a </sql>
+    <sql id="tableNameUpdate"> dsj_comment </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.object_id AS "objectId",
+		a.object_type AS "objectType",
+		a.comment_user AS "commentUser",
+		a.content AS "content",
+		a.reply_user AS "replyUser",
+		a.like_num AS "likeNum",
+		a.negative_num AS "negativeNum",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.comment_num AS "commentNum",
+		a.house_id AS "houseId",
+		a.picture AS "picture"
+	</sql>
+	
+	
+	<sql id="tableColumnsVo">
+		a.id AS "id",
+		a.object_id AS "objectId",
+		a.object_type AS "objectType",
+		a.comment_user AS "commentUser",
+		a.content AS "content",
+		a.reply_user AS "replyUser",
+		a.like_num AS "likeNum",
+		a.negative_num AS "negativeNum",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.comment_num AS "commentNum",
+		a.house_id AS "houseId",
+		a.picture AS "picture",
+		u.username AS "tellPhone"
+	</sql>
+	
+	<sql id="tableColumnsVoTwo">
+		a.id AS "id",
+		a.object_id AS "objectId",
+		a.object_type AS "objectType",
+		a.comment_user AS "commentUser",
+		a.content AS "content",
+		a.reply_user AS "replyUser",
+		a.like_num AS "likeNum",
+		a.negative_num AS "negativeNum",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.comment_num AS "commentNum",
+		a.house_id AS "houseId",
+		a.picture AS "picture",
+		u.realname AS "commentUserName",
+		u.username AS "commentUsername2",
+		u.user_type AS "commentUserType",
+		u.phone AS "commentPhone",
+		meb.nikename AS "commentNikename",
+		u.avatar AS "commentUserAvatar",
+		u1.realname AS "replyUserName",
+		u1.username AS "replyUsername2",
+		u1.user_type AS "replyUserType",
+		meb2.nikename AS "replyNikename",
+		mobile.mobile AS "mobile"
+	</sql>
+	
+	<sql id="tableColumnsVoThree">
+		a.id AS "id",
+		a.object_id AS "objectId",
+		a.object_type AS "objectType",
+		a.comment_user AS "commentUser",
+		a.content AS "content",
+		a.reply_user AS "replyUser",
+		a.like_num AS "likeNum",
+		a.negative_num AS "negativeNum",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.comment_num AS "commentNum",
+		a.house_id AS "houseId",
+		a.picture AS "picture",
+		h.name AS "houseName"
+	</sql>
+	
+	<resultMap id="beanMap" type="CommentPo">
+		<id column="id" property="id" />
+		<result column="object_id" property="objectId" />
+		<result column="object_type" property="objectType" />
+		<result column="comment_user" property="commentUser" />
+		<result column="content" property="content" />
+		<result column="reply_user" property="replyUser" />
+		<result column="like_num" property="likeNum" />
+		<result column="negative_num" property="negativeNum" />
+		<result column="create_time" property="createTime" />
+		<result column="del_flag" property="delFlag" />
+		<result column="comment_num" property="commentNum" />
+		<result column="tellPhone" property="tellPhone" />
+		<result column="house_id" property="houseId" />
+		<result column="picture" property="picture" />
+		<result column="houseName" property="houseName" />
+	</resultMap>
+	
+	<sql id="commentJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="objectId != null and objectId!= ''"> AND a.object_id = #{objectId}</if>
+		<if test="objectType != null and objectType!= ''"> AND a.object_type = #{objectType}</if>
+		<if test="commentUser != null and commentUser!= ''"> AND a.comment_user = #{commentUser}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="replyUser != null and replyUser!= ''"> AND a.reply_user = #{replyUser}</if>
+		<if test="likeNum != null and likeNum!= ''"> AND a.like_num = #{likeNum}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="commentNum != null and commentNum!= ''"> AND a.comment_num = #{commentNum}</if>
+		<if test="createTimeStart != null and createTimeStart!= ''">
+			<![CDATA[AND a.create_time > #{createTimeStart}]]>
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!= ''">
+			<![CDATA[AND a.create_time < #{createTimeEnd}]]>
+		</if>
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="picture != null and picture!= ''"> AND a.picture = #{picture}</if>
+	</sql>
+    
+    <sql id="condition_two">
+    	<if test="id != null and id != ''"> AND a.id = #{id}</if>
+		<if test="objectId != null and objectId!= ''"> AND a.object_id = #{objectId}</if>
+		<if test="objectType != null and objectType!= ''"> AND a.object_type = #{objectType}</if>
+		<if test="houseId != null and houseId != ''"> AND a.house_id = #{houseId}</if>
+		<if test="commentUser != null and commentUser!= ''"> AND a.comment_user = #{commentUser}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="replyUser != null and replyUser!= ''"> AND a.reply_user = #{replyUser}</if>
+		<if test="likeNum != null and likeNum!= ''"> AND a.like_num = #{likeNum}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="commentNum != null and commentNum!= ''"> AND a.comment_num = #{commentNum}</if>
+	</sql>
+	
+	<sql id="condition_three">	
+		<if test="objectId != null and objectId!= ''"> AND a.object_id = #{objectId}</if>
+		<if test="objectType != null and objectType!= ''"> AND a.object_type = #{objectType}</if>
+		<if test="name != null and name != ''"> AND h.name like CONCAT(CONCAT('%', #{name}), '%')</if>
+		<if test="commentUser != null and commentUser!= ''"> AND a.comment_user = #{commentUser}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="replyUser != null and replyUser!= ''"> AND a.reply_user = #{replyUser}</if>
+		<if test="likeNum != null and likeNum!= ''"> AND a.like_num = #{likeNum}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="commentNum != null and commentNum!= ''"> AND a.comment_num = #{commentNum}</if>
+		<if test="startCreateTime != null and startCreateTime != ''">
+			<![CDATA[AND a.create_time >= #{startCreateTime}]]>
+		</if>
+		<if test="endCreateTime != null and endCreateTime != ''">
+			<![CDATA[AND a.create_time <= #{endCreateTime}]]>
+		</if>
+	</sql>
+	
+	<select id="getById" resultType="CommentPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="commentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="getVoById" resultType="com.dsj.modules.comment.vo.CommentVo">
+		SELECT 
+			h.name AS houseName,
+			<include refid="tableColumnsVo"/>
+		FROM dsj_user u,<include refid="tableName"/> 
+		left join dsj_new_house_directory_auth h 
+		on h.id = a.house_id
+		<include refid="commentJoins"/>
+		WHERE a.id = #{id}
+		AND u.id=a.comment_user
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>		
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.CommentVo">
+		SELECT 
+			h.name AS houseName,
+    		<include refid="tableColumnsVo"/>
+    	FROM dsj_user u,<include refid="tableName"/> 
+		left join dsj_new_house_directory_auth h 
+		on h.id = a.house_id
+		<where>
+			<include refid="condition_sql" />
+		</where>	
+		<if test="userName != null and userName != ''"> and u.username like CONCAT(CONCAT('%', #{userName}), '%')</if>	
+		AND u.id = a.comment_user
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM dsj_user u,<include refid="tableName"/> 
+		left join dsj_new_house_directory_auth h 
+		on h.id = a.house_id
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+		<if test="userName != null and userName != ''">and u.username like CONCAT(CONCAT('%', #{userName}), '%')</if>	
+		AND u.id = a.comment_user
+	</select>
+	<select id="listCommentPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.CommentVo">
+		SELECT 
+    		<include refid="tableColumnsVoTwo"/>
+    		<if test="clickUser != null and clickUser != ''"> 
+    			, dcc.type as "clicktype"
+    		</if>
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_user u on a.comment_user = u.id 
+ 			LEFT OUTER JOIN dsj_user u1 on a.reply_user = u1.id
+ 			left outer join dsj_member meb on a.comment_user = meb.user_id 
+ 			left outer join dsj_member meb2 on a.reply_user = meb2.user_id 
+ 			
+ 			left outer join dsj_agent agent on agent.user_id = u.id 
+			left outer join dsj_mobile mobile on mobile.agent_id = agent.id 
+			<if test="clickUser != null and clickUser != ''"> 
+    			LEFT OUTER JOIN 
+				(select id, obj_type,obj_id,type from dsj_click_count
+					 where obj_type = 2 and create_preson = #{clickUser} group by obj_id ) as dcc 
+				on dcc.obj_id = a.id 
+    		</if>
+		<where>
+			<include refid="condition_two" />
+		</where>
+		ORDER BY 
+		<if test="pc != null and pc != ''"> a.create_time DESC , </if>
+		a.id ASC
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listCommentCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			LEFT JOIN dsj_user u on a.comment_user = u.id 
+ 			LEFT OUTER JOIN dsj_user u1 on a.reply_user = u1.id
+ 			left outer join dsj_member meb on a.comment_user = meb.user_id 
+ 			left outer join dsj_member meb2 on a.reply_user = meb2.user_id 
+ 			
+ 			left outer join dsj_agent agent on agent.user_id = u.id 
+			left outer join dsj_mobile mobile on mobile.agent_id = agent.id 
+			<if test="clickUser != null and clickUser != ''"> 
+    			LEFT OUTER JOIN 
+				(select id, obj_type,obj_id,type from dsj_click_count
+					 where obj_type = 2 and create_preson = #{clickUser} group by obj_id ) as dcc 
+				on dcc.obj_id = a.id 
+    		</if>
+		<where>
+			<include refid="condition_two"/>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="CommentPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			object_id,
+			object_type,
+			comment_user,
+			content,
+			reply_user,
+			like_num,
+			negative_num,
+			create_time,
+			del_flag,
+			comment_num,
+			house_id,
+			picture
+		) VALUES (
+			#{id},
+			#{objectId},
+			#{objectType},
+			#{commentUser},
+			#{content},
+			#{replyUser},
+			#{likeNum},
+			#{negativeNum},
+			#{createTime},
+			#{delFlag},
+			#{commentNum},
+			#{houseId},
+			#{picture}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="CommentPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="objectId != null">object_id,</if>
+					<if test="objectType != null">object_type,</if>
+					<if test="commentUser != null">comment_user,</if>
+					<if test="content != null">content,</if>
+					<if test="replyUser != null">reply_user,</if>
+					<if test="likeNum != null">like_num,</if>
+					<if test="negativeNum != null">negative_num,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="delFlag != null">del_flag,</if>
+					<if test="commentNum != null">comment_num,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="picture != null">picture,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="objectId != null">#{objectId},</if>
+			<if test="objectType != null">#{objectType},</if>
+			<if test="commentUser != null">#{commentUser},</if>
+			<if test="content != null">#{content},</if>
+			<if test="replyUser != null">#{replyUser},</if>
+			<if test="likeNum != null">#{likeNum},</if>
+			<if test="negativeNum != null">#{negativeNum},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="delFlag != null">#{delFlag},</if>
+			<if test="commentNum != null">#{commentNum},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="picture != null">#{picture},</if>
+        </trim>
+    </insert>
+    
+    <insert id="saveClickCountPo" parameterType="java.util.Map" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  dsj_click_count
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="newsType != null">news_type,</if>
+			<if test="objType != null">obj_type,</if>
+			<if test="objId != null">obj_id,</if>
+			<if test="type != null">type,</if>
+			<if test="createPreson != null">create_preson,</if>
+			<if test="createTime != null">create_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="newsType != null">#{newsType},</if>
+			<if test="objType != null">#{objType},</if>
+			<if test="objId != null">#{objId},</if>
+			<if test="type != null">#{type},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+	
+	<update id="update" parameterType="CommentPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			object_id = #{objectId},
+			object_type = #{objectType},
+			comment_user = #{commentUser},
+			content = #{content},
+			reply_user = #{replyUser},
+			like_num = #{likeNum},
+			negative_num = #{negativeNum},
+			del_flag = #{delFlag},
+			comment_num = #{commentNum},
+			house_id = #{houseId},
+			picture = #{picture},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="CommentPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="objectId != null">object_id = #{objectId},</if>
+			<if test="objectType != null">object_type = #{objectType},</if>
+			<if test="commentUser != null">comment_user = #{commentUser},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="replyUser != null">reply_user = #{replyUser},</if>
+			<if test="likeNum != null">like_num = #{likeNum},</if>
+			<if test="negativeNum != null">negative_num = #{negativeNum},</if>
+			<if test="delFlag != null">del_flag = #{delFlag},</if>
+			<if test="commentNum != null">comment_num = #{commentNum},</if>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="picture != null">picture = #{picture},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		UPDATE <include refid="tableNameUpdate"/> SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getCommentsByObjectId" parameterType="java.util.Map" resultMap="beanMap">
+		select * from dsj_comment where object_id = #{objectId}
+		ORDER BY create_time DESC 
+		LIMIT #{begin} , #{size} 
+	</select>
+	
+
+	<update id="deleteByIds" parameterType="java.util.Map">
+		UPDATE dsj_comment SET
+		del_flag = #{delFlag}
+		WHERE id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<select id="getClickCount" parameterType="java.util.Map" resultType="long">
+		SELECT  COUNT(1)  FROM dsj_click_count
+		<where>
+			<if test="type != null and type != ''"> AND obj_type = #{type}</if>
+			<if test="id != null and id != ''"> AND obj_id = #{id}</if>
+			<if test="userId != null and userId != ''"> AND create_preson = #{userId}</if>
+		</where>
+	</select>
+	
+	<select id="listAgentCommentPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.CommentVo">
+		SELECT 
+    		<include refid="tableColumnsVoThree"/>
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_new_house_directory_auth h on a.house_id = h.id 
+		<where>
+			<include refid="condition_three" />
+		</where>
+		ORDER BY a.create_time DESC
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listAgentCommentCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			LEFT JOIN dsj_new_house_directory_auth h on a.house_id = h.id 
+		<where>
+			<include refid="condition_three" />
+		</where>
+	</select>
+	
+	<select id="getAgentCommentById" resultType="com.dsj.modules.comment.vo.CommentVo">
+		SELECT 
+    		<include refid="tableColumnsVoThree"/>
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_new_house_directory_auth h on a.house_id = h.id 
+		where a.id = #{id}
+	</select>
+	
+	<select id="getUserComment" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.CommentVo">
+		SELECT 
+    		<include refid="tableColumnsVoThree"/>
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_new_house_directory_auth h on a.house_id = h.id 
+		where a.comment_user = #{commentUser}
+		AND a.object_type = #{objectType}
+		ORDER BY a.create_time DESC
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="getUserCommentCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+    		COUNT(1) 
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_new_house_directory_auth h on a.house_id = h.id 
+		where a.comment_user = #{commentUser}
+		AND a.object_type = #{objectType}
+
+	</select>
+	
+	<select id="getCountByHT" parameterType="java.util.Map" resultType="long">
+		SELECT 
+    		COUNT(1) 
+    	FROM <include refid="tableName"/> 
+		where a.house_id = #{houseId} and a.del_flag = #{delFlag}
+			and a.object_type = #{objectType}
+	</select>
+
+</mapper>

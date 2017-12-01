@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.HouseTypeDealCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_house_type_deal_crawler a </sql>
+    <sql id="tableNameUpdate"> old_house_type_deal_crawler </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.origin_house_id AS "originHouseId",
+		a.origin_dic_id AS "originDicId",
+		a.origin_house_type_id AS "originHouseTypeId",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="HouseTypeDealCrawlerPo">
+		<id column="id" property="id" />
+		<result column="origin_house_id" property="originHouseId" />
+		<result column="origin_dic_id" property="originDicId" />
+		<result column="origin_house_type_id" property="originHouseTypeId" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<sql id="houseTypeDealCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="originHouseId != null and originHouseId!= ''"> AND a.origin_house_id = #{originHouseId}</if>
+		<if test="contractDate != null and contractDate != ''"> AND a.contract_date = #{contractDate}</if>
+		
+		
+		<if test="originDicId != null and originDicId!= ''"> AND a.origin_dic_id = #{originDicId}</if>
+		<if test="originHouseTypeId != null and originHouseTypeId!= ''"> AND a.origin_house_type_id = #{originHouseTypeId}</if>
+	</sql>
+    
+	<select id="getById" resultType="HouseTypeDealCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="houseTypeDealCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="HouseTypeDealCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			origin_house_id,
+			origin_dic_id,
+			origin_house_type_id,
+			create_time
+		) VALUES (
+			#{id},
+			#{originHouseId},
+			#{originDicId},
+			#{originHouseTypeId},
+			#{createTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="HouseTypeDealCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="originHouseId != null">origin_house_id,</if>
+					<if test="originDicId != null">origin_dic_id,</if>
+					<if test="originHouseTypeId != null">origin_house_type_id,</if>
+					<if test="createTime != null">create_time,</if>
+					
+					<if test="contractDate != null">contract_date,</if>
+					<if test="houseTypeId != null">house_type_id,</if>
+					<if test="dealId != null">deal_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="originHouseId != null">#{originHouseId},</if>
+			<if test="originDicId != null">#{originDicId},</if>
+			<if test="originHouseTypeId != null">#{originHouseTypeId},</if>
+			<if test="createTime != null">#{createTime},</if>
+			
+			<if test="contractDate != null">#{contractDate},</if>
+			<if test="houseTypeId != null">#{houseTypeId},</if>
+			<if test="dealId != null">#{dealId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="HouseTypeDealCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			origin_house_id = #{originHouseId},
+			origin_dic_id = #{originDicId},
+			origin_house_type_id = #{originHouseTypeId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="HouseTypeDealCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="originHouseId != null">origin_house_id = #{originHouseId},</if>
+			<if test="originDicId != null">origin_dic_id = #{originDicId},</if>
+			<if test="originHouseTypeId != null">origin_house_type_id = #{originHouseTypeId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

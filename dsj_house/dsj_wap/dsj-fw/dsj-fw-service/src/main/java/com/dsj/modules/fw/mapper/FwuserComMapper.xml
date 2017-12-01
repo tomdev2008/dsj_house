@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.FwuserComDaoImpl">
+    
+    <sql id="tableName"> dsj_fwuser_com a </sql>
+    <sql id="tableNameUpdate"> dsj_fwuser_com </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.comment_id AS "commentId",
+		a.evaluate_num AS "evaluateNum"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwuserComPo">
+		<id column="id" property="id" />
+		<result column="comment_id" property="commentId" />
+		<result column="evaluate_num" property="evaluateNum" />
+	</resultMap>
+	
+	<sql id="fwuserComJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="commentId != null and commentId!= ''"> AND a.comment_id = #{commentId}</if>
+		<if test="evaluateNum != null and evaluateNum!= ''"> AND a.evaluate_num = #{evaluateNum}</if>
+	</sql>
+    
+	<select id="getById" resultType="FwuserComPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwuserComJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="getCommCount" parameterType="long" resultType="com.dsj.modules.fw.vo.FwuserComVo">
+		SELECT
+			a.evaluate_num AS "evaluateNum",
+			COUNT(1) AS "count"
+		FROM
+			dsj_fwuser_com a
+		LEFT JOIN dsj_fwuser_comment b ON a.comment_id = b.id
+		WHERE
+			b.fwuser_id = #{id}
+		GROUP BY a.evaluate_num
+	</select>
+	
+	<insert id="insert" parameterType="FwuserComPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			comment_id,
+			evaluate_num
+		) VALUES (
+			#{id},
+			#{commentId},
+			#{evaluateNum}
+		)
+	</insert>
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO <include refid="tableNameUpdate"/>
+	    (	
+	    	comment_id,
+			evaluate_num)
+        VALUES 
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	   	( 	
+			#{item.commentId},
+			#{item.evaluateNum}
+			)
+	    </foreach>  
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwuserComPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="commentId != null">comment_id,</if>
+					<if test="evaluateNum != null">evaluate_num,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="commentId != null">#{commentId},</if>
+			<if test="evaluateNum != null">#{evaluateNum},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FwuserComPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			comment_id = #{commentId},
+			evaluate_num = #{evaluateNum},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwuserComPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="commentId != null">comment_id = #{commentId},</if>
+			<if test="evaluateNum != null">evaluate_num = #{evaluateNum},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.MatserHouseTypesDaoImpl">
+    
+    <sql id="tableName"> old_matser_house_types a </sql>
+    <sql id="tableNameUpdate"> old_matser_house_types </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.area AS "area",
+		a.orientations_name AS "orientationsName",
+		a.wind_type_name AS "windTypeName",
+		a.origin_house_id AS "originHouseId"
+	</sql>
+	
+	<resultMap id="beanMap" type="MatserHouseTypesPo">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="area" property="area" />
+		<result column="orientations_name" property="orientationsName" />
+		<result column="wind_type_name" property="windTypeName" />
+		<result column="origin_house_id" property="originHouseId" />
+	</resultMap>
+	
+	<sql id="matserHouseTypesJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="area != null and area!= ''"> AND a.area = #{area}</if>
+		<if test="orientationsName != null and orientationsName!= ''"> AND a.orientations_name = #{orientationsName}</if>
+		<if test="windTypeName != null and windTypeName!= ''"> AND a.wind_type_name = #{windTypeName}</if>
+		<if test="originHouseId != null and originHouseId!= ''"> AND a.origin_house_id = #{originHouseId}</if>
+	</sql>
+    
+	<select id="getById" resultType="MatserHouseTypesPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="matserHouseTypesJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="MatserHouseTypesPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			name,
+			area,
+			orientations_name,
+			wind_type_name,
+			origin_house_id
+		) VALUES (
+			#{id},
+			#{name},
+			#{area},
+			#{orientationsName},
+			#{windTypeName},
+			#{originHouseId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="MatserHouseTypesPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="name != null">name,</if>
+					<if test="area != null">area,</if>
+					<if test="orientationsName != null">orientations_name,</if>
+					<if test="windTypeName != null">wind_type_name,</if>
+					<if test="originHouseId != null">origin_house_id,</if>
+					<if test="createTime != null">create_time,</if>
+					
+					
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="area != null">#{area},</if>
+			<if test="orientationsName != null">#{orientationsName},</if>
+			<if test="windTypeName != null">#{windTypeName},</if>
+			<if test="originHouseId != null">#{originHouseId},</if>
+			<if test="createTime != null">#{createTime},</if>
+	
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="MatserHouseTypesPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name = #{name},
+			area = #{area},
+			orientations_name = #{orientationsName},
+			wind_type_name = #{windTypeName},
+			origin_house_id = #{originHouseId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="MatserHouseTypesPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="name != null">name = #{name},</if>
+			<if test="area != null">area = #{area},</if>
+			<if test="orientationsName != null">orientations_name = #{orientationsName},</if>
+			<if test="windTypeName != null">wind_type_name = #{windTypeName},</if>
+			<if test="originHouseId != null">origin_house_id = #{originHouseId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

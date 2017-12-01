@@ -1,0 +1,2593 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.newhouse.dao.impl.NewHouseDirectoryAuthDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_directory_auth a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_directory_auth </sql>
+     <sql id="condition_sql_two">	
+			<if test="id != null and id != ''">AND a.id like concat('%',#{id},'%')</if>
+			<if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+			<if test="maintainPerson != null and maintainPerson!= ''"> AND a.maintain_person = #{maintainPerson}</if>
+			<if test="is_ture != null and is_ture!= ''"> AND (a.is_ture=#{is_ture} OR a.is_ture=#{not_ture})</if>
+	</sql>
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.edit AS "edit",
+		a.code AS "code",
+		a.name AS "name",
+		a.house_type_name AS "houseTypeName",
+		a.dic_trait AS "dicTrait",
+		a.dic_trait_name AS "dicTraitName",
+		a.wy_type AS "wyType",
+		a.wy_type_name AS "wyTypeName",
+		a.around_min_price AS "aroundMinPrice",
+		a.around_max_price AS "aroundMaxPrice",
+		a.developers AS "developers",
+		a.address AS "address",
+		a.accuracy AS "accuracy",
+		a.dimension AS "dimension",
+		a.area_leval_one AS "areaLevalOne",
+		a.area_leval_two AS "areaLevalTwo",
+		a.area_leval_three AS "areaLevalThree",
+		a.trading_area AS "tradingArea",
+		a.line_num AS "lineNum",
+		a.area_leval_one_name AS "areaLevalOneName",
+		a.area_leval_two_name AS "areaLevalTwoName",
+		a.area_leval_three_name AS "areaLevalThreeName",
+		a.trading_area_name AS "tradingAreaName",
+		a.line_num_name AS "lineNumName",
+		a.phone AS "phone",
+		a.discount AS "discount",
+		a.open_date AS "openDate",
+		a.hand_date AS "handDate",
+		a.sale_address AS "saleAddress",
+		a.prep AS "prep",
+		a.status AS "status",
+		a.ach_type AS "achType",
+		a.ach_type_name AS "achTypeName",
+		a.green_rate AS "greenRate",
+		a.house_count AS "houseCount",
+		a.floor_msg AS "floorMsg",
+		a.ban_msg AS "banMsg",
+		a.schedule AS "schedule",
+		a.property AS "property",
+		a.park_number AS "parkNumber",
+		a.parking_space AS "parkingSpace",
+		a.is_ture AS "isTure",
+		a.auth_status AS "authStatus",
+		a.content AS "content",
+		a.commit_time AS "commitTime",
+		a.commit_person AS "commitPerson",
+		a.auth_time AS "authTime",
+		a.auth_person AS "authPerson",
+		a.maintain_person AS "maintainPerson",
+		a.evelopers_person AS "evelopersPerson",
+		a.create_preson AS "createPreson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.old_id AS "oldId",
+		a.data_type AS "dataType",
+		a.spray_name AS "sprayName",
+		a.card_name AS "cardName",
+		a.dic_alias AS "dicAlias",
+		a.ach_year AS "achYear",
+		a.land_year AS "landYear",
+		a.occupy_area AS "occupyArea",
+		a.built_up AS "builtUp",
+		a.address1 AS "address1",
+		a.address2 AS "address2",
+		a.address3 AS "address3",
+		a.address4 AS "address4",
+		a.zip_code AS "zipCode",
+		a.certificate AS "certificate",
+		a.certificate_name AS "certificateName",
+
+		a.spell_name AS "spellName",
+		a.old_name AS "oldName",
+        a.is_bind AS "isBind"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHouseDirectoryAuthPo">
+		<id column="id" property="id" />
+		<result column="edit" property="edit" />
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="house_type_name" property="houseTypeName" />
+		<result column="dic_trait" property="dicTrait" />
+		<result column="dic_trait_name" property="dicTraitName" />
+		<result column="wy_type" property="wyType" />
+		<result column="wy_type_name" property="wyTypeName" />
+		<result column="around_min_price" property="aroundMinPrice" />
+		<result column="around_max_price" property="aroundMaxPrice" />
+		<result column="developers" property="developers" />
+		<result column="address" property="address" />
+		<result column="accuracy" property="accuracy" />
+		<result column="dimension" property="dimension" />
+		<result column="area_leval_one" property="areaLevalOne" />
+		<result column="area_leval_two" property="areaLevalTwo" />
+		<result column="area_leval_three" property="areaLevalThree" />
+		<result column="trading_area" property="tradingArea" />
+		<result column="line_num" property="lineNum" />
+		<result column="area_leval_one_name" property="areaLevalOneName" />
+		<result column="area_leval_two_name" property="areaLevalTwoName" />
+		<result column="area_leval_three_name" property="areaLevalThreeName" />
+		<result column="trading_area_name" property="tradingAreaName" />
+		<result column="line_num_name" property="lineNumName" />
+		<result column="phone" property="phone" />
+		<result column="discount" property="discount" />
+		<result column="open_date" property="openDate" />
+		<result column="hand_date" property="handDate" />
+		<result column="sale_address" property="saleAddress" />
+		<result column="prep" property="prep" />
+		<result column="status" property="status" />
+		<result column="ach_type" property="achType" />
+		<result column="ach_type_name" property="achTypeName" />
+		<result column="green_rate" property="greenRate" />
+		<result column="house_count" property="houseCount" />
+		<result column="floor_msg" property="floorMsg" />
+		<result column="ban_msg" property="banMsg" />
+		<result column="schedule" property="schedule" />
+		<result column="property" property="property" />
+		<result column="park_number" property="parkNumber" />
+		<result column="parking_space" property="parkingSpace" />
+		<result column="is_ture" property="isTure" />
+		<result column="auth_status" property="authStatus" />
+		<result column="content" property="content" />
+		<result column="commit_time" property="commitTime" />
+		<result column="commit_person" property="commitPerson" />
+		<result column="auth_person" property="authPerson" />
+		<result column="maintain_person" property="maintainPerson" />
+		<result column="evelopers_person" property="evelopersPerson" />
+		<result column="create_preson" property="createPreson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="old_id" property="oldId" />
+		<result column="spray_name" property="sprayName" />
+		<result column="card_name" property="cardName" />
+		<result column="dic_alias" property="dicAlias" />
+		<result column="ach_year" property="achYear" />
+		<result column="land_year" property="landYear" />
+		<result column="occupy_area" property="occupyArea" />
+		<result column="built_up" property="builtUp" />
+		<result column="address1" property="address1" />
+		<result column="address2" property="address2" />
+		<result column="address3" property="address3" />
+		<result column="address4" property="address4" />
+		<result column="zip_code" property="zipCode" />
+		<result column="certificate" property="certificate" />
+		<result column="certificate_name" property="certificateName" />
+		<result column="describe" property="describe" />
+		<result column="spell_name" property="spellName" />
+		<result column="old_name" property="oldName" />
+        <result column="is_bind" property="isBind" />
+	</resultMap>
+	<sql id="newHouseDirectoryAuthJoins">
+	</sql>
+    
+    <sql id="condition_sql">
+    	<if test="ids != null and ids != ''"> AND a.id in (${ids})</if>	
+		<if test="edit != null and edit != ''"> AND a.edit = #{edit}</if>
+		<if test="code != null and code!= ''"> AND a.code like concat('%',#{code},'%')</if>
+		<if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+		<if test="preName != null and preName != ''"> AND a.name like concat(#{preName},'%') </if>
+		<if test="houseTypeName != null and houseTypeName!= ''"> AND a.house_type_name = #{houseTypeName}</if>
+		<if test="dicTrait != null and dicTrait!= ''"> AND a.dic_trait = #{dicTrait}</if>
+		<if test="dicTraitName != null and dicTraitName!= ''"> AND a.dic_trait_name = #{dicTraitName}</if>
+		<if test="wyType != null and wyType!= ''"> AND a.wy_type = #{wyType}</if>
+		<if test="wyTypeName != null and wyTypeName!= ''"> AND a.wy_type_name = #{wyTypeName}</if>
+		<if test="aroundMinPrice != null and aroundMinPrice!= ''"> AND a.around_min_price = #{aroundMinPrice}</if>
+		<if test="aroundMaxPrice != null and aroundMaxPrice!= ''"> AND a.around_max_price = #{aroundMaxPrice}</if>
+		<if test="developers != null and developers!= ''"> AND a.developers = #{developers}</if>
+		<if test="address != null and address!= ''"> AND a.address like concat('%',#{address},'%') </if>
+		<if test="accuracy != null and accuracy!= ''"> AND a.accuracy = #{accuracy}</if>
+		<if test="dimension != null and dimension!= ''"> AND a.dimension = #{dimension}</if>
+		<if test="areaLevalOne != null and areaLevalOne!= ''"> AND a.area_leval_one = #{areaLevalOne}</if>
+		<if test="areaLevalTwo != null and areaLevalTwo!= ''"> AND a.area_leval_two = #{areaLevalTwo}</if>
+		<if test="areaLevalThree != null and areaLevalThree!= ''"> AND a.area_leval_three = #{areaLevalThree}</if>
+		<if test="tradingArea != null and tradingArea!= ''"> AND a.trading_area = #{tradingArea}</if>
+		<if test="lineNum != null and lineNum!= ''"> AND a.line_num = #{lineNum}</if>
+		<if test="phone != null and phone!= ''"> AND a.phone = #{phone}</if>
+		<if test="discount != null and discount!= ''"> AND a.discount = #{discount}</if>
+		<if test="openDate != null and openDate!= ''"> AND a.open_date = #{openDate}</if>
+		<if test="handDate != null and handDate!= ''"> AND a.hand_date = #{handDate}</if>
+		<if test="saleAddress != null and saleAddress!= ''"> AND a.sale_address = #{saleAddress}</if>
+		<if test="prep != null and prep!= ''"> AND a.prep = #{prep}</if>
+		<if test="achType != null and achType!= ''"> AND a.ach_type = #{achType}</if>
+		<if test="achTypeName != null and achTypeName!= ''"> AND a.ach_type_name = #{achTypeName}</if>
+		<if test="greenRate != null and greenRate!= ''"> AND a.green_rate = #{greenRate}</if>
+		<if test="houseCount != null and houseCount!= ''"> AND a.house_count = #{houseCount}</if>
+		<if test="floorMsg != null and floorMsg!= ''"> AND a.floor_msg = #{floorMsg}</if>
+		<if test="banMsg != null and banMsg!= ''"> AND a.ban_msg = #{banMsg}</if>
+		<if test="schedule != null and schedule!= ''"> AND a.schedule = #{schedule}</if>
+		<if test="property != null and property!= ''"> AND a.property = #{property}</if>
+		<if test="parkNumber != null and parkNumber!= ''"> AND a.park_number = #{parkNumber}</if>
+		<if test="parkingSpace != null and parkingSpace!= ''"> AND a.parking_space = #{parkingSpace}</if>
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture in (${isTure}) </if>
+		<if test="authStatus != null"> AND a.auth_status = #{authStatus}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="commitTime != null and commitTime!= ''"> AND a.commit_time = #{commitTime}</if>
+		<if test="commitPerson != null and commitPerson!= ''"> AND a.commit_person = #{commitPerson}</if>
+		<if test="authPerson != null and authPerson!= ''"> AND a.auth_person = #{authPerson}</if>
+		<if test="maintainPerson != null and maintainPerson!= ''"> AND a.maintain_person = #{maintainPerson}</if>
+		<if test="evelopersPerson != null and evelopersPerson!= ''"> AND a.evelopers_person = #{evelopersPerson}</if>
+		<if test="createPreson != null and createPreson!= ''"> AND a.create_preson = #{createPreson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="oldId != null and oldId!= ''"> AND a.old_id = #{oldId}</if>
+		<if test="dataType != null and dataType != ''"> AND a.data_type = #{dataType}</if>
+		<if test="sprayName != null and sprayName!= ''"> AND a.spray_name = #{sprayName}</if>
+		<if test="cardName != null and cardName!= ''"> AND a.card_name = #{cardName}</if>
+		<if test="dicAlias != null and dicAlias!= ''"> AND a.dic_alias = #{dicAlias}</if>
+		<if test="achYear != null and achYear!= ''"> AND a.ach_year = #{achYear}</if>
+		<if test="landYear != null and landYear!= ''"> AND a.land_year = #{landYear}</if>
+		<if test="occupyArea != null and occupyArea!= ''"> AND a.occupy_area = #{occupyArea}</if>
+		<if test="builtUp != null and builtUp!= ''"> AND a.built_up = #{builtUp}</if>
+		<if test="address1 != null and address1!= ''"> AND a.address1 = #{address1}</if>
+		<if test="address2 != null and address2!= ''"> AND a.address2 = #{address2}</if>
+		<if test="address3 != null and address3!= ''"> AND a.address3 = #{address3}</if>
+		<if test="address4 != null and address4!= ''"> AND a.address4 = #{address4}</if>
+		<if test="zipCode != null and zipCode!= ''"> AND a.zip_code = #{zipCode}</if>
+		<if test="certificate != null and certificate!= ''"> AND a.certificate = #{certificate}</if>
+		<if test="certificateName != null and certificateName!= ''"> AND a.certificate_name = #{certificateName}</if>
+		<if test="describe != null and describe!= ''"> AND a.describe = #{describe}</if>
+		<if test="spellName != null and spellName!= ''"> AND a.spell_name = #{spellName}</if>
+		<if test="oldName != null and oldName!= ''"> AND a.old_name = #{oldName}</if>
+        <if test="isBind != null and isBind!= ''"> AND a.is_bind = #{isBind}</if>
+	</sql>
+	
+	<sql id="condition_sql_new">	
+		<if test="edit != null and edit != ''"> AND a.edit = #{edit}</if>
+		<if test="code != null and code!= ''"> AND a.code like concat('%',#{code},'%')</if>
+		<if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+		<if test="houseTypeName != null and houseTypeName!= ''"> AND a.house_type_name = #{houseTypeName}</if>
+		<if test="dicTrait != null and dicTrait!= ''"> AND a.dic_trait = #{dicTrait}</if>
+		<if test="dicTraitName != null and dicTraitName!= ''"> AND a.dic_trait_name = #{dicTraitName}</if>
+		
+		<if test="wyType != null and wyType!= ''"> AND concat(',',a.wy_type,',') like concat(',',#{wyType},',')</if>
+		
+		<if test="wyTypeName != null and wyTypeName!= ''"> AND a.wy_type_name = #{wyTypeName}</if>
+		<if test="aroundMinPrice != null and aroundMinPrice!= ''"> AND a.around_min_price = #{aroundMinPrice}</if>
+		<if test="aroundMaxPrice != null and aroundMaxPrice!= ''"> AND a.around_max_price = #{aroundMaxPrice}</if>
+		<if test="developers != null and developers!= ''"> AND a.developers = #{developers}</if>
+		<if test="address != null and address!= ''"> AND a.address like concat('%',#{address},'%') </if>
+		<if test="accuracy != null and accuracy!= ''"> AND a.accuracy = #{accuracy}</if>
+		<if test="dimension != null and dimension!= ''"> AND a.dimension = #{dimension}</if>
+		<if test="areaLevalOne != null and areaLevalOne!= ''"> AND a.area_leval_one = #{areaLevalOne}</if>
+		<if test="areaLevalTwo != null and areaLevalTwo!= ''"> AND a.area_leval_two = #{areaLevalTwo}</if>
+		<if test="areaLevalThree != null and areaLevalThree!= ''"> AND a.area_leval_three = #{areaLevalThree}</if>
+		<if test="tradingArea != null and tradingArea!= ''"> AND a.trading_area = #{tradingArea}</if>
+		<if test="lineNum != null and lineNum!= ''"> AND a.line_num = #{lineNum}</if>
+		<if test="phone != null and phone!= ''"> AND a.phone = #{phone}</if>
+		<if test="discount != null and discount!= ''"> AND a.discount = #{discount}</if>
+		<if test="openDate != null and openDate!= ''"> AND a.open_date = #{openDate}</if>
+		<if test="handDate != null and handDate!= ''"> AND a.hand_date = #{handDate}</if>
+		<if test="saleAddress != null and saleAddress!= ''"> AND a.sale_address = #{saleAddress}</if>
+		<if test="prep != null and prep!= ''"> AND a.prep = #{prep}</if>
+		<if test="achType != null and achType!= ''"> AND a.ach_type = #{achType}</if>
+		<if test="achTypeName != null and achTypeName!= ''"> AND a.ach_type_name = #{achTypeName}</if>
+		<if test="greenRate != null and greenRate!= ''"> AND a.green_rate = #{greenRate}</if>
+		<if test="houseCount != null and houseCount!= ''"> AND a.house_count = #{houseCount}</if>
+		<if test="floorMsg != null and floorMsg!= ''"> AND a.floor_msg = #{floorMsg}</if>
+		<if test="banMsg != null and banMsg!= ''"> AND a.ban_msg = #{banMsg}</if>
+		<if test="schedule != null and schedule!= ''"> AND a.schedule = #{schedule}</if>
+		<if test="property != null and property!= ''"> AND a.property = #{property}</if>
+		<if test="parkNumber != null and parkNumber!= ''"> AND a.park_number = #{parkNumber}</if>
+		<if test="parkingSpace != null and parkingSpace!= ''"> AND a.parking_space = #{parkingSpace}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="commitTime != null and commitTime!= ''"> AND a.commit_time = #{commitTime}</if>
+		<if test="commitPerson != null and commitPerson!= ''"> AND a.commit_person = #{commitPerson}</if>
+		<if test="authPerson != null and authPerson!= ''"> AND a.auth_person = #{authPerson}</if>
+		<if test="maintainPerson != null and maintainPerson!= ''"> AND a.maintain_person = #{maintainPerson}</if>
+		<if test="evelopersPerson != null and evelopersPerson!= ''"> AND a.evelopers_person = #{evelopersPerson}</if>
+		<if test="createPreson != null and createPreson!= ''"> AND a.create_preson = #{createPreson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="oldId != null and oldId!= ''"> AND a.old_id = #{oldId}</if>
+		<if test="dataType != null and dataType != ''"> AND a.data_type = #{dataType}</if>
+		<if test="sprayName != null and sprayName!= ''"> AND a.spray_name = #{sprayName}</if>
+		<if test="cardName != null and cardName!= ''"> AND a.card_name = #{cardName}</if>
+		<if test="dicAlias != null and dicAlias!= ''"> AND a.dic_alias = #{dicAlias}</if>
+		<if test="achYear != null and achYear!= ''"> AND a.ach_year = #{achYear}</if>
+		<if test="landYear != null and landYear!= ''"> AND a.land_year = #{landYear}</if>
+		<if test="occupyArea != null and occupyArea!= ''"> AND a.occupy_area = #{occupyArea}</if>
+		<if test="builtUp != null and builtUp!= ''"> AND a.built_up = #{builtUp}</if>
+		<if test="address1 != null and address1!= ''"> AND a.address1 = #{address1}</if>
+		<if test="address2 != null and address2!= ''"> AND a.address2 = #{address2}</if>
+		<if test="address3 != null and address3!= ''"> AND a.address3 = #{address3}</if>
+		<if test="address4 != null and address4!= ''"> AND a.address4 = #{address4}</if>
+		<if test="zipCode != null and zipCode!= ''"> AND a.zip_code = #{zipCode}</if>
+		<if test="certificate != null and certificate!= ''"> AND a.certificate = #{certificate}</if>
+		<if test="certificateName != null and certificateName!= ''"> AND a.certificate_name = #{certificateName}</if>
+		<if test="describe != null and describe!= ''"> AND a.describe = #{describe}</if>
+		<if test="spellName != null and spellName!= ''"> AND a.spell_name = #{spellName}</if>
+		<if test="oldName != null and oldName!= ''"> AND a.old_name = #{oldName}</if>
+		<if test="startCreateTime != null and startCreateTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startCreateTime},'%Y-%m-%d')]]></if>
+		<if test="endCreateTime != null and endCreateTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endCreateTime},'%Y-%m-%d')]]></if>
+		<!-- <if test="authStatus != null and authStatus != ''">
+		 AND a.id in (SELECT DISTINCT code from dsj_new_house_directory_auth where `auth_status` in (${authStatus}))
+		 </if> -->
+		 <if test="authStatus != null and authStatus != ''">
+		 AND a.auth_status in (${authStatus})
+		 </if>
+		<if test="isTrue != null and isTrue != ''"> AND a.is_ture in (${isTrue})</if>
+		<if test="status != null and status != ''"> AND a.status in (${status})</if>
+        <if test="isBind != null and isBind!= ''"> AND a.is_bind = #{isBind}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHouseDirectoryAuthPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="getElev" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+    	   <if test="edit != null and edit != ''"> AND a.edit = #{edit}</if>
+			<if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+			AND a.evelopers_person is null
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	 	<select id="selectByLimit" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+    	LIMIT #{startNum} , #{endNum} 
+  	</select>
+  	
+  	
+  	
+  	<select id="getIdAndName" resultMap="beanMap" parameterType="string">
+    	SELECT 
+    		a.id AS "id",
+			a.name AS "name"
+    	FROM <include refid="tableName"/> 
+    	where a.id in (${_parameter})
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="NewHouseDirectoryAuthPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			edit,
+			code,
+			name,
+			house_type_name,
+			dic_trait,
+			dic_trait_name,
+			wy_type,
+			wy_type_name,
+			around_min_price,
+			around_max_price,
+			developers,
+			address,
+			accuracy,
+			dimension,
+			area_leval_one,
+			area_leval_two,
+			area_leval_three,
+			trading_area,
+			line_num,
+			phone,
+			discount,
+			open_date,
+			hand_date,
+			sale_address,
+			prep,
+			status,
+			ach_type,
+			ach_type_name,
+			green_rate,
+			house_count,
+			floor_msg,
+			ban_msg,
+			schedule,
+			property,
+			park_number,
+			parking_space,
+			is_ture,
+			auth_status,
+			content,
+			commit_time,
+			commit_person,
+			auth_person,
+			maintain_person,
+			evelopers_person,
+			create_preson,
+			update_preson,
+			create_time,
+			update_time,
+			old_id,
+			spray_name,
+			card_name,
+			dic_alias,
+			ach_year,
+			land_year,
+			occupy_area,
+			built_up,
+			address1,
+			address2,
+			address3,
+			address4,
+			zip_code,
+			certificate,
+			certificate_name,
+			describe,
+			spell_name,
+			old_name,
+            is_bind
+		) VALUES (
+			#{edit},
+			#{code},
+			#{name},
+			#{houseTypeName},
+			#{dicTrait},
+			#{dicTraitName},
+			#{wyType},
+			#{wyTypeName},
+			#{aroundMinPrice},
+			#{aroundMaxPrice},
+			#{developers},
+			#{address},
+			#{accuracy},
+			#{dimension},
+			#{areaLevalOne},
+			#{areaLevalTwo},
+			#{areaLevalThree},
+			#{tradingArea},
+			#{lineNum},
+			#{phone},
+			#{discount},
+			#{openDate},
+			#{handDate},
+			#{saleAddress},
+			#{prep},
+			#{status},
+			#{achType},
+			#{achTypeName},
+			#{greenRate},
+			#{houseCount},
+			#{floorMsg},
+			#{banMsg},
+			#{schedule},
+			#{property},
+			#{parkNumber},
+			#{parkingSpace},
+			#{isTure},
+			#{authStatus},
+			#{content},
+			#{commitTime},
+			#{commitPerson},
+			#{authPerson},
+			#{maintainPerson},
+			#{evelopersPerson},
+			#{createPreson},
+			#{updatePreson},
+			#{createTime},
+			#{updateTime},
+			#{oldId},
+			#{sprayName},
+			#{cardName},
+			#{dicAlias},
+			#{achYear},
+			#{landYear},
+			#{occupyArea},
+			#{builtUp},
+			#{address1},
+			#{address2},
+			#{address3},
+			#{address4},
+			#{zipCode},
+			#{certificate},
+			#{certificateName},
+			#{describe},
+			#{spellName},
+			#{oldName},
+            #{isBind}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NewHouseDirectoryAuthPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+   					<if test="id != null">id,</if>
+					<if test="edit != null">edit,</if>
+					<if test="code != null">code,</if>
+					<if test="name != null">name,</if>
+					<if test="houseTypeName != null">house_type_name,</if>
+					<if test="dicTrait != null">dic_trait,</if>
+					<if test="dicTraitName != null">dic_trait_name,</if>
+					<if test="wyType != null">wy_type,</if>
+					<if test="wyTypeName != null">wy_type_name,</if>
+					<if test="aroundMinPrice != null">around_min_price,</if>
+					<if test="aroundMaxPrice != null">around_max_price,</if>
+					<if test="developers != null">developers,</if>
+					<if test="address != null">address,</if>
+					<if test="accuracy != null">accuracy,</if>
+					<if test="dimension != null">dimension,</if>
+					<if test="areaLevalOne != null">area_leval_one,</if>
+					<if test="areaLevalTwo != null">area_leval_two,</if>
+					<if test="areaLevalThree != null">area_leval_three,</if>
+					<if test="tradingArea != null">trading_area,</if>
+					<if test="lineNum != null">line_num,</if>
+					<if test="areaLevalOneName != null">area_leval_one_name,</if>
+					<if test="areaLevalTwoName != null">area_leval_two_name,</if>
+					<if test="areaLevalThreeName != null">area_leval_three_name,</if>
+					<if test="tradingAreaName != null">trading_area_name,</if>
+					<if test="lineNumName != null">line_num_name,</if>
+					<if test="phone != null">phone,</if>
+					<if test="discount != null">discount,</if>
+					<if test="openDate != null">open_date,</if>
+					<if test="handDate != null">hand_date,</if>
+					<if test="saleAddress != null">sale_address,</if>
+					<if test="prep != null">prep,</if>
+					<if test="status != null">status,</if>
+					<if test="achType != null">ach_type,</if>
+					<if test="achTypeName != null">ach_type_name,</if>
+					<if test="greenRate != null">green_rate,</if>
+					<if test="houseCount != null">house_count,</if>
+					<if test="floorMsg != null">floor_msg,</if>
+					<if test="banMsg != null">ban_msg,</if>
+					<if test="schedule != null">schedule,</if>
+					<if test="property != null">property,</if>
+					<if test="parkNumber != null">park_number,</if>
+					<if test="parkingSpace != null">parking_space,</if>
+					<if test="isTure != null">is_ture,</if>
+					<if test="authStatus != null">auth_status,</if>
+					<if test="content != null">content,</if>
+					<if test="commitTime != null">commit_time,</if>
+					<if test="commitPerson != null">commit_person,</if>
+					<if test="authTime != null">auth_time,</if>
+					<if test="authPerson != null">auth_person,</if>
+					<if test="maintainPerson != null">maintain_person,</if>
+					<if test="evelopersPerson != null">evelopers_person,</if>
+					<if test="createPreson != null">create_preson,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="oldId != null">old_id,</if>
+					<if test="dataType != null">data_type,</if>
+					<if test="sprayName != null">spray_name,</if>
+					<if test="cardName != null">card_name,</if>
+					<if test="dicAlias != null">dic_alias,</if>
+					<if test="achYear != null">ach_year,</if>
+					<if test="landYear != null">land_year,</if>
+					<if test="occupyArea != null">occupy_area,</if>
+					<if test="builtUp != null">built_up,</if>
+					<if test="address1 != null">address1,</if>
+					<if test="address2 != null">address2,</if>
+					<if test="address3 != null">address3,</if>
+					<if test="address4 != null">address4,</if>
+					<if test="zipCode != null">zip_code,</if>
+					<if test="certificate != null">certificate,</if>
+					<if test="certificateName != null">certificate_name,</if>
+					<if test="describe != null">describe,</if>
+					<if test="spellName != null">spell_name,</if>
+					<if test="oldName != null">old_name,</if>
+                    <if test="isBind != null">is_bind,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="id != null">#{id},</if>
+			<if test="edit != null">#{edit},</if>
+			<if test="code != null">#{code},</if>
+			<if test="name != null">#{name},</if>
+			<if test="houseTypeName != null">#{houseTypeName},</if>
+			<if test="dicTrait != null">#{dicTrait},</if>
+			<if test="dicTraitName != null">#{dicTraitName},</if>
+			<if test="wyType != null">#{wyType},</if>
+			<if test="wyTypeName != null">#{wyTypeName},</if>
+			<if test="aroundMinPrice != null">#{aroundMinPrice},</if>
+			<if test="aroundMaxPrice != null">#{aroundMaxPrice},</if>
+			<if test="developers != null">#{developers},</if>
+			<if test="address != null">#{address},</if>
+			<if test="accuracy != null">#{accuracy},</if>
+			<if test="dimension != null">#{dimension},</if>
+			<if test="areaLevalOne != null">#{areaLevalOne},</if>
+			<if test="areaLevalTwo != null">#{areaLevalTwo},</if>
+			<if test="areaLevalThree != null">#{areaLevalThree},</if>
+			<if test="tradingArea != null">#{tradingArea},</if>
+			<if test="lineNum != null">#{lineNum},</if>
+			<if test="areaLevalOneName != null">#{areaLevalOneName},</if>
+			<if test="areaLevalTwoName != null">#{areaLevalTwoName},</if>
+			<if test="areaLevalThreeName != null">#{areaLevalThreeName},</if>
+			<if test="tradingAreaName != null">#{tradingAreaName},</if>
+			<if test="lineNumName != null">#{lineNumName},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="discount != null">#{discount},</if>
+			<if test="openDate != null">#{openDate},</if>
+			<if test="handDate != null">#{handDate},</if>
+			<if test="saleAddress != null">#{saleAddress},</if>
+			<if test="prep != null">#{prep},</if>
+			<if test="status != null">#{status},</if>
+			<if test="achType != null">#{achType},</if>
+			<if test="achTypeName != null">#{achTypeName},</if>
+			<if test="greenRate != null">#{greenRate},</if>
+			<if test="houseCount != null">#{houseCount},</if>
+			<if test="floorMsg != null">#{floorMsg},</if>
+			<if test="banMsg != null">#{banMsg},</if>
+			<if test="schedule != null">#{schedule},</if>
+			<if test="property != null">#{property},</if>
+			<if test="parkNumber != null">#{parkNumber},</if>
+			<if test="parkingSpace != null">#{parkingSpace},</if>
+			<if test="isTure != null">#{isTure},</if>
+			<if test="authStatus != null">#{authStatus},</if>
+			<if test="content != null">#{content},</if>
+			<if test="commitTime != null">#{commitTime},</if>
+			<if test="commitPerson != null">#{commitPerson},</if>
+			<if test="authTime != null">#{authTime},</if>
+			<if test="authPerson != null">#{authPerson},</if>
+			<if test="maintainPerson != null">#{maintainPerson},</if>
+			<if test="evelopersPerson != null">#{evelopersPerson},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="oldId != null">#{oldId},</if>
+			<if test="dataType != null">#{dataType},</if>
+			<if test="sprayName != null">#{sprayName},</if>
+			<if test="cardName != null">#{cardName},</if>
+			<if test="dicAlias != null">#{dicAlias},</if>
+			<if test="achYear != null">#{achYear},</if>
+			<if test="landYear != null">#{landYear},</if>
+			<if test="occupyArea != null">#{occupyArea},</if>
+			<if test="builtUp != null">#{builtUp},</if>
+			<if test="address1 != null">#{address1},</if>
+			<if test="address2 != null">#{address2},</if>
+			<if test="address3 != null">#{address3},</if>
+			<if test="address4 != null">#{address4},</if>
+			<if test="zipCode != null">#{zipCode},</if>
+			<if test="certificate != null">#{certificate},</if>
+			<if test="certificateName != null">#{certificateName},</if>
+			<if test="describe != null">#{describe},</if>
+			<if test="spellName != null">#{spellName},</if>
+			<if test="oldName != null">#{oldName},</if>
+            <if test="isBind != null">#{isBind},</if>
+        </trim>
+    </insert>
+    
+    
+    <insert id="insertNewDynamic" parameterType="NewHouseDirectoryAuthPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="edit != null">edit,</if>
+					code,
+					<if test="name != null">name,</if>
+					<if test="houseTypeName != null">house_type_name,</if>
+					<if test="dicTrait != null">dic_trait,</if>
+					<if test="dicTraitName != null">dic_trait_name,</if>
+					<if test="wyType != null">wy_type,</if>
+					<if test="wyTypeName != null">wy_type_name,</if>
+					<if test="aroundMinPrice != null">around_min_price,</if>
+					<if test="aroundMaxPrice != null">around_max_price,</if>
+					<if test="developers != null">developers,</if>
+					<if test="address != null">address,</if>
+					<if test="accuracy != null">accuracy,</if>
+					<if test="dimension != null">dimension,</if>
+					<if test="areaLevalOne != null">area_leval_one,</if>
+					<if test="areaLevalTwo != null">area_leval_two,</if>
+					<if test="areaLevalThree != null">area_leval_three,</if>
+					<if test="tradingArea != null">trading_area,</if>
+					<if test="lineNum != null">line_num,</if>
+					<if test="areaLevalOneName != null">area_leval_one_name,</if>
+					<if test="areaLevalTwoName != null">area_leval_two_name,</if>
+					<if test="areaLevalThreeName != null">area_leval_three_name,</if>
+					<if test="tradingAreaName != null">trading_area_name,</if>
+					<if test="lineNumName != null">line_num_name,</if>
+					<if test="phone != null">phone,</if>
+					<if test="discount != null">discount,</if>
+					<if test="openDate != null">open_date,</if>
+					<if test="handDate != null">hand_date,</if>
+					<if test="saleAddress != null">sale_address,</if>
+					<if test="prep != null">prep,</if>
+					<if test="status != null">status,</if>
+					<if test="achType != null">ach_type,</if>
+					<if test="achTypeName != null">ach_type_name,</if>
+					<if test="greenRate != null">green_rate,</if>
+					<if test="houseCount != null">house_count,</if>
+					<if test="floorMsg != null">floor_msg,</if>
+					<if test="banMsg != null">ban_msg,</if>
+					<if test="schedule != null">schedule,</if>
+					<if test="property != null">property,</if>
+					<if test="parkNumber != null">park_number,</if>
+					<if test="parkingSpace != null">parking_space,</if>
+					<if test="isTure != null">is_ture,</if>
+					<if test="authStatus != null">auth_status,</if>
+					<if test="content != null">content,</if>
+					<if test="commitTime != null">commit_time,</if>
+					<if test="commitPerson != null">commit_person,</if>
+					<if test="authTime != null">auth_time,</if>
+					<if test="authPerson != null">auth_person,</if>
+					<if test="maintainPerson != null">maintain_person,</if>
+					<if test="evelopersPerson != null">evelopers_person,</if>
+					<if test="createPreson != null">create_preson,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="oldId != null">old_id,</if>
+					<if test="dataType != null">data_type,</if>
+					<if test="sprayName != null">spray_name,</if>
+					<if test="cardName != null">card_name,</if>
+					<if test="dicAlias != null">dic_alias,</if>
+					<if test="achYear != null">ach_year,</if>
+					<if test="landYear != null">land_year,</if>
+					<if test="occupyArea != null">occupy_area,</if>
+					<if test="builtUp != null">built_up,</if>
+					<if test="address1 != null">address1,</if>
+					<if test="address2 != null">address2,</if>
+					<if test="address3 != null">address3,</if>
+					<if test="address4 != null">address4,</if>
+					<if test="zipCode != null">zip_code,</if>
+					<if test="certificate != null">certificate,</if>
+					<if test="certificateName != null">certificate_name,</if>
+					<if test="describe != null">describe,</if>
+					<if test="spellName != null">spell_name,</if>
+					<if test="oldName != null">old_name,</if>
+                    <if test="isBind != null">is_bind,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="edit != null">#{edit},</if>
+			
+			<if test="code != null and code !=''">#{code},</if>
+			<if test="code == null or code ==''">(SELECT auto_increment FROM  information_schema.`TABLES` WHERE TABLE_SCHEMA='dasoujia' AND TABLE_NAME='dsj_new_house_directory_auth'),</if>
+			
+			<if test="name != null">#{name},</if>
+			<if test="houseTypeName != null">#{houseTypeName},</if>
+			<if test="dicTrait != null">#{dicTrait},</if>
+			<if test="dicTraitName != null">#{dicTraitName},</if>
+			<if test="wyType != null">#{wyType},</if>
+			<if test="wyTypeName != null">#{wyTypeName},</if>
+			<if test="aroundMinPrice != null">#{aroundMinPrice},</if>
+			<if test="aroundMaxPrice != null">#{aroundMaxPrice},</if>
+			<if test="developers != null">#{developers},</if>
+			<if test="address != null">#{address},</if>
+			<if test="accuracy != null">#{accuracy},</if>
+			<if test="dimension != null">#{dimension},</if>
+			<if test="areaLevalOne != null">#{areaLevalOne},</if>
+			<if test="areaLevalTwo != null">#{areaLevalTwo},</if>
+			<if test="areaLevalThree != null">#{areaLevalThree},</if>
+			<if test="tradingArea != null">#{tradingArea},</if>
+			<if test="lineNum != null">#{lineNum},</if>
+			<if test="areaLevalOneName != null">#{areaLevalOneName},</if>
+			<if test="areaLevalTwoName != null">#{areaLevalTwoName},</if>
+			<if test="areaLevalThreeName != null">#{areaLevalThreeName},</if>
+			<if test="tradingAreaName != null">#{tradingAreaName},</if>
+			<if test="lineNumName != null">#{lineNumName},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="discount != null">#{discount},</if>
+			<if test="openDate != null">#{openDate},</if>
+			<if test="handDate != null">#{handDate},</if>
+			<if test="saleAddress != null">#{saleAddress},</if>
+			<if test="prep != null">#{prep},</if>
+			<if test="status != null">#{status},</if>
+			<if test="achType != null">#{achType},</if>
+			<if test="achTypeName != null">#{achTypeName},</if>
+			<if test="greenRate != null">#{greenRate},</if>
+			<if test="houseCount != null">#{houseCount},</if>
+			<if test="floorMsg != null">#{floorMsg},</if>
+			<if test="banMsg != null">#{banMsg},</if>
+			<if test="schedule != null">#{schedule},</if>
+			<if test="property != null">#{property},</if>
+			<if test="parkNumber != null">#{parkNumber},</if>
+			<if test="parkingSpace != null">#{parkingSpace},</if>
+			<if test="isTure != null">#{isTure},</if>
+			<if test="authStatus != null">#{authStatus},</if>
+			<if test="content != null">#{content},</if>
+			<if test="commitTime != null">#{commitTime},</if>
+			<if test="commitPerson != null">#{commitPerson},</if>
+			<if test="authTime != null">#{authTime},</if>
+			<if test="authPerson != null">#{authPerson},</if>
+			<if test="maintainPerson != null">#{maintainPerson},</if>
+			<if test="evelopersPerson != null">#{evelopersPerson},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="oldId != null">#{oldId},</if>
+			<if test="dataType != null">#{dataType},</if>
+			<if test="sprayName != null">#{sprayName},</if>
+			<if test="cardName != null">#{cardName},</if>
+			<if test="dicAlias != null">#{dicAlias},</if>
+			<if test="achYear != null">#{achYear},</if>
+			<if test="landYear != null">#{landYear},</if>
+			<if test="occupyArea != null">#{occupyArea},</if>
+			<if test="builtUp != null">#{builtUp},</if>
+			<if test="address1 != null">#{address1},</if>
+			<if test="address2 != null">#{address2},</if>
+			<if test="address3 != null">#{address3},</if>
+			<if test="address4 != null">#{address4},</if>
+			<if test="zipCode != null">#{zipCode},</if>
+			<if test="certificate != null">#{certificate},</if>
+			<if test="certificateName != null">#{certificateName},</if>
+			<if test="describe != null">#{describe},</if>
+			<if test="spellName != null">#{spellName},</if>
+			<if test="oldName != null">#{oldName},</if>
+            <if test="isBind != null">#{isBind},</if>
+        </trim>
+    </insert>
+	
+	<update id="update" parameterType="NewHouseDirectoryAuthPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name = #{name},
+			house_type_name = #{houseTypeName},
+			dic_trait = #{dicTrait},
+			dic_trait_name = #{dicTraitName},
+			wy_type = #{wyType},
+			wy_type_name = #{wyTypeName},
+			around_min_price = #{aroundMinPrice},
+			around_max_price = #{aroundMaxPrice},
+			developers = #{developers},
+			address = #{address},
+			accuracy = #{accuracy},
+			dimension = #{dimension},
+			area_leval_one = #{areaLevalOne},
+			area_leval_two = #{areaLevalTwo},
+			area_leval_three = #{areaLevalThree},
+			trading_area = #{tradingArea},
+			line_num = #{lineNum},
+			area_leval_one_name = #{areaLevalOneName},
+			area_leval_two_name = #{areaLevalTwoName},
+			area_leval_three_name = #{areaLevalThreeName},
+			trading_area_name = #{tradingAreaName},
+			line_num_name = #{lineNumName},
+			phone = #{phone},
+			discount = #{discount},
+			open_date = #{openDate},
+			hand_date = #{handDate},
+			sale_address = #{saleAddress},
+			prep = #{prep},
+			status = #{status},
+			ach_type = #{achType},
+			ach_type_name = #{achTypeName},
+			green_rate = #{greenRate},
+			house_count = #{houseCount},
+			floor_msg = #{floorMsg},
+			ban_msg = #{banMsg},
+			schedule = #{schedule},
+			property = #{property},
+			park_number = #{parkNumber},
+			parking_space = #{parkingSpace},
+			update_preson = #{updatePreson},
+			update_time = #{updateTime}
+		WHERE id = #{id} 
+	</update>
+	
+	
+	<update id="updateTwo" parameterType="NewHouseDirectoryAuthPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name = #{name},
+			house_type_name = #{houseTypeName},
+			dic_trait = #{dicTrait},
+			dic_trait_name = #{dicTraitName},
+			wy_type = #{wyType},
+			wy_type_name = #{wyTypeName},
+			around_min_price = #{aroundMinPrice},
+			around_max_price = #{aroundMaxPrice},
+			developers = #{developers},
+			address = #{address},
+			accuracy = #{accuracy},
+			dimension = #{dimension},
+			area_leval_one = #{areaLevalOne},
+			area_leval_two = #{areaLevalTwo},
+			area_leval_three = #{areaLevalThree},
+			trading_area = #{tradingArea},
+			line_num = #{lineNum},
+			area_leval_one_name = #{areaLevalOneName},
+			area_leval_two_name = #{areaLevalTwoName},
+			area_leval_three_name = #{areaLevalThreeName},
+			trading_area_name = #{tradingAreaName},
+			line_num_name = #{lineNumName},
+			phone = #{phone},
+			discount = #{discount},
+			open_date = #{openDate},
+			hand_date = #{handDate},
+			sale_address = #{saleAddress},
+			prep = #{prep},
+			status = #{status},
+			ach_type = #{achType},
+			ach_type_name = #{achTypeName},
+			green_rate = #{greenRate},
+			house_count = #{houseCount},
+			floor_msg = #{floorMsg},
+			ban_msg = #{banMsg},
+			schedule = #{schedule},
+			property = #{property},
+			park_number = #{parkNumber},
+			parking_space = #{parkingSpace},
+			is_ture = #{isTure},
+			auth_status = #{authStatus},
+			content = #{content},
+			commit_time = #{commitTime},
+			commit_person = #{commitPerson},
+			auth_person = #{authPerson},
+			maintain_person = #{maintainPerson},
+			evelopers_person = #{evelopersPerson},
+			create_preson = #{createPreson}
+			
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHouseDirectoryAuthPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="edit != null">edit = #{edit},</if>
+			<if test="code != null">code = #{code},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="houseTypeName != null">house_type_name = #{houseTypeName},</if>
+			<if test="dicTrait != null">dic_trait = #{dicTrait},</if>
+			<if test="dicTraitName != null">dic_trait_name = #{dicTraitName},</if>
+			<if test="wyType != null">wy_type = #{wyType},</if>
+			<if test="wyTypeName != null">wy_type_name = #{wyTypeName},</if>
+			<if test="aroundMinPrice != null">around_min_price = #{aroundMinPrice},</if>
+			<if test="aroundMaxPrice != null">around_max_price = #{aroundMaxPrice},</if>
+			<if test="developers != null">developers = #{developers},</if>
+			<if test="address != null">address = #{address},</if>
+			<if test="accuracy != null">accuracy = #{accuracy},</if>
+			<if test="dimension != null">dimension = #{dimension},</if>
+			<if test="areaLevalOne != null">area_leval_one = #{areaLevalOne},</if>
+			<if test="areaLevalTwo != null">area_leval_two = #{areaLevalTwo},</if>
+			<if test="areaLevalThree != null">area_leval_three = #{areaLevalThree},</if>
+			<if test="tradingArea != null">trading_area = #{tradingArea},</if>
+			<if test="lineNum != null">line_num = #{lineNum},</if>
+			<if test="areaLevalOneName != null">area_leval_one_name = #{areaLevalOneName},</if>
+			<if test="areaLevalTwoName != null">area_leval_two_name = #{areaLevalTwoName},</if>
+			<if test="areaLevalThreeName != null">area_leval_three_name = #{areaLevalThreeName},</if>
+			<if test="tradingAreaName != null">trading_area_name = #{tradingAreaName},</if>
+			<if test="lineNumName != null">line_num_name = #{lineNumName},</if>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="discount != null">discount = #{discount},</if>
+			<if test="openDate != null">open_date = #{openDate},</if>
+			<if test="handDate != null">hand_date = #{handDate},</if>
+			<if test="saleAddress != null">sale_address = #{saleAddress},</if>
+			<if test="prep != null">prep = #{prep},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="achType != null">ach_type = #{achType},</if>
+			<if test="achTypeName != null">ach_type_name = #{achTypeName},</if>
+			<if test="greenRate != null">green_rate = #{greenRate},</if>
+			<if test="houseCount != null">house_count = #{houseCount},</if>
+			<if test="floorMsg != null">floor_msg = #{floorMsg},</if>
+			<if test="banMsg != null">ban_msg = #{banMsg},</if>
+			<if test="schedule != null">schedule = #{schedule},</if>
+			<if test="property != null">property = #{property},</if>
+			<if test="parkNumber != null">park_number = #{parkNumber},</if>
+			<if test="parkingSpace != null">parking_space = #{parkingSpace},</if>
+			<if test="isTure != null">is_ture = #{isTure},</if>
+			<if test="authStatus != null">auth_status = #{authStatus},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="commitTime != null">commit_time = #{commitTime},</if>
+			<if test="commitPerson != null">commit_person = #{commitPerson},</if>
+			<if test="authTime != null">auth_time = #{authTime},</if>
+			<if test="authPerson != null">auth_person = #{authPerson},</if>
+			<if test="maintainPerson != null">maintain_person = #{maintainPerson},</if>
+			<if test="evelopersPerson != null">evelopers_person = #{evelopersPerson},</if>
+			<if test="createPreson != null">create_preson = #{createPreson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="oldId != null">old_id = #{oldId},</if>
+			<if test="sprayName != null">spray_name = #{sprayName},</if>
+			<if test="cardName != null">card_name = #{cardName},</if>
+			<if test="dicAlias != null">dic_alias = #{dicAlias},</if>
+			<if test="achYear != null">ach_year = #{achYear},</if>
+			<if test="landYear != null">land_year = #{landYear},</if>
+			<if test="occupyArea != null">occupy_area = #{occupyArea},</if>
+			<if test="builtUp != null">built_up = #{builtUp},</if>
+			<if test="address1 != null">address1 = #{address1},</if>
+			<if test="address2 != null">address2 = #{address2},</if>
+			<if test="address3 != null">address3 = #{address3},</if>
+			<if test="address4 != null">address4 = #{address4},</if>
+			<if test="zipCode != null">zip_code = #{zipCode},</if>
+			<if test="certificate != null">certificate = #{certificate},</if>
+			<if test="certificateName != null">certificate_name = #{certificateName},</if>
+			<if test="describe != null">describe = #{describe},</if>
+			<if test="spellName != null">spell_name = #{spellName},</if>
+			<if test="oldName != null">old_name = #{oldName},</if>
+            <if test="isBind != null">is_bind = #{isBind},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateNewHouseExamine" parameterType="java.util.Map">
+	     UPDATE <include refid="tableName"/>
+	     SET
+	     auth_status = #{authStatus},
+	     commit_time = #{commitTime},
+	     commit_person = #{commitPerson}
+	      WHERE 
+	      a.id=#{id}  
+	</update>
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT
+		a.id,
+		a.create_time as createTime,
+		a.commit_time as commitTime,
+		a.open_date as openDate,
+		a.`code`,
+		a.`name`,
+		a.address,
+		b.wyTypeName,
+		b.referencePrice,
+		b.propertyRightName,
+		a.`status`,
+		a.auth_status as authStatus,
+		a.is_ture as isTure,
+        a.is_bind as isBind,
+		c.openHandTime as openTime,
+		u.realname as realname,
+		a.content
+	FROM
+		dsj_new_house_directory_auth a
+	LEFT JOIN (SELECT
+				house_id,
+				GROUP_CONCAT(
+						wy_type_name
+				) AS wyTypeName,
+				GROUP_CONCAT(
+					CONCAT(
+						wy_type_name,
+						":",
+						reference_price_min,
+						"~",
+						reference_price_max
+					) SEPARATOR <![CDATA['<br/>']]>
+				) AS referencePrice,
+			GROUP_CONCAT(
+							CONCAT(
+								wy_type_name,
+								":",
+								property_right_name
+							) SEPARATOR <![CDATA['<br/>']]>
+						) AS propertyRightName,
+			GROUP_CONCAT(property_right) as propertyRight
+			FROM
+				dsj_new_house_wy_msg_auth 
+				<where>
+					<if test="referencePriceMin != null and referencePriceMin != ''">AND reference_price_min  <![CDATA[ >=  ]]> ${referencePriceMin} </if>
+				    <if test="referencePriceMax != null and referencePriceMax != ''">AND reference_price_max <![CDATA[ <=  ]]> ${referencePriceMax} </if>
+		   		 </where>
+			GROUP BY
+				house_id) b ON b.house_id = a.id
+			LEFT JOIN(
+					SELECT
+						house_id,
+						open_hand_time,
+						GROUP_CONCAT(
+							CONCAT(
+								wy_type_name,
+								":",
+								`describes`,
+								" ",
+								open_hand_time
+							) SEPARATOR <![CDATA['<br/>']]>
+						) AS openHandTime
+					FROM
+						dsj_new_house_open_hand_time_auth d
+						where
+							type = 1
+						 
+						 GROUP BY house_id
+			)c on c.house_id = a.id
+			LEFT JOIN dsj_user u on a.commit_person = u.id
+		<where>
+			<include refid="condition_sql_new" />
+             AND a.is_ture != 4 
+			<if test="startOpenTime != null and startOpenTime != ''"><![CDATA[  AND c.open_hand_time >=STR_TO_DATE(#{startOpenTime},'%Y-%m-%d')]]></if>
+		    <if test="endOpenTime != null and endOpenTime != ''"><![CDATA[  AND c.open_hand_time <=STR_TO_DATE(#{endOpenTime},'%Y-%m-%d')]]></if>
+		    <if test="propertyRight != null and propertyRight != ''"> AND concat(',',b.propertyRight,',') like concat(',',#{propertyRight},',')</if>
+		    <if test="(referencePriceMin != null and referencePriceMin != '') or (referencePriceMax != null and referencePriceMax != '')">AND  !isnull(b.referencePrice)</if>
+		</where>
+		ORDER BY a.create_time DESC
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+	SELECT
+		count(1)
+	From
+	dsj_new_house_directory_auth a
+	LEFT JOIN (SELECT
+				house_id,
+				GROUP_CONCAT(
+						wy_type_name
+				) AS wyTypeName,
+				GROUP_CONCAT(
+					CONCAT(
+						wy_type_name,
+						":",
+						reference_price_min,
+						"~",
+						reference_price_max
+					) SEPARATOR <![CDATA['<br/>']]>
+				) AS referencePrice,
+			GROUP_CONCAT(
+							CONCAT(
+								wy_type_name,
+								":",
+								property_right_name
+							) SEPARATOR <![CDATA['<br/>']]>
+						) AS propertyRightName,
+			GROUP_CONCAT(property_right) as propertyRight
+			FROM
+				dsj_new_house_wy_msg_auth 
+				<where>
+					<if test="referencePriceMin != null and referencePriceMin != ''">AND reference_price_min  <![CDATA[ >=  ]]> ${referencePriceMin} </if>
+				    <if test="referencePriceMax != null and referencePriceMax != ''">AND reference_price_max <![CDATA[ <=  ]]> ${referencePriceMax} </if>
+		   		 </where>
+			GROUP BY
+				house_id) b ON b.house_id = a.id
+			LEFT JOIN(
+					SELECT
+						house_id,
+						open_hand_time,
+						GROUP_CONCAT(
+							CONCAT(
+								wy_type_name,
+								":",
+								`describes`,
+								" ",
+								open_hand_time
+							) SEPARATOR <![CDATA['<br/>']]>
+						) AS openHandTime
+					FROM
+						dsj_new_house_open_hand_time_auth d
+						where
+							type = 1
+						 
+						 GROUP BY house_id
+			)c on c.house_id = a.id
+			LEFT JOIN dsj_user u on a.commit_person = u.id
+		<where>
+			<include refid="condition_sql_new" />
+             AND a.is_ture != 4 
+			<if test="startOpenTime != null and startOpenTime != ''"><![CDATA[  AND c.open_hand_time >=STR_TO_DATE(#{startOpenTime},'%Y-%m-%d')]]></if>
+		    <if test="endOpenTime != null and endOpenTime != ''"><![CDATA[  AND c.open_hand_time <=STR_TO_DATE(#{endOpenTime},'%Y-%m-%d')]]></if>
+		    <if test="propertyRight != null and propertyRight != ''"> AND concat(',',b.propertyRight,',') like concat(',',#{propertyRight},',')</if>
+		    <if test="(referencePriceMin != null and referencePriceMin != '') or (referencePriceMax != null and referencePriceMax != '')">AND  !isnull(b.referencePrice)</if>
+		</where>
+	</select>
+	
+	<select id="getVoById" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo" parameterType="java.util.Map" >
+		SELECT 
+			<include refid="tableColumns"/>,
+			b.housetypeNames
+		FROM <include refid="tableName"/> left join (SELECT  dic_id,GROUP_CONCAT(house_name) as housetypeNames from dsj_new_house_type_auth  where delete_flag = 2 GROUP BY dic_id) b on a.id = b.dic_id
+		WHERE a.id = #{0}
+	</select>
+	
+	
+	<select id="getVoByMap" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo" parameterType="java.util.Map" >
+		SELECT 
+			<include refid="tableColumns"/>,
+			b.housetypeNames
+		FROM <include refid="tableName"/>  left join (SELECT  dic_id,GROUP_CONCAT(house_name) as housetypeNames from dsj_new_house_type_auth  where delete_flag = 2  GROUP BY dic_id) b on a.id = b.dic_id
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="selectNewHouseDirectory" parameterType="java.util.Map" resultMap="beanMap">
+	   SELECT
+	      <include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		WHERE a.id = #{id} 
+	</select>
+	
+	<update id="updateDeleteFlagNewHouses" parameterType="java.util.Map">
+		update <include refid="tableNameUpdate"/>
+		set is_ture = #{isTrue}, update_preson= #{updatePreson},update_time = now()
+		WHERE id  in  
+		 (<foreach collection="list" item="item" index="index" separator="," >#{item}</foreach>)
+	</update>
+	<update id="updateIsTrueNewHouses" parameterType="java.util.Map">
+		update <include refid="tableNameUpdate"/>
+		set is_ture = #{isTrue}, update_preson= #{updatePreson},update_time = now()
+		WHERE id  in  
+		 (<foreach collection="list" item="item" index="index" separator="," >#{item}</foreach>)
+	</update>
+	
+	<!-- 已上架楼盘 -->
+	<select id="listNewHousePageList" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		a.id,a.name,a.address
+    	FROM dsj_new_house_directory_auth a 
+		<where>
+		<include refid="condition_sql"/>
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewHousePageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM dsj_new_house_directory_auth a 
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<!-- 楼盘维护人管理 -->
+	<select id="listNewHouseList" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT 
+    		a.code as id,a.name,d.name as maintainName,a.maintain_person as maintainPerson,c.company_name AS property,a.is_ture as isTure
+    	FROM dsj_new_house_directory_auth a 
+    	LEFT JOIN dsj_agent d ON a.maintain_person=d.user_id
+        LEFT JOIN dsj_company c ON d.company = c.id 
+		<where>
+		<include refid="condition_sql_two"/>
+		<if test="property != null and property!= ''"> AND c.company_name like concat('%',#{property},'%') </if>
+		<if test="maintainName != null and maintainName!= ''"> AND d.name like concat('%',#{maintainName},'%')</if>
+		AND a.edit=1 
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewHouseCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM dsj_new_house_directory_auth a 
+		LEFT JOIN dsj_agent d ON a.maintain_person=d.user_id
+        LEFT JOIN dsj_company c ON d.company = c.id 
+		<where>
+			<include refid="condition_sql_two"/>
+			<if test="property != null and property!= ''"> AND c.company_name like concat('%',#{property},'%') </if>
+		<if test="maintainName != null and maintainName!= ''"> AND d.name like concat('%',#{maintainName},'%')</if>
+		</where>
+	</select>
+	
+	<!-- 开发商管理 -->
+	<select id="listEveloperList" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT 
+    		a.id,a.name,a.is_ture as isTure,d.name as eveloperName
+    	FROM dsj_new_house_directory_auth a 
+    	LEFT JOIN dsj_evelopers d ON a.evelopers_person=d.user_id
+		<where>
+		    <if test="id != null and id!= ''">AND a.id like concat('%',#{id},'%')</if>
+		    <if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+			<if test="is_ture != null and is_ture!= ''"> AND (a.is_ture=#{is_ture} OR a.is_ture=#{not_ture})</if>
+		    <if test="eveloperName != null and eveloperName!= ''"> AND d.name like concat('%',#{eveloperName},'%')</if>
+		AND a.edit=1
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listEveloperCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM dsj_new_house_directory_auth a 
+		LEFT JOIN dsj_evelopers d ON a.evelopers_person=d.id
+		<where>
+			<if test="id != null and id!= ''">AND a.id like concat('%',#{id},'%')</if>
+		    <if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+			<if test="is_ture != null and is_ture!= ''"> AND (a.is_ture=#{is_ture} OR a.is_ture=#{not_ture})</if>
+		    <if test="eveloperName != null and eveloperName!= ''"> AND d.name like concat('%',#{eveloperName},'%')</if>
+		</where>
+	</select>
+	
+	 <update id="updateNewHouse" parameterType="java.util.Map">
+        UPDATE <include refid="tableNameUpdate"/> SET 
+          maintain_person = #{maintainPerson},
+          is_bind = #{isBind}
+        WHERE id =#{id}
+    </update>
+    
+     <update id="updateEveloper" parameterType="java.util.Map">
+        UPDATE <include refid="tableNameUpdate"/> SET 
+          evelopers_person = #{evelopersPerson}
+        WHERE id =#{id}
+    </update>
+    
+    <!-- 经纪人后台展示 -->
+	<select id="AgentNewHousePageList" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+	SELECT
+	a.id,
+	a. NAME,
+	a. STATUS,
+	a.around_min_price AS aroundMinPrice,
+	i.agent_id AS maintainPerson,
+	a.image AS pictureUrl,
+	i.is_duty AS isDuty,
+	d.id AS spellName,
+	l.id AS oldName,
+	ht.housetypeNames
+FROM
+	dsj_new_house_directory_auth a
+LEFT JOIN dsj_im_directory i ON i.house_id = a.id
+LEFT JOIN dsj_new_house_picture_auth p ON p.object_id = a.id
+LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+LEFT JOIN dsj_loupan_show l ON l.house_id = a.id
+LEFT JOIN (
+	SELECT
+		GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+		dicId
+	FROM
+		(
+			SELECT
+				CONCAT(a1.room, "(", count, ")") AS result,
+				a1.dicId,
+				a1.roomNum
+			FROM
+				(
+					SELECT
+						CONCAT(
+							CASE room
+							WHEN 1 THEN
+								'一'
+							WHEN 2 THEN
+								'二'
+							WHEN 3 THEN
+								'三'
+							WHEN 4 THEN
+								'四'
+							WHEN 5 THEN
+								'五'
+							WHEN 6 THEN
+								'六'
+							WHEN 7 THEN
+								'七'
+							WHEN 8 THEN
+								'八'
+							WHEN 9 THEN
+								'九'
+							END,
+							'居室'
+						) AS room,
+						COUNT(1) AS count,
+						dic_id AS dicId,
+						room AS roomNum
+					FROM
+						dsj_new_house_type_auth
+					GROUP BY
+						dic_id,
+						room
+				) a1
+		) b
+	GROUP BY
+		dicId
+) ht ON ht.dicId = a.id
+   <where>
+		 <if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		 <if test="agentId != null and agentId!= ''"> AND i.agent_id = #{agentId}</if>
+		 <if test="status != null and status != ''"> AND a.status = #{status}</if>
+		 AND i.is_duty = 1
+		 <if test="name != null and name!= ''"> 
+		 AND (a.name like CONCAT("%",#{name},"%") or a.id = #{name})
+		 </if>
+	</where>
+GROUP BY
+	a.id
+ORDER BY
+	a.id DESC
+LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="AgentNewHousePageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+	     COUNT(1) 
+               FROM
+	     dsj_new_house_directory_auth a
+	     LEFT JOIN dsj_im_directory i ON i.house_id=a.id
+    <where>
+		 <if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		 <if test="agentId != null and agentId!= ''"> AND i.agent_id = #{agentId}</if>
+		 <if test="status != null and status != ''"> AND a.status = #{status}</if>
+		 <if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+	</where>
+	</select>
+	
+	<select id="listNewDataTypePage" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+	SELECT
+	a.id,
+	a. NAME,
+	a. STATUS,
+	a.around_min_price AS aroundMinPrice,
+	a.image AS pictureUrl,
+	d.id AS spellName,
+	l.id AS oldName,
+	ht.housetypeNames
+FROM
+	dsj_new_house_directory_auth a
+LEFT JOIN dsj_new_house_picture_auth p ON p.object_id = a.id
+LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+LEFT JOIN dsj_loupan_show l ON l.house_id = a.id
+LEFT JOIN (
+	SELECT
+		GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+		dicId
+	FROM
+		(
+			SELECT
+				CONCAT(a1.room, "(", count, ")") AS result,
+				a1.dicId,
+				a1.roomNum
+			FROM
+				(
+					SELECT
+						CONCAT(
+							CASE room
+							WHEN 1 THEN
+								'一'
+							WHEN 2 THEN
+								'二'
+							WHEN 3 THEN
+								'三'
+							WHEN 4 THEN
+								'四'
+							WHEN 5 THEN
+								'五'
+							WHEN 6 THEN
+								'六'
+							WHEN 7 THEN
+								'七'
+							WHEN 8 THEN
+								'八'
+							WHEN 9 THEN
+								'九'
+							END,
+							'居室'
+						) AS room,
+						COUNT(1) AS count,
+						dic_id AS dicId,
+						room AS roomNum
+					FROM
+						dsj_new_house_type_auth
+					GROUP BY
+						dic_id,
+						room
+				) a1
+		) b
+	GROUP BY
+		dicId
+) ht ON ht.dicId = a.id
+   <where>
+		 <if test="dataType != null and dataType!= ''"> AND a.data_type = #{dataType}</if>
+		 <if test="name != null and name!= ''"> 
+		 AND (a.name like CONCAT("%",#{name},"%") or a.id = #{name})
+		 </if>
+	</where>
+GROUP BY
+	a.id
+ORDER BY
+	a.id DESC
+LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageDataTypeCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+	     COUNT(1) 
+               FROM
+	     dsj_new_house_directory_auth a
+    <where>
+		 <if test="dataType != null and dataType != ''"> AND a.data_type = #{dataType}</if>
+		 <if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+	</where>
+	</select>
+	
+	<!-- 查询上架楼盘设为首页的图片 -->
+	<select id="getPictureListNewHouse" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+	       SELECT 
+	         a.id,
+           p.picture_url AS pictureUrl
+          FROM
+	      dsj_new_house_directory_auth a
+	      LEFT JOIN dsj_im_directory i ON i.house_id=a.id
+           LEFT JOIN dsj_new_house_picture_auth p ON p.object_id=i.house_id
+           WHERE 
+           p.picture_frist=#{pictureFrist}
+           GROUP BY a.id
+	</select>
+	
+	<select id="getPicture" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+	     SELECT
+	       a.id,
+	       p.picture_url AS picture
+           FROM
+	       dsj_new_house_directory_auth a
+            LEFT JOIN dsj_new_house_picture_auth p ON p.object_id = a.id
+           LEFT JOIN dsj_pc_label_new_house d ON d.newHouse_id=a.id
+           WHERE
+           p.picture_frist=#{pictureFrist} 
+           AND d.label_id=#{lableId}
+	</select>
+	
+	<select id="getPictureLists" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+	      SELECT 
+	       a.id,
+           GROUP_CONCAT(p.picture_url SEPARATOR ',') AS pictureUrl
+          FROM
+	      dsj_new_house_directory_auth a
+           LEFT JOIN dsj_new_house_picture_auth p ON p.object_id=a.id
+           LEFT JOIN dsj_pc_label_new_house d ON d.newHouse_id=a.id
+           WHERE 
+            d.label_id=#{lableId}
+            group by a.id
+	</select>
+	
+	 <!-- 责任楼盘 -->
+	<select id="AgentNewHouseResponPageList" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT
+	a.id,
+	a. NAME,
+	a. STATUS,
+	a.code,
+	a.around_min_price AS aroundMinPrice,
+	i.agent_id AS maintainPerson,
+	a.image AS pictureUrl,
+	i.is_duty AS isDuty,
+	d.id AS spellName,
+	l.id AS oldName,
+	ht.housetypeNames,
+	a.auth_status AS authStatus,
+	a.is_ture AS isTure
+FROM
+	dsj_new_house_directory_auth a
+LEFT JOIN dsj_im_directory i ON i.house_id = a.id
+LEFT JOIN dsj_new_house_picture_auth p ON p.object_id = a.id
+LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+LEFT JOIN dsj_loupan_show l ON l.house_id = a.id
+LEFT JOIN (
+	SELECT
+		GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+		dicId
+	FROM
+		(
+			SELECT
+				CONCAT(a1.room, "(", count, ")") AS result,
+				a1.dicId,
+				a1.roomNum
+			FROM
+				(
+					SELECT
+						CONCAT(
+							CASE room
+							WHEN 1 THEN
+								'一'
+							WHEN 2 THEN
+								'二'
+							WHEN 3 THEN
+								'三'
+							WHEN 4 THEN
+								'四'
+							WHEN 5 THEN
+								'五'
+							WHEN 6 THEN
+								'六'
+							WHEN 7 THEN
+								'七'
+							WHEN 8 THEN
+								'八'
+							WHEN 9 THEN
+								'九'
+							END,
+							'居室'
+						) AS room,
+						COUNT(1) AS count,
+						dic_id AS dicId,
+						room AS roomNum
+					FROM
+						dsj_new_house_type_auth
+					GROUP BY
+						dic_id,
+						room
+				) a1
+		) b
+	GROUP BY
+		dicId
+) ht ON ht.dicId = a.id
+    <where>
+		 <if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		 <if test="agentId != null and agentId!= ''"> AND i.agent_id = #{agentId}</if>
+		 <if test="status != null and status != ''"> AND a.status = #{status}</if>
+		 AND i.is_duty = 1
+		 <if test="name != null and name!= ''"> 
+		 AND (a.name like CONCAT("%",#{name},"%") or a.id = #{name})
+		 </if>
+		 <if test="authStatus != null and authStatus!= ''"> AND a.auth_status = #{authStatus}</if>
+	</where>
+      GROUP BY a.id
+    ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="AgentNewHouseResponPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+	     COUNT(1) 
+               FROM
+	     dsj_new_house_directory_auth a
+	     LEFT JOIN dsj_im_directory i ON i.house_id=a.id
+    <where>
+		 <if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		 <if test="agentId != null and agentId!= ''"> AND i.agent_id = #{agentId}</if>
+		 <if test="status != null and status != ''"> AND a.status = #{status}</if>
+		 <if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+		 <if test="authStatus != null and authStatus!= ''"> AND a.auth_status = #{authStatus}</if>
+	</where>
+	</select>
+	
+	
+	<select id="getNamesByIds"  parameterType="String" resultType="String" >
+		SELECT 
+				GROUP_CONCAT(name)	FROM <include refid="tableName"/>
+							WHERE a.id in (${_parameter})
+	</select>
+	
+		
+	<select id="getByIds"  parameterType="String" resultMap="beanMap">
+			SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	WHERE a.id in (${_parameter})
+    	ORDER BY a.id DESC
+							
+	</select>
+	
+	
+	<select id="getAuthHousesByAgentId" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		WHERE a.maintain_person = #{agentId} 
+	</select>
+	
+	<select id="getNewHouseFrontVo" parameterType="long" resultType="com.dsj.modules.newhouse.vo.NewHouseFrontVo"> 
+		SELECT
+			a.id,
+			a.name,
+			a.accuracy,
+			a.dimension,
+			a.developers,
+			a.area_leval_three_name as areaLevalThreeName,
+			a.trading_area_name as tradingAreaName,
+			concat(a.line_num_name," ",a.area_leval_three_name,"-",a.trading_area_name)   as areaDetail,
+			a.dic_trait_name AS dicTraitName,
+			a.around_min_price AS aroundPriceMin,
+			a.around_max_price AS aroundPriceMax,
+			a.auth_time as authTime,
+			a.status,
+			a.address,
+			a.phone,
+			a.ach_type_name as achTypeName,
+			a.wy_type_name as wyTypeName,
+			a.parking_space as parkingSpace,
+			a.park_number as parkNumber,
+			a.house_count as houseCount,
+			a.green_rate as greenRate,
+			a.property as property,
+			a.schedule as schedule,
+			a.floor_msg as floorMsg,
+			a.prep,
+			a.discount,
+			a.open_date as openDate,
+			a.sale_address as saleAddress,
+			b.mobile as pcMobile,
+			c.mobile as wapMobile,
+			d.mobile as appMobile
+		FROM
+			dsj_new_house_directory_auth a
+			LEFT JOIN dsj_mobile b ON a.id = b.house_id AND b.channel = 1 AND b.type = 1
+			LEFT JOIN dsj_mobile c ON a.id = c.house_id AND c.channel = 2 AND c.type = 1
+			LEFT JOIN dsj_mobile d ON a.id = d.house_id AND d.channel = 3 AND d.type = 1
+		WHERE
+			a.id = #{0}
+	</select>
+	
+	<select id="listCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		where  a.is_ture = #{isTrue}
+	</select>
+	
+	
+	<select id="selectEightNewUpNewHouse" resultType="com.dsj.modules.newhouse.vo.NewHouseRecommendVo">
+		SELECT 
+			id as recommendNewHouseId
+		FROM <include refid="tableName"/>
+		ORDER BY auth_time desc
+	</select>
+	
+	<select id="getLikeNewHouse" parameterType="long" resultType="com.dsj.modules.newhouse.vo.NewHouseLikeVo">
+		SELECT
+		   a.id,
+		   a. NAME,
+		   min(a.around_min_price) AS aroundPrice,
+		   min(b.reference_price_min) AS referencePrice,
+		   min(b.total_price_min) AS totalPrice,
+		   a.image AS imgUrl
+		  FROM
+		   dsj_new_house_directory_auth a
+		  LEFT JOIN dsj_new_house_wy_msg_auth b ON a.id = b.house_id
+		 LEFT JOIN dsj_new_house_recommend c on a.id = c.recommend_id
+		  WHERE 
+		     c.house_id = #{0}
+		  GROUP BY
+		   a.id
+		  LIMIT 6
+	</select>
+		<insert id="saveRecommendList" parameterType="java.util.List">  
+	    INSERT INTO dsj_new_house_recommend(
+			house_id,
+			recommend_id,
+			create_time
+		) VALUES 
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+			#{item.newHouseId},
+			#{item.recommendNewHouseId},
+			#{item.createTime}
+	      )  
+	    </foreach>  
+	</insert>
+	
+	<select id="deleteNewHouseById" parameterType="long">
+		delete from dsj_new_house_recommend where house_id = #{0}
+	</select>
+	
+	<select id="selectNewHouseIndexFiled" parameterType="java.util.Map" resultType="com.dsj.modules.solr.vo.newHouse.NewHouseIndexFiled">
+		SELECT
+			a.id,
+			a.name,
+			so.sort_val as orderNum,
+			a.wy_type as wyTypeStr,
+			a.area_leval_one AS areaCode1,
+			a.area_leval_two AS areaCode2,
+			a.area_leval_three AS areaCode3,
+			a.trading_area_name AS "tradingAreaName",
+			a.trading_area AS "tradingAreaId",
+			a.area_leval_one_name AS areaName1,
+			a.area_leval_two_name AS areaName2,
+			a.area_leval_three_name AS areaName3,
+			a.dic_trait AS dicTraitName,
+			a.dic_trait_name AS featuresName,
+			a.auth_time AS authTime,
+			a.`status` AS `status`,
+			a.address,
+			a.around_min_price AS aroundPriceMin,
+			a.around_max_price AS aroundPriceMax,
+			a.dimension,
+            a.accuracy,
+            da.dimension AS areaDimension,
+            da.accuracy AS areaAccuracy,
+			b.referencePriceMin,
+			b.referencePriceMax,
+			b.totalPriceMin,
+			b.totalPriceMax,
+			c.mobile as pcMobile,
+			h.mobile as wapMobile,
+			i.mobile as appMobile,
+			d.id AS newsId,
+			d.title AS title,
+			e.subwayLine,
+			f.room as rooms,
+			g.picture_url as imageUrl
+		FROM
+			dsj_new_house_directory_auth a
+		LEFT JOIN dsj_new_house_directory_sort so on so.loupan_id = a.id
+	    LEFT JOIN dsj_trade_area t ON t.id=a.trading_area
+        LEFT JOIN dsj_area da ON da.area_code=t.parent_id
+		LEFT JOIN (
+			SELECT
+				house_id AS houseId,
+				min(reference_price_min) AS referencePriceMin,
+				MAX(reference_price_max) AS referencePriceMax,
+				min(total_price_min) AS totalPriceMin,
+				MAX(total_price_max) AS totalPriceMax
+			FROM
+				dsj_new_house_wy_msg_auth
+			WHERE
+				house_id IN (${newHouseIds})
+			GROUP BY
+				house_id
+		) b ON a.id = b.houseId
+		LEFT JOIN (
+			SELECT
+				house_id AS houseId,
+				mobile
+			FROM
+				dsj_mobile
+			WHERE
+				house_id IN (${newHouseIds}) and type = 1 and channel =1
+			GROUP BY
+				house_id
+		) c ON c.houseId = a.id
+		LEFT JOIN (
+			SELECT
+				house_id AS houseId,
+				mobile
+			FROM
+				dsj_mobile
+			WHERE
+				house_id IN (${newHouseIds}) and type = 1 and channel =2
+			GROUP BY
+				house_id
+		) h ON h.houseId = a.id
+		LEFT JOIN (
+			SELECT
+				house_id AS houseId,
+				mobile
+			FROM
+				dsj_mobile
+			WHERE
+				house_id IN (${newHouseIds}) and type = 1 and channel =3
+			GROUP BY
+				house_id
+		) i ON i.houseId = a.id
+		LEFT JOIN (
+			SELECT
+				n.id,
+				n.title,
+				n.house_id AS houseId
+			FROM
+				(
+					SELECT
+						*
+					FROM
+						dsj_new_house_news
+					WHERE
+						house_id IN (${newHouseIds})
+					AND audit_status = 2 and up_down_line = 1
+					ORDER BY
+						stick DESC,audit_time DESC
+				) n
+			GROUP BY
+				n.house_id
+		) d ON d.houseId = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(line) AS subwayLine,
+				house_id
+			FROM
+				dsj_new_house_subway_auth
+			WHERE
+				house_id IN (${newHouseIds})
+			GROUP BY
+				house_id
+		) e ON e.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(DISTINCT room) AS room,
+				dic_id AS houseId
+			FROM
+				dsj_new_house_type_auth
+			WHERE
+				dic_id IN (${newHouseIds}) and delete_flag = 2
+			GROUP BY
+				dic_id
+		) f ON f.houseId = a.id
+		LEFT JOIN (
+			SELECT
+				p.*
+			FROM
+				(
+					SELECT
+						picture_url,
+						object_id AS houseId
+					FROM
+						dsj_new_house_picture_auth
+					WHERE
+						object_id IN (${newHouseIds}) and delete_flag = 2
+					ORDER BY
+						picture_status,
+						picture_frist
+				) p
+			GROUP BY
+				p.houseId
+		) g ON g.houseId = a.id
+		WHERE
+			a.id IN (${newHouseIds})
+	</select>
+	
+	<select id="findAgentNewHouse" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT
+		a.id,
+		a.NAME,
+		a.STATUS,
+		a.phone,
+		a.area_leval_three_name AS areaName3,
+		a.trading_area_name AS tradingAreaName,
+		a.around_min_price AS aroundMinPrice,
+		a.dic_trait_name AS dicTraitName,
+		a.image AS pictureUrl,
+		ht.housetypeNames,
+  		dn.title AS 'newsTitle',
+  		dm.mobile,
+   		a.address
+		FROM
+			dsj_new_house_directory_auth a			
+			LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		<where>
+	    <if test="userId != null and userId!= ''"> AND d.agent_id = #{userId}</if>
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		<if test="dataType != null and dataType!= ''"> AND a.data_type = #{dataType}</if>
+		</where>
+		GROUP BY
+			a.id
+		ORDER BY
+			<if test="price != null and price!= ''">a.around_min_price asc,</if>
+			<if test="time != null and time!= ''">d.create_time DESC,</if>
+			<if test="priceHigh != null and priceHigh!= ''">a.around_min_price DESC,</if>
+			<if test="timeOld != null and timeOld!= ''">d.create_time ASC,</if>
+			a.id DESC
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="findAgentNewHouseCount" parameterType="java.util.Map" resultType="int">
+		select count(new.counts) from (SELECT
+		 COUNT(1) counts
+		FROM
+			dsj_new_house_directory_auth a
+			LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		<where>
+	    <if test="userId != null and userId!= ''"> AND d.agent_id = #{userId}</if>
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		<if test="dataType != null and dataType!= ''"> AND a.data_type = #{dataType}</if>
+		</where>
+		GROUP BY
+			a.id) new
+	</select>
+	<select id="findFollow" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT
+		f.id AS 'objectId',
+		a.id,
+		a.NAME,
+		a.STATUS,
+		a.phone,
+		a.around_min_price AS aroundMinPrice,
+		a.area_leval_three_name AS areaName3,
+		a.trading_area_name AS tradingAreaName,
+		a.dic_trait_name AS dicTraitName,
+		a.image AS pictureUrl,
+		ht.housetypeNames,
+  		dn.title AS 'newsTitle',
+  		dm.mobile,
+   		a.address
+		FROM
+			dsj_new_house_directory_auth a
+			left join dsj_follow f on f.object_id = a.id
+			
+			LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		where f.user_id = #{userId}
+		and f.type = #{type}
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		GROUP BY
+			a.id
+		ORDER BY f.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 	
+	</select>
+	<select id="findFollowCount" parameterType="java.util.Map" resultType="int">
+		select count(new.counts) from (SELECT
+		 COUNT(1) counts
+		FROM
+			dsj_new_house_directory_auth a
+			left join dsj_follow f on f.object_id = a.id
+			
+			LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		where f.user_id = #{userId}
+		and f.type = #{type}
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		GROUP BY
+			a.id) new 	
+	</select>
+	
+	<select id="lookHistory" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT
+		a.id,
+		a.NAME,
+		a.STATUS,
+		a.phone,
+		a.around_min_price AS aroundMinPrice,
+		a.image AS pictureUrl,
+		a.area_leval_three_name AS areaName3,
+		a.trading_area_name AS tradingAreaName,
+		a.dic_trait_name AS dicTraitName,
+		ht.housetypeNames,
+  		dn.title AS 'newsTitle',
+  		dm.mobile,
+   		a.address,
+   		h.create_time AS "lookTime"
+		FROM
+			dsj_new_house_directory_auth a
+			left join dsj_look_history h on h.object_id = a.id
+			
+			
+			
+			LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		where h.user_id = #{userId}
+		and h.type = #{type}
+		and h.create_time &gt; #{time}
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		GROUP BY
+			a.id
+		ORDER BY h.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+
+		
+		
+	</select>
+	<select id="lookHistoryCount" parameterType="java.util.Map" resultType="int">
+		select count(new.counts) from (
+		select count(1) counts
+		FROM
+			dsj_new_house_directory_auth a
+			left join dsj_look_history h on h.object_id = a.id
+			
+			LEFT JOIN dsj_agent_directory d ON d.newHouse_id = a.id
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		where h.user_id = #{userId}
+		and h.type = #{type}
+		and h.create_time &gt; #{time}
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		GROUP BY
+			a.id) new
+	</select>
+	<select id="getUpIds" resultType="string" parameterType="java.util.Map">
+		SELECT GROUP_CONCAT(id) from 
+		(select id from dsj_new_house_directory_auth where is_ture = 2 and edit = 1 LIMIT #{start} , #{count}  )a
+	</select>
+	
+	<select id="getRecommendNewHouse" parameterType="long" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT
+		a.id,
+		a.NAME,
+		a.image AS pictureUrl
+		
+		FROM
+			dsj_new_house_directory_auth a
+		where a.id = #{id}
+	</select>
+	
+	<select id="getNowStatus" parameterType="string" resultType="com.dsj.modules.newhouse.vo.NewHouseAuthMsgVo">
+		SELECT auth_status as status,content as shMsg  from dsj_new_house_directory_auth where edit = 2 and code = #{_parameter}
+	</select>
+	
+	<update id="updateEvelopersPerson" parameterType="java.util.Map">
+	  UPDATE <include refid="tableNameUpdate"/> SET 
+          evelopers_person = #{userId}
+        WHERE id =#{id}
+	</update>
+	
+	<update id="updateFengMianImage" parameterType="long">
+	 UPDATE dsj_new_house_directory_auth
+		SET image = (
+			SELECT
+				p.picture_url
+			FROM
+				(
+					SELECT
+						picture_url,
+						object_id AS houseId
+					FROM
+						dsj_new_house_picture_auth
+					WHERE
+						delete_flag = 2
+					ORDER BY
+						picture_status,
+						picture_frist
+				) p
+			WHERE
+				p.houseId = #{0}
+			GROUP BY
+				p.houseId
+		) where id = #{0}
+	</update>
+	
+	<select id="getIndexNewHouse" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseDirectoryAuthVo">
+		SELECT
+		a.id,
+		a.NAME,
+		a.STATUS,
+		a.phone,
+		a.area_leval_three_name AS areaName3,
+		a.trading_area_name AS tradingAreaName,
+		a.around_min_price AS aroundMinPrice,
+		a.dic_trait_name AS dicTraitName,
+		a.image AS pictureUrl,
+		ht.housetypeNames,
+  		dn.title AS 'newsTitle',
+  		dm.mobile,
+   		a.address
+		FROM
+			dsj_pc_new_house_page page 
+			LEFT JOIN dsj_new_house_directory_auth a on a.id=page.newHouse_id			
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		<where>
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		<if test="dataType != null and dataType!= ''"> AND a.data_type = #{dataType}</if>
+		</where>
+		GROUP BY
+			a.id
+		ORDER BY
+			<if test="price != null and price!= ''">a.around_min_price asc,</if>
+			<if test="time != null and time!= ''">a.auth_time DESC,</if>
+			<if test="priceHigh != null and priceHigh!= ''">a.around_min_price DESC,</if>
+			<if test="timeOld != null and timeOld!= ''">a.auth_time ASC,</if>
+			a.id DESC
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="getIndexNewHouseCount" parameterType="java.util.Map" resultType="int">
+		select count(new.counts) from (SELECT
+		 COUNT(1) counts
+		FROM
+			dsj_pc_new_house_page page 
+			LEFT JOIN dsj_new_house_directory_auth a on a.id=page.newHouse_id	
+			LEFT JOIN dsj_new_house_news dn ON dn.house_id=a.id 
+			LEFT JOIN dsj_mobile dm ON dm.house_id = a.id
+		LEFT JOIN (
+			SELECT
+				GROUP_CONCAT(result ORDER BY roomNum) AS housetypeNames,
+				dicId
+			FROM
+				(
+					SELECT
+						CONCAT(a1.room, "(", count, ")") AS result,
+						a1.dicId,
+						a1.roomNum
+					FROM
+						(
+							SELECT
+								CONCAT(
+									CASE room
+									WHEN 1 THEN
+										'一'
+									WHEN 2 THEN
+										'二'
+									WHEN 3 THEN
+										'三'
+									WHEN 4 THEN
+										'四'
+									WHEN 5 THEN
+										'五'
+									WHEN 6 THEN
+										'六'
+									WHEN 7 THEN
+										'七'
+									WHEN 8 THEN
+										'八'
+									WHEN 9 THEN
+										'九'
+									END,
+									'居室'
+								) AS room,
+								COUNT(1) AS count,
+								dic_id AS dicId,
+								room AS roomNum
+							FROM
+								dsj_new_house_type_auth
+							GROUP BY
+								dic_id,
+								room
+						) a1
+				) b
+			GROUP BY
+				dicId
+		) ht ON ht.dicId = a.id
+		<where>
+		<if test="isTure != null and isTure!= ''"> AND a.is_ture = #{isTure}</if>
+		<if test="dataType != null and dataType!= ''"> AND a.data_type = #{dataType}</if>
+		</where>
+		GROUP BY
+			a.id) new
+	</select>
+	
+</mapper>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.OrderNodeDetailDaoImpl">
+    
+    <sql id="tableName"> dsj_order_node_detail a </sql>
+    <sql id="tableNameUpdate"> dsj_order_node_detail </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.order_id AS "orderId",
+		a.order_detail_id AS "orderDetailId",
+		a.node_id AS "nodeId",
+		a.field_id AS "fieldId",
+		a.field_name AS "fieldName",
+		a.field_val AS "fieldVal"
+	</sql>
+	
+	<resultMap id="beanMap" type="OrderNodeDetailPo">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="order_detail_id" property="orderDetailId" />
+		<result column="node_id" property="nodeId" />
+		<result column="field_id" property="fieldId" />
+		<result column="field_name" property="fieldName" />
+		<result column="field_val" property="fieldVal" />
+	</resultMap>
+	
+	<sql id="orderNodeDetailJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="orderId != null and orderId!= ''"> AND a.order_id = #{orderId}</if>
+		<if test="orderDetailId != null and orderDetailId!= ''"> AND a.order_detail_id = #{orderDetailId}</if>
+		<if test="nodeId != null and nodeId!= ''"> AND a.node_id = #{nodeId}</if>
+		<if test="fieldId != null and fieldId!= ''"> AND a.field_id = #{fieldId}</if>
+		<if test="fieldName != null and fieldName!= ''"> AND a.field_name = #{fieldName}</if>
+		<if test="fieldVal != null and fieldVal!= ''"> AND a.field_val = #{fieldVal}</if>
+	</sql>
+    
+	<select id="getById" resultType="OrderNodeDetailPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="orderNodeDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OrderNodeDetailPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			order_id,
+			order_detail_id,
+			node_id,
+			field_id,
+			field_name,
+			field_val
+		) VALUES (
+			#{id},
+			#{orderId},
+			#{orderDetailId},
+			#{nodeId},
+			#{fieldId},
+			#{fieldName},
+			#{fieldVal}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OrderNodeDetailPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="orderId != null">order_id,</if>
+					<if test="orderDetailId != null">order_detail_id,</if>
+					<if test="nodeId != null">node_id,</if>
+					<if test="fieldId != null">field_id,</if>
+					<if test="fieldName != null">field_name,</if>
+					<if test="fieldVal != null">field_val,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="orderId != null">#{orderId},</if>
+			<if test="orderDetailId != null">#{orderDetailId},</if>
+			<if test="nodeId != null">#{nodeId},</if>
+			<if test="fieldId != null">#{fieldId},</if>
+			<if test="fieldName != null">#{fieldName},</if>
+			<if test="fieldVal != null">#{fieldVal},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="OrderNodeDetailPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			order_id = #{orderId},
+			order_detail_id = #{orderDetailId},
+			node_id = #{nodeId},
+			field_id = #{fieldId},
+			field_name = #{fieldName},
+			field_val = #{fieldVal},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OrderNodeDetailPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="orderId != null">order_id = #{orderId},</if>
+			<if test="orderDetailId != null">order_detail_id = #{orderDetailId},</if>
+			<if test="nodeId != null">node_id = #{nodeId},</if>
+			<if test="fieldId != null">field_id = #{fieldId},</if>
+			<if test="fieldName != null">field_name = #{fieldName},</if>
+			<if test="fieldVal != null">field_val = #{fieldVal},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	
+	<delete id="deleteByOrderDetailIdAndNodeId" parameterType="java.util.Map">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE order_detail_id = #{orderDetailId} and node_id = #{nodeId}
+	</delete>
+	
+	<insert id="saveList" parameterType="java.util.List">  
+	   INSERT INTO <include refid="tableNameUpdate"/>(
+			order_id,
+			order_detail_id,
+			node_id,
+			field_id,
+			field_name,
+			field_val
+		) VALUES 
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+				#{item.orderId},
+				#{item.orderDetailId},
+				#{item.nodeId},
+				#{item.fieldId},
+				#{item.fieldName},
+				#{item.fieldVal}
+			)  
+	    </foreach>  
+	</insert> 
+	
+	
+	<select id="getDateAndAddress" parameterType="java.util.Map" resultType="com.dsj.modules.fw.po.FwNodeFieldPo">
+    	SELECT
+			a.field_name as fieldName,
+			a.field_val as fieldVal,
+			b.type
+		FROM
+			dsj_order_node_detail a
+		LEFT JOIN dsj_node_field b on b.id = a.field_id
+				WHERE
+					a.field_id IN (
+						SELECT
+							id
+						FROM
+							dsj_node_field
+						WHERE
+							node_id = #{nodeId}
+						AND isshow = 1
+					)
+				AND a.order_detail_id = #{orderDetailId}
+  	</select>
+</mapper>

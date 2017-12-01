@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+	<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/dsj_agent2.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-开发商</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    
+    <script src="ue1433/ueditor.config.js"></script>
+    <script src="ue1433/ueditor.all.js"></script>
+    
+  </head>
+  <body>
+    
+    <div class="container">
+      <div class="row">
+        <ol class="breadcrumb dsj_breadcrumb">
+          <li><a href="#">楼盘动态</a></li>
+          <li><a href="#">动态列表</a></li>
+          <li class="active">添加/修改</li>
+        </ol>
+      </div>
+      <div class="row">
+        <form id="dsj_form" class="form-horizontal dsj_form">
+		<script id="master_add" type="text/x-handlebars-template">
+		<h4 class="dsj_title">新建楼盘动态</h4>
+		<input type="hidden" name="id" value="{{houseNewsPo.id}}" class="form-control" >
+		<div class="form-group">
+            <label for="housename" class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘名称</label>
+            <div class="col-sm-2">
+         		<select id="houseSelectId" name="houseId" onchange="changeHouseId(this);" class="form-control" data-validate="required" >
+					<option value="" selected="selected">请选择</option>
+					{{#each authList}}
+						{{#compare ../houseNewsPo.houseId '==' this.id }}
+     						<option value="{{this.id}}" selected="selected">{{ this.name }}</option>
+     					{{else}}
+     						<option value="{{this.id}}" >{{ this.name }}</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+            </div>
+		</div>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘ID</label>
+            <div class="col-sm-2">
+				<input type="text" id="houseId" value="{{houseNewsPo.houseId}}" readonly="readonly" class="form-control"  placeholder="楼盘ID">
+            </div>
+		</div>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘标题</label>
+            <div class="col-sm-4">
+				<input type="text" name="title" value="{{houseNewsPo.title}}" class="form-control" data-validate="required,max(20)"
+						onchange="this.value=this.value.substring(0,20)" 
+					onkeydown="this.value=this.value.substring(0,20)" 
+					onkeyup="this.value=this.value.substring(0,20)" placeholder="请输入楼盘标题">
+            </div>
+		</div>
+<!--
+		<div class="form-group">
+			<label for="text" class="col-sm-1 control-label"><span class="dsj_warn">*</span>动态内容</label>
+			<div class="col-sm-10">
+				<textarea name="content" id="content" class="form-control" rows="3" data-validate="max(2000)" style="min-height: 200px;" placeholder="请输入动态内容"
+					onchange="this.value=this.value.substring(0,2000)" 
+					onkeydown="this.value=this.value.substring(0,2000)" 
+					onkeyup="this.value=this.value.substring(0,2000)" >{{#convertHtml houseNewsPo.content}}{{/convertHtml}}</textarea>
+			</div>
+			<div id="contentDis" style="display:none">{{#convertHtml houseNewsPo.content}}{{/convertHtml}}</div>
+		</div>
+		<div class="form-group">
+			<label for="id_number" class="col-sm-1 control-label">显示图片</label>
+			<div class="col-sm-1 dsj_source_kuang" id="filePicker1">
+				<div class="dsj_source_img">
+					<img src="{{houseNewsPo.pictureUrl}}" alt="" id="showImg1" />
+					<div class="add-more">
+						<span class="add_imgs"></span>
+					</div>
+				</div>
+			</div>
+			<input name="pictureUrl" value="{{houseNewsPo.pictureUrl}}" id="licenseUri1" style="width:0px;height:0px;border:0px">
+        </div>
+-->
+		<div class="form-group">
+			<label for="text" class="col-sm-1 control-label"><span class="dsj_warn">*</span>动态内容</label>
+			<div class="col-sm-8">
+				<script name="content" id="saveEditor" type="text/plain"
+					style="width: 800px; height: 600px;margin-left:0px;">{{#getScriptEnd}}{{/getScriptEnd}}
+				<div id="ueHidden" style="display:none">{{houseNewsPo.content}}</div>
+				<input id="contentst" type="hidden" name="contentst" >
+				<input id="pictureUrl" type="hidden" name="pictureUrl" >
+				<div id="jqk" class="hide"><p style="color:#F00;">不能为空<p></div>
+			</div>
+		</div>
+ 		<div class="row dsj_button_group">
+            <div class="col-sm-12">
+				<a class="cancel_btn" onclick="cancel()" role="button">取消</a>
+				<a class="cancel_btn" onclick="yulan()" role="button" data-toggle="modal" data-target="#yulanNews">预览</a>
+				<button class="issue_btn" onclick="saveOrUpdate()" type="button">发布</button>
+            </div>
+		</div>
+		</script>
+        </form>
+      </div>
+    </div>
+    <div class="dsj_footer">
+      <div class="container">
+        <div class="dsj_upper_footer">
+          <span>关于我们</span>
+          <span>合作伙伴</span>
+          <span>联系我们</span>
+        </div>
+        <div>
+          <ul class="dsj_lower_footer">
+            <li>北京大搜家信息技术服务有限公司&nbsp;&nbsp;|</li>
+            <li>网络经营许可证 京ICP备11024601号-12&nbsp;&nbsp;|</li>
+            <li>&copy;Copyright&copy;2010-2017 大搜家Dashoujia.com版权所有</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 公用model -->
+	<div class="modal fade" id="yulanNews" style="padding-right: 0px;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 746px;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						预览
+					</h4>
+				</div>
+				<div class="modal-body" id="yulan_cc">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/base.js"></script>
+    <script type="text/javascript" src="js/webupload/webuploader.js"></script>
+    <script type="text/javascript" src="js/webupload/single-upload.js"></script>
+    <script src="js/dsj_tags.js"></script>
+    <script src="js/formUtils.js"></script>
+    <script src="lib/validate/verify.notify.js"></script>
+    <script src="lib/validate/verify.notify.ext.js"></script>
+    <script src="js/houseNews/house-news-form.js"></script>
+    
+    <script type="text/javascript">
+    var editor = null ;
+    $(function(){
+		var id = GetQueryString("id"); 
+		var p_url;
+		if(id){ 
+			p_url = _url+"/back/houseNews/to_house_news_form?id="+id
+		}else{ 
+			p_url = _url+"/back/houseNews/to_house_news_form" 
+		}
+		var option = { url : p_url }
+		var fun = new $.fn.originAdd(option);
+		fun._init();
+		
+		require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#dailog_common_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html    = template();
+	    	 $('body').append(html);
+ 		});
+		require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#error_html_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html    = template();
+	    	 $('body').append(html);
+		}); 
+		
+    })
+    </script>
+    <script src="lib/select2/4.0.3/js/select2.min.js""></script>
+    <script src="js/require.js"></script>
+	<script src="js/common/header.js"></script>
+  </body>
+</html>

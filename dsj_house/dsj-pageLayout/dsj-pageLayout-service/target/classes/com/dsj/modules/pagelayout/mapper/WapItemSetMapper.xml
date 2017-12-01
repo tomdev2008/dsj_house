@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.WapItemSetDaoImpl">
+    
+    <sql id="tableName"> dsj_wap_item_set a </sql>
+    <sql id="tableNameUpdate"> dsj_wap_item_set </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.type AS "type",
+		a.url AS "url",
+		a.picture AS "picture",
+		a.remark AS "remark",
+		a.label_id AS "labelId",
+		a.sort AS "sort",
+		a.status AS "status",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="WapItemSetPo">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="type" property="type" />
+		<result column="url" property="url" />
+		<result column="picture" property="picture" />
+		<result column="remark" property="remark" />
+		<result column="label_id" property="labelId" />
+		<result column="sort" property="sort" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<sql id="wapItemSetJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		<if test="url != null and url!= ''"> AND a.url = #{url}</if>
+		<if test="picture != null and picture!= ''"> AND a.picture = #{picture}</if>
+		<if test="remark != null and remark!= ''"> AND a.remark = #{remark}</if>
+		<if test="labelId != null and labelId!= ''"> AND a.label_id = #{labelId}</if>
+		<if test="sort != null and sort!= ''"> AND a.sort = #{sort}</if>
+		<if test="status != null and status!= ''"> AND a.status = #{status}</if>
+		<if test="createTime != null and createTime!= ''"> AND a.create_time = #{createTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="WapItemSetPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="wapItemSetJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id ASC,a.sort ASC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="WapItemSetPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			title,
+			type,
+			url,
+			picture,
+			remark,
+			label_id,
+			sort,
+			status,
+			create_time
+		) VALUES (
+			#{id},
+			#{title},
+			#{type},
+			#{url},
+			#{picture},
+			#{remark},
+			#{labelId},
+			#{sort},
+			#{status},
+			#{createTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="WapItemSetPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="title != null">title,</if>
+					<if test="type != null">type,</if>
+					<if test="url != null">url,</if>
+					<if test="picture != null">picture,</if>
+					<if test="remark != null">remark,</if>
+					<if test="labelId != null">label_id,</if>
+					<if test="sort != null">sort,</if>
+					<if test="status != null">status,</if>
+					<if test="createTime != null">create_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="title != null">#{title},</if>
+			<if test="type != null">#{type},</if>
+			<if test="url != null">#{url},</if>
+			<if test="picture != null">#{picture},</if>
+			<if test="remark != null">#{remark},</if>
+			<if test="labelId != null">#{labelId},</if>
+			<if test="sort != null">#{sort},</if>
+			<if test="status != null">#{status},</if>
+			<if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="WapItemSetPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			title = #{title},
+			type = #{type},
+			url = #{url},
+			picture = #{picture},
+			remark = #{remark},
+			label_id = #{labelId},
+			sort = #{sort},
+			status = #{status},
+			create_time = #{createTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="WapItemSetPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="title != null">title = #{title},</if>
+			<if test="type != null">type = #{type},</if>
+			<if test="url != null">url = #{url},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="remark != null">remark = #{remark},</if>
+			<if test="labelId != null">label_id = #{labelId},</if>
+			<if test="sort != null">sort = #{sort},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

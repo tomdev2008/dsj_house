@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.HouseTradeInfoCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_house_trade_info_crawler a </sql>
+    <sql id="tableNameUpdate"> old_house_trade_info_crawler </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.origin_house_id AS "originHouseId",
+		a.listing_date AS "listingDate",
+		a.trade_ownership AS "tradeOwnership",
+		a.housing_use AS "housingUse",
+		a.last_pay_date AS "lastPayDate",
+		a.certificate_type_name AS "certificateTypeName",
+		a.property_right_ownership AS "propertyRightOwnership",
+		a.mortgage_info AS "mortgageInfo",
+		a.spare_parts AS "spareParts"
+	</sql>
+	
+	<resultMap id="beanMap" type="HouseTradeInfoCrawlerPo">
+		<id column="id" property="id" />
+		<result column="origin_house_id" property="originHouseId" />
+		<result column="listing_date" property="listingDate" />
+		<result column="trade_ownership" property="tradeOwnership" />
+		<result column="housing_use" property="housingUse" />
+		<result column="last_pay_date" property="lastPayDate" />
+		<result column="certificate_type_name" property="certificateTypeName" />
+		<result column="property_right_ownership" property="propertyRightOwnership" />
+		<result column="mortgage_info" property="mortgageInfo" />
+		<result column="spare_parts" property="spareParts" />
+	</resultMap>
+	
+	<sql id="houseTradeInfoCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="originHouseId != null and originHouseId!= ''"> AND a.origin_house_id = #{originHouseId}</if>
+		<if test="listingDate != null and listingDate!= ''"> AND a.listing_date = #{listingDate}</if>
+		<if test="tradeOwnership != null and tradeOwnership!= ''"> AND a.trade_ownership = #{tradeOwnership}</if>
+		<if test="housingUse != null and housingUse!= ''"> AND a.housing_use = #{housingUse}</if>
+		<if test="lastPayDate != null and lastPayDate!= ''"> AND a.last_pay_date = #{lastPayDate}</if>
+		<if test="certificateTypeName != null and certificateTypeName!= ''"> AND a.certificate_type_name = #{certificateTypeName}</if>
+		<if test="propertyRightOwnership != null and propertyRightOwnership!= ''"> AND a.property_right_ownership = #{propertyRightOwnership}</if>
+		<if test="mortgageInfo != null and mortgageInfo!= ''"> AND a.mortgage_info = #{mortgageInfo}</if>
+		<if test="spareParts != null and spareParts!= ''"> AND a.spare_parts = #{spareParts}</if>
+	</sql>
+    
+	<select id="getById" resultType="HouseTradeInfoCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="houseTradeInfoCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="HouseTradeInfoCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			origin_house_id,
+			listing_date,
+			trade_ownership,
+			housing_use,
+			last_pay_date,
+			certificate_type_name,
+			property_right_ownership,
+			mortgage_info,
+			spare_parts
+		) VALUES (
+			#{id},
+			#{originHouseId},
+			#{listingDate},
+			#{tradeOwnership},
+			#{housingUse},
+			#{lastPayDate},
+			#{certificateTypeName},
+			#{propertyRightOwnership},
+			#{mortgageInfo},
+			#{spareParts}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="HouseTradeInfoCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="originHouseId != null">origin_house_id,</if>
+					<if test="listingDate != null">listing_date,</if>
+					<if test="tradeOwnership != null">trade_ownership,</if>
+					<if test="housingUse != null">housing_use,</if>
+					<if test="lastPayDate != null">last_pay_date,</if>
+					<if test="certificateTypeName != null">certificate_type_name,</if>
+					<if test="propertyRightOwnership != null">property_right_ownership,</if>
+					<if test="mortgageInfo != null">mortgage_info,</if>
+					<if test="spareParts != null">spare_parts,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="originHouseId != null">#{originHouseId},</if>
+			<if test="listingDate != null">#{listingDate},</if>
+			<if test="tradeOwnership != null">#{tradeOwnership},</if>
+			<if test="housingUse != null">#{housingUse},</if>
+			<if test="lastPayDate != null">#{lastPayDate},</if>
+			<if test="certificateTypeName != null">#{certificateTypeName},</if>
+			<if test="propertyRightOwnership != null">#{propertyRightOwnership},</if>
+			<if test="mortgageInfo != null">#{mortgageInfo},</if>
+			<if test="spareParts != null">#{spareParts},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="HouseTradeInfoCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			origin_house_id = #{originHouseId},
+			listing_date = #{listingDate},
+			trade_ownership = #{tradeOwnership},
+			housing_use = #{housingUse},
+			last_pay_date = #{lastPayDate},
+			certificate_type_name = #{certificateTypeName},
+			property_right_ownership = #{propertyRightOwnership},
+			mortgage_info = #{mortgageInfo},
+			spare_parts = #{spareParts},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="HouseTradeInfoCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="originHouseId != null">origin_house_id = #{originHouseId},</if>
+			<if test="listingDate != null">listing_date = #{listingDate},</if>
+			<if test="tradeOwnership != null">trade_ownership = #{tradeOwnership},</if>
+			<if test="housingUse != null">housing_use = #{housingUse},</if>
+			<if test="lastPayDate != null">last_pay_date = #{lastPayDate},</if>
+			<if test="certificateTypeName != null">certificate_type_name = #{certificateTypeName},</if>
+			<if test="propertyRightOwnership != null">property_right_ownership = #{propertyRightOwnership},</if>
+			<if test="mortgageInfo != null">mortgage_info = #{mortgageInfo},</if>
+			<if test="spareParts != null">spare_parts = #{spareParts},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

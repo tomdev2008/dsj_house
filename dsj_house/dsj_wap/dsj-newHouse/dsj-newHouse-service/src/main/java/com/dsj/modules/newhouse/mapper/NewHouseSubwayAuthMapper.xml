@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.newhouse.dao.impl.NewHouseSubwayAuthDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_subway_auth a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_subway_auth </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.line AS "line",
+		a.line_name AS "lineName",
+		a.station AS "station",
+		a.station_name AS "stationName",
+		a.distance AS "distance"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHouseSubwayAuthPo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="line" property="line" />
+		<result column="line_name" property="lineName" />
+		<result column="station" property="station" />
+		<result column="station_name" property="stationName" />
+		<result column="distance" property="distance" />
+	</resultMap>
+	
+	<sql id="newHouseSubwayAuthJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="line != null and line!= ''"> AND a.line = #{line}</if>
+		<if test="lineName != null and lineName!= ''"> AND a.line_name = #{lineName}</if>
+		<if test="station != null and station!= ''"> AND a.station = #{station}</if>
+		<if test="stationName != null and stationName!= ''"> AND a.station_name = #{stationName}</if>
+		<if test="distance != null and distance!= ''"> AND a.distance = #{distance}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHouseSubwayAuthPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="newHouseSubwayAuthJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="NewHouseSubwayAuthPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_id,
+			line,
+			line_name,
+			station,
+			station_name,
+			distance
+		) VALUES (
+			#{id},
+			#{houseId},
+			#{line},
+			#{lineName},
+			#{station},
+			#{stationName},
+			#{distance}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NewHouseSubwayAuthPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="line != null">line,</if>
+					<if test="lineName != null">line_name,</if>
+					<if test="station != null">station,</if>
+					<if test="stationName != null">station_name,</if>
+					<if test="distance != null">distance,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="line != null">#{line},</if>
+			<if test="lineName != null">#{lineName},</if>
+			<if test="station != null">#{station},</if>
+			<if test="stationName != null">#{stationName},</if>
+			<if test="distance != null">#{distance},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="NewHouseSubwayAuthPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_id = #{houseId},
+			line = #{line},
+			line_name = #{lineName},
+			station = #{station},
+			station_name = #{stationName},
+			distance = #{distance},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHouseSubwayAuthPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="line != null">line = #{line},</if>
+			<if test="lineName != null">line_name = #{lineName},</if>
+			<if test="station != null">station = #{station},</if>
+			<if test="stationName != null">station_name = #{stationName},</if>
+			<if test="distance != null">distance = #{distance},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="saveList" parameterType="java.util.Map">  
+	    INSERT INTO <include refid="tableNameUpdate"/>(
+			house_id,
+			line,
+			line_name,
+			station,
+			station_name,
+			distance
+		) VALUES 
+	    <foreach collection="subWayList" item="item" index="index" separator="," >  
+	        (
+			#{newHouseId},
+			#{item.line},
+			#{item.lineName},
+			#{item.station},
+			#{item.stationName},
+			#{item.distance}
+	      )  
+	    </foreach>  
+	</insert> 
+	<update id="deleteByNewHouseId" parameterType="long">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE house_id = #{0}
+	</update>
+	<update id="updateNewHouseId" parameterType="java.util.Map">
+		update <include refid="tableNameUpdate"/> set house_id =#{yesId} where house_id=#{noId}
+	</update>
+</mapper>

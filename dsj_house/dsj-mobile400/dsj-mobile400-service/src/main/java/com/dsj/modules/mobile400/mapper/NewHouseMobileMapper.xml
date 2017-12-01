@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.mobile400.dao.impl.NewHouseMobileDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_mobile a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_mobile </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.agent_code AS "agentCode",
+		a.call_count AS "callCount",
+		a.call_success AS "callSuccess",
+		a.call_busy AS "callBusy",
+		a.call_not AS "callNot",
+		a.stat_time AS "statTime",
+		a.channel AS "channel"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHouseMobilePo">
+		<id column="id" property="id" />
+		<result column="agent_code" property="agentCode" />
+		<result column="call_count" property="callCount" />
+		<result column="call_success" property="callSuccess" />
+		<result column="call_busy" property="callBusy" />
+		<result column="call_not" property="callNot" />
+		<result column="stat_time" property="statTime" />
+		<result column="channel" property="channel" />
+	</resultMap>
+	
+	<sql id="newHouseMobileJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="agentCode != null and agentCode!= ''"> AND a.agent_code = #{agentCode}</if>
+		<if test="callCount != null and callCount!= ''"> AND a.call_count = #{callCount}</if>
+		<if test="callSuccess != null and callSuccess!= ''"> AND a.call_success = #{callSuccess}</if>
+		<if test="callBusy != null and callBusy!= ''"> AND a.call_busy = #{callBusy}</if>
+		<if test="callNot != null and callNot!= ''"> AND a.call_not = #{callNot}</if>
+		<if test="statTime != null and statTime!= ''"> AND a.stat_time = #{statTime}</if>
+		<if test="channel != null and channel!= ''"> AND a.channel = #{channel}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHouseMobilePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="newHouseMobileJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.mobile400.vo.NewHouseMobileVo">
+		SELECT
+			SUM(call_count) AS callCount,
+			SUM(call_success) AS callSuccess,
+			SUM(call_busy) AS callBusy,
+			SUM(call_not) AS callNot,
+			stat_time AS time
+		FROM
+			dsj_new_house_mobile
+		<where>
+			<if test="yesterday != null and yesterday != ''">
+				AND stat_time = #{yesterday}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND stat_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND stat_time &lt;= #{endTime}
+			</if>
+			<if test="channel != null and channel != ''">
+				AND channel = #{channel}
+			</if>
+		</where>
+		GROUP BY
+			stat_time
+		ORDER BY
+			stat_time DESC
+		LIMIT #{pageFirst},#{pageSize}
+	</select>
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		
+		select count(1) from 
+		(SELECT
+				*
+			FROM
+				dsj_new_house_mobile
+			<where>
+				<if test="yesterday != null and yesterday != ''">
+					AND stat_time = #{yesterday}
+				</if>
+				<if test="startTime != null and startTime != ''">
+					AND stat_time &gt;= #{startTime}
+				</if>
+				<if test="endTime != null and endTime != ''">
+					AND stat_time &lt;= #{endTime}
+				</if>
+				<if test="channel != null and channel != ''">
+					AND channel = #{channel}
+				</if>
+			</where>
+			GROUP BY stat_time)x
+	</select>
+	
+	<select id="newPageList" parameterType="java.util.Map" resultType="com.dsj.modules.mobile400.vo.NewHouseMobileVo">
+		SELECT
+			SUM(call_count) AS callCount,
+			SUM(call_success) AS callSuccess,
+			SUM(call_busy) AS callBusy,
+			SUM(call_not) AS callNot
+		FROM
+			dsj_new_house_mobile
+		<where>
+			<if test="startTime != null and startTime != ''">
+				AND stat_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND stat_time &lt;= #{endTime}
+			</if>
+			<if test="channel != null and channel != ''">
+				AND channel = #{channel}
+			</if>
+		</where>
+		LIMIT #{pageFirst},#{pageSize}
+	</select>
+	<select id="newPageListCount" parameterType="java.util.Map" resultType="long">
+		SELECT 1 
+	</select>
+	
+	
+	<!-- 按楼盘来电昨天新增统计 -->
+	<select id="newHouseYesterdayList" parameterType="java.util.Map" resultType="com.dsj.modules.mobile400.vo.NewHouseMobileVo">
+		SELECT
+			a.stat_time AS time,
+			SUM(a.call_count) AS callCount,
+			SUM(a.call_success) AS callSuccess,
+			SUM(a.call_busy) AS callBusy,
+			SUM(a.call_not) AS callNot,
+			b.`name` AS newHouseName
+		FROM
+			dsj_new_house_mobile a
+		LEFT JOIN dsj_new_house_directory_auth b ON a.agent_code = b.id
+		<where>
+			<if test="yesterday != null and yesterday != ''">
+				AND a.stat_time = #{yesterday}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND a.stat_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND a.stat_time &lt;= #{endTime}
+			</if>
+			<if test="newHouseName != null and newHouseName != ''">
+				AND b.name like concat('%',#{newHouseName},'%')
+			</if>
+			<if test="channel != null and channel != ''">
+				AND a.channel = #{channel}
+			</if>
+		</where>
+		GROUP BY
+			a.agent_code
+		ORDER BY
+			a.stat_time DESC
+		LIMIT #{pageFirst},#{pageSize}
+	</select>
+	<select id="newHouseYesterdayCount" parameterType="java.util.Map" resultType="long">
+		SELECT count(1) FROM (
+			SELECT
+				1
+			FROM
+				dsj_new_house_mobile a
+			LEFT JOIN dsj_new_house_directory_auth b ON a.agent_code = b.id
+			<where>
+				<if test="yesterday != null and yesterday != ''">
+					AND a.stat_time = #{yesterday}
+				</if>
+				<if test="startTime != null and startTime != ''">
+					AND a.stat_time &gt;= #{startTime}
+				</if>
+				<if test="endTime != null and endTime != ''">
+					AND a.stat_time &lt;= #{endTime}
+				</if>
+				<if test="newHouseName != null and newHouseName != ''">
+					AND b.name like concat('%',#{newHouseName},'%')
+				</if>
+				<if test="channel != null and channel != ''">
+					AND a.channel = #{channel}
+				</if>
+			</where>
+			GROUP BY
+				a.agent_code
+		)x
+	</select>
+	
+	<!-- 按楼盘来电累计数据统计 -->
+	<select id="newHouseTotalList" parameterType="java.util.Map" resultType="com.dsj.modules.mobile400.vo.NewHouseMobileVo">
+		SELECT
+			SUM(a.call_count) AS callCount,
+			SUM(a.call_success) AS callSuccess,
+			SUM(a.call_busy) AS callBusy,
+			SUM(a.call_not) AS callNot,
+			b.`name` AS newHouseName
+		FROM
+			dsj_new_house_mobile a
+		LEFT JOIN dsj_new_house_directory_auth b ON a.agent_code = b.id
+		<where>
+			<if test="startTime != null and startTime != ''">
+				AND a.stat_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND a.stat_time &lt;= #{endTime}
+			</if>
+			<if test="newHouseName != null and newHouseName != ''">
+				AND b.name like concat('%',#{newHouseName},'%')
+			</if>
+			<if test="channel != null and channel != ''">
+				AND a.channel = #{channel}
+			</if>
+		</where>
+		GROUP BY
+			a.agent_code
+		LIMIT #{pageFirst},#{pageSize}
+	</select>
+	<select id="newHouseTotalCount" parameterType="java.util.Map" resultType="long">
+		SELECT count(1) FROM (
+			SELECT
+					1
+			FROM
+					dsj_new_house_mobile a
+			LEFT JOIN dsj_new_house_directory_auth b ON a.agent_code = b.id
+			<where>
+				<if test="startTime != null and startTime != ''">
+					AND a.stat_time &gt;= #{startTime}
+				</if>
+				<if test="endTime != null and endTime != ''">
+					AND a.stat_time &lt;= #{endTime}
+				</if>
+				<if test="newHouseName != null and newHouseName != ''">
+					AND b.name like concat('%',#{newHouseName},'%')
+				</if>
+				<if test="channel != null and channel != ''">
+					AND a.channel = #{channel}
+				</if>
+			</where>
+			GROUP BY
+				a.agent_code
+		)x
+	</select>
+	
+	<insert id="insert" parameterType="NewHouseMobilePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			agent_code,
+			call_count,
+			call_success,
+			call_busy,
+			call_not,
+			stat_time,
+			channel
+		) VALUES (
+			#{id},
+			#{agentCode},
+			#{callCount},
+			#{callSuccess},
+			#{callBusy},
+			#{callNot},
+			#{statTime},
+			#{channel}
+		)
+	</insert>
+	
+	<insert id="insertDynamic" parameterType="NewHouseMobilePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="agentCode != null">agent_code,</if>
+					<if test="callCount != null">call_count,</if>
+					<if test="callSuccess != null">call_success,</if>
+					<if test="callBusy != null">call_busy,</if>
+					<if test="callNot != null">call_not,</if>
+					<if test="statTime != null">stat_time,</if>
+					<if test="channel != null">channel,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="agentCode != null">#{agentCode},</if>
+			<if test="callCount != null">#{callCount},</if>
+			<if test="callSuccess != null">#{callSuccess},</if>
+			<if test="callBusy != null">#{callBusy},</if>
+			<if test="callNot != null">#{callNot},</if>
+			<if test="statTime != null">#{statTime},</if>
+			<if test="channel != null">#{channel},</if>
+        </trim>
+    </insert>
+    
+	<insert id="saveYearterDayData">
+		INSERT into dsj_new_house_mobile (agent_code,call_count,call_success,call_busy,call_not,stat_time,channel)
+			SELECT
+				a.house_code as agent_code,
+				IFNULL(a.successCount,0) + IFNULL(b.busyCount,0) + IFNULL(c.notCount,0) as call_count,
+				IFNULL(a.successCount,0) as call_success,
+				IFNULL(b.busyCount,0) as call_busy,
+				IFNULL(c.notCount,0) as call_not,
+				date_sub(curdate(), INTERVAL 1 DAY) AS stat_time,
+				a.channel
+			FROM
+				(
+					SELECT
+						house_code,
+						COUNT(1) AS successCount,
+						channel
+					FROM
+						dsj_mobile_detail
+					WHERE
+						! ISNULL(house_code)
+					AND DATE_FORMAT(create_time, '%Y-%m-%d') = date_sub(curdate(), INTERVAL 1 DAY)
+					GROUP BY
+						house_code
+				) x left join 
+				(
+					SELECT
+						house_code,
+						COUNT(1) AS successCount,
+						channel
+					FROM
+						dsj_mobile_detail
+					WHERE
+						! ISNULL(house_code)
+					AND DATE_FORMAT(create_time, '%Y-%m-%d') = date_sub(curdate(), INTERVAL 1 DAY)
+					AND callresult = 0
+					GROUP BY
+						house_code,channel
+				) a on x.house_code = a.house_code
+			LEFT JOIN (
+				SELECT
+					house_code,
+					COUNT(1) AS busyCount,
+					channel
+				FROM
+					dsj_mobile_detail
+				WHERE
+					! ISNULL(house_code)
+				AND DATE_FORMAT(create_time, '%Y-%m-%d') = date_sub(curdate(), INTERVAL 1 DAY)
+				AND (
+					callresult = 1
+					OR callresult = 2
+					OR callresult = 3
+					OR callresult = 1000
+				)
+				GROUP BY
+					house_code,channel
+			) b ON a.house_code = b.house_code and a.channel = b.channel
+			LEFT JOIN (
+				SELECT
+					house_code,
+					COUNT(1) AS notCount,
+					channel
+				FROM
+					dsj_mobile_detail
+				WHERE
+					! ISNULL(house_code)
+				AND DATE_FORMAT(create_time, '%Y-%m-%d') = date_sub(curdate(), INTERVAL 1 DAY)
+				AND (
+					callresult = 11
+					OR callresult = 201
+					OR callresult = 1002
+				)
+				GROUP BY
+					house_code,channel
+			) c ON b.house_code = c.house_code and b.channel = c.channel
+	</insert>
+	
+	
+	<update id="update" parameterType="NewHouseMobilePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			agent_code = #{agentCode},
+			call_count = #{callCount},
+			call_success = #{callSuccess},
+			call_busy = #{callBusy},
+			call_not = #{callNot},
+			stat_time = #{statTime},
+			channel = #{channel},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHouseMobilePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="agentCode != null">agent_code = #{agentCode},</if>
+			<if test="callCount != null">call_count = #{callCount},</if>
+			<if test="callSuccess != null">call_success = #{callSuccess},</if>
+			<if test="callBusy != null">call_busy = #{callBusy},</if>
+			<if test="callNot != null">call_not = #{callNot},</if>
+			<if test="statTime != null">stat_time = #{statTime},</if>
+			<if test="channel != null">channel = #{channel},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

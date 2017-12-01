@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.FwOrderDaoImpl">
+    
+    <sql id="tableName"> dsj_fw_order a </sql>
+    <sql id="tableNameUpdate"> dsj_fw_order </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.order_no AS "orderNo",
+		a.pay_no AS "payNo",
+		a.requestid AS "requestid",
+		a.sum AS "sum",
+		a.status AS "status",
+		a.payment AS "payment",
+		a.order_price AS "orderPrice",
+		a.pay_type AS "payType",
+		a.create_time AS "createTime",
+		a.pay_time AS "payTime",
+		a.update_time AS "updateTime",
+		a.user_id AS "userId",
+		a.order_name AS "orderName",
+		a.review_status AS "reviewStatus",
+		a.review_date AS "reviewDate",
+		a.payurl AS "payurl",
+		a.refund_reason AS "refundReason",
+		a.refundtype AS "refundtype",
+		a.refunddate AS "refunddate",
+		a.delete_flag AS "deleteFlag",
+		a.area_code_one AS "areaCodeOne",
+		a.area_code_two AS "areaCodeTwo",
+		a.area_code_three AS "areaCodeThree",
+		a.area_code_one_name AS "areaCodeOneName",
+		a.area_code_two_name AS "areaCodeTwoName",
+		a.area_code_three_name AS "areaCodeThreeName"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwOrderPo">
+		<id column="id" property="id" />
+		<result column="order_no" property="orderNo" />
+		<result column="pay_no" property="payNo" />
+		<result column="requestid" property="requestid" />
+		<result column="sum" property="sum" />
+		<result column="status" property="status" />
+		<result column="payment" property="payment" />
+		<result column="order_price" property="orderPrice" />
+		<result column="pay_type" property="payType" />
+		<result column="create_time" property="createTime" />
+		<result column="pay_time" property="payTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="user_id" property="userId" />
+		<result column="order_name" property="orderName" />
+		<result column="review_status" property="reviewStatus" />
+		<result column="review_date" property="reviewDate" />
+		<result column="payurl" property="payurl" />
+		<result column="refund_reason" property="refundReason" />
+		<result column="refundtype" property="refundtype" />
+		<result column="refunddate" property="refunddate" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="area_code_one" property="areaCodeOne" />
+		<result column="area_code_two" property="areaCodeTwo" />
+		<result column="area_code_three" property="areaCodeThree" />
+		<result column="area_code_one_name" property="areaCodeOneName" />
+		<result column="area_code_two_name" property="areaCodeTwoName" />
+		<result column="area_code_three_name" property="areaCodeThreeName" />
+	</resultMap>
+	
+	<sql id="fwOrderJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="orderNo != null and orderNo!= ''"> AND a.order_no = #{orderNo}</if>
+		<if test="payNo != null and payNo!= ''"> AND a.pay_no = #{payNo}</if>
+		<if test="requestid != null and requestid != ''"> AND a.requestid = #{requestid}</if>
+		<if test="sum != null and sum!= ''"> AND a.sum = #{sum}</if>
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+		<if test="payment != null and payment!= ''"> AND a.payment = #{payment}</if>
+		<if test="orderPrice != null and orderPrice!= ''"> AND a.order_price = #{orderPrice}</if>
+		<if test="payType != null and payType!= ''"> AND a.pay_type = #{payType}</if>
+		<if test="payTime != null and payTime!= ''"> AND a.pay_time = #{payTime}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="orderName != null and orderName!= ''"> AND a.order_name = #{orderName}</if>
+		<if test="reviewStatus != null and reviewStatus!= ''"> AND a.review_status = #{reviewStatus}</if>
+		<if test="reviewDate != null and reviewDate != ''"> AND a.review_date = #{reviewDate}</if>
+		<if test="payurl != null and payurl != ''"> AND a.payurl = #{payurl}</if>
+		<if test="refundReason != null and refundReason != ''"> AND a.refund_reason = #{refundReason}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="areaCodeOne != null and areaCodeOne!= ''"> AND a.area_code_one = #{areaCodeOne}</if>
+		<if test="areaCodeTwo != null and areaCodeTwo!= ''"> AND a.area_code_two = #{areaCodeTwo}</if>
+		<if test="areaCodeThree != null and areaCodeThree!= ''"> AND a.area_code_three = #{areaCodeThree}</if>
+		<if test="areaCodeOneName != null and areaCodeOneName!= ''"> AND a.area_code_one_name = #{areaCodeOneName}</if>
+		<if test="areaCodeTwoName != null and areaCodeTwoName!= ''"> AND a.area_code_two_name = #{areaCodeTwoName}</if>
+		<if test="areaCodeThreeName != null and areaCodeThreeName!= ''"> AND a.area_code_three_name = #{areaCodeThreeName}</if>
+		<if test="refundtype != null and refundtype != ''"> AND a.refundtype = #{refundtype}</if>
+		<if test="statusone != null and statusone != ''"> AND a.statusone = #{statusone}</if>
+	</sql>
+    
+     <sql id="condition_new_sql">	
+		<if test="orderNo != null and orderNo!= ''"> AND a.order_no like concat('%',#{orderNo},'%') </if>
+		<if test="payNo != null and payNo!= ''"> AND a.pay_no = #{payNo}</if>
+		<if test="requestid != null and requestid != ''"> AND a.requestid = #{requestid}</if>
+		<if test="sum != null and sum!= ''"> AND a.sum = #{sum}</if>
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+		<if test="statusone != null and statusone != ''"> AND a.statusone = #{statusone}</if>
+		<if test="payment != null and payment!= ''"> AND a.payment = #{payment}</if>
+		<if test="orderPrice != null and orderPrice!= ''"> AND a.order_price = #{orderPrice}</if>
+		<if test="payType != null and payType!= ''"> AND a.pay_type = #{payType}</if>
+		<if test="payTime != null and payTime!= ''"> AND a.pay_time = #{payTime}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="refundtype != null and refundtype != ''"> AND a.refundtype = #{refundtype}</if>
+		
+		<if test="noStatus != null and noStatus != ''"> AND a.status not in (${noStatus})</if>
+		
+		
+		<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+		
+		<if test="startRefuseTime != null and startRefuseTime != ''"><![CDATA[  AND a.refunddate >=STR_TO_DATE(#{startRefuseTime},'%Y-%m-%d')]]></if>
+		<if test="startRefuseTime != null and startRefuseTime != ''"><![CDATA[  AND a.refunddate <=STR_TO_DATE(#{startRefuseTime},'%Y-%m-%d')]]></if>
+		
+		
+		<if test="phone != null and phone != ''"> AND e.phone like concat('%',#{phone},'%') </if>
+		<if test="skuId != null and skuId != ''"> AND c.id = #{skuId} </if>
+		<if test="nodeId != null and nodeId != ''"> AND b.node_id = #{nodeId} </if>
+		<if test="authStatus != null and authStatus != ''"> AND b.auth_status = #{authStatus} </if>
+		<if test="statuss != null and statuss != ''"> AND a.status in (${statuss})  </if>
+		
+		<if test="dbUserName != null and dbUserName != ''"> AND f.name like concat('%',#{dbUserName},'%')  </if><!-- 代办人姓名-->
+		<if test="dbPhone != null and dbPhone != ''"> AND f.tell_phone like concat('%',#{dbPhone},'%')  </if><!-- 代办人手机号-->
+		
+		<if test="companyName != null and companyName != ''"> AND f.company_name like concat('%',#{companyName},'%') </if><!-- 商家名称-->
+		
+		<if test="dbuserid != null and dbuserid != ''"> AND b.dbuserid = #{dbuserid}</if>
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="orderName != null and orderName!= ''"> AND a.order_name = #{orderName}</if>
+		<if test="reviewStatus != null and reviewStatus!= ''"> AND a.review_status = #{reviewStatus}</if>
+		<if test="reviewDate != null and reviewDate!= ''"> AND a.review_date = #{reviewDate}</if>
+		<if test="payurl != null and payurl != ''"> AND a.payurl = #{payurl}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="areaCodeOne != null and areaCodeOne!= ''"> AND a.area_code_one = #{areaCodeOne}</if>
+		<if test="areaCodeTwo != null and areaCodeTwo!= ''"> AND a.area_code_two = #{areaCodeTwo}</if>
+		<if test="areaCodeThree != null and areaCodeThree!= ''"> AND a.area_code_three = #{areaCodeThree}</if>
+		<if test="areaCodeOneName != null and areaCodeOneName!= ''"> AND a.area_code_one_name = #{areaCodeOneName}</if>
+		<if test="areaCodeTwoName != null and areaCodeTwoName!= ''"> AND a.area_code_two_name = #{areaCodeTwoName}</if>
+		<if test="areaCodeThreeName != null and areaCodeThreeName!= ''"> AND a.area_code_three_name = #{areaCodeThreeName}</if>
+	</sql>
+	<select id="getById" resultType="FwOrderPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwOrderJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<update id="updateOverTimeOrder" parameterType="FwOrderPo">
+		UPDATE dsj_fw_order
+		SET status = 3 ,statusone = 3, update_time = now() 
+		WHERE status = 1 and  round((UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(create_time))/60) &gt;=30 
+	</update>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwOrderVo">
+		SELECT
+			a.id as orderId,
+			b.id,
+			a.create_time AS createTime,
+			a.order_no AS orderNo,
+			a.requestid AS requestid,
+			CONCAT(a.area_code_one_name,"-",a.area_code_two_name,"-",a.area_code_three_name) as areaName,
+			d.name as "productName",
+			a.payment,
+			e.phone,
+			e.username,
+			a.`status`,
+			a.statusone,
+			a.review_status as reviewStatus,
+			a.review_date as reviewDate,
+			b.node_name as "nodeName",
+			b.node_id as "nodeId",
+			b.auth_status as "authStatus",
+			f.name as "dbUserName",
+			f.tell_phone as "dbPhone",
+			f.company_name as "dbCompanyName",
+			a.refund_reason as refundReason,
+			a.refunddate as refunddate
+			
+		FROM
+			dsj_fw_order a
+		LEFT JOIN dsj_fw_order_detail b ON a.id = b.order_id
+		LEFT JOIN dsj_fw_sku c on b.product_sku_id = c.id
+		LEFT JOIN dsj_fw_spu d on c.spu_id = d.id
+		LEFT JOIN dsj_user e on e.id = a.user_id 
+		LEFT JOIN dsj_property f on f.id = b.dbuserid 
+		LEFT JOIN dsj_user g on f.user_id = g.id 
+		left join dsj_mobile m on m.property_id = f.id
+		<where>
+			<include refid="condition_new_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+			count(1)
+		FROM
+			dsj_fw_order a
+		LEFT JOIN dsj_fw_order_detail b ON a.id = b.order_id
+		LEFT JOIN dsj_fw_sku c on b.product_sku_id = c.id
+		LEFT JOIN dsj_fw_spu d on c.spu_id = d.id
+		LEFT JOIN dsj_user e on e.id = a.user_id 
+		LEFT JOIN dsj_property f on f.id = b.dbuserid 
+		LEFT JOIN dsj_user g on f.user_id = g.id 
+		left join dsj_mobile m on m.property_id = f.id
+		<where>
+			<include refid="condition_new_sql"/>
+		</where>
+	</select>
+	
+	
+	<select id="getOrderDetailVoByDetailId" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwOrderVo">
+		SELECT
+			b.id,
+			a.id AS orderId,
+			a.create_time AS createTime,
+			a.order_no AS orderNo,
+			a.requestid AS requestid,
+			g.realname as realName,
+			g.phone as dbPhone,
+			a.area_code_two_name as areaCodeTwoName,
+			a.area_code_three_name as areaCodeThreeName,
+			CONCAT(a.area_code_two_name,"-",a.area_code_three_name) as areaName,
+			d.name as productName,
+			a.payment,
+			e.realname AS username,
+			e.phone,
+			a.`status`,
+			a.review_status as reviewStatus,
+			a.review_date as reviewDate,
+			b.node_name as nodeName,
+			b.node_id as nodeId,
+			n.next as nextNodeId,
+			b.auth_status as authStatus,
+			m.mobile,
+			a.pay_time as payTime,
+			f.company_name as "dbCompanyName"
+		FROM
+			dsj_fw_order a
+		LEFT JOIN dsj_fw_order_detail b ON a.id = b.order_id
+		left join dsj_fw_type_node n on b.node_id = n.id
+		LEFT JOIN dsj_fw_sku c on b.product_sku_id = c.id
+		LEFT JOIN dsj_fw_spu d on c.spu_id = d.id
+		LEFT JOIN dsj_user e on e.id = a.user_id 
+		LEFT JOIN dsj_property f on f.id = b.dbuserid 
+		LEFT JOIN dsj_user g on f.user_id = g.id 
+		left join dsj_mobile m on m.property_id = f.id
+		where b.id = #{orderDetailId} 
+	</select>
+	
+	
+	<insert id="insert" parameterType="FwOrderPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			order_no,
+			pay_no,
+			requestid,
+			sum,
+			status,
+			payment,
+			order_price,
+			pay_type,
+			create_time,
+			pay_time,
+			update_time,
+			user_id,
+			order_name,
+			review_status,
+			payurl,
+			refund_reason,
+			refundtype,
+			refunddate,
+			delete_flag,
+			area_code_one,
+			area_code_two,
+			area_code_three,
+			area_code_one_name,
+			area_code_two_name,
+			area_code_three_name
+		) VALUES (
+			#{id},
+			#{orderNo},
+			#{payNo},
+			#{requestid},
+			#{sum},
+			#{status},
+			#{payment},
+			#{orderPrice},
+			#{payType},
+			#{createTime},
+			#{payTime},
+			#{updateTime},
+			#{userId},
+			#{orderName},
+			#{reviewStatus},
+			#{payurl},
+			#{refundReason},
+			#{refundtype},
+			#{refunddate},
+			#{deleteFlag},
+			#{areaCodeOne},
+			#{areaCodeTwo},
+			#{areaCodeThree},
+			#{areaCodeOneName},
+			#{areaCodeTwoName},
+			#{areaCodeThreeName}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwOrderPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="orderNo != null">order_no,</if>
+					<if test="payNo != null">pay_no,</if>
+					<if test="requestid != null">requestid,</if>
+					<if test="sum != null">sum,</if>
+					<if test="status != null">status,</if>
+					<if test="payment != null">payment,</if>
+					<if test="orderPrice != null">order_price,</if>
+					<if test="payType != null">pay_type,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="payTime != null">pay_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="orderName != null">order_name,</if>
+					<if test="reviewStatus != null">review_status,</if>
+					<if test="payurl != null">payurl,</if>
+					<if test="refundReason != null">refund_reason,</if>
+					<if test="refundtype != null">refundtype,</if>
+					<if test="refunddate != null">refunddate,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="areaCodeOne != null">area_code_one,</if>
+					<if test="areaCodeTwo != null">area_code_two,</if>
+					<if test="areaCodeThree != null">area_code_three,</if>
+					<if test="areaCodeOneName != null">area_code_one_name,</if>
+					<if test="areaCodeTwoName != null">area_code_two_name,</if>
+					<if test="areaCodeThreeName != null">area_code_three_name,</if>
+					<if test="refundtype != null">refundtype,</if>
+					<if test="statusone != null">statusone,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="orderNo != null">#{orderNo},</if>
+			<if test="payNo != null">#{payNo},</if>
+			<if test="requestid != null">#{requestid},</if>
+			<if test="sum != null">#{sum},</if>
+			<if test="status != null">#{status},</if>
+			<if test="payment != null">#{payment},</if>
+			<if test="orderPrice != null">#{orderPrice},</if>
+			<if test="payType != null">#{payType},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="payTime != null">#{payTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="orderName != null">#{orderName},</if>
+			<if test="reviewStatus != null">#{reviewStatus},</if>
+			<if test="payurl != null">#{payurl},</if>
+			<if test="refundReason != null">#{refundReason},</if>
+			<if test="refundtype != null">#{refundtype},</if>
+			<if test="refunddate != null">#{refunddate},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="areaCodeOne != null">#{areaCodeOne},</if>
+			<if test="areaCodeTwo != null">#{areaCodeTwo},</if>
+			<if test="areaCodeThree != null">#{areaCodeThree},</if>
+			<if test="areaCodeOneName != null">#{areaCodeOneName},</if>
+			<if test="areaCodeTwoName != null">#{areaCodeTwoName},</if>
+			<if test="areaCodeThreeName != null">#{areaCodeThreeName},</if>
+			<if test="refundtype != null">#{refundtype},</if>
+			<if test="statusone != null">#{statusone},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FwOrderPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			order_no = #{orderNo},
+			pay_no = #{payNo},
+			requestid = #{requestid},
+			sum = #{sum},
+			payment = #{payment},
+			order_price = #{orderPrice},
+			pay_type = #{payType},
+			pay_time = #{payTime},
+			update_time = #{updateTime},
+			user_id = #{userId},
+			order_name = #{orderName},
+			review_status = #{reviewStatus},
+			payurl = #{payurl},
+			refund_reason = #{refundReason},
+			refundtype = #{refundtype},
+			refunddate = #{refunddate},
+			delete_flag = #{deleteFlag},
+			area_code_one = #{areaCodeOne},
+			area_code_two = #{areaCodeTwo},
+			area_code_three = #{areaCodeThree},
+			area_code_one_name = #{areaCodeOneName},
+			area_code_two_name = #{areaCodeTwoName},
+			area_code_three_name = #{areaCodeThreeName},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwOrderPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="orderNo != null">order_no = #{orderNo},</if>
+			<if test="payNo != null">pay_no = #{payNo},</if>
+			<if test="requestid != null">requestid = #{requestid},</if>
+			<if test="sum != null">sum = #{sum},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="payment != null">payment = #{payment},</if>
+			<if test="orderPrice != null">order_price = #{orderPrice},</if>
+			<if test="payType != null">pay_type = #{payType},</if>
+			<if test="payTime != null">pay_time = #{payTime},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="orderName != null">order_name = #{orderName},</if>
+			<if test="reviewStatus != null">review_status = #{reviewStatus},</if>
+			<if test="reviewDate != null">review_date = #{reviewDate},</if>
+			<if test="payurl != null">payurl = #{payurl},</if>
+			<if test="refundReason != null">refund_reason = #{refundReason},</if>
+			<if test="refundtype != null">refundtype = #{refundtype},</if>
+			<if test="refunddate != null">refunddate = #{refunddate},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="areaCodeOne != null">area_code_one = #{areaCodeOne},</if>
+			<if test="areaCodeTwo != null">area_code_two = #{areaCodeTwo},</if>
+			<if test="areaCodeThree != null">area_code_three = #{areaCodeThree},</if>
+			<if test="areaCodeOneName != null">area_code_one_name = #{areaCodeOneName},</if>
+			<if test="areaCodeTwoName != null">area_code_two_name = #{areaCodeTwoName},</if>
+			<if test="areaCodeThreeName != null">area_code_three_name = #{areaCodeThreeName},</if>
+			<if test="refundtype != null">refundtype = #{refundtype},</if>
+			<if test="statusone != null">statusone = #{statusone},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findVoByMap" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwOrderVo">
+		SELECT
+			b.id,
+			a.id AS orderId,
+			a.create_time AS createTime,
+			a.order_no AS orderNo,
+			a.requestid AS requestid,
+			g.realName as realName,
+			g.phone as dbPhone,
+			a.area_code_two_name as areaCodeTwoName,
+			a.area_code_three_name as areaCodeThreeName,
+			CONCAT(a.area_code_two_name,"-",a.area_code_three_name) as areaName,
+			d.name as productName,
+			d.content as content,
+			a.payment,
+			e.username,
+			e.phone,
+			a.`status`,
+			a.payurl,
+			a.refund_reason,
+			a.review_status as reviewStatus,
+			a.review_date as reviewDate,
+			b.node_name as nodeName,
+			b.node_id as nodeId,
+			n.next as nextNodeId,
+			b.auth_status as authStatus
+		FROM
+			dsj_fw_order a
+		LEFT JOIN dsj_fw_order_detail b ON a.id = b.order_id
+		left join dsj_fw_type_node n on b.node_id = n.id
+		LEFT JOIN dsj_fw_sku c on b.product_sku_id = c.id
+		LEFT JOIN dsj_fw_spu d on c.spu_id = d.id
+		LEFT JOIN dsj_user e on e.id = a.user_id 
+		LEFT JOIN dsj_property f on f.id = b.dbuserid 
+		LEFT JOIN dsj_user g on f.user_id = g.id 
+		where a.id = #{orderId}
+	</select>
+	
+	<sql id="condition_order_sql">	
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+		<if test="statusS != null and statusS != ''"> AND a.status in ${statusS}</if>
+		<if test="userId != null and userId != ''"> AND a.user_id = #{userId}</if>
+		<if test="reviewStatus != null and reviewStatus != ''"> AND a.review_status = #{reviewStatus}</if>
+		<if test="deleteFlag != null and deleteFlag != ''"> AND a.delete_flag = #{deleteFlag}</if>
+	</sql>
+	
+	<select id="findOrderPage" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwOrderVo">
+		SELECT
+			b.id,
+			a.id AS orderId,
+			a.create_time AS createTime,
+			a.order_no AS orderNo,
+			a.requestid AS requestid,
+			g.realName as realName,
+			g.phone as dbPhone,
+			a.area_code_two_name as areaCodeTwoName,
+			a.area_code_three_name as areaCodeThreeName,
+			CONCAT(a.area_code_two_name,"-",a.area_code_three_name) as areaName,
+			d.name as productName,
+			d.content as content,
+			a.payment,
+			e.username,
+			e.phone,
+			a.`status`,
+			a.payurl,
+			a.refund_reason,
+			a.review_status as reviewStatus,
+			a.review_date as reviewDate,
+			b.node_name as nodeName,
+			b.node_id as nodeId,
+			n.next as nextNodeId,
+			b.auth_status as authStatus
+		FROM
+			dsj_fw_order a
+		LEFT JOIN dsj_fw_order_detail b ON a.id = b.order_id
+		left join dsj_fw_type_node n on b.node_id = n.id
+		LEFT JOIN dsj_fw_sku c on b.product_sku_id = c.id
+		LEFT JOIN dsj_fw_spu d on c.spu_id = d.id
+		LEFT JOIN dsj_user e on e.id = a.user_id 
+		LEFT JOIN dsj_property f on f.id = b.dbuserid 
+		LEFT JOIN dsj_user g on f.user_id = g.id 
+		<where>
+			<include refid="condition_order_sql"/>
+		</where>
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="findOrderPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+			count(1)
+		FROM
+			dsj_fw_order a
+		LEFT JOIN dsj_fw_order_detail b ON a.id = b.order_id
+		left join dsj_fw_type_node n on b.node_id = n.id
+		LEFT JOIN dsj_fw_sku c on b.product_sku_id = c.id
+		LEFT JOIN dsj_fw_spu d on c.spu_id = d.id
+		LEFT JOIN dsj_user e on e.id = a.user_id 
+		LEFT JOIN dsj_property f on f.id = b.dbuserid 
+		LEFT JOIN dsj_user g on f.user_id = g.id 
+		<where>
+			<include refid="condition_order_sql"/>
+		</where>
+	</select>
+	
+	
+	<select id="getDealOrderQueryIds"  resultType="string">
+		select GROUP_CONCAT(id) from dsj_fw_order where status = 7 and  round((UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(sjjsdate))/60) &gt;=1440 
+	</select>
+</mapper>

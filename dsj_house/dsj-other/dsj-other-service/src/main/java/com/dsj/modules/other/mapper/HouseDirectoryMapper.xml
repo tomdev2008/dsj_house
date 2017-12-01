@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.other.dao.impl.HouseDirectoryDaoImpl">
+    
+    <sql id="tableName"> dsj_house_directory a </sql>
+    <sql id="tableNameUpdate"> dsj_house_directory </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.new_id AS "newId",
+		a.spray_name AS "sprayName",
+		a.card_name AS "cardName",
+		a.dic_alias AS "dicAlias",
+		a.extend1 AS "extend1",
+		a.extend2 AS "extend2",
+		a.spell_name AS "spellName",
+		a.spell_head AS "spellHead",
+		a.old_name AS "oldName",
+		a.developers AS "developers",
+		a.phone AS "phone",
+		a.address AS "address",
+		a.sale_address AS "saleAddress",
+		a.describe AS "describe",
+		a.open_date AS "openDate",
+		a.hand_date AS "handDate",
+		a.dic_trait AS "dicTrait",
+		a.ach_year AS "achYear",
+		a.certificate AS "certificate",
+		a.property_right AS "propertyRight",
+		a.wy_type AS "wyType",
+		a.ach_type AS "achType",
+		a.land_year AS "landYear",
+		a.parking_space AS "parkingSpace",
+		a.prep AS "prep",
+		a.park_number AS "parkNumber",
+		a.house_num AS "houseNum",
+		a.floor_num AS "floorNum",
+		a.schedule AS "schedule",
+		a.loop_line AS "loopLine",
+		a.dimension AS "dimension",
+		a.accuracy AS "accuracy",
+		a.property AS "property",
+		a.occupy_area AS "occupyArea",
+		a.built_up AS "builtUp",
+		a.plot_ratio AS "plotRatio",
+		a.green_rate AS "greenRate",
+		a.average_Price AS "averagePrice",
+		a.heating_mode AS "heatingMode",
+		a.property_fee AS "propertyFee",
+		a.description AS "description",
+		a.land_usage AS "landUsage",
+		a.area_code1 AS "areaCode1",
+		a.area_name1 AS "areaName1",
+		a.area_code2 AS "areaCode2",
+		a.area_name2 AS "areaName2",
+		a.area_code3 AS "areaCode3",
+		a.area_name3 AS "areaName3",
+		a.trading_area_id AS "tradingAreaId",
+		a.trading_area_name AS "tradingAreaName",
+		a.postcode AS "postcode",
+		a.create_preson AS "createPreson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.delete_flag AS "deleteFlag",
+		a.property_right_name AS "propertyRightName",
+		a.status AS "status",
+		a.page_url AS "pageUrl",
+		a.origin_community_id AS "originCommunityId"
+	</sql>
+	
+	<sql id="tableColumns_two">
+		a.id AS "id",
+		a.new_id AS "newId",
+		a.spray_name AS "sprayName",
+		a.card_name AS "cardName",
+		a.dic_alias AS "dicAlias",
+		a.extend1 AS "extend1",
+		a.extend2 AS "extend2",
+		a.spell_name AS "spellName",
+		a.spell_head AS "spellHead",
+		a.old_name AS "oldName",
+		a.developers AS "developers",
+		a.phone AS "phone",
+		a.address AS "address",
+		a.sale_address AS "saleAddress",
+		a.description AS "description",
+		a.open_date AS "openDate",
+		a.hand_date AS "handDate",
+		a.dic_trait AS "dicTrait",
+		a.ach_year AS "achYear",
+		a.certificate AS "certificate",
+		a.property_right AS "propertyRight",
+		a.wy_type AS "wyType",
+		a.ach_type AS "achType",
+		a.land_year AS "landYear",
+		a.parking_space AS "parkingSpace",
+		a.prep AS "prep",
+		a.park_number AS "parkNumber",
+		a.house_num AS "houseNum",
+		a.floor_num AS "floorNum",
+		a.schedule AS "schedule",
+		a.loop_line AS "loopLine",
+		a.dimension AS "dimension",
+		a.accuracy AS "accuracy",
+		a.property AS "property",
+		a.occupy_area AS "occupyArea",
+		a.built_up AS "builtUp",
+		a.plot_ratio AS "plotRatio",
+		a.green_rate AS "greenRate",
+		a.average_Price AS "averagePrice",
+		a.heating_mode AS "heatingMode",
+		a.property_fee AS "propertyFee",
+		a.area_code1 AS "areaCode1",
+		a.area_name1 AS "areaName1",
+		a.area_code2 AS "areaCode2",
+		a.area_name2 AS "areaName2",
+		a.area_code3 AS "areaCode3",
+		a.area_name3 AS "areaName3",
+		a.trading_area_id AS "tradingAreaId",
+		a.trading_area_name AS "tradingAreaName",
+		a.postcode AS "postcode",
+		a.create_preson AS "createPreson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.delete_flag AS "deleteFlag",
+		a.property_right_name AS "propertyRightName",
+		a.page_url AS "pageUrl",
+		a.status AS "status",
+		case a.status
+			 WHEN 1 THEN '未上架'
+			 WHEN 2 THEN '上架'
+			 WHEN 3 THEN '下架'
+		end  as "statusName"
+	</sql>
+	
+	<resultMap id="beanMap" type="HouseDirectoryPo">
+		<id column="id" property="id" />
+		<result column="new_id" property="newId" />
+		<result column="spray_name" property="sprayName" />
+		<result column="card_name" property="cardName" />
+		<result column="dic_alias" property="dicAlias" />
+		<result column="extend1" property="extend1" />
+		<result column="extend2" property="extend2" />
+		<result column="spell_name" property="spellName" />
+		<result column="spell_head" property="spellHead" />
+		<result column="old_name" property="oldName" />
+		<result column="developers" property="developers" />
+		<result column="phone" property="phone" />
+		<result column="address" property="address" />
+		<result column="sale_address" property="saleAddress" />
+		<result column="describe" property="describe" />
+		<result column="open_date" property="openDate" />
+		<result column="hand_date" property="handDate" />
+		<result column="dic_trait" property="dicTrait" />
+		<result column="ach_year" property="achYear" />
+		<result column="certificate" property="certificate" />
+		<result column="property_right" property="propertyRight" />
+		<result column="wy_type" property="wyType" />
+		<result column="ach_type" property="achType" />
+		<result column="land_year" property="landYear" />
+		<result column="parking_space" property="parkingSpace" />
+		<result column="prep" property="prep" />
+		<result column="park_number" property="parkNumber" />
+		<result column="house_num" property="houseNum" />
+		<result column="floor_num" property="floorNum" />
+		<result column="schedule" property="schedule" />
+		<result column="loop_line" property="loopLine" />
+		<result column="dimension" property="dimension" />
+		<result column="accuracy" property="accuracy" />
+		<result column="property" property="property" />
+		<result column="occupy_area" property="occupyArea" />
+		<result column="built_up" property="builtUp" />
+		<result column="plot_ratio" property="plotRatio" />
+		<result column="green_rate" property="greenRate" />
+		<result column="average_Price" property="averagePrice" />
+		<result column="heating_mode" property="heatingMode" />
+		<result column="property_fee" property="propertyFee" />
+		<result column="description" property="description" />
+		<result column="land_usage" property="landUsage" />
+		<result column="area_code1" property="areaCode1" />
+		<result column="area_name1" property="areaName1" />
+		<result column="area_code2" property="areaCode2" />
+		<result column="area_name2" property="areaName2" />
+		<result column="area_code3" property="areaCode3" />
+		<result column="area_name3" property="areaName3" />
+		<result column="trading_area_id" property="tradingAreaId" />
+		<result column="trading_area_name" property="tradingAreaName" />
+		<result column="postcode" property="postcode" />
+		<result column="create_preson" property="createPreson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="property_right_name" property="propertyRightName" />
+		<result column="status" property="status" />
+		<result column="page_url" property="pageUrl" />
+		<result column="origin_community_id" property="originCommunityId" />
+		
+	</resultMap>
+	
+	<sql id="houseDirectoryJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="newId != null and newId!= ''"> AND a.new_id = #{newId}</if>
+		<if test="sprayName != null and sprayName!= ''"> AND a.spray_name like concat('%',#{sprayName},'%')</if>
+		<if test="cardName != null and cardName!= ''"> AND a.card_name = #{cardName}</if>
+		<if test="dicAlias != null and dicAlias!= ''"> AND a.dic_alias = #{dicAlias}</if>
+		<if test="extend1 != null and extend1 != ''"> AND a.extend1 = #{extend1}</if>
+		<if test="extend2 != null and extend2 != ''"> AND a.extend2 = #{extend2}</if>
+		<if test="spellName != null and spellName!= ''"> AND a.spell_name = #{spellName}</if>
+		<if test="spellHead != null and spellHead != ''"> AND a.spell_head = #{spellHead}</if>
+		<if test="oldName != null and oldName!= ''"> AND a.old_name = #{oldName}</if>
+		<if test="developers != null and developers!= ''"> AND a.developers = #{developers}</if>
+		<if test="phone != null and phone!= ''"> AND a.phone = #{phone}</if>
+		<if test="address != null and address!= ''"> AND a.address = #{address}</if>
+		<if test="saleAddress != null and saleAddress!= ''"> AND a.sale_address = #{saleAddress}</if>
+		<if test="describe != null and describe!= ''"> AND a.describe = #{describe}</if>
+		<if test="openDate != null and openDate!= ''"> AND a.open_date = #{openDate}</if>
+		<if test="handDate != null and handDate!= ''"> AND a.hand_date = #{handDate}</if>
+		<if test="dicTrait != null and dicTrait!= ''"> AND a.dic_trait = #{dicTrait}</if>
+		<if test="achYear != null and achYear!= ''"> AND a.ach_year = #{achYear}</if>
+		<if test="certificate != null and certificate!= ''"> AND a.certificate = #{certificate}</if>
+		<if test="propertyRight != null and propertyRight!= ''"> AND a.property_right = #{propertyRight}</if>
+		<if test="wyType != null and wyType!= ''"> AND a.wy_type = #{wyType}</if>
+		<if test="achType != null and achType!= ''"> AND a.ach_type = #{achType}</if>
+		<if test="landYear != null and landYear!= ''"> AND a.land_year = #{landYear}</if>
+		<if test="parkingSpace != null and parkingSpace!= ''"> AND a.parking_space = #{parkingSpace}</if>
+		<if test="prep != null and prep!= ''"> AND a.prep = #{prep}</if>
+		<if test="parkNumber != null and parkNumber!= ''"> AND a.park_number = #{parkNumber}</if>
+		<if test="houseNum != null and houseNum!= ''"> AND a.house_num = #{houseNum}</if>
+		<if test="floorNum != null and floorNum!= ''"> AND a.floor_num = #{floorNum}</if>
+		<if test="schedule != null and schedule!= ''"> AND a.schedule = #{schedule}</if>
+		<if test="loopLine != null and loopLine!= ''"> AND a.loop_line = #{loopLine}</if>
+		<if test="dimension != null and dimension!= ''"> AND a.dimension = #{dimension}</if>
+		<if test="accuracy != null and accuracy!= ''"> AND a.accuracy = #{accuracy}</if>
+		<if test="property != null and property!= ''"> AND a.property = #{property}</if>
+		<if test="occupyArea != null and occupyArea!= ''"> AND a.occupy_area = #{occupyArea}</if>
+		<if test="builtUp != null and builtUp!= ''"> AND a.built_up = #{builtUp}</if>
+		<if test="plotRatio != null and plotRatio!= ''"> AND a.plot_ratio = #{plotRatio}</if>
+		<if test="greenRate != null and greenRate!= ''"> AND a.green_rate = #{greenRate}</if>
+		<if test="averagePrice != null and averagePrice!= ''"> AND a.average_Price = #{averagePrice}</if>
+		<if test="heatingMode != null and heatingMode!= ''"> AND a.heating_mode = #{heatingMode}</if>
+		<if test="propertyFee != null and propertyFee!= ''"> AND a.property_fee = #{propertyFee}</if>
+		<if test="description != null and description!= ''"> AND a.description = #{description}</if>
+		<if test="landUsage != null and landUsage!= ''"> AND a.land_usage = #{landUsage}</if>
+		<if test="areaCode1 != null and areaCode1!= ''"> AND a.area_code1 = #{areaCode1}</if>
+		<if test="areaName1 != null and areaName1!= ''"> AND a.area_name1 = #{areaName1}</if>
+		<if test="areaCode2 != null and areaCode2!= ''"> AND a.area_code2 = #{areaCode2}</if>
+		<if test="areaName2 != null and areaName2!= ''"> AND a.area_name2 = #{areaName2}</if>
+		<if test="areaCode3 != null and areaCode3!= ''"> AND a.area_code3 = #{areaCode3}</if>
+		<if test="areaName3 != null and areaName3!= ''"> AND a.area_name3 = #{areaName3}</if>
+		<if test="tradingAreaId != null and tradingAreaId!= ''"> AND a.trading_area_id = #{tradingAreaId}</if>
+		<if test="tradingAreaName != null and tradingAreaName!= ''"> AND a.trading_area_name = #{tradingAreaName}</if>
+		<if test="postcode != null and postcode!= ''"> AND a.postcode = #{postcode}</if>
+		<if test="createPreson != null and createPreson!= ''"> AND a.create_preson = #{createPreson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="propertyRightName != null and propertyRightName!= ''"> AND a.property_right_name = #{propertyRightName}</if>
+		<if test="pageUrl != null and pageUrl!= ''"> AND a.page_url = #{pageUrl}</if>
+	</sql>
+	
+	<sql id="condition_sql_two">	
+		<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+		<if test="cardName != null and cardName!= ''"> AND a.card_name like concat('%',#{cardName},'%')</if>
+		<if test="areaCode1 != null and areaCode1!= ''"> AND a.area_code1 = #{areaCode1}</if>
+		<if test="areaCode2 != null and areaCode2!= ''"> AND a.area_code2 = #{areaCode2}</if>
+		<if test="areaCode3 != null and areaCode3!= ''"> AND a.area_code3 = #{areaCode3}</if>
+		<if test="tradingAreaId != null and tradingAreaId!= ''"> AND a.trading_area_id = #{tradingAreaId}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+	</sql>
+    
+	<select id="getById" resultType="HouseDirectoryPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="houseDirectoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="listNewPageList" parameterType="java.util.Map" resultType="com.dsj.modules.other.vo.HouseDirectoryVo">
+		SELECT
+			<include refid="tableColumns_two"/>
+		FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql_two" />
+		</where>
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql_two"/>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="HouseDirectoryPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			new_id,
+			spray_name,
+			card_name,
+			dic_alias,
+			extend1,
+			extend2,
+			spell_name,
+			spell_head,
+			old_name,
+			developers,
+			phone,
+			address,
+			sale_address,
+			describe,
+			open_date,
+			hand_date,
+			dic_trait,
+			ach_year,
+			certificate,
+			property_right,
+			wy_type,
+			ach_type,
+			land_year,
+			parking_space,
+			prep,
+			park_number,
+			house_num,
+			floor_num,
+			schedule,
+			loop_line,
+			dimension,
+			accuracy,
+			property,
+			occupy_area,
+			built_up,
+			plot_ratio,
+			green_rate,
+			average_Price,
+			heating_mode,
+			property_fee,
+			description,
+			land_usage,
+			area_code1,
+			area_name1,
+			area_code2,
+			area_name2,
+			area_code3,
+			area_name3,
+			trading_area_id,
+			trading_area_name,
+			postcode,
+			create_preson,
+			update_preson,
+			create_time,
+			update_time,
+			delete_flag,
+			property_right_name,
+			status,
+			page_url
+		) VALUES (
+			#{id},
+			#{newId},
+			#{sprayName},
+			#{cardName},
+			#{dicAlias},
+			#{extend1},
+			#{extend2},
+			#{spellName},
+			#{spellHead},
+			#{oldName},
+			#{developers},
+			#{phone},
+			#{address},
+			#{saleAddress},
+			#{describe},
+			#{openDate},
+			#{handDate},
+			#{dicTrait},
+			#{achYear},
+			#{certificate},
+			#{propertyRight},
+			#{wyType},
+			#{achType},
+			#{landYear},
+			#{parkingSpace},
+			#{prep},
+			#{parkNumber},
+			#{houseNum},
+			#{floorNum},
+			#{schedule},
+			#{loopLine},
+			#{dimension},
+			#{accuracy},
+			#{property},
+			#{occupyArea},
+			#{builtUp},
+			#{plotRatio},
+			#{greenRate},
+			#{averagePrice},
+			#{heatingMode},
+			#{propertyFee},
+			#{description},
+			#{landUsage},
+			#{areaCode1},
+			#{areaName1},
+			#{areaCode2},
+			#{areaName2},
+			#{areaCode3},
+			#{areaName3},
+			#{tradingAreaId},
+			#{tradingAreaName},
+			#{postcode},
+			#{createPreson},
+			#{updatePreson},
+			#{createTime},
+			#{updateTime},
+			#{deleteFlag},
+			#{propertyRightName},
+			#{status},
+			#{pageUrl}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="HouseDirectoryPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="newId != null">new_id,</if>
+					<if test="sprayName != null">spray_name,</if>
+					<if test="cardName != null">card_name,</if>
+					<if test="dicAlias != null">dic_alias,</if>
+					<if test="extend1 != null">extend1,</if>
+					<if test="extend2 != null">extend2,</if>
+					<if test="spellName != null">spell_name,</if>
+					<if test="spellHead != null">spell_head,</if>
+					<if test="oldName != null">old_name,</if>
+					<if test="developers != null">developers,</if>
+					<if test="phone != null">phone,</if>
+					<if test="address != null">address,</if>
+					<if test="saleAddress != null">sale_address,</if>
+					<if test="describe != null">describe,</if>
+					<if test="openDate != null">open_date,</if>
+					<if test="handDate != null">hand_date,</if>
+					<if test="dicTrait != null">dic_trait,</if>
+					<if test="achYear != null">ach_year,</if>
+					<if test="certificate != null">certificate,</if>
+					<if test="propertyRight != null">property_right,</if>
+					<if test="wyType != null">wy_type,</if>
+					<if test="achType != null">ach_type,</if>
+					<if test="landYear != null">land_year,</if>
+					<if test="parkingSpace != null">parking_space,</if>
+					<if test="prep != null">prep,</if>
+					<if test="parkNumber != null">park_number,</if>
+					<if test="houseNum != null">house_num,</if>
+					<if test="floorNum != null">floor_num,</if>
+					<if test="schedule != null">schedule,</if>
+					<if test="loopLine != null">loop_line,</if>
+					<if test="dimension != null">dimension,</if>
+					<if test="accuracy != null">accuracy,</if>
+					<if test="property != null">property,</if>
+					<if test="occupyArea != null">occupy_area,</if>
+					<if test="builtUp != null">built_up,</if>
+					<if test="plotRatio != null">plot_ratio,</if>
+					<if test="greenRate != null">green_rate,</if>
+					<if test="averagePrice != null">average_Price,</if>
+					<if test="heatingMode != null">heating_mode,</if>
+					<if test="propertyFee != null">property_fee,</if>
+					<if test="description != null">description,</if>
+					<if test="landUsage != null">land_usage,</if>
+					<if test="areaCode1 != null">area_code1,</if>
+					<if test="areaName1 != null">area_name1,</if>
+					<if test="areaCode2 != null">area_code2,</if>
+					<if test="areaName2 != null">area_name2,</if>
+					<if test="areaCode3 != null">area_code3,</if>
+					<if test="areaName3 != null">area_name3,</if>
+					<if test="tradingAreaId != null">trading_area_id,</if>
+					<if test="tradingAreaName != null">trading_area_name,</if>
+					<if test="postcode != null">postcode,</if>
+					<if test="createPreson != null">create_preson,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="propertyRightName != null">property_right_name,</if>
+					<if test="status != null">status,</if>
+					<if test="pageUrl != null">page_url,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="newId != null">#{newId},</if>
+			<if test="sprayName != null">#{sprayName},</if>
+			<if test="cardName != null">#{cardName},</if>
+			<if test="dicAlias != null">#{dicAlias},</if>
+			<if test="extend1 != null">#{extend1},</if>
+			<if test="extend2 != null">#{extend2},</if>
+			<if test="spellName != null">#{spellName},</if>
+			<if test="spellHead != null">#{spellHead},</if>
+			<if test="oldName != null">#{oldName},</if>
+			<if test="developers != null">#{developers},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="address != null">#{address},</if>
+			<if test="saleAddress != null">#{saleAddress},</if>
+			<if test="describe != null">#{describe},</if>
+			<if test="openDate != null">#{openDate},</if>
+			<if test="handDate != null">#{handDate},</if>
+			<if test="dicTrait != null">#{dicTrait},</if>
+			<if test="achYear != null">#{achYear},</if>
+			<if test="certificate != null">#{certificate},</if>
+			<if test="propertyRight != null">#{propertyRight},</if>
+			<if test="wyType != null">#{wyType},</if>
+			<if test="achType != null">#{achType},</if>
+			<if test="landYear != null">#{landYear},</if>
+			<if test="parkingSpace != null">#{parkingSpace},</if>
+			<if test="prep != null">#{prep},</if>
+			<if test="parkNumber != null">#{parkNumber},</if>
+			<if test="houseNum != null">#{houseNum},</if>
+			<if test="floorNum != null">#{floorNum},</if>
+			<if test="schedule != null">#{schedule},</if>
+			<if test="loopLine != null">#{loopLine},</if>
+			<if test="dimension != null">#{dimension},</if>
+			<if test="accuracy != null">#{accuracy},</if>
+			<if test="property != null">#{property},</if>
+			<if test="occupyArea != null">#{occupyArea},</if>
+			<if test="builtUp != null">#{builtUp},</if>
+			<if test="plotRatio != null">#{plotRatio},</if>
+			<if test="greenRate != null">#{greenRate},</if>
+			<if test="averagePrice != null">#{averagePrice},</if>
+			<if test="heatingMode != null">#{heatingMode},</if>
+			<if test="propertyFee != null">#{propertyFee},</if>
+			<if test="description != null">#{description},</if>
+			<if test="landUsage != null">#{landUsage},</if>
+			<if test="areaCode1 != null">#{areaCode1},</if>
+			<if test="areaName1 != null">#{areaName1},</if>
+			<if test="areaCode2 != null">#{areaCode2},</if>
+			<if test="areaName2 != null">#{areaName2},</if>
+			<if test="areaCode3 != null">#{areaCode3},</if>
+			<if test="areaName3 != null">#{areaName3},</if>
+			<if test="tradingAreaId != null">#{tradingAreaId},</if>
+			<if test="tradingAreaName != null">#{tradingAreaName},</if>
+			<if test="postcode != null">#{postcode},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="propertyRightName != null">#{propertyRightName},</if>
+			<if test="status != null">#{status},</if>
+			<if test="pageUrl != null">#{pageUrl},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="HouseDirectoryPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			new_id = #{newId},
+			spray_name = #{sprayName},
+			card_name = #{cardName},
+			dic_alias = #{dicAlias},
+			extend1 = #{extend1},
+			extend2 = #{extend2},
+			spell_name = #{spellName},
+			spell_head = #{spellHead},
+			old_name = #{oldName},
+			developers = #{developers},
+			phone = #{phone},
+			address = #{address},
+			sale_address = #{saleAddress},
+			describe = #{describe},
+			open_date = #{openDate},
+			hand_date = #{handDate},
+			dic_trait = #{dicTrait},
+			ach_year = #{achYear},
+			certificate = #{certificate},
+			property_right = #{propertyRight},
+			wy_type = #{wyType},
+			ach_type = #{achType},
+			land_year = #{landYear},
+			parking_space = #{parkingSpace},
+			prep = #{prep},
+			park_number = #{parkNumber},
+			house_num = #{houseNum},
+			floor_num = #{floorNum},
+			schedule = #{schedule},
+			loop_line = #{loopLine},
+			dimension = #{dimension},
+			accuracy = #{accuracy},
+			property = #{property},
+			occupy_area = #{occupyArea},
+			built_up = #{builtUp},
+			plot_ratio = #{plotRatio},
+			green_rate = #{greenRate},
+			average_Price = #{averagePrice},
+			heating_mode = #{heatingMode},
+			property_fee = #{propertyFee},
+			description = #{description},
+			land_usage = #{landUsage},
+			area_code1 = #{areaCode1},
+			area_name1 = #{areaName1},
+			area_code2 = #{areaCode2},
+			area_name2 = #{areaName2},
+			area_code3 = #{areaCode3},
+			area_name3 = #{areaName3},
+			trading_area_id = #{tradingAreaId},
+			trading_area_name = #{tradingAreaName},
+			postcode = #{postcode},
+			create_preson = #{createPreson},
+			update_preson = #{updatePreson},
+			update_time = #{updateTime},
+			delete_flag = #{deleteFlag},
+			property_right_name = #{propertyRightName},
+			page_url = #{pageUrl},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="HouseDirectoryPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="newId != null">new_id = #{newId},</if>
+			<if test="sprayName != null">spray_name = #{sprayName},</if>
+			<if test="cardName != null">card_name = #{cardName},</if>
+			<if test="dicAlias != null">dic_alias = #{dicAlias},</if>
+			<if test="extend1 != null">extend1 = #{extend1},</if>
+			<if test="extend2 != null">extend2 = #{extend2},</if>
+			<if test="spellName != null">spell_name = #{spellName},</if>
+			<if test="spellHead != null">spell_head = #{spellHead},</if>
+			<if test="oldName != null">old_name = #{oldName},</if>
+			<if test="developers != null">developers = #{developers},</if>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="address != null">address = #{address},</if>
+			<if test="saleAddress != null">sale_address = #{saleAddress},</if>
+			<if test="describe != null">describe = #{describe},</if>
+			<if test="openDate != null">open_date = #{openDate},</if>
+			<if test="handDate != null">hand_date = #{handDate},</if>
+			<if test="dicTrait != null">dic_trait = #{dicTrait},</if>
+			<if test="achYear != null">ach_year = #{achYear},</if>
+			<if test="certificate != null">certificate = #{certificate},</if>
+			<if test="propertyRight != null">property_right = #{propertyRight},</if>
+			<if test="wyType != null">wy_type = #{wyType},</if>
+			<if test="achType != null">ach_type = #{achType},</if>
+			<if test="landYear != null">land_year = #{landYear},</if>
+			<if test="parkingSpace != null">parking_space = #{parkingSpace},</if>
+			<if test="prep != null">prep = #{prep},</if>
+			<if test="parkNumber != null">park_number = #{parkNumber},</if>
+			<if test="houseNum != null">house_num = #{houseNum},</if>
+			<if test="floorNum != null">floor_num = #{floorNum},</if>
+			<if test="schedule != null">schedule = #{schedule},</if>
+			<if test="loopLine != null">loop_line = #{loopLine},</if>
+			<if test="dimension != null">dimension = #{dimension},</if>
+			<if test="accuracy != null">accuracy = #{accuracy},</if>
+			<if test="property != null">property = #{property},</if>
+			<if test="occupyArea != null">occupy_area = #{occupyArea},</if>
+			<if test="builtUp != null">built_up = #{builtUp},</if>
+			<if test="plotRatio != null">plot_ratio = #{plotRatio},</if>
+			<if test="greenRate != null">green_rate = #{greenRate},</if>
+			<if test="averagePrice != null">average_Price = #{averagePrice},</if>
+			<if test="heatingMode != null">heating_mode = #{heatingMode},</if>
+			<if test="propertyFee != null">property_fee = #{propertyFee},</if>
+			<if test="description != null">description = #{description},</if>
+			<if test="landUsage != null">land_usage = #{landUsage},</if>
+			<if test="areaCode1 != null">area_code1 = #{areaCode1},</if>
+			<if test="areaName1 != null">area_name1 = #{areaName1},</if>
+			<if test="areaCode2 != null">area_code2 = #{areaCode2},</if>
+			<if test="areaName2 != null">area_name2 = #{areaName2},</if>
+			<if test="areaCode3 != null">area_code3 = #{areaCode3},</if>
+			<if test="areaName3 != null">area_name3 = #{areaName3},</if>
+			<if test="tradingAreaId != null">trading_area_id = #{tradingAreaId},</if>
+			<if test="tradingAreaName != null">trading_area_name = #{tradingAreaName},</if>
+			<if test="postcode != null">postcode = #{postcode},</if>
+			<if test="createPreson != null">create_preson = #{createPreson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="propertyRightName != null">property_right_name = #{propertyRightName},</if>
+			<if test="pageUrl != null">page_url = #{pageUrl},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateDeleteFlag" parameterType="java.util.Map">
+        UPDATE <include refid="tableNameUpdate"/> SET 
+          delete_flag = #{deleteFlag} WHERE id in 
+	    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 				#{item}  
+		</foreach>
+    </update>
+	
+	
+	<select id="getByNamePreMatchding" resultMap="beanMap">
+		SELECT <include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<where>
+			<if test="deleteFlag != null and deleteFlag != ''"> AND a.delete_flag = #{deleteFlag}</if>
+			<if test="name != null and name != ''">AND a.spray_name like CONCAT(#{name},'%')</if>
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT 10
+	</select>
+	
+	<select id="getByNameOldHouse" resultMap="beanMap">
+	 SELECT <include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<where>
+			<if test="deleteFlag != null and deleteFlag != ''"> AND a.delete_flag = #{deleteFlag}</if>
+			<if test="name != null and name!= ''"> AND a.spray_name like concat('%',#{name},'%') </if>
+		</where>
+	</select>
+</mapper>

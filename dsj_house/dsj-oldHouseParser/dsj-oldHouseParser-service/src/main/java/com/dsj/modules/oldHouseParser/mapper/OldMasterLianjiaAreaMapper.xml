@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.OldMasterLianjiaAreaDaoImpl">
+    
+    <sql id="tableName"> dsj_old_master_lianjia_area a </sql>
+    <sql id="tableNameUpdate"> dsj_old_master_lianjia_area </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.area_ame AS "areaAme",
+		a.area_code AS "areaCode",
+		a.area_list_url AS "areaListUrl",
+		a.house_count AS "houseCount",
+		a.status AS "status",
+		a.trade_name AS "tradeName",
+		a.trade_id AS "tradeId",
+		a.trade_list_url AS "tradeListUrl"
+	</sql>
+	
+	<resultMap id="beanMap" type="OldMasterLianjiaAreaPo">
+		<id column="id" property="id" />
+		<result column="area_ame" property="areaAme" />
+		<result column="area_code" property="areaCode" />
+		<result column="area_list_url" property="areaListUrl" />
+		<result column="house_count" property="houseCount" />
+		<result column="status" property="status" />
+		<result column="trade_name" property="tradeName" />
+		<result column="trade_id" property="tradeId" />
+		<result column="trade_list_url" property="tradeListUrl" />
+	</resultMap>
+	
+	<sql id="oldMasterLianjiaAreaJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+    
+    
+    	<if test="fatherId != null"> AND a.father_id = #{fatherId}</if>
+		<if test="areaAme != null and areaAme!= ''"> AND a.area_ame = #{areaAme}</if>
+		<if test="areaCode != null and areaCode!= ''"> AND a.area_code = #{areaCode}</if>
+		<if test="areaListUrl != null and areaListUrl!= ''"> AND a.area_list_url = #{areaListUrl}</if>
+		<if test="houseCount != null and houseCount!= ''"> AND a.house_count = #{houseCount}</if>
+		<if test="tradeName != null and tradeName!= ''"> AND a.trade_name = #{tradeName}</if>
+		<if test="tradeId != null and tradeId!= ''"> AND a.trade_id = #{tradeId}</if>
+		<if test="tradeListUrl != null and tradeListUrl!= ''"> AND a.trade_list_url = #{tradeListUrl}</if>
+	</sql>
+    
+	<select id="getById" resultType="OldMasterLianjiaAreaPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="oldMasterLianjiaAreaJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OldMasterLianjiaAreaPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			area_ame,
+			area_code,
+			area_list_url,
+			house_count,
+			status,
+			trade_name,
+			trade_id,
+			trade_list_url
+		) VALUES (
+			#{id},
+			#{areaAme},
+			#{areaCode},
+			#{areaListUrl},
+			#{houseCount},
+			#{status},
+			#{tradeName},
+			#{tradeId},
+			#{tradeListUrl}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OldMasterLianjiaAreaPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="areaAme != null">area_ame,</if>
+					<if test="areaCode != null">area_code,</if>
+					<if test="areaListUrl != null">area_list_url,</if>
+					<if test="houseCount != null">house_count,</if>
+					<if test="status != null">status,</if>
+					<if test="tradeName != null">trade_name,</if>
+					<if test="tradeId != null">trade_id,</if>
+					<if test="tradeListUrl != null">trade_list_url,</if>
+					<if test="fatherId != null">father_id,</if>
+					
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="areaAme != null">#{areaAme},</if>
+			<if test="areaCode != null">#{areaCode},</if>
+			<if test="areaListUrl != null">#{areaListUrl},</if>
+			<if test="houseCount != null">#{houseCount},</if>
+			<if test="status != null">#{status},</if>
+			<if test="tradeName != null">#{tradeName},</if>
+			<if test="tradeId != null">#{tradeId},</if>
+			<if test="tradeListUrl != null">#{tradeListUrl},</if>
+			<if test="fatherId != null">#{fatherId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="OldMasterLianjiaAreaPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			area_ame = #{areaAme},
+			area_code = #{areaCode},
+			area_list_url = #{areaListUrl},
+			house_count = #{houseCount},
+			trade_name = #{tradeName},
+			trade_id = #{tradeId},
+			trade_list_url = #{tradeListUrl},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OldMasterLianjiaAreaPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+    	 	<if test="status != null">status = #{status},</if>
+			<if test="areaAme != null">area_ame = #{areaAme},</if>
+			<if test="areaCode != null">area_code = #{areaCode},</if>
+			<if test="areaListUrl != null">area_list_url = #{areaListUrl},</if>
+			<if test="houseCount != null">house_count = #{houseCount},</if>
+			<if test="tradeName != null">trade_name = #{tradeName},</if>
+			<if test="tradeId != null">trade_id = #{tradeId},</if>
+			<if test="tradeListUrl != null">trade_list_url = #{tradeListUrl},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

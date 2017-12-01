@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<script type="text/javascript" src="js/fles.js"></script>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<nav class="navbar navbar-default dsj_navbar_top navbar-static-top">
+
+		<div class="container">
+			<div class="row">
+				<ol class="breadcrumb dsj_breadcrumb">
+					<li><a href="#">大搜家首页</a></li>
+					<li><a href="ershou.html">二手房列表</a></li>
+					<li class="active">二手房编辑</li>
+				</ol>
+			</div>
+			<div class="row">
+				<form id="dsj_form" class="form-horizontal dsj_form">
+					<script id="master_add" type="text/x-handlebars-template">
+          <h4 class="dsj_title">房源基本信息</h4>
+		 <div class="form-group">
+            <label for="housename"  class="col-sm-2 control-label">备案编号</label>
+            <div class="col-sm-2">
+			<input type="hidden" value="{{oldMaster.id}}" name="id">
+              <input type="text" name="recordNo" value="{{oldMaster.recordNo}}" class="form-control"  placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">房源ID</label>
+            <div class="col-sm-2">
+              <input  class="form-control" value="{{oldMaster.houseId}}" placeholder="" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="housename" class="col-sm-2 control-label"><span class="dsj_warn">*</span>小区名称</label>
+            <div class="col-sm-2">
+         		<select id="dicSelectId" class="form-control" name="dicId" class="js-example-basic-multiple" data-validate="required" >
+						 <option value="{{dic.id}}">{{dic.sprayName}}</option>
+				</select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label"><span class="dsj_warn"></span>房屋户型</label>
+            <div class="col-sm-1">
+              <select  name="room" class="form-control"  placeholder="室">
+				{{#each roomMap}}
+					{{#compare  ../oldMaster.room "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}室</option>
+					 {{else}}
+						 <option value="{{@key}}">{{this}}室</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select  name="hall" class="form-control" placeholder="厅">
+				<option></option>
+               {{#each roomMap}}
+              	 	{{#compare  ../oldMaster.hall "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}室</option>
+					 {{else}}
+						 <option value="{{@key}}">{{this}}厅</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select  name="toilet" class="form-control" placeholder="卫生间">
+				<option></option>
+                {{#each roomMap}}
+					{{#compare  ../oldMaster.toilet "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}卫</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}卫</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+			 <div class="col-sm-1">
+              <select  name="kitchen" class="form-control" placeholder="厨">
+				<option></option>
+                {{#each roomMap}}
+					{{#compare  ../oldMaster.kitchen "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}厨</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}厨</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+          </div>
+		<div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label"><span class="dsj_warn">*</span>房屋情况</label>
+            <div class="col-sm-1">
+              <select  name="houseType" class="form-control">
+ 				<option value="">房屋类型</option>
+				{{#each houseTypeMap}}
+					{{#compare  ../oldMaster.houseType "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select  name="renovation"  class="form-control" >
+				<option value="">装修情况</option>
+               {{#each renvationMap}}
+              		{{#compare  ../oldMaster.renovation "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select   name="orientations" class="form-control" >
+				<option value="">朝向</option>
+                {{#each orientationsMap}}
+              	 	{{#compare  ../oldMaster.orientations "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label"><span class="dsj_warn">*</span>楼层</label>
+            <div class="col-sm-1">
+              <input name="floor" value="{{oldMaster.floor}}" id="floor" class="form-control"  placeholder="楼" data-validate="required,lt(floorNum)">
+            </div>
+            <div class="col-sm-1">
+              <input name="floorNum"  value="{{oldMaster.floorNum}}" id="floorNum" class="form-control"  placeholder="共几楼" data-validate="required,gt(floor)">
+            </div>
+  			
+			 <div class="col-sm-1">
+             	<select  name="floorType" class="form-control" data-validate="required">
+ 				<option value="">楼层类型</option>
+				{{#each floorTypeMap}}
+					{{#compare  ../oldMaster.floorType "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}</option>
+					{{/compare}}
+				{{/each}}
+              </select>	
+            </div>
+<div class="col-sm-1">
+               <input id="floor_v" value="{{oldMaster.floor}}" style="width: 0px; border: 0px;" data-validate="required,isNumber"/>
+            </div>
+          </div>
+		<div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label">户室号</label>
+            <div class="col-sm-2">
+              <div class="input-group">
+                <input name="roomNumber1" value="{{oldMaster.roomNumber1}}" style="width: 100px;" class="form-control" aria-label="...">
+                <span class="input-group-btn">
+                  <select  name="roomNumber1Cell" class="form-control" style="width: 100px;">
+					{{#each roomNo1Map}}
+              	 	{{#compare  ../oldMaster.roomNumber1Cell "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}</option>
+					{{/compare}}
+					{{/each}} 
+				 </select>
+                </span>
+
+				<input name="roomNumber2" value="{{oldMaster.roomNumber2}}"   style="width: 100px;margin-left:10px;" class="form-control" aria-label="...">
+                <span class="input-group-btn">
+                  <select  name="roomNumber2Cell" class="form-control" style="width: 100px;">
+					{{#each roomNo1Map}}
+              	 	 	{{#compare  ../oldMaster.roomNumber2Cell "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 	{{else}}
+						   <option value="{{@key}}">{{this}}</option>
+						{{/compare}}
+					{{/each}} 
+				 </select>
+                </span>
+				
+				<input name="roomNumber" value="{{oldMaster.roomNumber}}"   style="width: 100px;margin-left:10px;" placeholder="室" class="form-control" aria-label="...">
+              </div>
+            </div>
+          </div>
+          
+
+          </div>
+          <div class="form-group">
+            <label for="area" class="col-sm-2 control-label"><span class="dsj_warn">*</span>建筑面积</label>
+            <div class="col-sm-1">
+              <input name="buildArea" onblur="setUnitPrice()" id="buildAreaId" value="{{oldMaster.buildArea}}" class="form-control" id="area" placeholder="">
+            </div>
+<div class="col-sm-1" style="line-height:34px;">
+              平米
+            </div>
+          </div>
+ 		 <div class="form-group">
+            <label for="area" class="col-sm-2 control-label"><span class="dsj_warn">*</span>建筑年代</label>
+            <div class="col-sm-1">
+              <input name="buildYear" value="{{oldMaster.buildYear}}"  class="form-control" id="area" placeholder="" data-validate="required">
+            </div>
+<div class="col-sm-1" style="line-height:34px;">
+              年
+            </div>
+          </div>
+		<div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label"><span class="dsj_warn">*</span>产权</label>
+            <div class="col-sm-1">
+              <select  name="certificate" class="form-control">
+ 				<option ></option>
+				{{#each certificateMap}}
+              	  	{{#compare  ../oldMaster.certificate "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}</option>
+					{{/compare}}
+				{{/each}}
+              </select>
+            </div>
+		 </div>
+			
+          <h4 class="dsj_title">价格信息</h4>
+         <div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label"><span class="dsj_warn">*</span>房龄类型</label>
+            <div class="col-sm-1">
+               <select  name="certificateType" class="form-control" data-validate="required">
+ 				<option value="">房龄类型</option>
+				{{#each certificateTypeMap}}
+					{{#compare  ../oldMaster.certificateType "=="  @key}}
+              			  <option  selected="selected" value="{{@key}}">{{this}}</option>
+					 {{else}}
+						   <option value="{{@key}}">{{this}}</option>
+					{{/compare}}
+				{{/each}}
+              </select>	
+            </div>
+            
+         </div>
+		
+		<div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label"><span class="dsj_warn"></span>唯一住房</label>
+            <div class="col-sm-6">
+			{{#each yesNoMap}}
+              <label class="radio-inline">
+					{{#compare  ../oldMaster.houseOnly "=="  @key}}
+ 						<input type="radio"name="houseOnly" checked="checked" id="inlineRadio1" value="{{@key}}"> {{this}}
+					 {{else}}
+						  <input type="radio"name="houseOnly"  id="inlineRadio1" value="{{@key}}"> {{this}}
+					{{/compare}}
+              </label>
+			{{/each}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="area" class="col-sm-2 control-label"><span class="dsj_warn">*</span>售价</label>
+            <div class="col-sm-1">
+              <input name="price" onblur="setUnitPrice()" id="priceId" value="{{oldMaster.price}}" class="form-control" data-validate="required" placeholder="万元">
+            </div>
+          </div>
+		 <div class="form-group">
+            <label for="area" class="col-sm-2 control-label"><span class="dsj_warn"></span>首付</label>
+            <div class="col-sm-1">
+              <input name="payments" value="{{oldMaster.payments}}" class="form-control"  placeholder="万元" data-validate="isNumber9999">
+            </div>
+          </div>
+
+ 		<div class="form-group">
+            <label for="area" class="col-sm-2 control-label"><span class="dsj_warn">*</span>均价</label>
+            <div class="col-sm-1">
+              <input name="unitPrice"  value="{{oldMaster.unitPrice}}"  id="unitPriceId" class="form-control"  placeholder="元/平米">
+            </div>
+          </div>
+		
+		<div class="form-group">
+            <label for="area" class="col-sm-2 control-label"><span class="dsj_warn"></span>业主姓名</label>
+            <div class="col-sm-1">
+              <input name="ownerName"  value="{{oldMaster.ownerName}}" class="form-control"  >
+            </div>
+          </div>
+		<div class="form-group">
+            <label for="area" class="col-sm-2 control-label"><span class="dsj_warn"></span>业主电话</label>
+            <div class="col-sm-1">
+              <input name="ownerPhone"  value="{{oldMaster.ownerPhone}}"   class="form-control" >
+            </div>
+          </div>	
+
+		<div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label"><span class="dsj_warn"></span>是否有钥匙</label>
+            <div class="col-sm-6">
+			{{#each yesNoMap}}
+              <label class="radio-inline">
+					{{#compare  ../oldMaster.isKey "=="  @key}}
+ 						<input type="radio"name="isKey" checked="checked" id="inlineRadio1" value="{{@key}}"> {{this}}
+					 {{else}}
+						  <input type="radio"name="isKey"  id="inlineRadio1" value="{{@key}}"> {{this}}
+					{{/compare}}
+              </label>
+			{{/each}}
+            </div>
+          </div>
+
+          <h4 class="dsj_title">详细信息</h4>
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">房屋特色</label>
+            <div class="col-sm-10">
+              <div class="dropdown dsj_tag">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dsj_dropdown" aria-haspopup="true" aria-expanded="true">
+                添加房屋特色标签
+                <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <p>注：请至少选择1个最多可以选4个服务类型标签</p>
+                  <div class="pl12">
+					{{#each featuresMap}}
+                    <label class="checkbox-inline">
+                      
+						{{#compare  ../oldMaster.features "=="  @key}}
+ 							<input  onclick="featuresNum4(this)"  type="checkbox" id="inlineCheckbox1" name="features" checked="checked" id="inlineRadio1" value="{{@key}}"> {{this}}
+					 	{{else}}
+						   <input  onclick="featuresNum4(this)"  type="checkbox"  name="features" id="inlineCheckbox1" value="{{@key}}"> {{this}}
+						{{/compare}}
+                    </label>
+                   	{{/each}}
+                  </div>
+                </div>
+					{{#each featuresMap}}
+						{{#compare  ../oldMaster.features "=="  @key}}
+ 							  <span data-id="dsj_tag_391">{{this}}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
+						{{/compare}}
+                   	{{/each}}
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="text"   class="col-sm-2 control-label"><span class="dsj_warn">*</span>核心卖点</label>
+            <div class="col-sm-10">
+              <ins></ins>
+              <input type="" value="{{oldMaster.sellingPoint}}" name="sellingPoint" data-validate="required,minLength10" maxlength="25" class="form-control">
+            </div>
+          </div>
+			<div class="form-group">
+            <label for="text"   class="col-sm-2 control-label"><span class="dsj_warn">*</span>推荐标语</label>
+            <div class="col-sm-10">
+              <ins></ins>
+              <input value="{{oldMaster.title}}" name="title" data-validate="required,maxLength50,minLength10" maxlength="50" class="form-control">
+            </div>
+          </div>
+			<div class="form-group">
+            <label for="text" class="col-sm-2 control-label">房源详情</label>
+            <div class="col-sm-10">
+              <textarea id="text"  name="houseDetail" class="form-control" rows="3"
+					onchange="this.value=this.value.substring(0,200)" 
+					onkeydown="this.value=this.value.substring(0,200)" 
+					onkeyup="this.value=this.value.substring(0,200)">{{oldMaster.houseDetail}}</textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="text" class="col-sm-2 control-label">业主心态</label>
+            <div class="col-sm-10">
+              <textarea id="text" value="" name="owneMentality" class="form-control" rows="3"
+					onchange="this.value=this.value.substring(0,200)" 
+					onkeydown="this.value=this.value.substring(0,200)" 
+					onkeyup="this.value=this.value.substring(0,200)">{{oldMaster.owneMentality}}</textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="text" class="col-sm-2 control-label">小区配套</label>
+            <div class="col-sm-10">
+              <textarea id="text"  name="villageMatching" class="form-control" rows="3"
+					onchange="this.value=this.value.substring(0,200)" 
+					onkeydown="this.value=this.value.substring(0,200)" 
+					onkeyup="this.value=this.value.substring(0,200)">{{oldMaster.villageMatching}}</textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="text" class="col-sm-2 control-label">服务介绍</label>
+            <div class="col-sm-10">
+              <textarea id="text"  name="serviceIntro" class="form-control" rows="3"
+					onchange="this.value=this.value.substring(0,200)" 
+					onkeydown="this.value=this.value.substring(0,200)" 
+					onkeyup="this.value=this.value.substring(0,200)">{{oldMaster.serviceIntro}}</textarea>
+            </div>
+          </div>
+
+ 		<div class="row dsj_button_group">
+            <div class="col-sm-12">
+              <a class="btn btn-default" href="#" role="button">取消</a>
+              <button class="btn btn-default" onclick="saveOrUpdate()" type="button">保存</button>
+              <input class="btn btn-default" onclick="saveOrUpdateNext()"  type="button" value="下一步">
+            </div>
+          </div>
+ 			</script>
+				</form>
+			</div>
+		</div>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="js/jquery.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.js"></script>
+		<script src="js/handlebars.js"></script>
+		<script src="js/handlebars-utils.js"></script>
+		<script src="js/dsj_tags.js"></script>
+	<script src="js/common/base.js"></script>
+		<script src="lib/validate/verify.notify.js"></script>
+		<script src="lib/validate/verify.notify.ext.js"></script>
+		<script src="js/oldHouse/master_add.js"></script>
+		<script src="js/formUtils.js"></script>
+		<script type="text/javascript">
+   
+    $(function(){
+     	var id=GetQueryString("id");
+    	  var option = {
+    	          url : _url+"/back/oldHouse/master/master_edit"
+    	     }
+    	     var fun = new $.fn.masterAdd(option);
+    	  fun._init(id);
+    	  
+    	  
+    })
+    </script>
+		<script src="lib/select2/4.0.3/js/select2.min.js""></script>
+		<script src="js/require.js"></script>
+		<script src="js/common/header.js"></script>
+</body>
+</html>

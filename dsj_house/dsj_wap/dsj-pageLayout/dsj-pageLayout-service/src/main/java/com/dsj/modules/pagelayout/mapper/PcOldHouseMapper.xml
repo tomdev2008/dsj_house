@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.PcOldHouseDaoImpl">
+    
+    <sql id="tableName"> dsj_pc_old_house a </sql>
+    <sql id="tableNameUpdate"> dsj_pc_old_house </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.link_address AS "linkAddress",
+		a.picture AS "picture",
+		a.agent_id AS "agentId",
+		a.object_id AS "objectId",
+		a.recommend AS "recommend",
+		a.label_id AS "labelId",
+		a.oldHouse_name AS "oldHouseName"
+	</sql>
+	
+	<resultMap id="beanMap" type="PcOldHousePo">
+		<id column="id" property="id" />
+		<result column="link_address" property="linkAddress" />
+		<result column="picture" property="picture" />
+		<result column="agent_id" property="agentId" />
+		<result column="object_id" property="objectId" />
+		<result column="recommend" property="recommend" />
+		<result column="label_id" property="labelId" />
+		<result column="oldHosue_name" property="oldHouseName" />
+	</resultMap>
+	
+	<sql id="pcOldHouseJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+         <if test="id != null and id!= ''">AND a.id =#{id}</if>	
+		<if test="linkAddress != null and linkAddress!= ''"> AND a.link_address = #{linkAddress}</if>
+		<if test="picture != null and picture!= ''"> AND a.picture = #{picture}</if>
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="objectId != null and objectId!= ''"> AND a.object_id = #{objectId}</if>
+		<if test="recommend != null and recommend!= ''"> AND a.recommend = #{recommend}</if>
+		<if test="labelId != null and labelId!= ''"> AND a.label_id = #{labelId}</if>
+		<if test="oldHouseName != null and oldHouseName!= ''"> AND a.oldHouse_name = #{oldHouseName}</if>
+	</sql>
+    
+	<select id="getById" resultType="PcOldHousePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="pcOldHouseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="PcOldHousePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			link_address,
+			picture,
+			agent_id,
+			object_id,
+			label_id,
+			recommend,
+			oldHosue_name
+		) VALUES (
+			#{id},
+			#{linkAddress},
+			#{picture},
+			#{agentId},
+			#{objectId},
+			#{recommend},
+			#{labelId},
+			#{oldHouseName}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="PcOldHousePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="linkAddress != null">link_address,</if>
+					<if test="picture != null">picture,</if>
+					<if test="agentId !=null">agent_id,</if>
+					<if test="objectId !=null">object_id,</if>
+					<if test="recommend != null">recommend,</if>
+					<if test="labelId != null">label_id,</if>
+					<if test="oldHouseName != null">oldHouse_name,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="linkAddress != null">#{linkAddress},</if>
+			<if test="picture != null">#{picture},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="objectId !=null">#{objectId},</if>
+			<if test="recommend != null">#{recommend},</if>
+			<if test="labelId != null">#{label_id},</if>
+			<if test="oldHouseName != null">#{oldHouse_name},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="PcOldHousePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			link_address = #{linkAddress},
+			picture = #{picture},
+			agent_id=#{agentId},
+			object_id=#{objectId},
+			recommend = #{recommend},
+			label_id=#{labelId},
+			oldHouse_name=#{oldHouseName},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="PcOldHousePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="objectId != null">object_id = #{objectId},</if>
+			<if test="recommend != null">recommend = #{recommend},</if>
+			<if test="labelId != null">label_id = #{labelId},</if>
+			<if test="oldHouseName != null">oldHouse_name = #{oldHouseName},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="updateOldHousePage" parameterType="PcOldHousePo">
+	    UPDATE dsj_pc_old_house_page
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="objectId != null">object_id = #{objectId},</if>
+			<if test="recommend != null">recommend = #{recommend},</if>
+			<if test="labelId != null">label_id = #{labelId},</if>
+			<if test="oldHouseName != null">oldHouse_name = #{oldHouseName},</if>
+    	</set>
+    	WHERE pid = #{id}  
+	</update>
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getLableOldHouseList" resultType="com.dsj.modules.pagelayout.vo.NewHouseLabelVo">
+	  SELECT
+	      d.label_id AS labelId,
+		  d.id AS pcOldHouseId,
+		  d.oldHouse_name AS name,
+		  d.object_id AS oldHouseId,
+		  d.picture AS picture,
+          d.recommend,
+		  g.avatar_url AS avatarUrl,
+          i.total_score AS totalScore,
+          ag.name AS agName,
+          ag.small_icon as smallIcon,
+          ag.big_icon as bigIcon,
+		  p.`comment` AS `comment`,
+		  p.agent_name AS agentName,
+		  d.agent_id AS agentId,
+		  p.link_address AS linkAddress,
+		  d.link_address as address,
+		  m.price,
+          h.typegroupname AS typeGroupName,
+          m.build_area AS occupyArea,
+		  m.room,
+          m.hall,
+          m.toilet,
+          m.company_types AS companyTypes
+		FROM
+			dsj_pc_old_house d
+        LEFT JOIN old_house_master m ON d.object_id= m.house_id
+        LEFT JOIN house_group_type h ON h.id = m.orientations
+        LEFT JOIN dsj_house_directory hd ON hd.id= m.dic_id
+        LEFT JOIN dsj_pc_agent_old p ON p.id=d.agent_id
+        LEFT JOIN dsj_agent g ON g.user_id = p.agent_id
+        LEFT JOIN dsj_agent_info i ON i.agent_id=g.agent_code
+        LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score  
+	  </select>
+	  
+	  <select id="getLableOldHouseListPage" resultType="com.dsj.modules.pagelayout.vo.NewHouseLabelVo">
+	  SELECT
+	      d.label_id AS labelId,
+		  d.id AS pcOldHouseId,
+		  d.oldHouse_name AS name,
+		  d.object_id AS oldHouseId,
+		  d.picture AS picture,
+          d.recommend,
+		  g.avatar_url AS avatarUrl,
+		  g.user_id AS userId,
+          i.total_score AS totalScore,
+          ag.name AS agName,
+          ag.small_icon as smallIcon,
+          ag.big_icon as bigIcon,
+          dm.mobile AS agentPhone,
+	      u.username as userName,
+		  p.`comment` AS `comment`,
+		  p.agent_name AS agentName,
+		  d.agent_id AS agentId,
+		  p.link_address AS linkAddress,
+		  d.link_address as address,
+		  m.price,
+          h.typegroupname AS typeGroupName,
+          m.build_area AS occupyArea,
+		  m.room,
+          m.hall,
+          m.toilet,
+          m.company_types AS companyTypes
+		FROM
+			dsj_pc_old_house_page d
+        LEFT JOIN old_house_master m ON d.object_id= m.house_id
+        LEFT JOIN house_group_type h ON h.id = m.orientations
+        LEFT JOIN dsj_house_directory hd ON hd.id= m.dic_id
+        LEFT JOIN dsj_pc_agent_old p ON p.id=d.agent_id
+        LEFT JOIN dsj_agent g ON g.user_id = p.agent_id
+        LEFT JOIN dsj_mobile dm ON dm.agent_id=g.id
+        LEFT JOIN dsj_user u ON u.id=g.user_id
+        LEFT JOIN dsj_agent_info i ON i.agent_id=g.agent_code
+        LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score  
+	  </select>
+	  
+	  <select id="getWarrantList" resultType="com.dsj.modules.pagelayout.vo.WarrantOriginVo">
+  	   SELECT
+          p.id,
+          p.link_address as linkAddress,
+		  p.picture,
+		  p.label,
+		  p.price,
+		  p.title
+		FROM
+			dsj_pc_warrant p
+  	</select>
+  	
+  	<select id="getWarrantListPage" resultType="com.dsj.modules.pagelayout.vo.WarrantOriginVo">
+  	   SELECT
+          p.id,
+          p.link_address as linkAddress,
+		  p.picture,
+		  p.label,
+		  p.price,
+		  p.title
+		FROM
+			dsj_pc_warrant_page p
+  	</select>
+  	
+  	<select id="getWarrant" parameterType="java.util.Map" resultType="com.dsj.modules.pagelayout.vo.WarrantOriginVo">
+  	 SELECT
+          p.id,
+          p.link_address as linkAddress,
+		  p.picture,
+		  p.label,
+		  p.price,
+		  p.title
+		FROM
+			dsj_pc_warrant p
+			WHERE p.id = #{id}
+  	</select>
+  	
+  	<update id="updateWarrant" parameterType="com.dsj.modules.pagelayout.vo.WarrantOriginVo">
+  	    UPDATE dsj_pc_warrant
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="label != null">label = #{label},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="title != null">title = #{title},</if>
+    	</set>
+    	WHERE id = #{id}  
+  	</update>
+  	
+  	<select id="getWarrantVo" parameterType="java.util.Map" resultType="com.dsj.modules.pagelayout.vo.WarrantOriginVo">
+  	    SELECT
+          p.id,
+          p.link_address as linkAddress,
+		  p.picture,
+		  p.label,
+		  p.price,
+		  p.title
+		FROM
+			dsj_pc_warrant p
+			WHERE p.id = #{id}
+  	</select>
+  	
+  	<update id="updateWarrantPage" parameterType="com.dsj.modules.pagelayout.vo.WarrantOriginVo">
+  	    UPDATE dsj_pc_warrant_page  
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="label != null">label = #{label},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="title != null">title = #{title},</if>
+    	</set>
+    	WHERE pid = #{id}  
+  	</update>
+	
+	 <select id="getBanner" resultType="com.dsj.modules.pagelayout.vo.NewHouseLabelVo">
+	    select
+	     p.id,
+	     p.link_address as linkAddress, 
+	     p.picture
+	    FROM
+	    dsj_pc_banner p
+	 </select>
+	 
+	 <update id="updateBanner" parameterType="com.dsj.modules.pagelayout.vo.WarrantOriginVo">
+  	    UPDATE dsj_pc_banner
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+    	</set>
+    	WHERE id = #{id}  
+  	</update>
+  	<update id="updateBannerPage" parameterType="com.dsj.modules.pagelayout.vo.NewHouseLabelVo">
+  	    UPDATE dsj_pc_banner_page  
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+    	</set>
+    	WHERE pid = #{id}  
+  	</update>
+</mapper>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<script type="text/javascript" src="js/fles.js"></script>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="css/daterangepicker.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/album_pc.css">
+<link rel="stylesheet" type="text/css" href="css/swiper-3.4.2.min.css">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div class="container">
+		<div class="row"></div>
+		<div class="row">
+			<h4 class="dsj_title">业内动态</h4>
+		</div>
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active"><a onclick="houseTag();" data-toggle="tab">楼盘动态</a></li>
+			<li><a onclick="agentTag();" data-toggle="tab">经纪人动态</a></li>
+		</ul>
+		<div id="container_id" class="container_id"></div>
+		<script id="dsj_building_news" type="text/x-handlebars-template">
+      <div class="row dsj_content dsj_responsible_row">
+        <div class="col-xs-12">
+          <p class="responsible-info">
+            	{{userName}} · {{shortName}}  
+				{{#timeSrt-T  updateTime}}
+				{{/timeSrt-T}}
+          </p>
+        </div>
+        <div class="col-sm-10 col-xs-12">
+          <p class="responsible-title">
+           {{title}}<span class="responsible-sub-title"> </span>
+          </p>
+          <p class="dsj_update_content" data-content="{{content}}" data-mark="more">
+			{{#contentLimits content 150 }}
+				{{#convertHtml content}}{{/convertHtml}}
+			{{/contentLimits}}
+          </p>
+			{{#contentLengthLimits content 150 }}
+				<span class="dsj_update_content_more">展开全文</span>
+			{{/contentLengthLimits}}
+        </div>
+		{{#if pictureUrl}}
+        <div class="col-sm-2 col-xs-12">
+          <div class="responsible-img">
+            <img class="img-responsive" src="{{pictureUrl}}">
+          </div>
+        </div>
+		{{/if}}
+      </div>
+	</script>
+		<script id="dsj_page_template" type="text/x-handlebars-template">
+      <div class="row">
+        <div id="dsj_list_page" class="col-xs-12">
+          <nav aria-label="page" class="pull-right">
+            <p class="dsj_page"><span class="dsj_current_page">{{currentPage}}</span>/{{totalPage}}</p>
+            <ul class="pagination">
+              <li><a class="prev" aria-label="Previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
+              <li><a class="next" aria-label="Next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </script>
+
+		<!-- 经纪人动态 -->
+		<script id="dsj_agent_news" type="text/x-handlebars-template">
+      <div class="row dsj_update_detail dsj_news_main">
+        <div class="col-xs-1">
+          <img class="img-responsive" src="{{avatarUrl}}">
+        </div>
+        <div class="col-xs-11">
+          <p class="dsj_update_title">
+           {{name}}—{{shortName}}
+          </p>
+          <p class="dsj_update_area">
+            主营小区：{{mainCommunity}}
+          </p>
+          <p class="dsj_update_content" data-content="{{content}}" data-mark="more">
+			{{#contentLimits content 150 }}
+				{{#convertHtml content}}{{/convertHtml}}
+			{{/contentLimits}}
+          </p>
+			{{#contentLengthLimits content 150 }}
+				<span class="dsj_update_content_more">展开全文</span>
+			{{/contentLengthLimits}}
+		{{#if pictures}}
+          <div class="dsj_update_pic row">
+			{{#each picturesArr}}
+        		<div class="col-xs-4">
+              		<img class="img-responsive" style="height: 95px;" src="{{this}}?x-oss-process=image/resize,m_mfit,h_95,w_90" data-src="{{this}}">
+            	</div>
+       		{{/each}}
+          </div>
+		{{/if}}
+          <p class="dsj_update_time dsj_news_time clearfix">
+			{{#timeSrt-T  createTime}}
+			{{/timeSrt-T}}
+            <span class="pull-right">
+              <a class="dsj_comment"><span class="glyphicon _comment" aria-hidden="true"></span>(<span class="dsj_num">{{commentNum}}</span>)</a>
+              <a class="dsj_thumbup"><span   onclick="cllickLike(this,{{id}},1,1);" class="glyphicon _thumbs-up" aria-hidden="true"></span>(<span class="dsj_num">{{likeNum}}</span>)</a>
+              <a class="dsj_thumbdown"><span onclick="cllickLike(this,{{id}},1,2);" class="glyphicon _thumbs-down" aria-hidden="true"></span>(<span class="dsj_num">{{negativeNum}}</span>)</span>
+            </a>
+          </p>
+          <div class="dsj_publish clearfix hide">
+            <textarea class="form-control" onkeydown="checkMaxInput(this,100)" placeholder="@{{realname}}"  
+            	onkeyup="checkMaxInput(this,100)" onfocus="checkMaxInput(this,100)" 
+            	onblur="checkMaxInput(this,100);" rows="3"></textarea>
+            <p>
+              <div class="pull-right">
+                	还能再输入<span class="textNum">100</span>字
+                <button type="button" onclick="publishComment(this,{{id}},0);" class="primary">
+                  <span class="glyphicon" aria-hidden="true"></span>
+                	  发布
+                </button>
+              </div>
+            </p>
+          </div>
+          <p class="dsj_all_reply hide">
+			<a class="toggle_reply" data-id="{{id}}" data-type-id="1" >全部回复 (<span class="dsj_num">{{commentNum}}</span>)</a>
+		  </p>
+          <div class="dsj_reply hide">
+          </div>
+        </div>
+      </div>
+    </script>
+		<script id="dsj_comment_template" type="text/x-handlebars-template">
+      <div class="row dsj_update_detail">
+        <div class="col-xs-1">
+          <img class="img-responsive" src="{{commentUserAvatar}}">
+        </div>
+        <div class="col-xs-11">
+          <p class="dsj_reply_name">
+            {{commentUserName}}
+			{{#if replyUserName }}
+				@<span class="at_name">{{replyUserName}}</span>
+			{{/if}}
+          </p>
+          <p class="dsj_reply_content">
+            	{{#convertHtml content}}{{/convertHtml}}
+          </p>
+          <p class="dsj_update_time clearfix">
+            {{#timeSrt-T  createTime}}
+			{{/timeSrt-T}}
+            <span class="pull-right">
+              <a class="dsj_comment"><span class="glyphicon huifu" aria-hidden="true">回复</span></a>
+              <a class="dsj_thumbup"><span  onclick="cllickLike(this,{{id}},2,1);" class="glyphicon _thumbs-up" aria-hidden="true"></span>(<span class="dsj_num">{{likeNum}}</span>)</a>
+            </a>
+          </p>
+          <div class="dsj_publish clearfix hide">
+            <textarea class="form-control" onkeydown="checkMaxInput(this,100)"  placeholder="@{{#compare commentUserType '==' 5  }}{{#if commentNikename}}{{commentNikename}}{{else}}{{#dealPhoneNum commentUserName2}}{{/dealPhoneNum}}{{/if}}{{else}}{{#if commentUserName}}{{commentUserName}}{{else}}{{#dealPhoneNum commentUserName2}}{{/dealPhoneNum}}{{/if}}{{/compare}}"
+            	onkeyup="checkMaxInput(this,100)" onfocus="checkMaxInput(this,100)" 
+            	onblur="checkMaxInput(this,100);" rows="3"></textarea>
+            <p>
+              <div class="pull-right">
+                	还能再输入<span class="textNum">100</span>字
+                <button type="button" onclick="publishComment(this,{{objectId}},{{commentUser}});" class="primary">
+                 		发布
+                </button>
+              </div>
+            </p>
+          </div>
+        </div>
+      </div>
+    </script>
+	</div>
+	
+	<!-- swiper -->
+	<div id="album_modal" class="album_modal single-ablum modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<img src="img/album/album-close.png">
+					</button>
+				</div>
+				<div class="modal-body" style="padding-bottom: 30px;">
+					<div>
+						<div class="swiper-button-next album-right"></div>
+						<div class="swiper-button-prev album-left"></div>
+						<div class="swiper-container modal-gallery-top" style="width: 1127px; height: 670px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="js/common/base.js"></script>
+	<script src="js/common/header.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/industry/house-news.js"></script>
+	<script src="js/industry/agent.js"></script>
+	<script src="js/swiper-3.4.2.min.js"></script>
+	<script src="js/industry/agentcomment.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+				
+			$(document).on("click",".dsj_update_content_more",function(argument) {
+ 	  			if( "more" == $(this).siblings(".dsj_update_content").data("mark")){
+ 	  				$(this).siblings(".dsj_update_content").html($(this).siblings(".dsj_update_content").attr("data-content"));
+ 	  				$(this).siblings(".dsj_update_content").data("mark","less");
+ 	 	  			$(this).text("收起");
+ 	  			}else if( "less" == $(this).siblings(".dsj_update_content").data("mark")){
+ 	  				$(this).siblings(".dsj_update_content").html($(this).siblings(".dsj_update_content").attr("data-content").substring(0,150)+"...");
+ 	  				$(this).siblings(".dsj_update_content").data("mark","more");
+ 	 	  			$(this).text("展开全文");
+ 	  			}
+ 	  		})
+			
+			houseTag();
+        	require(["text!common/commit.html"], function(tpl) {
+				$('body').append(tpl);
+				var source=$("#dailog_common_template").html();
+				var template = Handlebars.compile(source);
+				var html = template();
+				$('body').append(html);
+    		}); 
+		})
+		function houseTag(){
+			var houseOption = {
+				container_id : "container_id",
+				dialogTemplate_id : "dsj_building_news",
+				pageTemplate_id : "dsj_page_template",
+				url : _url,
+				from_page : "industry"
+			}
+			var houseList = new $.fn.IndustryHouseNews(houseOption);
+			houseList._init();
+		}
+		function agentTag(){
+			var dialogOption = {
+				container_id : "container_id",
+				dialogTemplate_id : "dsj_agent_news",
+				pageTemplate_id : "dsj_page_template",
+				commentTemplate_id : "dsj_comment_template",
+				url : _url
+			}
+			var dialogList = new $.fn.IndustryDialogList(dialogOption);
+			dialogList._init();
+		}
+		
+		 // swiper
+	    $(document).on("click",".dsj_update_pic img",function(e) {
+			var index = $(this).parent().index();
+			var imgList = $(this).closest(".dsj_update_pic").find("img");
+			var str = '<div class="swiper-wrapper">';
+			for (var i = 0; i < imgList.length; i++) {
+				str += '<div class="swiper-slide" style="width:1127px;height: 670px;"><img src="'+imgList[i].getAttribute("data-src")+'"></div>';
+			}
+			str += "</div>";
+			$(".swiper-container").html(str);
+		    $('#album_modal').modal();	
+		    $('#album_modal').one('shown.bs.modal', function (e) {
+		      // do something...
+			    var modalGalleryTop = new Swiper('.modal-gallery-top', {
+			    	nextButton: ' .swiper-button-next.album-right',
+			        prevButton: '.swiper-button-prev.album-left',
+			        spaceBetween: 10,
+			    });
+			    modalGalleryTop.params.control = modalGalleryTop;
+				modalGalleryTop.slideTo(index);
+		    })	
+		});
+    </script>
+
+</body>
+</html>

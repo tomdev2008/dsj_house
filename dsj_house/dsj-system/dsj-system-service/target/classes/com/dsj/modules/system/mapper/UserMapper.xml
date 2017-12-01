@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.UserDaoImpl">
+    
+  <sql id="tableName"> dsj_user a </sql>
+  <sql id="tableNameUpdate"> dsj_user </sql>
+    
+  <sql id="tableColumns">
+    a.id AS "id",
+    a.realname AS "realname",
+    a.username AS "username",
+    a.password AS "password",
+    a.avatar AS "avatar",
+    a.salt AS "salt",
+    a.user_type AS "userType",
+    a.status AS "status",
+    a.lastlogin_time AS "lastloginTime",
+    a.ip AS "ip",
+    a.mark_flag AS "markFlag",
+    a.login_flag AS "loginFlag",
+    a.im_flag AS "imFlag",
+    a.del_flag AS "delFlag",
+    a.update_person AS "updatePerson",
+    a.create_person AS "createPerson",
+    a.create_time AS "createTime",
+    a.phone AS "phone",
+    a.im_password as "imPassword",
+    a.openId as "openId",
+    a.type as "type"
+  </sql>
+  
+  <resultMap id="beanMap" type="UserPo">
+    <id column="id" property="id" />
+    <result column="realname" property="realname" />
+    <result column="username" property="username" />
+    <result column="password" property="password" />
+    <result column="avatar" property="avatar" />
+    <result column="salt" property="salt"></result> 
+    <result column="user_type" property="userType" />
+    <result column="status" property="status" />
+    <result column="lastlogin_time" property="lastloginTime" />
+    <result column="ip" property="ip" />
+    <result column="mark_flag" property="markFlag" />
+    <result column="login_flag" property="loginFlag" />
+    <result column="im_flag" property="imFlag" />
+    <result column="del_flag" property="delFlag" />
+    <result column="update_person" property="updatePerson" />
+    <result column="create_person" property="createPerson" />
+    <result column="create_time" property="createTime" />
+    <result column="phone" property="phone" />
+    <result column="im_password" property="imPassword" />
+     <result column="openId" property="openId" />
+    <result column="type" property="type" />
+  </resultMap>
+  
+  <sql id="userJoins">
+  </sql>
+    <sql id="condition_sql">
+    <if test="realname != null and realname!= ''"> AND a.realname = #{realname}</if>
+    <if test="username != null and username!= ''"> AND a.username = #{username}</if>
+    <if test="password != null and password!= ''"> AND a.password = #{password}</if>
+    <if test="avatar != null and avatar!= ''"> AND a.avatar = #{avatar}</if>
+    <if test="userType != null and userType!= ''"> AND a.user_type = #{userType}</if>
+     <if test="userTypes != null"> AND a.user_type in (${userTypes})</if>
+    
+    <if test="lastloginTime != null and lastloginTime!= ''"> AND a.lastlogin_time = #{lastloginTime}</if>
+    <if test="ip != null and ip!= ''"> AND a.ip = #{ip}</if>
+    <if test="markFlag != null and markFlag!= ''"> AND a.mark_flag = #{markFlag}</if>
+    <if test="loginFlag != null and loginFlag!= ''"> AND a.login_flag = #{loginFlag}</if>
+    <if test="imFlag != null and imFlag!= ''"> AND a.im_flag = #{imFlag}</if>
+    <if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+    <if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+    <if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+    <if test="phone != null and phone !=''"> AND a.phone = #{phone}</if>
+    <if test="imPassword != null and imPassword !=''"> AND a.im_password = #{imPassword}</if>
+    <if test="id != null and id !=''"> AND a.id != #{id}</if>
+    <if test="openId != null and openId !=''"> AND a.openId != #{openId}</if>
+    <if test="type != null and type !=''"> AND a.type != #{type}</if>
+  </sql>
+    
+  <select id="getById" resultType="UserPo">
+    SELECT 
+      <include refid="tableColumns"/>
+    FROM <include refid="tableName"/> 
+    <include refid="userJoins"/>
+    WHERE a.id = #{id}
+  </select>
+  
+  <select id="getBy" resultMap="beanMap">
+    SELECT 
+      <include refid="tableColumns"/>
+    FROM <include refid="tableName"/> 
+      <where>
+      <include refid="condition_sql" />
+    </where>
+    </select>
+    
+    <select id="getUser" resultMap="beanMap" parameterType="java.util.Map">
+      SELECT 
+      <include refid="tableColumns"/>
+    FROM <include refid="tableName"/> 
+      <where>
+      <if test="openId != null and openId !=''"> AND a.openId = #{openId}</if>
+    <if test="type != null and type !=''"> AND a.type = #{type}</if>
+    </where>
+    </select>
+   
+   <select id="getByLeftEveloper" resultMap="beanMap">
+    SELECT 
+      <include refid="tableColumns"/>,
+      e.id eveloperId
+    FROM <include refid="tableName"/>
+    LEFT JOIN dsj_evelopers e on e.user_id=a.id 
+      <where>
+      <include refid="condition_sql" />
+    </where>
+    </select>
+    
+    <select id="getByLeftPropert" resultMap="beanMap">
+    SELECT 
+      <include refid="tableColumns"/>,
+      e.id propertyId
+    FROM <include refid="tableName"/>
+    LEFT JOIN dsj_property e on e.user_id=a.id 
+      <where>
+      <include refid="condition_sql" />
+    </where>
+    </select>
+    
+  
+  <select id="listAll" resultMap="beanMap">
+      SELECT 
+        <include refid="tableColumns"/>
+      FROM <include refid="tableName"/> 
+      ORDER BY a.id DESC
+    </select>
+    
+    <select id="listBy" resultMap="beanMap">
+      SELECT 
+        <include refid="tableColumns"/>
+      FROM <include refid="tableName"/> 
+      <where>
+      <include refid="condition_sql" />
+    </where>
+      ORDER BY a.id DESC
+    </select>
+  
+  <select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+    SELECT 
+        <include refid="tableColumns"/>
+      FROM <include refid="tableName"/> 
+    <where>
+      <include refid="condition_sql" />
+    </where>
+    ORDER BY a.id DESC 
+    LIMIT #{pageFirst} , #{pageSize} 
+  </select>
+  
+  <select id="listPageCount" parameterType="java.util.Map" resultType="long">
+    SELECT 
+      COUNT(1) 
+    FROM <include refid="tableName"/>
+    <where>
+      <include refid="condition_sql"/>
+    </where>
+  </select>
+  
+  <select id="listAgentUserBy" resultMap="beanMap">
+    SELECT 
+      <include refid="tableColumns"/>
+    FROM <include refid="tableName"/>
+    LEFT JOIN dsj_agent g ON a.id = g.user_id
+    WHERE g.user_id IS NOT NULL 
+      <if test="delFlag != null and delFlag != ''"> AND a.del_flag = #{delFlag}</if>
+      <if test="markFlag != null"> AND a.mark_flag = #{markFlag}</if>
+      <if test="id != null and id != ''"> AND a.id = #{id}</if>
+    ORDER BY a.id DESC
+  </select>
+  
+  <insert id="insert" parameterType="UserPo" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO <include refid="tableNameUpdate"/>(
+      id,
+      realname,
+      username,
+      password,
+      avatar,
+      salt,
+      user_type,
+      status,
+      lastlogin_time,
+      ip,
+      mark_flag,
+      login_flag,
+      im_flag,
+      del_flag,
+      update_person,
+      update_time,
+      create_person,
+      create_time,
+      phone,
+      openId,
+      type,
+      im_password
+    ) VALUES (
+      #{id},
+      #{realname},
+      #{username},
+      #{password},
+      #{avatar},
+      #{salt},
+      #{userType},
+      #{status},
+      #{openId},
+      #{type},
+      #{lastloginTime},
+      #{ip},
+      #{markFlag},
+      #{loginFlag},
+      #{imFlag},
+      #{delFlag},
+      #{updatePerson},
+      NOW(),
+      #{createPerson},
+      NOW(),
+      #{phone},
+      #{imPassword}
+    )
+  </insert>
+  
+  
+  <insert id="insertDynamic" parameterType="UserPo" keyProperty="id" useGeneratedKeys="true">
+      INSERT INTO  <include refid="tableNameUpdate"/>
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="id != null">id,</if>
+        <if test="realname != null">realname,</if>
+        <if test="username != null">username,</if>
+        <if test="password != null">password,</if>
+        <if test="avatar != null">avatar,</if>
+        <if test="salt != null">salt,</if>
+        <if test="userType != null">user_type,</if>
+        <if test="status != null">status,</if>
+        <if test="lastloginTime != null">lastlogin_time,</if>
+        <if test="ip != null">ip,</if>
+        <if test="markFlag != null">mark_flag,</if>
+        <if test="loginFlag != null">login_flag,</if>
+        <if test="imFlag != null">im_flag,</if>
+        <if test="delFlag != null">del_flag,</if>
+        <if test="updatePerson != null">update_person,</if>
+        <if test="openId != null">openId,</if>
+        <if test="type != null">type,</if>
+        update_time,
+        <if test="createPerson != null">create_person,</if>
+        create_time,
+        <if test="phone != null">phone,</if>
+        <if test="imPassword != null">im_password,</if>
+      </trim> 
+      VALUES
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="id != null">#{id},</if>
+        <if test="realname != null">#{realname},</if>
+        <if test="username != null">#{username},</if>
+        <if test="password != null">#{password},</if>
+        <if test="avatar != null">#{avatar},</if>
+        <if test="salt != null">#{salt},</if>
+        <if test="userType != null">#{userType},</if>
+        <if test="status != null">#{status},</if>
+        <if test="lastloginTime != null">#{lastloginTime},</if>
+        <if test="ip != null">#{ip},</if>
+        <if test="markFlag != null">#{markFlag},</if>
+        <if test="loginFlag != null">#{loginFlag},</if>
+        <if test="imFlag != null">#{imFlag},</if>
+        <if test="delFlag != null">#{delFlag},</if>
+         <if test="openId != null">#{openId},</if>
+        <if test="type != null">#{type},</if>
+        <if test="updatePerson != null">#{updatePerson},</if>
+        NOW(),
+        <if test="createPerson != null">#{createPerson},</if>
+        NOW(),
+        <if test="phone != null">#{phone},</if>
+        <if test="imPassword != null">#{imPassword},</if>
+      </trim>
+    </insert>
+    
+  
+  <update id="update" parameterType="UserPo">
+    UPDATE <include refid="tableNameUpdate"/> 
+    SET  
+      realname = #{realname}, 
+      username = #{username},
+      password = #{password},
+      avatar = #{avatar},
+      salt = #{salt},
+      user_type = #{ussalterType},
+      lastlogin_time = #{lastloginTime},
+      ip = #{ip},
+      mark_flag = #{markFlag},
+      login_flag = #{loginFlag},
+      im_flag = #{imFlag},
+      del_flag = #{delFlag},
+      update_person = #{updatePerson},
+      update_time = NOW(),
+      create_person = #{createPerson},
+      phone = #{phone},
+      im_password = #{imPassword},
+      openId = #{openId},
+      type = #{type},
+    WHERE id = #{id} 
+  </update>
+  
+  <update id="updateDynamic" parameterType="UserPo">
+       UPDATE <include refid="tableNameUpdate"/>  
+       <set>
+          update_time = NOW(),
+          <if test="realname != null">realname = #{realname},</if>
+          <if test="username != null">username = #{username},</if>
+          <if test="password != null">password = #{password},</if>
+          <if test="avatar != null">avatar = #{avatar},</if>
+          <if test="salt != null">salt = #{salt},</if>
+          <if test="userType != null">user_type = #{userType},</if>
+          <if test="status != null">status = #{status},</if>
+          <if test="lastloginTime != null">lastlogin_time = #{lastloginTime},</if>
+          <if test="ip != null">ip = #{ip},</if>
+          <if test="markFlag != null">mark_flag = #{markFlag},</if>
+          <if test="loginFlag != null">login_flag = #{loginFlag},</if>
+          <if test="imFlag != null">im_flag = #{imFlag},</if>
+          <if test="delFlag != null">del_flag = #{delFlag},</if>
+          <if test="updatePerson != null">update_person = #{updatePerson},</if>
+          <if test="createPerson != null">create_person = #{createPerson},</if>
+          <if test="phone != null">phone=#{phone},</if>
+          <if test="imPassword != null">im_password=#{imPassword},</if>
+          <if test="openId != null">openId=#{openId},</if>
+          <if test="type != null">type=#{type},</if>
+      </set>
+      WHERE id = #{id}  
+    </update>
+  
+  <update id="deleteById">
+    UPDATE <include refid="tableNameUpdate"/> SET 
+      del_flag = #{DEL_FLAG_DELETE}
+    WHERE id = #{id}
+  </update>
+  
+  <update id="updateEvelopersAudit" parameterType="java.util.Map">
+    UPDATE <include refid="tableNameUpdate"/> SET 
+      status = #{status}
+    WHERE id in (${ids})
+  </update>
+  
+  <update id="updateEvelopersDelFlag" parameterType="java.util.Map">
+    UPDATE <include refid="tableNameUpdate"/> SET 
+      del_flag = #{delFlag}
+    WHERE id in (${ids})
+  </update>
+  
+  <update id="updatePasswordByPhone" parameterType="java.util.Map">
+    UPDATE <include refid="tableNameUpdate"/> SET 
+      password = #{password},
+      salt=#{salt}
+    WHERE phone =#{phone} and  user_type=#{userType}
+  </update>
+  
+  <insert id="saveUserRole" parameterType="java.util.Map">
+    INSERT INTO dsj_user_role(
+     role_id,
+     user_id
+    ) VALUES (
+      #{roleId},
+      #{userId}
+    )
+  </insert>
+  
+  <select id="getNewHouseAgent" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseAgentFrontVo">
+  	  	SELECT
+				u.id AS userId,
+				u.username AS userName,
+				u.realname AS realName,
+				ag.avatar_re_url AS imgUrl,
+				ag.feature AS label,
+				ag.workyears AS workyear,
+				m.mobile AS mobile,
+				c.short_name AS shortName,
+				dag.name as djch,
+		    	dag.small_icon as djtb,
+				e.jgarea,
+				im.is_duty as isDuty
+			FROM
+				dsj_user u
+			LEFT JOIN dsj_agent ag ON u.id = ag.user_id
+			LEFT JOIN dsj_mobile m ON ag.id = m.agent_id
+			LEFT JOIN dsj_company c ON c.id = ag.company
+			LEFT JOIN (
+				SELECT
+					b.id,
+					GROUP_CONCAT(a.`name`) AS jgarea
+				FROM
+					dsj_trade_area a,
+					dsj_agent b
+				WHERE
+					FIND_IN_SET(a.area_code, b.business)
+				GROUP BY
+					b.id
+			) e ON e.id = ag.id
+		LEFT JOIN dsj_agent_info i ON i.agent_id = ag.agent_code 
+		LEFT JOIN dsj_agent_grade dag ON i.total_score &gt;= dag.min_score AND i.total_score &lt; dag.max_score 
+		left join dsj_im_directory im on u.id = im.agent_id
+		WHERE im.house_id = #{houseId} ORDER BY im.position
+		 <if test="limitNum != null">limit #{limitNum}</if>
+		
+  </select>
+  
+  
+  <select id="getNewHouseIdsByMap" parameterType="java.util.Map" resultType="string">
+  	SELECT
+		GROUP_CONCAT(DISTINCT house_id) 
+	FROM
+		dsj_im_directory a LEFT JOIN dsj_new_house_directory_auth b on a.house_id = b.id
+	WHERE
+		b.is_ture = 2 and FIND_IN_SET(a.agent_id, ${agentIds}); 
+		
+  </select>
+  
+  
+   <insert id="insertFollow" parameterType="java.util.Map" keyProperty="id" useGeneratedKeys="true">
+      INSERT INTO  dsj_follow
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="id != null">id,</if>
+        <if test="userId != null">user_id,</if>
+        <if test="type != null">type,</if>
+        <if test="objectId != null">object_id,</if>
+        <if test="createTime != null">create_time,</if>
+      </trim> 
+      VALUES
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="id != null">#{id},</if>
+        <if test="userId != null">#{userId},</if>
+        <if test="type != null">#{type},</if>
+        <if test="objectId != null">#{objectId},</if>
+        <if test="createTime != null">#{createTime},</if>
+        
+      </trim>
+    </insert>
+  <delete id="deleteFollow" parameterType="long">
+  	delete from dsj_follow where id = #{id}
+  </delete>
+  <delete id="deleteFollowByMap" parameterType="java.util.Map">
+  	delete from dsj_follow 
+  	where type=#{type}
+  	and object_id = #{objectId}
+  	and user_id = #{userId}
+  </delete>
+  <delete id="deleteManyFollow" parameterType="java.util.Map">
+  	delete from dsj_follow 
+  	where id in	
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+  </delete>
+  <select id="findByUsername" parameterType="java.lang.String" resultType="int">
+  	SELECT 
+      COUNT(1) 
+    FROM <include refid="tableName"/>
+    where username = #{phone}
+  </select>
+  
+   <insert id="insertLookHistory" parameterType="java.util.Map" keyProperty="id" useGeneratedKeys="true">
+      INSERT INTO  dsj_look_history
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="id != null">id,</if>
+        <if test="userId != null">user_id,</if>
+        <if test="type != null">type,</if>
+        <if test="objectId != null">object_id,</if>
+        <if test="createTime != null">create_time,</if>
+      </trim> 
+      VALUES
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="id != null">#{id},</if>
+        <if test="userId != null">#{userId},</if>
+        <if test="type != null">#{type},</if>
+        <if test="objectId != null">#{objectId},</if>
+        <if test="createTime != null">#{createTime},</if>
+        
+      </trim>
+    </insert>
+    
+    <select id="findIsHistory" parameterType="java.util.Map" resultType="int">
+    	SELECT 
+      id
+      from dsj_look_history 
+      where user_id = #{userId}
+      and type = #{type}
+      and object_id = #{objectId}
+    </select>
+    
+    <update id="updateLookHistory" parameterType="java.util.Map">
+    UPDATE dsj_look_history SET 
+      create_time = #{createTime}
+    WHERE id = #{id}
+  </update>
+  <select id="getAdminPhones" resultType="String">
+    	SELECT phone from admin_phone 
+    </select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+        
+      <dubbo:reference interface="com.dsj.modules.pagelayout.service.PcAgentAddService" id="pcAgentAddService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.PcAgentService" id="pcAgentService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.PcLabelService" id="pcLabelService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.PcNewHouseService" id="pcNewHouseService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.PcOldHouseService" id="pcOldHouseService" check="false"  version="1.0"/>  
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.PcRentHouseService" id="pcRentHouseService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.WapSwiperService" id="wapSwiperService" check="false"  version="1.0"/> 
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.WapLabelService" id="wapLabelService" check="false"  version="1.0"/> 
+	<dubbo:reference interface="com.dsj.modules.pagelayout.service.WapItemSetService" id="wapItemSetService" check="false"  version="1.0"/>         
+</beans>  

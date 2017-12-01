@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+    <script type="text/javascript" src="js/fles.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-default dsj_navbar_top navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><img class="logo" src="./img/logo@3x.png"></a>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6">
+          <p>帮你找温暖的家</p>
+          <p>真房源  cccc  真服务</p>
+        </div>
+        <div class="col-xs-6">
+          <div class="dsj_card dsj_login">
+            <div class="dsj_card_title">
+              游客登录
+            </div>
+            <div class="dsj_alert" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span>
+              您输入的密码有误
+            </div>
+            <div class="dsj_card_content">
+              <div class="input-group">
+                <span class="input-group-addon" id="username">
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </span>
+                <input type="text" class="form-control input-lg" placeholder="username" aria-describedby="username">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon" id="password">
+                  <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                </span>
+                <input type="text" class="form-control input-lg" placeholder="password" aria-describedby="password">
+              </div>
+              <button type="button" class="btn btn-primary btn-lg btn-block">
+                登录
+              </button>
+              <div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox">下次自动登录
+                  </label>
+                  <div class="pull-right">
+                    <a href="">忘记密码</a> | 
+                    <a href="">立即注册</a>
+                  </div>
+                </div>
+              </div>
+              <p class="third_login">
+                <span>第三方登录</span>
+              </p>
+              <div class="third_login_table">
+                <div class="third_login_cell">
+                  微信登录
+                </div>
+                <div class="third_login_cell">
+                  QQ登录
+                </div>
+                <div class="third_login_cell">
+                  微博登录
+                </div>
+              </div>
+              <p class="text-center dsj_card_footer">
+                经纪人登录  |  开发商登录  |  品牌公寓登录
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dsj_footer">
+      <div class="container">
+        <div class="dsj_upper_footer">
+          <span>关于我们</span>
+          <span>合作伙伴</span>
+          <span>联系我们</span>
+        </div>
+        <div>
+          <ul class="dsj_lower_footer">
+            <li>北京大搜家信息技术服务有限公司&nbsp;&nbsp;|</li>
+            <li>网络经营许可证 京ICP备11024601号-12&nbsp;&nbsp;|</li>
+            <li>&copy;Copyright&copy;2010-2017 大搜家Dashoujia.com版权所有</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="popover"]').popover()
+
+        $('.dsj_upload_button').click(function(argument) {
+          $('.dsj_upload_pic').toggle();
+        })
+      })
+    </script>
+  </body>
+</html>

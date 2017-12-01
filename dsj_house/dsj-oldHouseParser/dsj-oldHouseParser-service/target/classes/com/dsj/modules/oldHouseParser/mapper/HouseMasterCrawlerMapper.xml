@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.HouseMasterCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_house_master_crawler a </sql>
+    <sql id="tableNameUpdate"> old_house_master_crawler </sql>
+  
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.dic_id AS "dicId",
+		a.origin_dic_id AS "originDicId",
+		a.hall AS "hall",
+		a.room AS "room",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.house_type_name AS "houseTypeName",
+		a.house_type AS "houseType",
+		a.renovation_name AS "renovationName",
+		a.renovation AS "renovation",
+		a.floor AS "floor",
+		a.floor_num AS "floorNum",
+		a.floor_type AS "floorType",
+		a.room_number1 AS "roomNumber1",
+		a.room_number1_cell AS "roomNumber1Cell",
+		a.room_number2 AS "roomNumber2",
+		a.room_number2_cell AS "roomNumber2Cell",
+		a.room_number AS "roomNumber",
+		a.build_area AS "buildArea",
+		a.build_year AS "buildYear",
+		a.certificate_name AS "certificateName",
+		a.certificate AS "certificate",
+		a.certificate_type_name AS "certificateTypeName",
+		a.certificate_type AS "certificateType",
+		a.is_key AS "isKey",
+		a.house_only AS "houseOnly",
+		a.payments AS "payments",
+		a.price AS "price",
+		a.features_name AS "featuresName",
+		a.features AS "features",
+		a.title AS "title",
+		a.selling_point AS "sellingPoint",
+		a.house_detail AS "houseDetail",
+		a.owne_mentality AS "owneMentality",
+		a.village_matching AS "villageMatching",
+		a.service_intro AS "serviceIntro",
+		a.orientations_name AS "orientationsName",
+		a.orientations AS "orientations",
+		a.house_year AS "houseYear",
+		a.structure AS "structure",
+		a.lift_ratio AS "liftRatio",
+		a.heating_mode AS "heatingMode",
+		a.lift AS "lift",
+		a.listing_date AS "listingDate",
+		a.deal_date AS "dealDate",
+		a.property AS "property",
+		a.mortgage AS "mortgage",
+		a.room_book AS "roomBook",
+		a.delete_flag AS "deleteFlag",
+		a.unit_price AS "unitPrice",
+		a.monthpay AS "monthpay",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.image_url AS "imageUrl",
+		a.company_type AS "companyType",
+		a.father_id AS "fatherId",
+		a.origin_house_id AS "originHouseId",
+		a.dic_temp_id AS "dicTempId",
+		a.has_dic_status AS "hasDicStatus",
+		a.showxs AS "showxs",
+		a.floor_type_name AS "floorTypeName",
+		a.is_deal AS "isDeal",
+		a.house_type_pic_url AS "houseTypePicUrl",
+		a.house_type_lj_pic_url AS "houseTypeLjPicUrl",
+		a.layout_structure AS "layoutStructure",
+		a.inside_area AS "insideArea",
+		a.building_struture AS "buildingStruture",
+		a.stair_scale AS "stairScale",
+		a.is_elevator AS "isElevator",
+		a.house_type_info AS "houseTypeInfo",
+		a.sfjx AS "sfjx",
+		a.around_info AS "aroundInfo",
+		a.dic_info AS "dicInfo",
+		a.subway_detail AS "subwayDetail",
+		a.ring AS "ring",
+		a.subway_url AS "subwayUrl"
+	</sql>
+	
+	<resultMap id="beanMap" type="HouseMasterCrawlerPo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="dic_id" property="dicId" />
+		<result column="origin_dic_id" property="originDicId" />
+		<result column="hall" property="hall" />
+		<result column="room" property="room" />
+		<result column="toilet" property="toilet" />
+		<result column="kitchen" property="kitchen" />
+		<result column="house_type_name" property="houseTypeName" />
+		<result column="house_type" property="houseType" />
+		<result column="renovation_name" property="renovationName" />
+		<result column="renovation" property="renovation" />
+		<result column="floor" property="floor" />
+		<result column="floor_num" property="floorNum" />
+		<result column="floor_type" property="floorType" />
+		<result column="room_number1" property="roomNumber1" />
+		<result column="room_number1_cell" property="roomNumber1Cell" />
+		<result column="room_number2" property="roomNumber2" />
+		<result column="room_number2_cell" property="roomNumber2Cell" />
+		<result column="room_number" property="roomNumber" />
+		<result column="build_area" property="buildArea" />
+		<result column="build_year" property="buildYear" />
+		<result column="certificate_name" property="certificateName" />
+		<result column="certificate" property="certificate" />
+		<result column="certificate_type_name" property="certificateTypeName" />
+		<result column="certificate_type" property="certificateType" />
+		<result column="is_key" property="isKey" />
+		<result column="house_only" property="houseOnly" />
+		<result column="payments" property="payments" />
+		<result column="price" property="price" />
+		<result column="features_name" property="featuresName" />
+		<result column="features" property="features" />
+		<result column="title" property="title" />
+		<result column="selling_point" property="sellingPoint" />
+		<result column="house_detail" property="houseDetail" />
+		<result column="owne_mentality" property="owneMentality" />
+		<result column="village_matching" property="villageMatching" />
+		<result column="service_intro" property="serviceIntro" />
+		<result column="orientations_name" property="orientationsName" />
+		<result column="orientations" property="orientations" />
+		<result column="house_year" property="houseYear" />
+		<result column="structure" property="structure" />
+		<result column="lift_ratio" property="liftRatio" />
+		<result column="heating_mode" property="heatingMode" />
+		<result column="lift" property="lift" />
+		<result column="listing_date" property="listingDate" />
+		<result column="deal_date" property="dealDate" />
+		<result column="property" property="property" />
+		<result column="mortgage" property="mortgage" />
+		<result column="room_book" property="roomBook" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="unit_price" property="unitPrice" />
+		<result column="monthpay" property="monthpay" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="image_url" property="imageUrl" />
+		<result column="company_type" property="companyType" />
+		<result column="father_id" property="fatherId" />
+		<result column="origin_house_id" property="originHouseId" />
+		<result column="dic_temp_id" property="dicTempId" />
+		<result column="has_dic_status" property="hasDicStatus" />
+		<result column="showxs" property="showxs" />
+		<result column="floor_type_name" property="floorTypeName" />
+		<result column="is_deal" property="isDeal" />
+		<result column="house_type_pic_url" property="houseTypePicUrl" />
+		<result column="house_type_lj_pic_url" property="houseTypeLjPicUrl" />
+		<result column="layout_structure" property="layoutStructure" />
+		<result column="inside_area" property="insideArea" />
+		<result column="building_struture" property="buildingStruture" />
+		<result column="stair_scale" property="stairScale" />
+		<result column="is_elevator" property="isElevator" />
+		<result column="house_type_info" property="houseTypeInfo" />
+		<result column="sfjx" property="sfjx" />
+		<result column="around_info" property="aroundInfo" />
+		<result column="dic_info" property="dicInfo" />
+		<result column="subway_detail" property="subwayDetail" />
+		<result column="ring" property="ring" />
+		<result column="subway_url" property="subwayUrl" />
+	</resultMap>
+	
+	
+	<sql id="houseMasterCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="dicId != null and dicId!= ''"> AND a.dic_id = #{dicId}</if>
+		<if test="originDicId != null and originDicId!= ''"> AND a.origin_dic_id = #{originDicId}</if>
+		<if test="hall != null and hall!= ''"> AND a.hall = #{hall}</if>
+		<if test="room != null and room!= ''"> AND a.room = #{room}</if>
+		<if test="toilet != null and toilet!= ''"> AND a.toilet = #{toilet}</if>
+		<if test="kitchen != null and kitchen!= ''"> AND a.kitchen = #{kitchen}</if>
+		<if test="houseType != null and houseType!= ''"> AND a.house_type = #{houseType}</if>
+		<if test="renovationName != null and renovationName!= ''"> AND a.renovation_name = #{renovationName}</if>
+		<if test="renovation != null and renovation!= ''"> AND a.renovation = #{renovation}</if>
+		<if test="floor != null and floor!= ''"> AND a.floor = #{floor}</if>
+		<if test="floorNum != null and floorNum!= ''"> AND a.floor_num = #{floorNum}</if>
+		<if test="floorType != null and floorType!= ''"> AND a.floor_type = #{floorType}</if>
+		<if test="roomNumber1 != null and roomNumber1!= ''"> AND a.room_number1 = #{roomNumber1}</if>
+		<if test="roomNumber1Cell != null and roomNumber1Cell!= ''"> AND a.room_number1_cell = #{roomNumber1Cell}</if>
+		<if test="roomNumber2 != null and roomNumber2!= ''"> AND a.room_number2 = #{roomNumber2}</if>
+		<if test="roomNumber2Cell != null and roomNumber2Cell!= ''"> AND a.room_number2_cell = #{roomNumber2Cell}</if>
+		<if test="roomNumber != null and roomNumber!= ''"> AND a.room_number = #{roomNumber}</if>
+		<if test="buildArea != null and buildArea!= ''"> AND a.build_area = #{buildArea}</if>
+		<if test="buildYear != null and buildYear!= ''"> AND a.build_year = #{buildYear}</if>
+		<if test="certificateName != null and certificateName!= ''"> AND a.certificate_name = #{certificateName}</if>
+		<if test="certificate != null and certificate!= ''"> AND a.certificate = #{certificate}</if>
+		<if test="certificateType != null and certificateType!= ''"> AND a.certificate_type = #{certificateType}</if>
+		<if test="isKey != null and isKey!= ''"> AND a.is_key = #{isKey}</if>
+		<if test="houseOnly != null and houseOnly!= ''"> AND a.house_only = #{houseOnly}</if>
+		<if test="payments != null and payments!= ''"> AND a.payments = #{payments}</if>
+		<if test="price != null and price!= ''"> AND a.price = #{price}</if>
+		<if test="featuresName != null and featuresName!= ''"> AND a.features_name = #{featuresName}</if>
+		<if test="features != null and features!= ''"> AND a.features = #{features}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="sellingPoint != null and sellingPoint!= ''"> AND a.selling_point = #{sellingPoint}</if>
+		<if test="houseDetail != null and houseDetail!= ''"> AND a.house_detail = #{houseDetail}</if>
+		<if test="owneMentality != null and owneMentality!= ''"> AND a.owne_mentality = #{owneMentality}</if>
+		<if test="villageMatching != null and villageMatching!= ''"> AND a.village_matching = #{villageMatching}</if>
+		<if test="serviceIntro != null and serviceIntro!= ''"> AND a.service_intro = #{serviceIntro}</if>
+		<if test="orientationsName != null and orientationsName!= ''"> AND a.orientations_name = #{orientationsName}</if>
+		<if test="orientations != null and orientations!= ''"> AND a.orientations = #{orientations}</if>
+		<if test="houseYear != null and houseYear!= ''"> AND a.house_year = #{houseYear}</if>
+		<if test="structure != null and structure!= ''"> AND a.structure = #{structure}</if>
+		<if test="liftRatio != null and liftRatio!= ''"> AND a.lift_ratio = #{liftRatio}</if>
+		<if test="heatingMode != null and heatingMode!= ''"> AND a.heating_mode = #{heatingMode}</if>
+		<if test="lift != null and lift!= ''"> AND a.lift = #{lift}</if>
+		<if test="listingDate != null and listingDate!= ''"> AND a.listing_date = #{listingDate}</if>
+		<if test="dealDate != null and dealDate!= ''"> AND a.deal_date = #{dealDate}</if>
+		<if test="property != null and property!= ''"> AND a.property = #{property}</if>
+		<if test="mortgage != null and mortgage!= ''"> AND a.mortgage = #{mortgage}</if>
+		<if test="roomBook != null and roomBook!= ''"> AND a.room_book = #{roomBook}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="unitPrice != null and unitPrice!= ''"> AND a.unit_price = #{unitPrice}</if>
+		<if test="monthpay != null and monthpay!= ''"> AND a.monthpay = #{monthpay}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="imageUrl != null and imageUrl!= ''"> AND a.image_url = #{imageUrl}</if>
+		<if test="companyType != null and companyType!= ''"> AND a.company_type = #{companyType}</if>
+		<if test="fatherId != null and fatherId!= ''"> AND a.father_id = #{fatherId}</if>
+		<if test="originHouseId != null and originHouseId != ''"> AND a.origin_house_id = #{originHouseId}</if>
+		<if test="dicTempId != null and dicTempId!= ''"> AND a.dic_temp_id = #{dicTempId}</if>
+		<if test="hasDicStatus != null and hasDicStatus!= ''"> AND a.has_dic_status = #{hasDicStatus}</if>
+		<if test="notIsDeal != null and notIsDeal != ''"> AND a.is_deal != #{notIsDeal}</if>
+		
+	</sql>
+    
+	<select id="getById" resultType="HouseMasterCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="houseMasterCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="getSelectHouseMasterCrawler" resultMap="beanMap" parameterType="java.util.Map">
+	    SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			and a.dic_id is not null
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.showxs ASC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<select id="getAllCount"  resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		
+	</select>
+	
+	
+	
+	<insert id="insert" parameterType="HouseMasterCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_id,
+			dic_id,
+			origin_dic_id,
+			hall,
+			room,
+			toilet,
+			kitchen,
+			house_type,
+			renovation_name,
+			renovation,
+			floor,
+			floor_num,
+			floor_type,
+			room_number1,
+			room_number1_cell,
+			room_number2,
+			room_number2_cell,
+			room_number,
+			build_area,
+			build_year,
+			certificate_name,
+			certificate,
+			certificate_type,
+			is_key,
+			house_only,
+			payments,
+			price,
+			features_name,
+			features,
+			title,
+			selling_point,
+			house_detail,
+			owne_mentality,
+			village_matching,
+			service_intro,
+			orientations_name,
+			orientations,
+			house_year,
+			structure,
+			lift_ratio,
+			heating_mode,
+			lift,
+			listing_date,
+			deal_date,
+			property,
+			mortgage,
+			room_book,
+			delete_flag,
+			unit_price,
+			monthpay,
+			create_time,
+			update_time,
+			image_url,
+			company_type,
+			father_id,
+			origin_house_id,
+			dic_temp_id,
+			has_dic_status
+		) VALUES (
+			#{id},
+			#{houseId},
+			#{dicId},
+			#{originDicId},
+			#{hall},
+			#{room},
+			#{toilet},
+			#{kitchen},
+			#{houseType},
+			#{renovationName},
+			#{renovation},
+			#{floor},
+			#{floorNum},
+			#{floorType},
+			#{roomNumber1},
+			#{roomNumber1Cell},
+			#{roomNumber2},
+			#{roomNumber2Cell},
+			#{roomNumber},
+			#{buildArea},
+			#{buildYear},
+			#{certificateName},
+			#{certificate},
+			#{certificateType},
+			#{isKey},
+			#{houseOnly},
+			#{payments},
+			#{price},
+			#{featuresName},
+			#{features},
+			#{title},
+			#{sellingPoint},
+			#{houseDetail},
+			#{owneMentality},
+			#{villageMatching},
+			#{serviceIntro},
+			#{orientationsName},
+			#{orientations},
+			#{houseYear},
+			#{structure},
+			#{liftRatio},
+			#{heatingMode},
+			#{lift},
+			#{listingDate},
+			#{dealDate},
+			#{property},
+			#{mortgage},
+			#{roomBook},
+			#{deleteFlag},
+			#{unitPrice},
+			#{monthpay},
+			#{createTime},
+			#{updateTime},
+			#{imageUrl},
+			#{companyType},
+			#{fatherId},
+			#{originHouseId},
+			#{dicTempId},
+			#{hasDicStatus}
+		)
+	</insert>
+	
+	
+<insert id="insertDynamic" parameterType="HouseMasterCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="dicId != null">dic_id,</if>
+					<if test="originDicId != null">origin_dic_id,</if>
+					<if test="hall != null">hall,</if>
+					<if test="room != null">room,</if>
+					<if test="toilet != null">toilet,</if>
+					<if test="kitchen != null">kitchen,</if>
+					<if test="houseTypeName != null">house_type_name,</if>
+					<if test="houseType != null">house_type,</if>
+					<if test="renovationName != null">renovation_name,</if>
+					<if test="renovation != null">renovation,</if>
+					<if test="floor != null">floor,</if>
+					<if test="floorNum != null">floor_num,</if>
+					<if test="floorType != null">floor_type,</if>
+					<if test="roomNumber1 != null">room_number1,</if>
+					<if test="roomNumber1Cell != null">room_number1_cell,</if>
+					<if test="roomNumber2 != null">room_number2,</if>
+					<if test="roomNumber2Cell != null">room_number2_cell,</if>
+					<if test="roomNumber != null">room_number,</if>
+					<if test="buildArea != null">build_area,</if>
+					<if test="buildYear != null">build_year,</if>
+					<if test="certificateName != null">certificate_name,</if>
+					<if test="certificate != null">certificate,</if>
+					<if test="certificateTypeName != null">certificate_type_name,</if>
+					<if test="certificateType != null">certificate_type,</if>
+					<if test="isKey != null">is_key,</if>
+					<if test="houseOnly != null">house_only,</if>
+					<if test="payments != null">payments,</if>
+					<if test="price != null">price,</if>
+					<if test="featuresName != null">features_name,</if>
+					<if test="features != null">features,</if>
+					<if test="title != null">title,</if>
+					<if test="sellingPoint != null">selling_point,</if>
+					<if test="houseDetail != null">house_detail,</if>
+					<if test="owneMentality != null">owne_mentality,</if>
+					<if test="villageMatching != null">village_matching,</if>
+					<if test="serviceIntro != null">service_intro,</if>
+					<if test="orientationsName != null">orientations_name,</if>
+					<if test="orientations != null">orientations,</if>
+					<if test="houseYear != null">house_year,</if>
+					<if test="structure != null">structure,</if>
+					<if test="liftRatio != null">lift_ratio,</if>
+					<if test="heatingMode != null">heating_mode,</if>
+					<if test="lift != null">lift,</if>
+					<if test="listingDate != null">listing_date,</if>
+					<if test="dealDate != null">deal_date,</if>
+					<if test="property != null">property,</if>
+					<if test="mortgage != null">mortgage,</if>
+					<if test="roomBook != null">room_book,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="unitPrice != null">unit_price,</if>
+					<if test="monthpay != null">monthpay,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="imageUrl != null">image_url,</if>
+					<if test="companyType != null">company_type,</if>
+					<if test="fatherId != null">father_id,</if>
+					<if test="originHouseId != null">origin_house_id,</if>
+					<if test="dicTempId != null">dic_temp_id,</if>
+					<if test="hasDicStatus != null">has_dic_status,</if>
+					<if test="showxs != null">showxs,</if>
+					<if test="floorTypeName != null">floor_type_name,</if>
+					<if test="isDeal != null">is_deal,</if>
+					<if test="houseTypePicUrl != null">house_type_pic_url,</if>
+					<if test="houseTypeLjPicUrl != null">house_type_lj_pic_url,</if>
+					<if test="layoutStructure != null">layout_structure,</if>
+					<if test="insideArea != null">inside_area,</if>
+					<if test="buildingStruture != null">building_struture,</if>
+					<if test="stairScale != null">stair_scale,</if>
+					<if test="isElevator != null">is_elevator,</if>
+					<if test="houseTypeInfo != null">house_type_info,</if>
+					<if test="sfjx != null">sfjx,</if>
+					<if test="aroundInfo != null">around_info,</if>
+					<if test="dicInfo != null">dic_info,</if>
+					<if test="subwayDetail != null">subway_detail,</if>
+					<if test="ring != null">ring,</if>
+					<if test="subwayUrl != null">subway_url,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="dicId != null">#{dicId},</if>
+			<if test="originDicId != null">#{originDicId},</if>
+			<if test="hall != null">#{hall},</if>
+			<if test="room != null">#{room},</if>
+			<if test="toilet != null">#{toilet},</if>
+			<if test="kitchen != null">#{kitchen},</if>
+			<if test="houseTypeName != null">#{houseTypeName},</if>
+			<if test="houseType != null">#{houseType},</if>
+			<if test="renovationName != null">#{renovationName},</if>
+			<if test="renovation != null">#{renovation},</if>
+			<if test="floor != null">#{floor},</if>
+			<if test="floorNum != null">#{floorNum},</if>
+			<if test="floorType != null">#{floorType},</if>
+			<if test="roomNumber1 != null">#{roomNumber1},</if>
+			<if test="roomNumber1Cell != null">#{roomNumber1Cell},</if>
+			<if test="roomNumber2 != null">#{roomNumber2},</if>
+			<if test="roomNumber2Cell != null">#{roomNumber2Cell},</if>
+			<if test="roomNumber != null">#{roomNumber},</if>
+			<if test="buildArea != null">#{buildArea},</if>
+			<if test="buildYear != null">#{buildYear},</if>
+			<if test="certificateName != null">#{certificateName},</if>
+			<if test="certificate != null">#{certificate},</if>
+			<if test="certificateTypeName != null">#{certificateTypeName},</if>
+			<if test="certificateType != null">#{certificateType},</if>
+			<if test="isKey != null">#{isKey},</if>
+			<if test="houseOnly != null">#{houseOnly},</if>
+			<if test="payments != null">#{payments},</if>
+			<if test="price != null">#{price},</if>
+			<if test="featuresName != null">#{featuresName},</if>
+			<if test="features != null">#{features},</if>
+			<if test="title != null">#{title},</if>
+			<if test="sellingPoint != null">#{sellingPoint},</if>
+			<if test="houseDetail != null">#{houseDetail},</if>
+			<if test="owneMentality != null">#{owneMentality},</if>
+			<if test="villageMatching != null">#{villageMatching},</if>
+			<if test="serviceIntro != null">#{serviceIntro},</if>
+			<if test="orientationsName != null">#{orientationsName},</if>
+			<if test="orientations != null">#{orientations},</if>
+			<if test="houseYear != null">#{houseYear},</if>
+			<if test="structure != null">#{structure},</if>
+			<if test="liftRatio != null">#{liftRatio},</if>
+			<if test="heatingMode != null">#{heatingMode},</if>
+			<if test="lift != null">#{lift},</if>
+			<if test="listingDate != null">#{listingDate},</if>
+			<if test="dealDate != null">#{dealDate},</if>
+			<if test="property != null">#{property},</if>
+			<if test="mortgage != null">#{mortgage},</if>
+			<if test="roomBook != null">#{roomBook},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="unitPrice != null">#{unitPrice},</if>
+			<if test="monthpay != null">#{monthpay},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="imageUrl != null">#{imageUrl},</if>
+			<if test="companyType != null">#{companyType},</if>
+			<if test="fatherId != null">#{fatherId},</if>
+			<if test="originHouseId != null">#{originHouseId},</if>
+			<if test="dicTempId != null">#{dicTempId},</if>
+			<if test="hasDicStatus != null">#{hasDicStatus},</if>
+			<if test="showxs != null">#{showxs},</if>
+			<if test="floorTypeName != null">#{floorTypeName},</if>
+			<if test="isDeal != null">#{isDeal},</if>
+			<if test="houseTypePicUrl != null">#{houseTypePicUrl},</if>
+			<if test="houseTypeLjPicUrl != null">#{houseTypeLjPicUrl},</if>
+			<if test="layoutStructure != null">#{layoutStructure},</if>
+			<if test="insideArea != null">#{insideArea},</if>
+			<if test="buildingStruture != null">#{buildingStruture},</if>
+			<if test="stairScale != null">#{stairScale},</if>
+			<if test="isElevator != null">#{isElevator},</if>
+			<if test="houseTypeInfo != null">#{houseTypeInfo},</if>
+			<if test="sfjx != null">#{sfjx},</if>
+			<if test="aroundInfo != null">#{aroundInfo},</if>
+			<if test="dicInfo != null">#{dicInfo},</if>
+			<if test="subwayDetail != null">#{subwayDetail},</if>
+			<if test="ring != null">#{ring},</if>
+			<if test="subwayUrl != null">#{subwayUrl},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="updateIsDeal" parameterType="java.util.Map">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+		is_deal=#{isDeal}
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="update" parameterType="HouseMasterCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_id = #{houseId},
+			dic_id = #{dicId},
+			origin_dic_id = #{originDicId},
+			hall = #{hall},
+			room = #{room},
+			toilet = #{toilet},
+			kitchen = #{kitchen},
+			house_type = #{houseType},
+			renovation_name = #{renovationName},
+			renovation = #{renovation},
+			floor = #{floor},
+			floor_num = #{floorNum},
+			floor_type = #{floorType},
+			room_number1 = #{roomNumber1},
+			room_number1_cell = #{roomNumber1Cell},
+			room_number2 = #{roomNumber2},
+			room_number2_cell = #{roomNumber2Cell},
+			room_number = #{roomNumber},
+			build_area = #{buildArea},
+			build_year = #{buildYear},
+			certificate_name = #{certificateName},
+			certificate = #{certificate},
+			certificate_type = #{certificateType},
+			is_key = #{isKey},
+			house_only = #{houseOnly},
+			payments = #{payments},
+			price = #{price},
+			features_name = #{featuresName},
+			features = #{features},
+			title = #{title},
+			selling_point = #{sellingPoint},
+			house_detail = #{houseDetail},
+			owne_mentality = #{owneMentality},
+			village_matching = #{villageMatching},
+			service_intro = #{serviceIntro},
+			orientations_name = #{orientationsName},
+			orientations = #{orientations},
+			house_year = #{houseYear},
+			structure = #{structure},
+			lift_ratio = #{liftRatio},
+			heating_mode = #{heatingMode},
+			lift = #{lift},
+			listing_date = #{listingDate},
+			deal_date = #{dealDate},
+			property = #{property},
+			mortgage = #{mortgage},
+			room_book = #{roomBook},
+			delete_flag = #{deleteFlag},
+			unit_price = #{unitPrice},
+			monthpay = #{monthpay},
+			update_time = #{updateTime},
+			image_url = #{imageUrl},
+			company_type = #{companyType},
+			father_id = #{fatherId},
+			origin_house_id = #{originHouseId},
+			dic_temp_id = #{dicTempId},
+			has_dic_status = #{hasDicStatus},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="HouseMasterCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="dicId != null">dic_id = #{dicId},</if>
+			<if test="originDicId != null">origin_dic_id = #{originDicId},</if>
+			<if test="hall != null">hall = #{hall},</if>
+			<if test="room != null">room = #{room},</if>
+			<if test="toilet != null">toilet = #{toilet},</if>
+			<if test="kitchen != null">kitchen = #{kitchen},</if>
+			<if test="houseType != null">house_type = #{houseType},</if>
+			<if test="renovationName != null">renovation_name = #{renovationName},</if>
+			<if test="renovation != null">renovation = #{renovation},</if>
+			<if test="floor != null">floor = #{floor},</if>
+			<if test="floorNum != null">floor_num = #{floorNum},</if>
+			<if test="floorType != null">floor_type = #{floorType},</if>
+			<if test="roomNumber1 != null">room_number1 = #{roomNumber1},</if>
+			<if test="roomNumber1Cell != null">room_number1_cell = #{roomNumber1Cell},</if>
+			<if test="roomNumber2 != null">room_number2 = #{roomNumber2},</if>
+			<if test="roomNumber2Cell != null">room_number2_cell = #{roomNumber2Cell},</if>
+			<if test="roomNumber != null">room_number = #{roomNumber},</if>
+			<if test="buildArea != null">build_area = #{buildArea},</if>
+			<if test="buildYear != null">build_year = #{buildYear},</if>
+			<if test="certificateName != null">certificate_name = #{certificateName},</if>
+			<if test="certificate != null">certificate = #{certificate},</if>
+			<if test="certificateType != null">certificate_type = #{certificateType},</if>
+			<if test="isKey != null">is_key = #{isKey},</if>
+			<if test="houseOnly != null">house_only = #{houseOnly},</if>
+			<if test="payments != null">payments = #{payments},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="featuresName != null">features_name = #{featuresName},</if>
+			<if test="features != null">features = #{features},</if>
+			<if test="title != null">title = #{title},</if>
+			<if test="sellingPoint != null">selling_point = #{sellingPoint},</if>
+			<if test="houseDetail != null">house_detail = #{houseDetail},</if>
+			<if test="owneMentality != null">owne_mentality = #{owneMentality},</if>
+			<if test="villageMatching != null">village_matching = #{villageMatching},</if>
+			<if test="serviceIntro != null">service_intro = #{serviceIntro},</if>
+			<if test="orientationsName != null">orientations_name = #{orientationsName},</if>
+			<if test="orientations != null">orientations = #{orientations},</if>
+			<if test="houseYear != null">house_year = #{houseYear},</if>
+			<if test="structure != null">structure = #{structure},</if>
+			<if test="liftRatio != null">lift_ratio = #{liftRatio},</if>
+			<if test="heatingMode != null">heating_mode = #{heatingMode},</if>
+			<if test="lift != null">lift = #{lift},</if>
+			<if test="listingDate != null">listing_date = #{listingDate},</if>
+			<if test="dealDate != null">deal_date = #{dealDate},</if>
+			<if test="property != null">property = #{property},</if>
+			<if test="mortgage != null">mortgage = #{mortgage},</if>
+			<if test="roomBook != null">room_book = #{roomBook},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="unitPrice != null">unit_price = #{unitPrice},</if>
+			<if test="monthpay != null">monthpay = #{monthpay},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="imageUrl != null">image_url = #{imageUrl},</if>
+			<if test="companyType != null">company_type = #{companyType},</if>
+			<if test="fatherId != null">father_id = #{fatherId},</if>
+			<if test="originHouseId != null">origin_house_id = #{originHouseId},</if>
+			<if test="dicTempId != null">dic_temp_id = #{dicTempId},</if>
+			<if test="hasDicStatus != null">has_dic_status = #{hasDicStatus},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

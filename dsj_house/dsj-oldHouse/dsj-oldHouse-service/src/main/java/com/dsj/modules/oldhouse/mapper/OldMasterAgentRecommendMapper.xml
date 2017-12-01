@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldhouse.dao.impl.OldMasterAgentRecommendDaoImpl">
+    
+    <sql id="tableName"> old_master_agent_recommend a </sql>
+    <sql id="tableNameUpdate"> old_master_agent_recommend </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.create_time AS "createTime",
+		a.delete_flag AS "deleteFlag",
+		a.user_id AS "userId",
+		a.old_master_id AS "oldMasterId"
+	</sql>
+	
+	<resultMap id="beanMap" type="OldMasterAgentRecommendPo">
+		<id column="id" property="id" />
+		<result column="create_time" property="createTime" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="user_id" property="userId" />
+		<result column="old_master_id" property="oldMasterId" />
+	</resultMap>
+	
+	<sql id="oldMasterAgentRecommendJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="oldMasterId != null and oldMasterId!= ''"> AND a.old_master_id = #{oldMasterId}</if>
+	</sql>
+    
+	<select id="getById" resultType="OldMasterAgentRecommendPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="oldMasterAgentRecommendJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OldMasterAgentRecommendPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			create_time,
+			delete_flag,
+			user_id,
+			old_master_id
+		) VALUES (
+			#{id},
+			#{createTime},
+			#{deleteFlag},
+			#{userId},
+			#{oldMasterId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OldMasterAgentRecommendPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="oldMasterId != null">old_master_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="oldMasterId != null">#{oldMasterId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="OldMasterAgentRecommendPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			delete_flag = #{deleteFlag},
+			user_id = #{userId},
+			old_master_id = #{oldMasterId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OldMasterAgentRecommendPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="oldMasterId != null">old_master_id = #{oldMasterId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateDeleteFlagByUserIdOrMasterId" parameterType="java.util.Map">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			delete_flag = #{deleteFlag}
+    	</set>
+    	WHERE user_id = #{userId}  and old_master_id = #{oldMasterId} 
+    </update>
+	
+		<update id="deletegByUserIdOrMasterId" parameterType="java.util.Map">
+   		DELETE FROM <include refid="tableNameUpdate"/>
+    	WHERE user_id = #{userId}  and old_master_id = #{oldMasterId} 
+    </update>
+	
+	
+	
+</mapper>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.PcAgentAddDaoImpl">
+    
+    <sql id="tableName"> dsj_pc_agent_add a </sql>
+    <sql id="tableNameUpdate"> dsj_pc_agent_add </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.agent_id AS "agentId",
+		a.agent_name AS "agentName",
+		a.link_address AS "linkAddress",
+		a.picture AS "picture"
+	</sql>
+	
+	<resultMap id="beanMap" type="PcAgentAddPo">
+		<id column="id" property="id" />
+		<result column="agent_id" property="agentId" />
+		<result column="agent_name" property="agentName" />
+		<result column="link_address" property="linkAddress" />
+		<result column="picture" property="picture" />
+	</resultMap>
+	
+	<sql id="pcAgentAddJoins">
+	</sql>
+    
+    <sql id="condition_sql">
+        <if test="id != null and id != ''">AND a.id = #{id}</if>	
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name = #{agentName}</if>
+		<if test="linkAddress != null and linkAddress!= ''"> AND a.link_address = #{linkAddress}</if>
+		<if test="picture != null and picture!= ''"> AND a.picture = #{picture}</if>
+	</sql>
+    
+	<select id="getById" resultType="PcAgentAddPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="pcAgentAddJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="getAgent" resultMap="beanMap">
+	    SELECT 
+	    <include refid="tableColumns"/>
+	   FROM	<include refid="tableName"/>
+	</select>
+	<insert id="insert" parameterType="PcAgentAddPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			agent_id,
+			agent_name,
+			link_address,
+			picture
+		) VALUES (
+			#{id},
+			#{agentId},
+			#{agentName},
+			#{linkAddress},
+			#{picture}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="PcAgentAddPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="linkAddress != null">link_address,</if>
+					<if test="picture != null">picture,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="linkAddress != null">#{linkAddress},</if>
+			<if test="picture != null">#{picture},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="PcAgentAddPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			agent_id = #{agentId},
+			agent_name = #{agentName},
+			link_address = #{linkAddress},
+			picture = #{picture},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="PcAgentAddPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	<update id="updateAgentPage" parameterType="PcAgentAddPo">
+	   UPDATE dsj_pc_agent_add_page  
+    	 <set>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+    	</set>
+    	WHERE pid = #{id}  
+	</update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	
+	
+</mapper>

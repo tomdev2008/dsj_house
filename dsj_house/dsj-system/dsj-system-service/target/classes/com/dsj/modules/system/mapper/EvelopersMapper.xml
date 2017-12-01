@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.EvelopersDaoImpl">
+    
+    <sql id="tableName"> dsj_evelopers a </sql>
+    <sql id="tableNameUpdate"> dsj_evelopers </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.user_id AS userId,
+		a.area_one_id AS "areaOneId",
+		a.area_two_id AS "areaTwoId",
+		a.area_three_id AS "areaThreeId",
+		a.name AS "name",
+		a.company_license_num AS "companyLicenseNum",
+		a.company_license_photo AS "companyLicensePhoto",
+		a.loupan_name AS "loupanName",
+		a.promise_photo AS "promisePhoto",
+		a.operation_name AS "operationName",
+		a.operation_phone AS "operationPhone",
+		a.operation_card AS "operationCard",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="EvelopersPo">
+		<id column="id" property="id" />
+		<result column="area_one_id" property="areaOneId" />
+		<result column="area_two_id" property="areaTwoId" />
+		<result column="area_three_id" property="areaThreeId" />
+		<result column="name" property="name" />
+		<result column="company_license_num" property="companyLicenseNum" />
+		<result column="company_license_photo" property="companyLicensePhoto" />
+		<result column="loupan_name" property="loupanName" />
+		<result column="promise_photo" property="promisePhoto" />
+		<result column="operation_name" property="operationName" />
+		<result column="operation_phone" property="operationPhone" />
+		<result column="operation_card" property="operationCard" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<resultMap id="beanVoMap" type="EvelopersVo">
+		<id column="id" property="id" />
+		<result column="area_one_id" property="areaOneId" />
+		<result column="area_two_id" property="areaTwoId" />
+		<result column="area_three_id" property="areaThreeId" />
+		<result column="name" property="name" />
+		<result column="company_license_num" property="companyLicenseNum" />
+		<result column="company_license_photo" property="companyLicensePhoto" />
+		<result column="loupan_name" property="loupanName" />
+		<result column="promise_photo" property="promisePhoto" />
+		<result column="operation_name" property="operationName" />
+		<result column="operation_phone" property="operationPhone" />
+		<result column="operation_card" property="operationCard" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="username" property="username" />
+	</resultMap>
+	
+	<sql id="evelopersJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="areaOneId != null and areaOneId!= ''"> AND a.area_one_id = #{areaOneId}</if>
+		<if test="areaTwoId != null and areaTwoId!= ''"> AND a.area_two_id = #{areaTwoId}</if>
+		<if test="areaThreeId != null and areaThreeId!= ''"> AND a.area_three_id = #{areaThreeId}</if>
+		<if test="name != null and name!= ''"> AND a.name like concat('%',#{name},'%') </if>
+		<if test="companyLicenseNum != null and companyLicenseNum!= ''"> AND a.company_license_num = #{companyLicenseNum}</if>
+		<if test="companyLicensePhoto != null and companyLicensePhoto!= ''"> AND a.company_license_photo = #{companyLicensePhoto}</if>
+		<if test="loupanName != null and loupanName!= ''"> AND a.loupan_name like  concat('%',#{loupanName},'%')</if>
+		<if test="promisePhoto != null and promisePhoto!= ''"> AND a.promise_photo = #{promisePhoto}</if>
+		<if test="operationName != null and operationName!= ''"> AND a.operation_name = #{operationName}</if>
+		<if test="operationPhone != null and operationPhone!= ''"> AND a.operation_phone = #{operationPhone}</if>
+		<if test="operationCard != null and operationCard!= ''"> AND a.operation_card = #{operationCard}</if>
+		<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+	
+	<sql id="condition_sql_two">	
+			<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+			<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+			<if test="name != null and name!= ''"> AND b.name like concat('%',#{name},'%') </if>
+			<if test="operationPhone != null and operationPhone != ''"> AND b.operation_phone like concat('%',#{operationPhone},'%') </if>
+			<if test="loupanName != null and loupanName!= ''"> AND b.loupan_name like concat('%',#{loupanName},'%')</if>
+			<if test="areaOneId != null and areaOneId!= ''"> AND b.area_one_id = #{areaOneId}</if>
+			<if test="areaTwoId != null and areaTwoId!= ''"> AND b.area_two_id = #{areaTwoId}</if>
+			<if test="status == null or status == ''"> AND a.status !=4</if>
+			<if test="status != null and status != ''"> AND a.status = #{status}</if>
+			
+			<if test="delFlag != null and delFlag != ''"> AND a.del_flag = #{delFlag}</if>
+	</sql>
+    
+	<select id="getById" resultType="EvelopersPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="evelopersJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="EvelopersPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			area_one_id,
+			area_two_id,
+			area_three_id,
+			name,
+			company_license_num,
+			company_license_photo,
+			loupan_name,
+			promise_photo,
+			operation_name,
+			operation_phone,
+			operation_card,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{areaOneId},
+			#{areaTwoId},
+			#{areaThreeId},
+			#{name},
+			#{companyLicenseNum},
+			#{companyLicensePhoto},
+			#{loupanName},
+			#{promisePhoto},
+			#{operationName},
+			#{operationPhone},
+			#{operationCard},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="EvelopersPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="areaOneId != null">area_one_id,</if>
+					<if test="areaTwoId != null">area_two_id,</if>
+					<if test="areaThreeId != null">area_three_id,</if>
+					<if test="name != null">name,</if>
+					<if test="companyLicenseNum != null">company_license_num,</if>
+					<if test="companyLicensePhoto != null">company_license_photo,</if>
+					<if test="loupanName != null">loupan_name,</if>
+					<if test="promisePhoto != null">promise_photo,</if>
+					<if test="operationName != null">operation_name,</if>
+					<if test="operationPhone != null">operation_phone,</if>
+					<if test="operationCard != null">operation_card,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="areaOneId != null">#{areaOneId},</if>
+			<if test="areaTwoId != null">#{areaTwoId},</if>
+			<if test="areaThreeId != null">#{areaThreeId},</if>
+			<if test="name != null">#{name},</if>
+			<if test="companyLicenseNum != null">#{companyLicenseNum},</if>
+			<if test="companyLicensePhoto != null">#{companyLicensePhoto},</if>
+			<if test="loupanName != null">#{loupanName},</if>
+			<if test="promisePhoto != null">#{promisePhoto},</if>
+			<if test="operationName != null">#{operationName},</if>
+			<if test="operationPhone != null">#{operationPhone},</if>
+			<if test="operationCard != null">#{operationCard},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="EvelopersPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			area_one_id = #{areaOneId},
+			area_two_id = #{areaTwoId},
+			area_three_id = #{areaThreeId},
+			name = #{name},
+			company_license_num = #{companyLicenseNum},
+			company_license_photo = #{companyLicensePhoto},
+			loupan_name = #{loupanName},
+			promise_photo = #{promisePhoto},
+			operation_name = #{operationName},
+			operation_phone = #{operationPhone},
+			operation_card = #{operationCard},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="EvelopersPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="areaOneId != null">area_one_id = #{areaOneId},</if>
+			<if test="areaTwoId != null">area_two_id = #{areaTwoId},</if>
+			<if test="areaThreeId != null">area_three_id = #{areaThreeId},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="companyLicenseNum != null">company_license_num = #{companyLicenseNum},</if>
+			<if test="companyLicensePhoto != null">company_license_photo = #{companyLicensePhoto},</if>
+			<if test="loupanName != null">loupan_name = #{loupanName},</if>
+			<if test="promisePhoto != null">promise_photo = #{promisePhoto},</if>
+			<if test="operationName != null">operation_name = #{operationName},</if>
+			<if test="operationPhone != null">operation_phone = #{operationPhone},</if>
+			<if test="operationCard != null">operation_card = #{operationCard},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	<select id="listEvelopersList" parameterType="java.util.Map" resultMap="beanMap">
+	  SELECT
+	        a.user_id as id,
+			a.name AS name,
+			a.operation_name AS operationName,
+			a.operation_phone AS operationPhone
+		FROM
+			dsj_evelopers a
+			INNER JOIN dsj_user b 
+			ON a.user_id = b.id
+			<if test="status != null and status!= ''"> 
+				AND b.`status` = #{status} 
+			</if>
+			<if test="delFlag != null and delFlag!= ''"> 
+				AND b.del_flag = #{delFlag} 
+			</if>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	<select id="listEvelopersCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+			count(1)
+		FROM
+			 dsj_evelopers a 
+			 INNER JOIN dsj_user b 
+			 ON a.user_id = b.id
+			<if test="status != null and status!= ''"> 
+				AND b.`status` = #{status} 
+			</if>
+			<if test="delFlag != null and delFlag!= ''"> 
+				AND b.del_flag = #{delFlag} 
+			</if>
+			<where>
+				<include refid="condition_sql" />
+			</where>
+	</select>
+	<select id="listNewPageList" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.EvelopersVo">
+		SELECT
+			a.id AS id,
+			a.username AS username,
+			a.`status`,
+			a.create_time AS createTime,
+			b.name,
+			b.operation_name AS operationName,
+			b.operation_phone AS operationPhone,
+			c.full_name AS fullName,
+			GROUP_CONCAT(d.`name`) as loupanName
+		FROM
+			dsj_user a
+		INNER JOIN dsj_evelopers b ON a.id = b.user_id
+		LEFT JOIN dsj_area c ON b.area_three_id = c.area_code
+	LEFT JOIN dsj_new_house_directory_auth d on  FIND_IN_SET(d.id,b.loupan_name) 
+		<where>
+			<include refid="condition_sql_two" />
+		</where>
+		GROUP BY a.id
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+	select count(1) from (
+		SELECT
+			count(1)
+		FROM
+			dsj_user a
+		INNER JOIN dsj_evelopers b ON a.id = b.user_id
+		LEFT JOIN dsj_area c ON b.area_three_id = c.area_code
+		LEFT JOIN dsj_new_house_directory_auth d on  FIND_IN_SET(d.id,b.loupan_name) 
+			<where>
+				<include refid="condition_sql_two" />
+			</where>
+			GROUP BY a.id
+		) f
+	</select>
+	  <select id="getVoById" parameterType="long" resultType="com.dsj.modules.system.vo.EvelopersVo">
+  			SELECT
+			<include refid="tableColumns"/>,
+			b.username AS username,
+			b.status AS status
+		FROM
+			dsj_user b
+		 JOIN dsj_evelopers a ON b.id = a.user_id
+  		WHERE a.user_id = #{0}
+ 	 </select>
+ 	 
+ 	 
+ 	 <select id="getVoBy" resultMap="beanVoMap">
+		SELECT
+			<include refid="tableColumns"/>,
+			b.username AS username,
+			b.status AS status
+		FROM
+			dsj_user b
+		 JOIN dsj_evelopers a ON b.id = a.user_id
+    	<where>
+			<if test="userId != null and userId != ''"> AND a.user_id = #{userId}</if>
+		</where>
+  	</select>
+ 	 
+ 	 <select id="listByUserIds" resultType="com.dsj.modules.system.vo.EvelopersVo" parameterType="string">
+    	SELECT 
+    		<include refid="tableColumns"/>,
+    		b.username
+    	FROM <include refid="tableName"/> 
+    	left join dsj_user b on a.user_id = b.id 
+    	where a.user_id in (${_parameter})
+  	</select>
+  	<update id="updateEveloper" parameterType="java.util.Map">
+  	  update <include refid="tableNameUpdate"/> 
+  	  set loupan_name=#{loupanName}
+  	  where user_id=#{userId}
+  	</update>
+  	<select id="getEveloper" resultMap="beanMap" parameterType="java.util.Map">
+  	 select <include refid="tableColumns"/>
+  	 FROM <include refid="tableName"/> 
+  	 where a.user_id=#{userId}
+  	</select>
+</mapper>

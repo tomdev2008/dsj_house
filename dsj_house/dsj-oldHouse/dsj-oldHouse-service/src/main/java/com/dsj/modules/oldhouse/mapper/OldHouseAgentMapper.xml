@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldhouse.dao.impl.OldHouseAgentDaoImpl">
+    
+    <sql id="tableName"> old_house_agent a </sql>
+    <sql id="tableNameUpdate"> old_house_agent </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.old_master_id AS "oldMasterId",
+		a.agent_name AS "agentName",
+		a.agent_phone AS "agentPhone",
+		a.company_type AS "companyType",
+		a.agent_pic_url AS "agentPicUrl",
+		a.create_person AS "createPerson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.delete_flag AS "deleteFlag",
+		a.user_id AS "userId"
+	</sql>
+	
+	    
+	<sql id="tableColumns_join_master">
+		a.id AS "id",
+		a.old_master_id AS "oldMasterId",
+		a.agent_name AS "agentName",
+		a.agent_phone AS "agentPhone",
+		a.company_type AS "companyType",
+		a.agent_pic_url AS "agentPicUrl",
+		a.create_person AS "createPerson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.delete_flag AS "deleteFlag",
+		a.user_id AS "userId",
+		da.name AS dsjAgentName,
+		da.tell_phone AS dsjAgentPhone,
+		c.company_name AS dsjAgentCompanyName,
+		c.short_name AS dsjShortName,
+		c.ccode ccode,
+		da.avatar_re_url AS dsjAvatarReUrl,
+		da.avatar_url AS dsjAvatarUrl,
+		
+	    ag.name as gradeName,
+        ag.small_icon as smallIcon,
+        ag.big_icon as bigIcon,
+        u.username username,
+        c.ico ico,
+        m.price price,
+        mb.mobile mobile
+	</sql>
+	
+	<resultMap id="beanMap" type="OldHouseAgentPo">
+		<id column="id" property="id" />
+		<result column="old_master_id" property="oldMasterId" />
+		<result column="agent_name" property="agentName" />
+		<result column="agent_phone" property="agentPhone" />
+		<result column="company_type" property="companyType" />
+		<result column="agent_pic_url" property="agentPicUrl" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="user_id" property="userId" />
+	</resultMap>
+	
+	<sql id="oldHouseAgentJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="oldMasterId != null and oldMasterId!= ''"> AND a.old_master_id = #{oldMasterId}</if>
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name = #{agentName}</if>
+		<if test="agentPhone != null and agentPhone!= ''"> AND a.agent_phone = #{agentPhone}</if>
+		<if test="companyType != null and companyType!= ''"> AND a.company_type = #{companyType}</if>
+		<if test="agentPicUrl != null and agentPicUrl!= ''"> AND a.agent_pic_url = #{agentPicUrl}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="isRecomend != null and isRecomend != ''"> AND a.is_recomend = #{isRecomend}</if>
+		
+	</sql>
+    
+	<select id="getById" resultType="OldHouseAgentPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="oldHouseAgentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+  	
+  	<select id="getByUserNotNull" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+    		a.user_id is not null
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+  	
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OldHouseAgentPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			old_master_id,
+			agent_name,
+			agent_phone,
+			company_type,
+			agent_pic_url,
+			create_person,
+			update_preson,
+			create_time,
+			update_time,
+			delete_flag,
+			user_id
+		) VALUES (
+			#{id},
+			#{oldMasterId},
+			#{agentName},
+			#{agentPhone},
+			#{companyType},
+			#{agentPicUrl},
+			#{createPerson},
+			#{updatePreson},
+			#{createTime},
+			#{updateTime},
+			#{deleteFlag},
+			#{userId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OldHouseAgentPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="oldMasterId != null">old_master_id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="agentPhone != null">agent_phone,</if>
+					<if test="companyType != null">company_type,</if>
+					<if test="agentPicUrl != null">agent_pic_url,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="userId != null">user_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="oldMasterId != null">#{oldMasterId},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="agentPhone != null">#{agentPhone},</if>
+			<if test="companyType != null">#{companyType},</if>
+			<if test="agentPicUrl != null">#{agentPicUrl},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="userId != null">#{userId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="OldHouseAgentPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			old_master_id = #{oldMasterId},
+			agent_name = #{agentName},
+			agent_phone = #{agentPhone},
+			company_type = #{companyType},
+			agent_pic_url = #{agentPicUrl},
+			create_person = #{createPerson},
+			update_preson = #{updatePreson},
+			update_time = #{updateTime},
+			delete_flag = #{deleteFlag},
+			user_id = #{userId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OldHouseAgentPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="oldMasterId != null">old_master_id = #{oldMasterId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="agentPhone != null">agent_phone = #{agentPhone},</if>
+			<if test="companyType != null">company_type = #{companyType},</if>
+			<if test="agentPicUrl != null">agent_pic_url = #{agentPicUrl},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="userId != null">user_id = #{userId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+    
+    <update id="updateDelOldAgentByUserNotNull" parameterType="map">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			delete_flag = #{deleteFlag}
+		WHERE old_master_id = #{oldMasterId} and user_id is not null
+	</update>
+    
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getByMasterIdAndNullUserId" resultType="OldHouseAgentVo">
+		select u.id,c.company_name companyName,oha.agent_phone agentPhone,a.tell_phone  tellPhone, oha.old_master_id oldMasterId,a.`name`
+ 		from old_house_agent oha JOIN dsj_user u on u.id=oha.user_id
+ 		JOIN dsj_agent a on u.id=a.user_id left join  dsj_company c on a.company=c.id
+		WHERE oha.old_master_id = #{masterId}
+		AND oha.user_id IS NOT NULL
+	</select>
+	
+		
+	<select id="getJoinMasterLefJoinAgent" resultType="OldHouseAgentPo">
+		select <include refid="tableColumns_join_master"/>
+ 		from old_house_agent a LEFT JOIN dsj_user u on u.id=a.user_id
+ 		LEFT JOIN dsj_agent da on u.id=da.user_id 
+ 		left join  dsj_company c on da.company=c.id
+ 		LEFT JOIN old_house_master m on m.id=a.old_master_id
+ 		LEFT JOIN dsj_agent_info i ON i.agent_id = da.agent_code 
+   		 LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score 
+   		 LEFT JOIN dsj_mobile mb on mb.agent_id=da.id
+		WHERE m.father_id = #{fatherId} or m.id= #{fatherId} 
+	</select>
+	
+		
+	<select id="getJoinMasterLefJoinAgentUserId" resultType="OldHouseAgentPo">
+		select <include refid="tableColumns_join_master"/>
+ 		from old_house_agent a JOIN dsj_user u on u.id=a.user_id
+ 		JOIN dsj_agent da on u.id=da.user_id left join  dsj_company c on da.company=c.id
+ 		LEFT JOIN old_house_master m on m.id=a.old_master_id
+ 		LEFT JOIN dsj_agent_info i ON i.agent_id = da.agent_code 
+   		 LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score 
+   		  LEFT JOIN dsj_mobile mb on mb.agent_id=da.id
+		WHERE a.old_master_id = #{oldMasterId} and a.user_id is not null
+	</select>
+	
+		
+	<update id="updateIsRecomend" parameterType="java.util.Map">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+				set is_recomend = #{isRecomend}
+    	WHERE old_master_id = #{oldMasterId} and  user_id=#{userId} 
+    </update>
+	
+</mapper>

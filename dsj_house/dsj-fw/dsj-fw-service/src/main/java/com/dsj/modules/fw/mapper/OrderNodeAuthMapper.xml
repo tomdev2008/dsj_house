@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.OrderNodeAuthDaoImpl">
+    
+    <sql id="tableName"> dsj_order_node_auth a </sql>
+    <sql id="tableNameUpdate"> dsj_order_node_auth </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.order_id AS "orderId",
+		a.order_detail_id AS "orderDetailId",
+		a.node_id AS "nodeId",
+		a.status AS "status",
+		a.content AS "content",
+		a.create_time AS "createTime",
+		a.create_preson_id AS "createPresonId",
+		a.create_preson_name AS "createPresonName"
+	</sql>
+	
+	<resultMap id="beanMap" type="OrderNodeAuthPo">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="order_detail_id" property="orderDetailId" />
+		<result column="node_id" property="nodeId" />
+		<result column="status" property="status" />
+		<result column="content" property="content" />
+		<result column="create_time" property="createTime" />
+		<result column="create_preson_id" property="createPresonId" />
+		<result column="create_preson_name" property="createPresonName" />
+	</resultMap>
+	
+	<sql id="orderNodeAuthJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="orderId != null and orderId!= ''"> AND a.order_id = #{orderId}</if>
+		<if test="orderDetailId != null and orderDetailId!= ''"> AND a.order_detail_id = #{orderDetailId}</if>
+		<if test="nodeId != null and nodeId!= ''"> AND a.node_id = #{nodeId}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="createPresonId != null and createPresonId!= ''"> AND a.create_preson_id = #{createPresonId}</if>
+		<if test="createPresonName != null and createPresonName!= ''"> AND a.create_preson_name = #{createPresonName}</if>
+	</sql>
+    
+	<select id="getById" resultType="OrderNodeAuthPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="orderNodeAuthJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwNodeAuthVo">
+		SELECT 
+    		<include refid="tableColumns"/>,
+    		b.name as nodeName
+    	FROM <include refid="tableName"/> 
+    	left join dsj_fw_type_node b on b.id = a.node_id
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OrderNodeAuthPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			order_id,
+			order_detail_id,
+			node_id,
+			status,
+			content,
+			create_time,
+			create_preson_id,
+			create_preson_name
+		) VALUES (
+			#{id},
+			#{orderId},
+			#{orderDetailId},
+			#{nodeId},
+			#{status},
+			#{content},
+			#{createTime},
+			#{createPresonId},
+			#{createPresonName}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OrderNodeAuthPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="orderId != null">order_id,</if>
+					<if test="orderDetailId != null">order_detail_id,</if>
+					<if test="nodeId != null">node_id,</if>
+					<if test="status != null">status,</if>
+					<if test="content != null">content,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="createPresonId != null">create_preson_id,</if>
+					<if test="createPresonName != null">create_preson_name,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="orderId != null">#{orderId},</if>
+			<if test="orderDetailId != null">#{orderDetailId},</if>
+			<if test="nodeId != null">#{nodeId},</if>
+			<if test="status != null">#{status},</if>
+			<if test="content != null">#{content},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="createPresonId != null">#{createPresonId},</if>
+			<if test="createPresonName != null">#{createPresonName},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="OrderNodeAuthPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			order_id = #{orderId},
+			order_detail_id = #{orderDetailId},
+			node_id = #{nodeId},
+			content = #{content},
+			create_preson_id = #{createPresonId},
+			create_preson_name = #{createPresonName},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OrderNodeAuthPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="orderId != null">order_id = #{orderId},</if>
+			<if test="orderDetailId != null">order_detail_id = #{orderDetailId},</if>
+			<if test="nodeId != null">node_id = #{nodeId},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="createPresonId != null">create_preson_id = #{createPresonId},</if>
+			<if test="createPresonName != null">create_preson_name = #{createPresonName},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

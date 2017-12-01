@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.OldHousePictureCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_house_picture_crawler a </sql>
+    <sql id="tableNameUpdate"> old_house_picture_crawler </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.picture_type AS "pictureType",
+		a.origin_obj_id AS "originObjId",
+		a.origin_picture_url AS "originPictureUrl",
+		a.picture_url AS "pictureUrl",
+		a.path AS "path",
+		a.obj_id AS "objId",
+		a.is_cover AS "isCover",
+		a.delete_flag AS "deleteFlag",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.is_upload AS "isUpload",
+		a.is_download AS "isDownload"
+	</sql>
+	
+	<resultMap id="beanMap" type="OldHousePictureCrawlerPo">
+		<id column="id" property="id" />
+		<result column="picture_type" property="pictureType" />
+		<result column="origin_obj_id" property="originObjId" />
+		<result column="origin_picture_url" property="originPictureUrl" />
+		<result column="picture_url" property="pictureUrl" />
+		<result column="path" property="path" />
+		<result column="obj_id" property="objId" />
+		<result column="is_cover" property="isCover" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="is_upload" property="isUpload" />
+		<result column="is_download" property="isDownload" />
+	</resultMap>
+	
+	<sql id="oldHousePictureCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="pictureType != null and pictureType!= ''"> AND a.picture_type = #{pictureType}</if>
+		<if test="originObjId != null and originObjId!= ''"> AND a.origin_obj_id = #{originObjId}</if>
+		<if test="originPictureUrl != null and originPictureUrl!= ''"> AND a.origin_picture_url = #{originPictureUrl}</if>
+		<if test="pictureUrl != null and pictureUrl!= ''"> AND a.picture_url = #{pictureUrl}</if>
+		<if test="path != null and path!= ''"> AND a.path = #{path}</if>
+		<if test="objId != null and objId!= ''"> AND a.obj_id = #{objId}</if>
+		<if test="isCover != null and isCover!= ''"> AND a.is_cover = #{isCover}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="isUpload != null and isUpload!= ''"> AND a.is_upload = #{isUpload}</if>
+		<if test="isDownload != null and isDownload!= ''"> AND a.is_download = #{isDownload}</if>
+	</sql>
+    
+	<select id="getById" resultType="OldHousePictureCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="oldHousePictureCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+  	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OldHousePictureCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			picture_type,
+			origin_obj_id,
+			origin_picture_url,
+			picture_url,
+			path,
+			obj_id,
+			is_cover,
+			delete_flag,
+			create_time,
+			update_time,
+			is_upload,
+			is_download
+		) VALUES (
+			#{id},
+			#{pictureType},
+			#{originObjId},
+			#{originPictureUrl},
+			#{pictureUrl},
+			#{path},
+			#{objId},
+			#{isCover},
+			#{deleteFlag},
+			#{createTime},
+			#{updateTime},
+			#{isUpload},
+			#{isDownload}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OldHousePictureCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="pictureType != null">picture_type,</if>
+					<if test="originObjId != null">origin_obj_id,</if>
+					<if test="originPictureUrl != null">origin_picture_url,</if>
+					<if test="pictureUrl != null">picture_url,</if>
+					<if test="path != null">path,</if>
+					<if test="objId != null">obj_id,</if>
+					<if test="isCover != null">is_cover,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="isUpload != null">is_upload,</if>
+					<if test="isDownload != null">is_download,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="pictureType != null">#{pictureType},</if>
+			<if test="originObjId != null">#{originObjId},</if>
+			<if test="originPictureUrl != null">#{originPictureUrl},</if>
+			<if test="pictureUrl != null">#{pictureUrl},</if>
+			<if test="path != null">#{path},</if>
+			<if test="objId != null">#{objId},</if>
+			<if test="isCover != null">#{isCover},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="isUpload != null">#{isUpload},</if>
+			<if test="isDownload != null">#{isDownload},</if>
+        </trim>
+    </insert>
+    
+    
+    <sql id="Batch_ADD_Column_List">
+			picture_type,
+			origin_obj_id,
+			origin_picture_url,
+			picture_url,
+			path,
+			obj_id,
+			is_cover,
+			delete_flag,
+			create_time,
+			update_time,
+			is_upload,
+			is_download,
+			compay_type
+	</sql>
+	
+	<insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">  
+	    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+	        SELECT  
+	        LAST_INSERT_ID()  
+	    </selectKey>  
+	    INSERT INTO <include refid="tableNameUpdate"/> (<include refid="Batch_ADD_Column_List"/>)   
+	    VALUES  
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (
+	        #{item.pictureType},
+	        #{item.originObjId},
+	        #{item.originPictureUrl},
+	        #{item.pictureUrl},
+	        #{item.path},
+	        #{item.objId},
+	        #{item.isCover},
+	        #{item.deleteFlag},
+	        #{item.createTime},
+	        #{item.updateTime},
+	        #{item.isUpload},
+	        #{item.isDownload},
+	        #{item.compayType}
+	        )
+	    </foreach>  
+	</insert>  
+	
+	<update id="update" parameterType="OldHousePictureCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			picture_type = #{pictureType},
+			origin_obj_id = #{originObjId},
+			origin_picture_url = #{originPictureUrl},
+			picture_url = #{pictureUrl},
+			path = #{path},
+			obj_id = #{objId},
+			is_cover = #{isCover},
+			delete_flag = #{deleteFlag},
+			update_time = #{updateTime},
+			is_upload = #{isUpload},
+			is_download = #{isDownload},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OldHousePictureCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="pictureType != null">picture_type = #{pictureType},</if>
+			<if test="originObjId != null">origin_obj_id = #{originObjId},</if>
+			<if test="originPictureUrl != null">origin_picture_url = #{originPictureUrl},</if>
+			<if test="pictureUrl != null">picture_url = #{pictureUrl},</if>
+			<if test="path != null">path = #{path},</if>
+			<if test="objId != null">obj_id = #{objId},</if>
+			<if test="isCover != null">is_cover = #{isCover},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="isUpload != null">is_upload = #{isUpload},</if>
+			<if test="isDownload != null">is_download = #{isDownload},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

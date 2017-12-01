@@ -1,0 +1,44 @@
+
+  <script id="dsj_basic_touxiang_template" type="text/x-handlebars-template">
+
+    <div class="">
+      <!-- 上传证件照标题-->
+      <form class="form-horizontal dsj_form" onsubmit="return false">
+        <h4 class="dsj_title">企业形象图片</h4>
+        <div class="col-sm-12 dsj_alert">
+          <button id="picker" class="btn btn-primary dsj_button">上传图片</button>
+          <span><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>  上传文件应大于20K，小于600K</span>
+	      <div id="uploader" style="display:none;"></div>
+        </div>
+        <div class="crop_container row" style="display: none;">
+          <div class="col-sm-4">
+            <div class="component">
+              <div class="overlay">
+              </div>
+              <!-- This image must be on the same domain as the demo or it will not work on a local file system -->
+              <!-- http://en.wikipedia.org/wiki/Cross-origin_resource_sharing -->
+              <img class="resize-image-small" style="display: none;" src="" alt="image for resizing">
+            </div>
+          </div>
+         
+        </div>
+
+        <p class="dsj_touxiang_detail">
+          头像照片要求：<br>
+          1.照片要求头像清晰、完整，不能含有以下内容（如锦旗、军装、其他网站Logo、PS信息）；<br>
+          2.上传文件大于20k，小于600k，支持jpg、jpeg、png格式的图片；<br>
+          3.照片宽度大于113px，小于等于600px，图片高度大于150px。<br>
+          	*温馨提示：您上传的头像不符合以上要求将会被退回。<br>
+
+
+        </p>
+        <form id="registerForm"/>
+        </form>
+        <div class="row dsj_button_group">
+          <div class="col-sm-5">
+            <button class="js-crop primary" type="submit">确认</button>
+          </div>
+        </div>
+      </form>
+    </div>
+   </script>

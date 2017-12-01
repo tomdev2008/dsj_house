@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.dsj</groupId>
+	<artifactId>dsj</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+    <name>dsj</name>
+
+	<modules>
+        <!-- 通用工具 -->
+        <module>dsj-common</module>
+        <!-- 用户 -->
+        <module>dsj-system</module>
+        <!-- 其他 -->
+        <module>dsj-other</module>
+         <module>dsj-solr</module>
+         <!-- 新房 -->
+        <module>dsj-newHouse</module>
+          <!-- 二手房 -->
+        <module>dsj-oldHouse</module>
+		
+        <!-- 租赁 -->
+        <module>dsj-rentHouse</module>
+   		<!-- 评论 -->
+        <module>dsj-comment</module>
+      
+        <!-- 首页管理 -->
+        <module>dsj-pageLayout</module>
+        <module>dsj-mobile400</module>
+        <module>dsj-easemob</module>
+        <module>dsj-fw</module>
+         <!-- 后台 -->
+        <module>dsj-back</module>
+        <!-- 权证后台 -->
+        <module>dsj-warrant-back</module>
+         <!-- 前台 -->
+        <module>dsj-front</module>
+        <module>dsj-developer-back</module>
+        <module>dsj-agent-back</module>
+      	  <module>dsj-wap</module>
+      	  <module>dsj-time-oldHouse</module>
+      	   <module>dsj-oldHouseParser</module>
+  </modules>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <repositories>
+        <repository>
+            <id>java-repos</id>
+            <name>Java Repository</name>
+            <url>http://download.java.net/maven/2/</url>
+        </repository>
+    </repositories>
+</project>

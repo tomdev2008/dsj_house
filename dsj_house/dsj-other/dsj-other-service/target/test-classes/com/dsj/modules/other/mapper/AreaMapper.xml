@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.other.dao.impl.AreaDaoImpl">
+    
+    <sql id="tableName"> dsj_area a </sql>
+    <sql id="tableNameUpdate"> dsj_area </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.full_name AS "fullName",
+		a.name AS "name",
+		a.tree_path AS "treePath",
+		a.area_code AS "areaCode",
+		a.parent_id AS "parentId",
+		a.orders AS "orders",
+		a.is_leaf AS "isLeaf",
+		a.create_date AS "createDate",
+		a.modify_date AS "modifyDate",
+		a.english_name AS "englishName",
+		a.english_head AS "englishHead",
+		a.like_pinyin AS "likePinyin",
+		a.level AS "level",
+		a.province_sort AS "provinceSort",
+		a.delete_flag AS "deleteFlag",
+		a.dimension AS "dimension",
+		a.accuracy AS "accuracy",
+		a.is_custom AS "isCustom"
+	</sql>
+	
+	<resultMap id="beanMap" type="AreaPo">
+		<id column="id" property="id" />
+		<result column="full_name" property="fullName" />
+		<result column="name" property="name" />
+		<result column="tree_path" property="treePath" />
+		<result column="area_code" property="areaCode" />
+		<result column="parent_id" property="parentId" />
+		<result column="orders" property="orders" />
+		<result column="is_leaf" property="isLeaf" />
+		<result column="create_date" property="createDate" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="english_name" property="englishName" />
+		<result column="english_head" property="englishHead" />
+		<result column="like_pinyin" property="likePinyin" />
+		<result column="level" property="level" />
+		<result column="province_sort" property="provinceSort" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="dimension" property="dimension" />
+		<result column="accuracy" property="accuracy" />
+		<result column="is_custom" property="isCustom" />
+	</resultMap>
+	
+	<sql id="areaJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="fullName != null and fullName!= ''"> AND a.full_name = #{fullName}</if>
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="treePath != null and treePath!= ''"> AND a.tree_path = #{treePath}</if>
+		<if test="areaCode != null and areaCode!= ''"> AND a.area_code = #{areaCode}</if>
+		<if test="parentId != null"> AND a.parent_id = #{parentId}</if>
+		<if test="orders != null and orders!= ''"> AND a.orders = #{orders}</if>
+		<if test="isLeaf != null and isLeaf!= ''"> AND a.is_leaf = #{isLeaf}</if>
+		<if test="createDate != null and createDate!= ''"> AND a.create_date = #{createDate}</if>
+		<if test="modifyDate != null and modifyDate!= ''"> AND a.modify_date = #{modifyDate}</if>
+		<if test="englishName != null and englishName!= ''"> AND a.english_name = #{englishName}</if>
+		<if test="englishHead != null and englishHead != ''"> AND a.english_head = #{englishHead}</if>
+		<if test="like_pinyin != null and likePinyin != ''"> AND a.like_pinyin = #{likePinyin}</if>
+		<if test="level != null and level!= ''"> AND a.level = #{level}</if>
+		<if test="provinceSort != null and provinceSort!= ''"> AND a.province_sort = #{provinceSort}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="dimension != null and dimension != ''"> AND a.dimension = #{dimension}</if>
+		<if test="accuracy != null and accuracy != ''"> AND a.accuracy = #{accuracy}</if>
+		<if test="isCustom != null and isCustom!= ''"> AND a.is_custom = #{isCustom}</if>
+		<if test="ids != null and ids != ''"> AND a.area_code in (${ids})</if>
+	</sql>
+    
+	<select id="getById" resultType="AreaPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="areaJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id ASC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id ASC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="AreaPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			full_name,
+			name,
+			tree_path,
+			area_code,
+			parent_id,
+			orders,
+			is_leaf,
+			create_date,
+			modify_date,
+			english_name,
+			english_head,
+			like_pinyin,
+			level,
+			province_sort,
+			delete_flag,
+			dimension,
+			accuracy,
+			is_custom
+		) VALUES (
+			#{id},
+			#{fullName},
+			#{name},
+			#{treePath},
+			#{areaCode},
+			#{parentId},
+			#{orders},
+			#{isLeaf},
+			#{createDate},
+			#{modifyDate},
+			#{englishName},
+			#{englishHead},
+			#{likePinyin},
+			#{level},
+			#{provinceSort},
+			#{delete_flag},
+			#{dimension},
+			#{accuracy},
+			#{is_custom}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="AreaPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="fullName != null">full_name,</if>
+					<if test="name != null">name,</if>
+					<if test="treePath != null">tree_path,</if>
+					<if test="areaCode != null">area_code,</if>
+					<if test="parentId != null">parent_id,</if>
+					<if test="orders != null">orders,</if>
+					<if test="isLeaf != null">is_leaf,</if>
+					<if test="createDate != null">create_date,</if>
+					<if test="modifyDate != null">modify_date,</if>
+					<if test="englishName != null">english_name,</if>
+					<if test="englishHead != null">english_head,</if>
+					<if test="likePinyin != null">like_pinyin,</if>
+					<if test="level != null">level,</if>
+					<if test="provinceSort != null">province_sort,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="dimension != null">dimension,</if>
+					<if test="accuracy != null">accuracy,</if>
+					<if test="isCustom != null">is_custom,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="fullName != null">#{fullName},</if>
+			<if test="name != null">#{name},</if>
+			<if test="treePath != null">#{treePath},</if>
+			<if test="areaCode != null">#{areaCode},</if>
+			<if test="parentId != null">#{parentId},</if>
+			<if test="orders != null">#{orders},</if>
+			<if test="isLeaf != null">#{isLeaf},</if>
+			<if test="createDate != null">#{createDate},</if>
+			<if test="modifyDate != null">#{modifyDate},</if>
+			<if test="englishName != null">#{englishName},</if>
+			<if test="englishHead != null">#{englishHead},</if>
+			<if test="likePinyin != null">#{likePinyin},</if>
+			<if test="level != null">#{level},</if>
+			<if test="provinceSort != null">#{provinceSort},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="dimension != null">#{dimension},</if>
+			<if test="accuracy != null">#{accuracy},</if>
+			<if test="isCustom != null">#{isCustom},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="AreaPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			full_name = #{fullName},
+			name = #{name},
+			tree_path = #{treePath},
+			area_code = #{areaCode},
+			parent_id = #{parentId},
+			orders = #{orders},
+			is_leaf = #{isLeaf},
+			create_date = #{createDate},
+			modify_date = #{modifyDate},
+			english_name = #{englishName},
+			english_head = #{englishHead},
+			like_pinyin = #{likePinyin},
+			level = #{level},
+			province_sort = #{provinceSort},
+			delete_flag = #{deleteFlag},
+			dimension = #{dimension},
+			accuracy = #{accuracy},
+			is_custom = #{isCustom},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="AreaPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="fullName != null">full_name = #{fullName},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="treePath != null">tree_path = #{treePath},</if>
+			<if test="areaCode != null">area_code = #{areaCode},</if>
+			<if test="parentId != null">parent_id = #{parentId},</if>
+			<if test="orders != null">orders = #{orders},</if>
+			<if test="isLeaf != null">is_leaf = #{isLeaf},</if>
+			<if test="createDate != null">create_date = #{createDate},</if>
+			<if test="modifyDate != null">modify_date = #{modifyDate},</if>
+			<if test="englishName != null">english_name = #{englishName},</if>
+			<if test="englishHead != null">english_head = #{englishHead},</if>
+			<if test="likePinyin != null">like_pinyin = #{likePinyin},</if>
+			<if test="level != null">level = #{level},</if>
+			<if test="provinceSort != null">province_sort = #{provinceSort},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="dimension != null">dimension = #{dimension},</if>
+			<if test="accuracy != null">accuracy = #{accuracy},</if>
+			<if test="isCustom != null">is_custom = #{isCustom},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	<select id="findNameByAreaCode" parameterType="java.lang.String" resultType="java.lang.String">
+		select name from dsj_area where area_code = #{areaCode}
+	</select>
+	
+	<select id="getMaxIDArea" parameterType="java.util.Map" resultType="AreaPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		ORDER BY a.id DESC
+		LIMIT 0 , 1
+	</select>
+	
+	
+	<select id="listParent" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	where a.parent_id is not null
+		GROUP BY a.parent_id 
+	</select>
+	
+	<select id="getAreaList" resultMap="beanMap">
+	    SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+	</select>
+	
+	<select id="getAreaListName" resultMap="beanMap" parameterType="java.util.Map">
+	    SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	where a.parent_id=#{pid}
+	</select>
+	
+	<select id="getRrareaList" resultMap="beanMap">
+	    SELECT 
+    		a.id,a.name,a.parent_id as parentId
+    	FROM dsj_trade_area  a
+	</select>
+	
+	<update id="updateTrea" parameterType="java.util.Map">
+	   update dsj_trade_area set dimension=#{dimension},accuracy = #{accuracy} where id=#{id}
+	</update>
+	
+</mapper>

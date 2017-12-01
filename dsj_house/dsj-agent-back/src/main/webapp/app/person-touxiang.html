@@ -1,0 +1,198 @@
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/UploadId.css">
+    <link rel="stylesheet" type="text/css" href="css/crop.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <div id="UploadId">
+
+    <!-- 导航 -->
+
+  </div>
+    <div class="container" style="margin-top:50px;">
+      <!-- 上传证件照标题 -->
+      <form class="form-horizontal dsj_form" onsubmit="return false">
+        <h4 class="dsj_title">上传头像</h4>
+        <div class="col-sm-12 dsj_alert">
+          <button id="picker" class="btn btn-primary dsj_button">上传图片</button>
+          <span><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>  上传文件应大于20K，小于600K</span>
+        </div>
+        <div class="crop_container row" style="display: none;">
+          <div class="col-sm-4">
+            <div class="component">
+              <div class="overlay">
+              </div>
+              <!-- This image must be on the same domain as the demo or it will not work on a local file system -->
+              <!-- http://en.wikipedia.org/wiki/Cross-origin_resource_sharing -->
+              <img class="resize-image-small" style="display: none;" src="" alt="image for resizing">
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="component small">
+              <div class="overlay">
+              </div>
+              <!-- This image must be on the same domain as the demo or it will not work on a local file system -->
+              <!-- http://en.wikipedia.org/wiki/Cross-origin_resource_sharing -->
+              <img class="resize-image" style="display: none;" src="" alt="image for resizing">
+            </div>
+          </div>
+        </div>
+
+        <p class="dsj_touxiang_detail">
+          头像照片要求：<br>
+          1.近期本人拍摄的1寸或2寸、正面、免冠、彩色证件照；<br>
+          2.照片要求头像清晰、完整，不能含有以下内容（如锦旗、军装、其他网站Logo、PS信息）；<br>
+          3.上传文件大于20k，小于600k，支持jpg、jpeg、png格式的图片；<br>
+          4.图片宽度大于113px，小于等于600px，图片高度大于150px。<br>
+
+
+        </p>
+        <div class="row dsj_button_group">
+          <div class="col-sm-12">
+          <button class="js-crop btn btn-primary dsj_button" type="submit">确认</button>
+            <input class="btn btn-default dsj_button" type="button"  onclick="cancle()"value="取消">
+            
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/webuploader.js"></script>
+    <script src="js/crop.js"></script>
+    <script src="js/base64-binary.js"></script>
+	<script src="js/require.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/alertBox.js"></script>
+    <script type="text/javascript">
+
+    var id='';
+    $(function () {
+		$.ajax({
+			type:"post",
+			url:_url+"/back/frame/system/agent/getAgentInfo",
+			data:{r:Math.random()},
+			datatype:"json",
+			success:function(result){
+				if(result.status!=200){
+					 show_box(2,result.message);
+				}else{
+					id = result.data.id;
+				}
+				
+			}
+		})
+    })
+        $("#picker").one("click",function(argument) {
+          $(".crop_container").show();
+        })
+        var $wrap = $('#wrap');
+        var uploader = WebUploader.create({
+
+            // swf文件路径
+            // swf: '/js/Uploader.swf',
+
+            // 文件接收服务端。
+            // server: 'http://webuploader.duapp.com/server/fileupload.php',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#picker',
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+        var small,big;
+        uploader.on( 'fileQueued', function( file ) {
+            uploader.makeThumb( file, function( error, src ) {
+                if ( error ) {
+                    alert("抱歉无法预览！")
+                    return;
+                }
+                if (small != undefined) {
+                    small.changeSrc(src);
+                }else {
+                    small = resizeableImage('.resize-image-small')();
+                    small.changeSrc(src);
+                    $('.resize-image-small').show();
+                }
+
+            },1,1 );
+            uploader.makeThumb( file, function( error, src ) {
+                if ( error ) {
+                    alert("抱歉无法预览！")
+                    return;
+                }
+                if (big != undefined) {
+                    big.changeSrc(src);
+                }else {
+                    big = resizeableImage('.resize-image')();
+                    big.changeSrc(src);
+                    $('.resize-image').show();
+                }
+
+            },1,1 );
+        });
+
+        $('.js-crop').on('click', function(argument) {
+          $.ajax({
+              url: _url+"/back/frame/system/agent/avatar",
+              method: 'POST',
+              data: {"taBase64":small.crop(),
+            	  	 "reBase64":big.crop(),
+            	  	 id:id
+              		},
+              //contentType: false, // 注意这里应设为false
+              //processData: false,
+              cache: false,
+              success: function(result) {
+            	  if(result.status==200){
+                   	 show_box(3,result.message);
+                   	 setTimeout(function(){
+                   		window.location.href="person-detail.html";
+                   	 },2000);
+                     
+                    }else{
+                    	show_box(3,result.message);
+                    }
+              },
+              error: function (jqXHR) {
+                  console.log(JSON.stringify(jqXHR));
+              }
+          })
+        });
+    	function cancle(){
+    		window.location.href="person-detail.html";
+    	}
+        
+        require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#dailog_common_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html = template();
+	    	 $('body').append(html);
+  		}); 
+
+    </script>
+  </body>
+</html>

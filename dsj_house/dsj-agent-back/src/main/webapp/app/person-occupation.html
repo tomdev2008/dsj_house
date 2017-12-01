@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+	<script type="text/javascript" src="js/fles.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/selectize.css" type="text/css"/>
+    <link href="css/bootstrap-spinner.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-2">
+          <ul class="nav nav-pills nav-stacked nav-pills-stacked-example dsj_left_nav">
+            <li role="presentation"><a href="person-info.html">基本资料</a></li>
+            <li role="presentation"><a href="person-avatar.html">个人头像</a></li>
+            <li role="presentation" class="active"><a>职业信息</a></li>
+            <li role="presentation" ><a href="person-password.html">修改密码</a></li>
+            <li role="presentation"><a href="person-phone.html">修改手机号</a></li>
+            <li role="presentation"><a href="person-background.html">个人主页背景管理</a></li>
+            <li role="presentation"><a href="person-mygrade.html">我的等级</a></li>
+            <li role="presentation"><a href="person-qp-evaluate.html">评价二维码</a></li>
+          </ul>
+        </div>
+        <div id="dsj_info_container" class="col-sm-10">
+        </div>
+      </div>
+
+
+    </div>
+
+    <script id="dsj_info_template" type="text/x-handlebars-template">
+      <form class="form-horizontal dsj_form">
+        <h4 class="dsj_title">职业信息</h4>
+        <div class="form-group">
+          <label for="beianbianhao" class="col-sm-2 control-label">公司</label>
+          <div class="col-sm-3">
+            <select class="form-control"name="company" id="companySelect">
+				
+            </select>
+          </div>
+        </div>
+		<div class="form-group">
+          <label for="inputPassword"  class="col-sm-2 control-label">行政区域</label>
+          <div class="col-sm-3">
+            <select onchange="getBusiness()" name="area" id="areaThreeId" class="form-control">
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="beianbianhao" class="col-sm-2 control-label">商圈</label>
+          <div class="col-sm-3">
+            <select class="form-control"name="business" id="businessSelect">
+				
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <p class="form-control-static">
+              <span class="dsj_warn"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>注：如果你是二手房销售，请填写商圈和主营小区</span>
+            </p>
+          </div>
+        </div>
+       <div class="form-group">
+          <label for="beianbianhao" class="col-sm-2 control-label">主营小区</label>
+          <div class="col-sm-3">
+            <div class="estate_tag">
+              <select id="estate" name="mainCommunity" multiple="multiple">
+              </select>
+            </div>
+          </div>
+        </div>
+		<div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-2 control-label">
+				卖新房<input type="checkbox" onclick="showAndHide()" name="isSellNewHouse" value="1" {{{sellNewHouse}}}>
+			</label>
+			<div class="col-sm-6">
+            <p class="form-control-static">
+              <span class="dsj_warn"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>温馨提示：如果您是新房销售，请勾选卖新房，填写销售新房楼盘</span>
+            </p>
+          </div>
+			
+        </div>
+		<div id='show' class="form-group">
+          <label for="beianbianhao" class="col-sm-2 control-label">销售新房楼盘</label>
+          <div class="col-sm-3">
+            <div class="house_tag">
+              <select id="house" name="sellBuilding" multiple="multiple">
+					
+              </select>
+            </div>
+          </div>
+          </div>
+        </div>
+  <div class="form-group">
+			<label for="workyears" class="col-sm-2 control-label">工作年限</label>
+          	<div class="input-group spinner col-sm-3" data-trigger="spinner" id="spinner">
+				<input type="text" id="workyears" name="workyears" class="form-control" value="{{workyears}}" data-max="60" data-min="1" data-step="1">
+				<div class="input-group-addon dsj_spinner">
+					<a href="javascript:;" class="spin-up" data-spin="up"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
+					<a href="javascript:;" class="spin-down" data-spin="down"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+				</div>
+			</div>
+        </div>
+		<div class="form-group" {{{dealHandle deal}}}>
+          <label for="beianbianhao" class="col-sm-2 control-label">成交套数</label>
+          <div class="col-sm-6">
+			<p class="form-control-static">{{deal}}</p>
+          </div>
+        </div>
+		
+		<div class="form-group" {{{takeLookHandle takeLook}}}>
+          <label for="beianbianhao" class="col-sm-2 control-label">带看次数</label>
+          <div class="col-sm-6">
+             <p class="form-control-static">{{takeLook}}</p>
+          </div>
+        </div>
+		<div class="form-group">
+          <label for="beianbianhao" class="col-sm-2 control-label">擅长</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" maxLength="100" name="skill" value="{{skill}}">
+          </div>
+        </div>
+		<div class="form-group">
+            <label for="" class="col-sm-2 control-label">个人特色</label>
+            <div class="col-sm-10">
+              <div class="dropdown dsj_tag">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dsj_dropdown" aria-haspopup="true" aria-expanded="true">
+                添加个人特色标签
+                <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <p>注：请至少选择1个最多可以选4个服务类型标签</p>
+                  <div class="pl12">
+                    {{#each feature}}	
+                  		{{{item}}}  	
+　 					{{/each}}
+                  </div>
+                </div>
+                已选标签：
+              </div>
+            </div>
+          </div>
+		<div class="row dsj_button_group">
+            <div class="col-sm-6">
+              <input class="btn dsj_button btn-primary" type="button" onclick="save({{id}})" value="确认">
+              <input class="btn dsj_button btn-default" type="button" onclick="cancle()" value="取消">
+            </div>
+          </div>
+		
+      </form>
+    </script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+        <script src="js/dsj_tags.js"></script>
+    <script type="text/javascript" src="js/selectize.min.js"></script>
+        <script src="js/require.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/house_tags.js"></script>
+    <script src="js/estate_tags.js"></script>
+    <script src="js/jquery.spinner.min.js"></script>
+    <script src="js/alertBox.js"></script>
+    <script type="text/javascript">
+    
+    Handlebars.registerHelper({  
+        "dealHandle":function(p){
+        	if(p==null||p==""||p==0){
+        		return "style='display:none'";
+        	}else{
+        		return "";
+        	}
+        },
+	    "takeLookHandle":function(p){
+	    	if(p==null||p==""||p==0){
+	    		return "style='display:none'";
+	    	}else{
+	    		return "";
+	    	}
+	    }
+    }) 
+    var option = {};
+    var userId = '';
+    var source   = $("#dsj_info_template").html();
+    var template = Handlebars.compile(source);
+    var featureTags = ['法律顾问','带看达人','新房买卖','专车接送','投资专家','房东信赖','全程代办'];
+
+      $(function () {
+
+        $('[data-toggle="popover"]').popover()
+
+        $('.dsj_upload_button').click(function(argument) {
+          $('.dsj_upload_pic').toggle();
+        })
+        $.ajax({
+			type:"post",
+			url:_url+"/back/frame/system/agent/getAgentInfo",
+			data:{r:Math.random()},
+			datatype:"json",
+			success:function(result){
+			    if(result.data.isSellNewHouse == 1){
+			    	var sellNewHouse = "checked='checked'";
+			    			
+			    }
+			    var feature = [];
+			    var flag=0;
+			    if(result.data.featureArray!=null){
+			    	for(var i=0;i<featureTags.length;i++){
+				    	flag = 0;
+				    	for(var j=0;j<result.data.featureArray.length;j++){
+				    		if(featureTags[i]==result.data.featureArray[j]){
+				    			flag = 1;
+				 
+				    			feature.push({
+				    				item:"<label class='checkbox-inline'>"+
+				    				"<input type='checkbox' checked='checked' onclick='chooseFeature(this)' name='feature' value='"+featureTags[i]+"'>"+ featureTags[i]+
+				    				"</label>"
+				    			})
+				    		}
+				    		
+				    	}
+				    	if(flag==0){
+			    			feature.push({
+			    				item:"<label class='checkbox-inline'>"+
+			    				"<input type='checkbox'  name='feature' onclick='chooseFeature(this)'  value='"+featureTags[i]+"'>"+ featureTags[i]+
+			                      "</label>"
+			    			})
+			    		}
+				    		
+				    }		
+			    }else{
+			    	for(var i=0;i<featureTags.length;i++){
+				    	
+		    			feature.push({
+		    				item:"<label class='checkbox-inline'>"+
+		    				"<input type='checkbox'  name='feature' onclick='chooseFeature(this)'  value='"+featureTags[i]+"'>"+ featureTags[i]+
+		                      "</label>"
+		    			})
+				    }		
+			    }
+			        
+				option = result.data;									    
+				option.feature = feature;
+				option.sellNewHouse = sellNewHouse;
+				var html = template(option);
+		        $("#dsj_info_container").prepend(html);
+		        $('[data-trigger="spinner"]').spinner()//页面渲染后       选择年限 输入框 绑定
+		        select(option.sellBuilding,option.mainCommunity);
+		        if(option.area==null){
+		        	getArea("kafusky");//随便放
+		        }else{
+		        	getArea(option.area);
+		        }
+		        if(option.company==null){
+		        	getCompany("kafusky");//随便放
+		        }else{
+		        	getCompany(option.company);
+		        }
+		        if(option.area!=''){
+		        	getBusiness(option.area,option.business);
+		        }    
+		        if(result.data.isSellNewHouse == 0){
+		        	showAndHide();
+		        }
+		          
+		        var tags =  $("input[name='feature']");
+		        for(var i = 0;i<tags.length;i++){
+		        	if($(tags[i]).attr('checked')){
+		        		$(tags[i]).prop('checked',true).change()
+		        	}
+		        }
+			}
+		})
+		function cancle(){
+    		window.location.href="agent-index.html";
+    	}
+		function getCompany(company){
+        	  $.ajax({
+    				type:"post",
+    				url:_url+"/back/frame/system/agent/company",
+    				data:{},
+    				datatype:"json",
+    				success:function(result){
+    					if(result.status==200){
+    						var companyList = result.data;
+    						for(var i = 0;i<companyList.length;i++){
+    							if(company==companyList[i].id){
+      								$("#companySelect").append("<option selected='selected' value='"+companyList[i].id+"'>"+companyList[i].companyName+"</option>");
+      							}else{
+      								$("#companySelect").append("<option value='"+companyList[i].id+"'>"+companyList[i].companyName+"</option>");
+      							}
+    						}	
+    					}
+    				}
+        	  })
+            }		   
+	function getArea(area){
+    	  $.ajax({
+				type:"post",
+				url:_url+"/back/frame/system/agent/areaList",
+				data:{},
+				datatype:"json",
+				success:function(result){
+					if(result.status==200){
+						var areaList = result.data;
+						for(var i = 0;i<areaList.length;i++){
+							if(area==result.data[i].areaCode){
+  								$("#areaThreeId").append("<option selected='selected' value='"+areaList[i].areaCode+"'>"+areaList[i].name+"</option>");
+  							}else{
+  								$("#areaThreeId").append("<option value='"+areaList[i].areaCode+"'>"+areaList[i].name+"</option>");
+  							}
+						}	
+					}
+				}
+    	  })
+        }		
+      var select = function(sellBuilding,mainCommunity) {
+    	  $('#estate').on('change',function(){
+          	if ($("select[name='mainCommunity']").val()=='') {   
+          		$('#estate')[0].selectize.clearOptions();
+        	  	}
+          	
+          });
+   		$('#house').on('change',function(){
+   			if ($("select[name='sellBuilding']").val()=='') {   
+   				$('#house')[0].selectize.clearOptions();
+        	  	}
+   			
+          });
+        // body...
+        $('#estate').selectize({
+        	plugins: ['remove_button'],
+            valueField: 'sprayName',
+            labelField: 'sprayName',
+            searchField: 'sprayName',
+            maxItems:5,
+            loadingClass:'loading',
+            placeholder:'最多选择五个',
+            create: false,
+            render: {
+                option: function(item, escape) {
+                    return '<option><span class="description">' + item.sprayName+'</span></option>';
+                }
+            },
+            
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: _url+"/back/frame/system/agent/getOldHouseName",
+                    type: 'POST',
+                    data:{
+    					name:$('#estate-selectized').val()
+    				},
+    				datatype:"json",
+                    error: function() {
+                        callback();
+                    },
+                    success: function(res) {
+                        callback(res.data);
+                    }
+                });
+            }
+        });
+        $('#house').selectize({
+        	plugins: ['remove_button'],
+            valueField: 'name',
+            labelField: 'name',
+            searchField: 'name',
+            maxItems:5,
+            loadingClass:'loading',
+            placeholder:'最多选择五个',
+            create: false,
+            render: {
+                option: function(item, escape) {
+                	//debugger
+                    return '<option><span class="description">' + item.name+'</span></option>';
+                }
+            },
+
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: _url+"/back/frame/system/agent/getNewHouseName",
+                    type: 'post',
+                    data:{
+    					name:$('#house-selectized').val()
+    				},
+    				datatype:"json",
+                    error: function() {
+                        callback();
+                    },
+                    success: function(res) {
+                        callback(res.data);
+                    }
+                });
+            }
+        });
+        if(sellBuilding!=null){
+        	var arr = sellBuilding.split(',');
+        	for(var i=0;i<arr.length;i++){
+            	$('#house')[0].selectize.addOption({"name":arr[i]})
+            	$('#house')[0].selectize.addItem(arr[i])
+        	}
+        }
+        if(mainCommunity!=null){
+        	var arr = mainCommunity.split(',');
+        	for(var i=0;i<arr.length;i++){
+            	$('#estate')[0].selectize.addOption({"sprayName":arr[i]})
+            	$('#estate')[0].selectize.addItem(arr[i])
+        	}
+        }
+		
+      }
+        
+      })
+      function getBusiness(area,business){
+    	  	if(area==undefined){
+    	  		area=$("#areaThreeId").val();
+    	  		$("#businessSelect").empty();
+      			$("#businessSelect").append("<option value=''>请选择</option>");
+    	  	} 		
+  			if(area!=''){
+  				$.ajax({
+  					type:"post",
+  					url:_url+"/back/frame/system/agent/business",
+  					data:{
+  						areaCode:area
+  					},
+  					datatype:"json",
+  					success:function(result){
+  						for(var k=0;k<result.data.length;k++){
+  							if(business==result.data[k].areaCode){
+  								$("#businessSelect").append("<option selected='selected' value='"+result.data[k].areaCode+"'>"+result.data[k].name+"</option>");
+  							}else{
+  								$("#businessSelect").append("<option value='"+result.data[k].areaCode+"'>"+result.data[k].name+"</option>");
+  							}
+  							
+  						}
+  						
+  					}
+  				})
+  			}
+			
+    		
+      }
+      function save(id){
+    	  var data = $("form").serialize()+"&id="+id;
+    	  if ($("input[name='isSellNewHouse']").is(':checked')) {   
+    		  if ($("select[name='sellBuilding']").val()==null||$("select[name='sellBuilding']").val()=='') {   
+    	  		  data = data+"&sellBuilding=";
+    	  	  }
+    	  }else{
+    		  data = data+"&isSellNewHouse="+0+"&sellBuilding=";
+    	  }
+    	  
+    	  
+    	  if ($("select[name='mainCommunity']").val()==null||$("select[name='mainCommunity']").val()=='') {   
+	  	  	  data = data+"&mainCommunity="
+	  	  } 
+    	  
+    	  
+    	  var tags =  $("input[name='feature']").is(':checked');
+    	  if(!tags){
+    		  data = data +"&feature=";
+    	  }
+    	  
+    	  
+    	  
+    	$.ajax({
+            type: "post",
+            url: _url+"/back/frame/system/agent/saveAgent",
+            data: data,
+            dataType: "json",
+            success: function(result){
+              	if(result.status==200){
+              		show_box(3,"修改成功");
+              	}else{
+              		
+              	}
+            }
+          });
+
+    }
+      function showAndHide(){
+          $('#show').toggleClass('hide'); 
+          $('#house')[0].selectize.clear();
+      }
+      function chooseFeature(obj){
+          var l =  $("input[name='feature']:checked").length;
+          if(l>4){
+        	show_box(2,'您最多只能选4个标签');
+            $(obj).prop("checked",false);
+            return;
+          }
+      }
+      require(["text!common/commit.html"], function(tpl) {
+    	   	 $('body').append(tpl);
+    	   	 var source=$("#dailog_common_template").html();
+    	   	 var template = Handlebars.compile(source);
+    			 var html = template();
+    	   	 $('body').append(html);
+    		}); 
+    </script>
+
+  </body>
+</html>

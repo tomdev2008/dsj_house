@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans  
+            http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://code.alibabatech.com/schema/dubbo  
+            http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+  
+  <!-- 提供方应用信息，用于计算依赖关系 -->
+  <dubbo:application name="dsj-system-service" />
+  
+  <!-- 超时时间，重试次数 -->
+  <dubbo:provider delay="-1" timeout="120000" retries="0" threadpool="fixed" threads="100"/>
+  <dubbo:consumer timeout="300000" retries="0" />
+
+  <!-- 使用zookeeper注册中心暴露服务地址 -->
+  <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" />
+
+  <!-- 用dubbo协议在20880端口暴露服务 -->
+  <dubbo:protocol name="dubbo" port="${dubbo.system.port}" />
+  
+  <!--
+    interface：服务接口名（包名+类名），必填
+    ref：服务对象实现引用（spring注册BeanID），必填
+    group：服务分组，当一个接口有多个实现，可以用分组区分，可选（有多实现介意必填）
+    version：服务版本，建议使用两位数字版本，通常在接口不兼容时版本号才需要升级，建议配置 -->
+  <!-- 暴露后台管理admin_role服务  -->
+  
+  <dubbo:service interface="com.dsj.modules.system.service.DepartmentService" ref="departmentServiceImpl" version="1.0"/>
+  <dubbo:service interface="com.dsj.modules.system.service.EvelopersService" ref="evelopersServiceImpl" version="1.0"/>
+  <dubbo:service interface="com.dsj.modules.system.service.PropertyService" ref="propertyServiceImpl" version="1.0"/>
+  
+  <!-- 权限暴露接口 -->
+  <dubbo:service interface="com.dsj.modules.system.service.UserService" ref="userServiceImpl" version="1.0"/>
+  <dubbo:service interface="com.dsj.modules.system.service.RoleService" ref="roleServiceImpl" version="1.0"/>
+  <dubbo:service interface="com.dsj.modules.system.service.FunctionService" ref="functionServiceImpl" version="1.0"/>
+  <dubbo:service interface="com.dsj.modules.system.service.RoleFunctionService" ref="roleFunctionServiceImpl" version="1.0"/>
+  <dubbo:service interface="com.dsj.modules.system.service.CompanyService" ref="companyServiceImpl" version="1.0"/>
+  
+    <!-- 品牌公寓用户暴露接口 -->
+<!--     <dubbo:service interface="com.dsj.modules.system.service.FlatUserService" ref="flatUserServiceServiceImpl" version="1.0"/> -->
+    <dubbo:service interface="com.dsj.modules.system.service.FlatUserService" ref="flatUserServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.system.service.EmployeeService" ref="employeeServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.system.service.AgentService" ref="agentServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.system.service.MemberService" ref="memberServiceImpl" version="1.0"/>
+    
+    
+    <dubbo:reference interface="com.dsj.modules.other.service.AreaService" id="areaService" check="false" version="1.0"/>
+  <dubbo:reference interface="com.dsj.modules.other.service.TradeAreaService" id="tradeAreaService" check="false" version="1.0"/>
+    
+    <dubbo:reference interface="com.dsj.modules.other.service.SmsLogsService" id="smsLogsService" check="false"  version="1.0"/>
+    
+    <dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseDirectoryAuthService" id="newHouseDirectoryAuthServiceImpl" check="false"  version="1.0"/>
+    
+    <!-- 经纪人评价服务暴露接口 -->
+    <dubbo:service interface="com.dsj.modules.evaluate.service.AgentStandardService" ref="agentStandardServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.evaluate.service.AgentEvaluateService" ref="agentEvaluateServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.evaluate.service.AgentGradeService" ref="agentGradeServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.evaluate.service.AgentInfoService" ref="agentInfoServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.evaluate.service.AgentDailyScoreService" ref="agentDailyScoreServiceImpl" version="1.0"/>
+    <dubbo:service interface="com.dsj.modules.evaluate.service.AgentDailyEvaluateService" ref="agentDailyEvaluateServiceImpl" version="1.0"/>
+    
+    <!-- 经纪人数据统计 -->
+    <dubbo:service interface="com.dsj.modules.system.service.AgentStatisticsService" ref="agentStatisticsServiceImpl" version="1.0"/>
+    
+</beans>  

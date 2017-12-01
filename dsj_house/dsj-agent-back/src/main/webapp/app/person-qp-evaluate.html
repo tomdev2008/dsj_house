@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-2 broadside_nav">
+           <ul class="nav nav-pills nav-stacked nav-pills-stacked-example dsj_left_nav">
+            <li role="presentation"><a href="person-info.html">基本资料</a></li>
+            <li role="presentation"><a href="person-avatar.html">个人头像</a></li>
+            <li role="presentation"><a href="person-occupation.html">职业信息</a></li>
+            <li role="presentation" ><a href="person-password.html">修改密码</a></li>
+            <li role="presentation"><a href="person-phone.html">修改手机号</a></li>
+            <li role="presentation"><a href="person-background.html">个人主页背景管理</a></li>
+            <li role="presentation"><a href="person-mygrade.html">我的等级</a></li>
+            <li role="presentation" class="active"><a>评价二维码</a></li>
+          </ul>
+        </div>
+        <div id="dsj_info_container" class="col-sm-10">
+            <h4 class="dsj_title">评价二维码</h4>
+            <div class="qp_kuang">
+                <div id="qrcode"></div>
+                <p>扫描立即评价经纪人</p>
+            </div>
+            <div class="content_headline">
+                <h3>如何使用二维码？</h3>
+                <p>在每次服务结束后，可以出示此二维码让购房者对本次服务进行评价。每一次的分值将计入到经纪人的获评次数。</p>
+            </div>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/require.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/alertBox.js"></script>
+    <script type="text/javascript">
+
+    $(function () {
+		$.ajax({
+			type:"post",
+			url:_url+"/qr/qrcode",
+			data:{r:Math.random()},
+			datatype:"json",
+			success:function(result){
+			}
+		})
+			
+				var img = new Image();
+				img.src=_url+"/qr/qrcode";
+				$("#qrcode").append(img); 
+		
+    })
+    </script>
+  </body>
+</html>

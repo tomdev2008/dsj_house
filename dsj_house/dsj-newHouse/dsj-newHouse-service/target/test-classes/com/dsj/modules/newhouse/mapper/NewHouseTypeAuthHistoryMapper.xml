@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.newhouse.dao.impl.NewHouseTypeAuthHistoryDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_type_auth_history a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_type_auth_history </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_name AS "houseName",
+		a.house_status AS "houseStatus",
+		a.house_status_name AS "houseStatusName",
+		a.wy_type AS "wyType",
+		a.wy_type_name AS "wyTypeName",
+		a.room AS "room",
+		a.hall AS "hall",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.reference_price AS "referencePrice",
+		a.built_up AS "builtUp",
+		a.orientations AS "orientations",
+		a.orientations_name AS "orientationsName",
+		a.floor AS "floor",
+		a.describes AS "describes",
+		a.distribution AS "distribution",
+		a.dic_id AS "dicId",
+		a.create_preson AS "createPreson",
+		a.update_preson AS "updatePreson",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.delete_flag AS "deleteFlag",
+		a.img_url AS "imgUrl",
+		a.balcony AS "balcony",
+		a.origin_dic_id AS "originDicId",
+		a.buildId AS "buildId",
+		a.num AS "num",
+		a.use_area AS "useArea",
+		a.house_type AS "houseType"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHouseTypeAuthHistoryPo">
+		<id column="id" property="id" />
+		<result column="house_name" property="houseName" />
+		<result column="house_status" property="houseStatus" />
+		<result column="house_status_name" property="houseStatusName" />
+		<result column="wy_type" property="wyType" />
+		<result column="wy_type_name" property="wyTypeName" />
+		<result column="room" property="room" />
+		<result column="hall" property="hall" />
+		<result column="toilet" property="toilet" />
+		<result column="kitchen" property="kitchen" />
+		<result column="reference_price" property="referencePrice" />
+		<result column="built_up" property="builtUp" />
+		<result column="orientations" property="orientations" />
+		<result column="orientations_name" property="orientationsName" />
+		<result column="floor" property="floor" />
+		<result column="describes" property="describes" />
+		<result column="distribution" property="distribution" />
+		<result column="dic_id" property="dicId" />
+		<result column="create_preson" property="createPreson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_date" property="createDate" />
+		<result column="update_date" property="updateDate" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="img_url" property="imgUrl" />
+		<result column="balcony" property="balcony" />
+		<result column="origin_dic_id" property="originDicId" />
+		<result column="buildId" property="buildId" />
+		<result column="num" property="num" />
+		<result column="use_area" property="useArea" />
+		<result column="house_type" property="houseType" />
+	</resultMap>
+	
+	<sql id="newHouseTypeAuthHistoryJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="houseName != null and houseName!= ''"> AND a.house_name = #{houseName}</if>
+		<if test="houseStatus != null and houseStatus!= ''"> AND a.house_status = #{houseStatus}</if>
+		<if test="houseStatusName != null and houseStatusName!= ''"> AND a.house_status_name = #{houseStatusName}</if>
+		<if test="wyType != null and wyType!= ''"> AND a.wy_type = #{wyType}</if>
+		<if test="wyTypeName != null and wyTypeName!= ''"> AND a.wy_type_name = #{wyTypeName}</if>
+		<if test="room != null and room!= ''"> AND a.room = #{room}</if>
+		<if test="room2 != null and room2!= ''"> AND a.room  &gt;= #{room3}</if>
+		<if test="hall != null and hall!= ''"> AND a.hall = #{hall}</if>
+		<if test="toilet != null and toilet!= ''"> AND a.toilet = #{toilet}</if>
+		<if test="kitchen != null and kitchen!= ''"> AND a.kitchen = #{kitchen}</if>
+		<if test="referencePrice != null and referencePrice!= ''"> AND a.reference_price = #{referencePrice}</if>
+		<if test="builtUp != null and builtUp!= ''"> AND a.built_up = #{builtUp}</if>
+		<if test="orientations != null and orientations!= ''"> AND a.orientations = #{orientations}</if>
+		<if test="orientationsName != null and orientationsName!= ''"> AND a.orientations_name = #{orientationsName}</if>
+		<if test="floor != null and floor!= ''"> AND a.floor = #{floor}</if>
+		<if test="describes != null and describes!= ''"> AND a.describes = #{describes}</if>
+		<if test="distribution != null and distribution!= ''"> AND a.distribution = #{distribution}</if>
+		<if test="dicId != null and dicId!= ''"> AND a.dic_id = #{dicId}</if>
+		<if test="createPreson != null and createPreson!= ''"> AND a.create_preson = #{createPreson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="createDate != null and createDate!= ''"> AND a.create_date = #{createDate}</if>
+		<if test="updateDate != null and updateDate!= ''"> AND a.update_date = #{updateDate}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="imgUrl != null and imgUrl!= ''"> AND a.img_url = #{imgUrl}</if>
+		<if test="balcony != null and balcony!= ''"> AND a.balcony = #{balcony}</if>
+		<if test="originDicId != null and originDicId!= ''"> AND a.origin_dic_id = #{originDicId}</if>
+		<if test="buildId != null and buildId!= ''"> AND a.buildId = #{buildId}</if>
+		<if test="num != null and num!= ''"> AND a.num = #{num}</if>
+		<if test="useArea != null and useArea!= ''"> AND a.use_area = #{useArea}</if>
+		<if test="houseType != null and houseType!= ''"> AND a.house_type = #{houseType}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHouseTypeAuthHistoryPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="newHouseTypeAuthHistoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="NewHouseTypeAuthHistoryPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_name,
+			house_status,
+			house_status_name,
+			wy_type,
+			wy_type_name,
+			room,
+			hall,
+			toilet,
+			kitchen,
+			reference_price,
+			built_up,
+			orientations,
+			orientations_name,
+			floor,
+			describes,
+			distribution,
+			dic_id,
+			create_preson,
+			update_preson,
+			create_date,
+			update_date,
+			delete_flag,
+			img_url,
+			balcony,
+			origin_dic_id,
+			buildId,
+			num,
+			use_area,
+			house_type
+		) VALUES (
+			#{id},
+			#{houseName},
+			#{houseStatus},
+			#{houseStatusName},
+			#{wyType},
+			#{wyTypeName},
+			#{room},
+			#{hall},
+			#{toilet},
+			#{kitchen},
+			#{referencePrice},
+			#{builtUp},
+			#{orientations},
+			#{orientationsName},
+			#{floor},
+			#{describes},
+			#{distribution},
+			#{dicId},
+			#{createPreson},
+			#{updatePreson},
+			#{createDate},
+			#{updateDate},
+			#{deleteFlag},
+			#{imgUrl},
+			#{balcony},
+			#{originDicId},
+			#{buildId},
+			#{num},
+			#{useArea},
+			#{houseType}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NewHouseTypeAuthHistoryPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="houseName != null">house_name,</if>
+					<if test="houseStatus != null">house_status,</if>
+					<if test="houseStatusName != null">house_status_name,</if>
+					<if test="wyType != null">wy_type,</if>
+					<if test="wyTypeName != null">wy_type_name,</if>
+					<if test="room != null">room,</if>
+					<if test="hall != null">hall,</if>
+					<if test="toilet != null">toilet,</if>
+					<if test="kitchen != null">kitchen,</if>
+					<if test="referencePrice != null">reference_price,</if>
+					<if test="builtUp != null">built_up,</if>
+					<if test="orientations != null">orientations,</if>
+					<if test="orientationsName != null">orientations_name,</if>
+					<if test="floor != null">floor,</if>
+					<if test="describes != null">describes,</if>
+					<if test="distribution != null">distribution,</if>
+					<if test="dicId != null">dic_id,</if>
+					<if test="createPreson != null">create_preson,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createDate != null">create_date,</if>
+					<if test="updateDate != null">update_date,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="imgUrl != null">img_url,</if>
+					<if test="balcony != null">balcony,</if>
+					<if test="originDicId != null">origin_dic_id,</if>
+					<if test="buildId != null">buildId,</if>
+					<if test="num != null">num,</if>
+					<if test="useArea != null">use_area,</if>
+					<if test="houseType != null">house_type,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="houseName != null">#{houseName},</if>
+			<if test="houseStatus != null">#{houseStatus},</if>
+			<if test="houseStatusName != null">#{houseStatusName},</if>
+			<if test="wyType != null">#{wyType},</if>
+			<if test="wyTypeName != null">#{wyTypeName},</if>
+			<if test="room != null">#{room},</if>
+			<if test="hall != null">#{hall},</if>
+			<if test="toilet != null">#{toilet},</if>
+			<if test="kitchen != null">#{kitchen},</if>
+			<if test="referencePrice != null">#{referencePrice},</if>
+			<if test="builtUp != null">#{builtUp},</if>
+			<if test="orientations != null">#{orientations},</if>
+			<if test="orientationsName != null">#{orientationsName},</if>
+			<if test="floor != null">#{floor},</if>
+			<if test="describes != null">#{describes},</if>
+			<if test="distribution != null">#{distribution},</if>
+			<if test="dicId != null">#{dicId},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createDate != null">#{createDate},</if>
+			<if test="updateDate != null">#{updateDate},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="imgUrl != null">#{imgUrl},</if>
+			<if test="balcony != null">#{balcony},</if>
+			<if test="originDicId != null">#{originDicId},</if>
+			<if test="buildId != null">#{buildId},</if>
+			<if test="num != null">#{num},</if>
+			<if test="useArea != null">#{useArea},</if>
+			<if test="houseType != null">#{houseType},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="NewHouseTypeAuthHistoryPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_name = #{houseName},
+			house_status = #{houseStatus},
+			house_status_name = #{houseStatusName},
+			wy_type = #{wyType},
+			wy_type_name = #{wyTypeName},
+			room = #{room},
+			hall = #{hall},
+			toilet = #{toilet},
+			kitchen = #{kitchen},
+			reference_price = #{referencePrice},
+			built_up = #{builtUp},
+			orientations = #{orientations},
+			orientations_name = #{orientationsName},
+			floor = #{floor},
+			describes = #{describes},
+			distribution = #{distribution},
+			dic_id = #{dicId},
+			create_preson = #{createPreson},
+			update_preson = #{updatePreson},
+			create_date = #{createDate},
+			update_date = #{updateDate},
+			delete_flag = #{deleteFlag},
+			img_url = #{imgUrl},
+			balcony = #{balcony},
+			origin_dic_id = #{originDicId},
+			buildId = #{buildId},
+			num = #{num},
+			use_area = #{useArea},
+			house_type = #{houseType},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHouseTypeAuthHistoryPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="houseName != null">house_name = #{houseName},</if>
+			<if test="houseStatus != null">house_status = #{houseStatus},</if>
+			<if test="houseStatusName != null">house_status_name = #{houseStatusName},</if>
+			<if test="wyType != null">wy_type = #{wyType},</if>
+			<if test="wyTypeName != null">wy_type_name = #{wyTypeName},</if>
+			<if test="room != null">room = #{room},</if>
+			<if test="hall != null">hall = #{hall},</if>
+			<if test="toilet != null">toilet = #{toilet},</if>
+			<if test="kitchen != null">kitchen = #{kitchen},</if>
+			<if test="referencePrice != null">reference_price = #{referencePrice},</if>
+			<if test="builtUp != null">built_up = #{builtUp},</if>
+			<if test="orientations != null">orientations = #{orientations},</if>
+			<if test="orientationsName != null">orientations_name = #{orientationsName},</if>
+			<if test="floor != null">floor = #{floor},</if>
+			<if test="describes != null">describes = #{describes},</if>
+			<if test="distribution != null">distribution = #{distribution},</if>
+			<if test="dicId != null">dic_id = #{dicId},</if>
+			<if test="createPreson != null">create_preson = #{createPreson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="createDate != null">create_date = #{createDate},</if>
+			<if test="updateDate != null">update_date = #{updateDate},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="imgUrl != null">img_url = #{imgUrl},</if>
+			<if test="balcony != null">balcony = #{balcony},</if>
+			<if test="originDicId != null">origin_dic_id = #{originDicId},</if>
+			<if test="buildId != null">buildId = #{buildId},</if>
+			<if test="num != null">num = #{num},</if>
+			<if test="useArea != null">use_area = #{useArea},</if>
+			<if test="houseType != null">house_type = #{houseType},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="selectHouseTypeList" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+		<if test="room != null and room!= ''">
+			<if test="room !=5">
+				AND a.room = #{room}
+			</if>
+			<if test="room == 5 ">
+				AND a.room &gt;= #{room} 
+			</if>
+			<if test="dicId != null and dicId!= ''"> AND a.dic_id = #{dicId}</if>
+		</if>
+		</where>
+		ORDER BY a.id DESC 
+	</select>
+	<select id="selectHouseTypeCount" parameterType="java.util.Map" resultType="long">
+	   SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<if test="room != null and room!= ''">
+			<if test="room !=5">
+				AND a.room = #{room}
+			</if>
+			<if test="room == 5 ">
+				AND a.room &gt;= #{room} 
+			</if>
+			<if test="dicId != null and dicId!= ''"> AND a.dic_id = #{dicId}</if>
+		</if>
+		</where>
+	</select>
+	
+	<insert id="saveList" parameterType="java.util.Map">  
+	    INSERT INTO <include refid="tableNameUpdate"/>(
+			house_name,
+			house_status,
+			house_status_name,
+			wy_type,
+			wy_type_name,
+			room,
+			hall,
+			toilet,
+			kitchen,
+			reference_price,
+			built_up,
+			orientations,
+			orientations_name,
+			floor,
+			describes,
+			distribution,
+			dic_id,
+			create_preson,
+			update_preson,
+			create_date,
+			update_date,
+			delete_flag,
+			img_url,
+			balcony,
+			origin_dic_id,
+			buildId,
+			num,
+			use_area,
+			house_type
+		) VALUES 
+	    <foreach collection="houseTypeList" item="item" index="index" separator="," >  
+	        (
+			#{item.houseName},
+			#{item.houseStatus},
+			#{item.houseStatusName},
+			#{item.wyType},
+			#{item.wyTypeName},
+			#{item.room},
+			#{item.hall},
+			#{item.toilet},
+			#{item.kitchen},
+			#{item.referencePrice},
+			#{item.builtUp},
+			#{item.orientations},
+			#{item.orientationsName},
+			#{item.floor},
+			#{item.describes},
+			#{item.distribution},
+			#{newHouseAuthHistoryId},
+			#{item.createPreson},
+			#{updatePreson},
+			#{item.createDate},
+			#{item.updateDate},
+			2,
+			#{item.imgUrl},
+			#{item.balcony},
+			#{item.originDicId},
+			#{item.buildId},
+			#{item.num},
+			#{item.useArea},
+			#{item.houseType}
+	      )  
+	    </foreach>  
+	</insert>  
+</mapper>

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.newhouse.dao.impl.NewHousePictureAuthHistoryDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_picture_auth_history a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_picture_auth_history </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.picture_type AS "pictureType",
+		a.picture_type_name AS "pictureTypeName",
+		a.picture_status AS "pictureStatus",
+		a.picture_status_name AS "pictureStatusName",
+		a.picture_name AS "pictureName",
+		a.picture_url AS "pictureUrl",
+		a.object_id AS "objectId",
+		a.picture_frist AS "pictureFrist",
+		a.create_preson AS "createPreson",
+		a.update_preson AS "updatePreson",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.delete_flag AS "deleteFlag",
+		a.order AS "order",
+		a.title AS "title",
+		a.describes AS "describes",
+		a.origin_object_id AS "originObjectId",
+		a.origin_picture_id AS "originPictureId"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHousePictureAuthHistoryPo">
+		<id column="id" property="id" />
+		<result column="picture_type" property="pictureType" />
+		<result column="picture_type_name" property="pictureTypeName" />
+		<result column="picture_status" property="pictureStatus" />
+		<result column="picture_status_name" property="pictureStatusName" />
+		<result column="picture_name" property="pictureName" />
+		<result column="picture_url" property="pictureUrl" />
+		<result column="object_id" property="objectId" />
+		<result column="picture_frist" property="pictureFrist" />
+		<result column="create_preson" property="createPreson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_date" property="createDate" />
+		<result column="update_date" property="updateDate" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="order" property="order" />
+		<result column="title" property="title" />
+		<result column="describes" property="describes" />
+		<result column="origin_object_id" property="originObjectId" />
+		<result column="origin_picture_id" property="originPictureId" />
+	</resultMap>
+	
+	<sql id="newHousePictureAuthHistoryJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="pictureType != null and pictureType!= ''"> AND a.picture_type = #{pictureType}</if>
+		<if test="pictureTypeName != null and pictureTypeName!= ''"> AND a.picture_type_name = #{pictureTypeName}</if>
+		<if test="pictureStatus != null and pictureStatus!= ''"> AND a.picture_status = #{pictureStatus}</if>
+		<if test="pictureStatusName != null and pictureStatusName!= ''"> AND a.picture_status_name = #{pictureStatusName}</if>
+		<if test="pictureName != null and pictureName!= ''"> AND a.picture_name = #{pictureName}</if>
+		<if test="pictureUrl != null and pictureUrl!= ''"> AND a.picture_url = #{pictureUrl}</if>
+		<if test="objectId != null and objectId!= ''"> AND a.object_id = #{objectId}</if>
+		<if test="pictureFrist != null and pictureFrist!= ''"> AND a.picture_frist = #{pictureFrist}</if>
+		<if test="createPreson != null and createPreson!= ''"> AND a.create_preson = #{createPreson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="createDate != null and createDate!= ''"> AND a.create_date = #{createDate}</if>
+		<if test="updateDate != null and updateDate!= ''"> AND a.update_date = #{updateDate}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="order != null and order!= ''"> AND a.order = #{order}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="describes != null and describes!= ''"> AND a.describes = #{describes}</if>
+		<if test="originObjectId != null and originObjectId!= ''"> AND a.origin_object_id = #{originObjectId}</if>
+		<if test="originPictureId != null and originPictureId!= ''"> AND a.origin_picture_id = #{originPictureId}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHousePictureAuthHistoryPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="newHousePictureAuthHistoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="NewHousePictureAuthHistoryPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			picture_type,
+			picture_type_name,
+			picture_status,
+			picture_status_name,
+			picture_name,
+			picture_url,
+			object_id,
+			picture_frist,
+			create_preson,
+			update_preson,
+			create_date,
+			update_date,
+			delete_flag,
+			order,
+			title,
+			describes,
+			origin_object_id,
+			origin_picture_id
+		) VALUES (
+			#{id},
+			#{pictureType},
+			#{pictureTypeName},
+			#{pictureStatus},
+			#{pictureStatusName},
+			#{pictureName},
+			#{pictureUrl},
+			#{objectId},
+			#{pictureFrist},
+			#{createPreson},
+			#{updatePreson},
+			#{createDate},
+			#{updateDate},
+			#{deleteFlag},
+			#{order},
+			#{title},
+			#{describes},
+			#{originObjectId},
+			#{originPictureId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NewHousePictureAuthHistoryPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="pictureType != null">picture_type,</if>
+					<if test="pictureTypeName != null">picture_type_name,</if>
+					<if test="pictureStatus != null">picture_status,</if>
+					<if test="pictureStatusName != null">picture_status_name,</if>
+					<if test="pictureName != null">picture_name,</if>
+					<if test="pictureUrl != null">picture_url,</if>
+					<if test="objectId != null">object_id,</if>
+					<if test="pictureFrist != null">picture_frist,</if>
+					<if test="createPreson != null">create_preson,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createDate != null">create_date,</if>
+					<if test="updateDate != null">update_date,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="order != null">order,</if>
+					<if test="title != null">title,</if>
+					<if test="describes != null">describes,</if>
+					<if test="originObjectId != null">origin_object_id,</if>
+					<if test="originPictureId != null">origin_picture_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="pictureType != null">#{pictureType},</if>
+			<if test="pictureTypeName != null">#{pictureTypeName},</if>
+			<if test="pictureStatus != null">#{pictureStatus},</if>
+			<if test="pictureStatusName != null">#{pictureStatusName},</if>
+			<if test="pictureName != null">#{pictureName},</if>
+			<if test="pictureUrl != null">#{pictureUrl},</if>
+			<if test="objectId != null">#{objectId},</if>
+			<if test="pictureFrist != null">#{pictureFrist},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createDate != null">#{createDate},</if>
+			<if test="updateDate != null">#{updateDate},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="order != null">#{order},</if>
+			<if test="title != null">#{title},</if>
+			<if test="describes != null">#{describes},</if>
+			<if test="originObjectId != null">#{originObjectId},</if>
+			<if test="originPictureId != null">#{originPictureId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="NewHousePictureAuthHistoryPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			picture_type = #{pictureType},
+			picture_type_name = #{pictureTypeName},
+			picture_status = #{pictureStatus},
+			picture_status_name = #{pictureStatusName},
+			picture_name = #{pictureName},
+			picture_url = #{pictureUrl},
+			object_id = #{objectId},
+			picture_frist = #{pictureFrist},
+			create_preson = #{createPreson},
+			update_preson = #{updatePreson},
+			create_date = #{createDate},
+			update_date = #{updateDate},
+			delete_flag = #{deleteFlag},
+			order = #{order},
+			title = #{title},
+			describes = #{describes},
+			origin_object_id = #{originObjectId},
+			origin_picture_id = #{originPictureId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHousePictureAuthHistoryPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="pictureType != null">picture_type = #{pictureType},</if>
+			<if test="pictureTypeName != null">picture_type_name = #{pictureTypeName},</if>
+			<if test="pictureStatus != null">picture_status = #{pictureStatus},</if>
+			<if test="pictureStatusName != null">picture_status_name = #{pictureStatusName},</if>
+			<if test="pictureName != null">picture_name = #{pictureName},</if>
+			<if test="pictureUrl != null">picture_url = #{pictureUrl},</if>
+			<if test="objectId != null">object_id = #{objectId},</if>
+			<if test="pictureFrist != null">picture_frist = #{pictureFrist},</if>
+			<if test="createPreson != null">create_preson = #{createPreson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="createDate != null">create_date = #{createDate},</if>
+			<if test="updateDate != null">update_date = #{updateDate},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="order != null">order = #{order},</if>
+			<if test="title != null">title = #{title},</if>
+			<if test="describes != null">describes = #{describes},</if>
+			<if test="originObjectId != null">origin_object_id = #{originObjectId},</if>
+			<if test="originPictureId != null">origin_picture_id = #{originPictureId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getListCount" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHousePictureCountVo">
+		SELECT
+			a.id,
+			a.typegroupname,
+			b.pictureUrl,
+			b.count
+		FROM
+			house_group_type a
+		LEFT JOIN (
+		select 
+				x.picture_status AS pictureStatus,
+				x.picture_url AS pictureUrl,
+				count(1) AS count
+			 from 
+				(SELECT
+					*
+				FROM
+					dsj_new_house_picture_auth_history
+				WHERE
+					object_id = #{newHouseId} and delete_flag = #{deleteFlag}
+				ORDER BY
+					picture_frist) x 
+			GROUP BY
+				x.picture_status
+			
+		) b ON a.id = b.pictureStatus
+		WHERE
+			a.parent_id = #{parentId}
+	</select>
+	<select id="listVoBy" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHousePictureAuthVo">
+    	SELECT 
+    		a.id,
+    		a.describes as describes,
+    		a.picture_frist as pictureFrist,
+    		a.picture_url as pictureUrl,
+    		a.create_date as createTime,
+    		b.realname as realname
+    	FROM <include refid="tableName"/> left join dsj_user b on a.create_preson=b.id
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	<insert id="saveList" parameterType="java.util.Map">  
+	    INSERT INTO <include refid="tableNameUpdate"/>(
+			picture_type,
+			picture_type_name,
+			picture_status,
+			picture_status_name,
+			picture_name,
+			picture_url,
+			object_id,
+			picture_frist,
+			create_preson,
+			update_preson,
+			create_date,
+			update_date,
+			delete_flag,
+			title,
+			describes,
+			origin_object_id,
+			origin_picture_id
+		) VALUES 
+	    <foreach collection="pictureList" item="item" index="index" separator="," >  
+	        (
+			#{item.pictureType},
+			#{item.pictureTypeName},
+			#{item.pictureStatus},
+			#{item.pictureStatusName},
+			#{item.pictureName},
+			#{item.pictureUrl},
+			#{newHouseAuthHistoryId},
+			#{item.pictureFrist},
+			#{item.createPreson},
+			#{item.updatePreson},
+			#{item.createDate},
+			#{item.updateDate},
+			2,
+			#{item。title},
+			#{item.describes},
+			#{item.originObjectId},
+			#{item.originPictureId}
+	      )  
+	    </foreach>  
+	</insert> 
+</mapper>

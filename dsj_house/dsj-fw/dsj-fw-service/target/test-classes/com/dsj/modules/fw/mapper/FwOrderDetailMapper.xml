@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.FwOrderDetailDaoImpl">
+    
+    <sql id="tableName"> dsj_fw_order_detail a </sql>
+    <sql id="tableNameUpdate"> dsj_fw_order_detail </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.order_id AS "orderId",
+		a.order_no AS "orderNo",
+		a.create_time AS "createTime",
+		a.product_sku_id AS "productSkuId",
+		a.num AS "num",
+		a.product_pirce AS "productPirce",
+		a.product_name AS "productName",
+		a.type_id AS "typeId",
+		a.node_id AS "nodeId",
+		a.node_name AS "nodeName",
+		a.auth_status AS "authStatus",
+		a.dbuserid AS "dbuserid"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwOrderDetailPo">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="order_no" property="orderNo" />
+		<result column="create_time" property="createTime" />
+		<result column="product_sku_id" property="productSkuId" />
+		<result column="num" property="num" />
+		<result column="product_pirce" property="productPirce" />
+		<result column="product_name" property="productName" />
+		<result column="type_id" property="typeId" />
+		<result column="node_id" property="nodeId" />
+		<result column="node_name" property="nodeName" />
+		<result column="auth_status" property="authStatus" />
+		<result column="dbuserid" property="dbuserid" />
+	</resultMap>
+	
+	<sql id="fwOrderDetailJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="orderId != null and orderId!= ''"> AND a.order_id = #{orderId}</if>
+		<if test="orderNo != null and orderNo!= ''"> AND a.order_no = #{orderNo}</if>
+		<if test="productSkuId != null and productSkuId!= ''"> AND a.product_sku_id = #{productSkuId}</if>
+		<if test="num != null and num!= ''"> AND a.num = #{num}</if>
+		<if test="productPirce != null and productPirce!= ''"> AND a.product_pirce = #{productPirce}</if>
+		<if test="productName != null and productName!= ''"> AND a.product_name = #{productName}</if>
+		<if test="typeId != null and typeId!= ''"> AND a.type_id = #{typeId}</if>
+		<if test="nodeId != null and nodeId!= ''"> AND a.node_id = #{nodeId}</if>
+		<if test="nodeName != null and nodeName!= ''"> AND a.node_name = #{nodeName}</if>
+		<if test="authStatus != null and authStatus!= ''"> AND a.auth_status = #{authStatus}</if>
+		<if test="dbuserid != null and dbuserid !=''"> AND a.dbuserid = #{dbuserid}</if>
+	</sql>
+    
+	<select id="getById" resultType="FwOrderDetailPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwOrderDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="FwOrderDetailPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			order_id,
+			order_no,
+			create_time,
+			product_sku_id,
+			num,
+			product_pirce,
+			product_name,
+			type_id,
+			node_id,
+			node_name,
+			auth_status,
+			dbuserid
+		) VALUES (
+			#{id},
+			#{orderId},
+			#{orderNo},
+			#{createTime},
+			#{productSkuId},
+			#{num},
+			#{productPirce},
+			#{productName},
+			#{typeId},
+			#{nodeId},
+			#{nodeName},
+			#{authStatus},
+			#{dbuserid}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwOrderDetailPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="orderId != null">order_id,</if>
+					<if test="orderNo != null">order_no,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="productSkuId != null">product_sku_id,</if>
+					<if test="num != null">num,</if>
+					<if test="productPirce != null">product_pirce,</if>
+					<if test="productName != null">product_name,</if>
+					<if test="typeId != null">type_id,</if>
+					<if test="nodeId != null">node_id,</if>
+					<if test="nodeName != null">node_name,</if>
+					<if test="authStatus != null">auth_status,</if>
+					<if test="dbuserid != null">dbuserid,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="orderId != null">#{orderId},</if>
+			<if test="orderNo != null">#{orderNo},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="productSkuId != null">#{productSkuId},</if>
+			<if test="num != null">#{num},</if>
+			<if test="productPirce != null">#{productPirce},</if>
+			<if test="productName != null">#{productName},</if>
+			<if test="typeId != null">#{typeId},</if>
+			<if test="nodeId != null">#{nodeId},</if>
+			<if test="nodeName != null">#{nodeName},</if>
+			<if test="authStatus != null">#{authStatus},</if>
+			<if test="dbuserid != null">#{dbuserid},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FwOrderDetailPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			order_id = #{orderId},
+			order_no = #{orderNo},
+			product_sku_id = #{productSkuId},
+			num = #{num},
+			product_pirce = #{productPirce},
+			product_name = #{productName},
+			type_id = #{typeId},
+			node_id = #{nodeId},
+			node_name = #{nodeName},
+			auth_status = #{authStatus},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwOrderDetailPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="orderId != null">order_id = #{orderId},</if>
+			<if test="orderNo != null">order_no = #{orderNo},</if>
+			<if test="productSkuId != null">product_sku_id = #{productSkuId},</if>
+			<if test="num != null">num = #{num},</if>
+			<if test="productPirce != null">product_pirce = #{productPirce},</if>
+			<if test="productName != null">product_name = #{productName},</if>
+			<if test="typeId != null">type_id = #{typeId},</if>
+			<if test="nodeId != null">node_id = #{nodeId},</if>
+			<if test="nodeName != null">node_name = #{nodeName},</if>
+			<if test="authStatus != null">auth_status = #{authStatus},</if>
+			<if test="dbuserid != null">dbuserid = #{dbuserid},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getFwComment" parameterType="long" resultType="com.dsj.modules.fw.vo.FwOrderDetailVo">
+		SELECT 
+			a.dbuserid AS "propertyId",
+			e.id AS "spuId",
+			b.user_id AS "userId",
+			a.order_id AS "orderId"
+		FROM	
+			dsj_fw_order_detail a 
+			LEFT JOIN dsj_fw_order b ON a.order_id=b.id
+			LEFT JOIN dsj_property c ON a.dbuserid=c.id
+			LEFT JOIN dsj_fw_sku d ON a.product_sku_id=d.id
+			LEFT JOIN dsj_fw_spu e ON d.spu_id=e.id
+		WHERE a.order_id=#{orderId}
+	</select>
+	
+</mapper>

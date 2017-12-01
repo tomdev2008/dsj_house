@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="css/daterangepicker.css" rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+<script type="text/javascript" src="js/fles.js"></script>
+</head>
+<body>
+	<!-- 头部 -->
+
+	<!-- 主体 -->
+	<div class="container">
+		<div class="row"></div>
+		<!-- 负责楼盘标题 -->
+		<div class="row">
+			<h4 class="dsj_title">二手房</h4>
+		</div>
+		<!-- form1 -->
+		<div class="row dsj_search">
+			<form id="dsj_form" class="form-inline">
+				<div class="form-group" style="position: relative;">
+					<label for="LAY_demorange_s" class="wenzi6">创建时间:</label> <input
+						id="LAY_demorange_s"
+						class="form-control layDateClass laydate-icon" placeholder="开始时间"
+						name="startCreateTime" style="width: 120px; height: 33px">
+					<span class="wenzi2">~</span> <input id="LAY_demorange_e"
+						class="form-control layDateClass laydate-icon" placeholder="结束时间"
+						name="endCreateTime" style="width: 120px; height: 33px">
+				</div>
+				<div class="form-group">
+					<label class="sr-only" for="keyword">按楼盘或楼盘ID关键字搜索</label> <input
+						id="keyword" name="name" class="form-control"
+						placeholder="按楼盘或楼盘ID关键字搜索">
+				</div>
+				<div class="form-group">
+					<label for="house_type" class="dsj_double_label">房型:</label>
+					<div class="dsj_double_input">
+						<input id="house_type" name="roomMin"
+							class="dsj_double_left_input form-control" placeholder="">
+							<span>~</span>
+						<input id="" name="roomMax"
+							class="dsj_double_right_input form-control" placeholder="">
+							<span>室</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="house_price" class="dsj_double_label">价格:</label>
+					<div class="dsj_double_input">
+						<input id="house_price" name="priceMin"
+							class="dsj_double_left_input form-control" placeholder=""><span>~</span>
+						<input id="" name="priceMax"
+							class="dsj_double_right_input form-control" placeholder=""><span>万</span>
+					</div>
+				</div>
+				<div class="form-group margin-r">
+					<select name="status" class="form-control"
+						style="min-width: 100px;">
+						<option value="">房源状态</option>
+						<option value="">全部</option>
+						<option value="1">未上架</option>
+						<option value="2">已上架</option>
+						<option value="3">已下架</option>
+					</select>
+				</div>
+				<div class="row dsj_search_button_group">
+					<div class="col-sm-12">
+						<button id="search-button" type="button"
+							class="dsj_button btn btn-primary">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							查询
+						</button>
+						<button id="search-reset" type="reset"
+							class="dsj_button btn btn-default">重置</button>
+
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- form2 -->
+		<div class="row dsj_option">
+			<button id="row_view" type="button" class="btn btn-default"
+				aria-label="Left Align">
+				<span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+			</button>
+			<button id="card_view" type="button" class="btn btn-default"
+				aria-label="Left Align">
+				<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+			</button>
+			<div class="pull-right">
+				<a href="javascript:void(0)"
+					onclick="checkAllCheckbox(this,'checkitem')">全选 <input
+					style="display: none" type="checkbox">
+				<!-- </a> <a href="javascript:void(0)" onclick="upOrDownMasters(2)">批量上架</a> -->
+				<a href="javascript:void(0)" onclick="upOrDownMasters(3)">批量下架</a>
+				<button type="button" onclick="toAdd()" class="btn btn-success">新建房源</button>
+			</div>
+		</div>
+		<!-- list -->
+		<div id="dsj_list" class="ershou row dsj_content"></div>
+	</div>
+	<script id="dsj_row_template" type="text/x-handlebars-template">
+      <div class="dsj_content dsj_row clearfix" >
+        <div class="col-sm-3 col-xs-12" >
+          <div class="dsj_card_img" >
+			{{#compare  status "==" 2  }}
+            <input class="dsj_row_checkbox"   name="checkitem" value="{{id}}" type="checkbox">
+			{{/compare}}
+            <img class="img-responsive" src="{{imageUrl}}" onclick="view({{id}})" style="cursor:pointer">
+          </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <div class="dsj_card_title" style="cursor:pointer;word-break: break-all;" onclick="view({{id}})">
+            {{title}}
+            <span>
+              
+            </span>
+          </div>
+          <table class="table" style="width: 50%;float: left;">
+            <tbody>
+              <tr>
+                <th scope="row">售价</th>
+                <td><span class="price">{{price}}</span> 万</td>
+              </tr>
+			<tr>
+                <th scope="row">面积</th>
+                <td>{{buildArea}}</td>
+              </tr>
+              <tr>
+                <th scope="row">户型</th>
+                <td>{{room}}室{{hall}}厅{{kitchen}}厨{{toilet}}卫</td>
+              </tr>
+              <tr>
+                <th scope="row">楼盘id</th>
+                <td>{{houseId}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table" style="width: 50%;float: left;">
+            <tbody>
+              <tr>
+                <th scope="row">房源状态：</th>
+                <td>{{statusName}}</td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td>{{createTime}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <div class="dsj_card_option">
+          	{{#compare  status "==" 2  }}
+ 			 	<a onclick="upOrDownMaster({{id}},3)">下架</a>
+			{{else}}
+           		 <a onclick="editMaster({{id}})">编辑</a>
+ 			{{!--	<a onclick="upOrDownMaster({{id}},2)">上架</a> --}}
+			{{/compare}}
+	
+			{{#compare  status "==" 2  }}
+            {{#compare isRecomend "==" 1 }}
+            	 <a onclick="cancleOrRecommendMaster({{id}},2)">取消推荐</a>
+			{{else}}
+				 <a onclick="cancleOrRecommendMaster({{id}},1)">推荐</a>
+			{{/compare}}
+			
+			{{#compare 	loupanShowId "==" null }}
+ 				<a onclick="showShelvesMaster({{id}},1)">展示货架</a>
+			{{else}}
+				 <a onclick="showShelvesMaster({{id}},2)">取消展示</a>
+			{{/compare}}
+			{{/compare}}
+          </div>
+          </div>
+        </div>
+      </div>
+    </script>
+	<script id="dsj_card_template" type="text/x-handlebars-template">
+      <div class="col-sm-4 col-xs-12 min_height400" >
+        <div class="dsj_card">
+          <div class="dsj_card_img" style="cursor:pointer">
+            <img class="img-responsive" src="{{imageUrl}}" onclick="view({{id}})"> 
+			{{#compare  status "==" 2  }}
+          		 <input class="dsj_card_checkbox" name="checkitem" value="{{id}}" type="checkbox">
+			{{/compare}}
+          </div>
+          <div class="dsj_card_title">
+            <span style="cursor:pointer;word-break: break-all; " onclick="view({{id}})">
+            {{title}}
+            </span>
+            <span class="dsj_badge pull-right">
+              
+            </span>
+          </div>
+          <div class="dsj_card_content">
+            <div class="table-responsive">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <th scope="row">售价：</th>
+                    <td><span class="price">{{price}}</span> 万</td>
+                  </tr>
+				  <tr>
+                    <th scope="row">面积：</th>
+                    <td><span >{{buildArea}}</span>平</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">户型：</th>
+                    <td>{{room}}室{{hall}}厅{{kitchen}}厨{{toilet}}卫</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">楼盘ID：</th>
+                    <td>{{houseId}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">房源状态：</th>
+                    <td>{{statusName}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="dsj_card_option">
+           {{#compare  status "==" 2  }}
+ 				 <a onclick="upOrDownMaster({{id}},3)">下架</a> 
+			{{else}}
+           		 <a onclick="editMaster({{id}})">编辑</a>
+ 				{{!--<a onclick="upOrDownMaster({{id}},2)">上架</a>--}}
+			{{/compare}}
+		
+			{{#compare  status "==" 2  }}
+			{{#compare  isRecomend "=="1 }}
+            	 <a onclick="cancleOrRecommendMaster({{id}},2)">取消推荐</a>
+			{{else}}
+				 <a onclick="cancleOrRecommendMaster({{id}},1)">推荐</a>
+			{{/compare}}
+			 {{#compare 	loupanShowId "==" null }}
+ 				<a onclick="showShelvesMaster({{id}},1)">展示货架</a>
+			{{else}}
+				 <a onclick="showShelvesMaster({{id}},2)">取消展示</a>
+			{{/compare}}
+			{{/compare}}
+          </div>
+        </div>
+      </div>
+    </script>
+	<script id="dsj_page_template" type="text/x-handlebars-template">
+      <div id="dsj_list_page" class="col-xs-12">
+        <nav aria-label="page" class="pull-right">
+          <p class="dsj_page"><span class="dsj_current_page">{{currentPage}}</span>/{{totalPage}}</p>
+          <ul class="pagination">
+            <li><a class="prev" aria-label="Previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
+            <li><a class="next" aria-label="Next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+	<script src="lib/layui/layui.js"></script>
+	<script src="js/common/laydate.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="js/housepage.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/common/base.js"></script>
+	<!-- <script src="js/jquery.cookie.js"></script> -->
+	<script src="js/common/header.js"></script>
+
+	<script type="text/javascript">
+      $(document).ready(function(){
+        $('.dsj_rangepicker').click(function(argument) {
+          $(this).parent().find('input').trigger('click');
+        })
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+    	 
+        var houseOption = {
+          container_id : "dsj_list",
+          cardTemplate_id : "dsj_card_template",
+          rowTemplate_id : "dsj_row_template",
+          pageTemplate_id : "dsj_page_template",
+          url : _url+"/back/oldHouse/master/page/list"
+        }
+        var houseList = new $.fn.houseList(houseOption);
+        houseList._init();
+        $('#search-button').click(function() {
+        	houseList.searchAjax();
+        })
+        require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#dailog_common_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html    = template();
+	    	 $('body').append(html);
+   		}); 
+        
+      });
+    </script>
+</body>
+</html>

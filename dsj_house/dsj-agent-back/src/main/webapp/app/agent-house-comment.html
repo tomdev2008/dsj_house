@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>大搜家-经纪人</title>
+
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="css/daterangepicker.css" rel="stylesheet">
+<script type="text/javascript" src="js/fles.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row"></div>
+		<div class="row">
+			<h4 class="dsj_title">我的点评</h4>
+		</div>
+		<div class="row dsj_search">
+			<form id="dsj_form" class="form-inline">
+				<div class="form-group" style="position: relative;">
+					<input type="text" id="create_time" class="form-control"
+						name="datefilter" value="" placeholder="请选择时间范围" /> <i
+						class="glyphicon glyphicon-calendar dsj_rangepicker"></i>
+				</div>
+				<div class="form-group">
+					<label class="sr-only" for="keyword">按楼盘或楼盘ID关键字搜索</label> <input
+						id="keyword" name="houseName" class="form-control"
+						placeholder="按楼盘或楼盘ID关键字搜索">
+				</div>
+				<div class="form-group">
+					<select name="auditStatus" class="form-control"
+						style="min-width: 100px;">
+						<option value="">审核状态</option>
+						<option value="4">待提交</option>
+						<option value="1">待审核</option>
+						<option value="2">已通过</option>
+						<option value="3">已驳回</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<select name="upDownLine" class="form-control"
+						style="min-width: 100px;">
+						<option value="">动态状态</option>
+						<option value="1">已上线</option>
+						<option value="2">已下线</option>
+						<option value="3">未上线</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<select name="isTure" class="form-control"
+						style="min-width: 100px;">
+						<option value="">房源状态</option>
+						<option value="2">已上架</option>
+						<option value="3">已下架</option>
+						<option value="1">待上架</option>
+					</select>
+				</div>
+				<button id="search-button" type="button"
+					class="dsj_button btn btn-primary">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					查询
+				</button>
+				<button id="reset-button" type="button"
+					class="dsj_button btn btn-primary">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					重置
+				</button>
+			</form>
+		</div>
+		<div id="container_id"></div>
+		<script id="dsj_house_comment" type="text/x-handlebars-template">
+      <div class="row dsj_content dsj_responsible_row">
+        <div class="col-xs-12">
+          <p class="responsible-info">
+			{{userTypeName}} · {{userName}} ·  {{updateTime}}
+          </p>
+        </div>
+        <div class="col-sm-10 col-xs-12">
+          <p class="responsible-title">
+           {{title}}<span class="responsible-sub-title"></span>
+          </p>
+          <p class="dsj_update_content" data-content="{{content}}" data-mark="more" >
+			{{#contentLimits content 150 }}
+				{{content}}
+			{{/contentLimits}}
+          </p>
+			{{#contentLengthLimits content 150 }}
+				<span class="dsj_update_content_more">展开全文</span>
+			{{/contentLengthLimits}}
+			<span class="dsj_update_content_less hide">收起</span>
+        </div>
+        <div class="col-sm-2 col-xs-12">
+          <div class="responsible-img">
+            <img class="img-responsive" src="{{pictureUrl}}">
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <p class="responsible-footer">
+            <a onclick="newHouseNews({{id}})">编辑</a>
+			{{#compare stick '==' 1 }}
+            	<a onclick="setUnTop({{id}});" >取消置顶</a>
+				{{else}}
+				<a onclick="setTop({{id}});" >置顶</a>
+			{{/compare}}
+            <a onclick="delNews({{id}});">删除</a>
+			<span class="responsible-status">审核状态：{{auditStatusName}}</span>
+			<span class="responsible-status">动态状态：{{upDownLineName}}</span>
+			{{#if isTure}}
+				<span class="responsible-status">房源状态：{{isTureName}}</span>
+			{{/if}}
+          </p>
+        </div>
+      </div>
+	</script>
+		<script id="dsj_page_template" type="text/x-handlebars-template">
+      <div class="row">
+        <div id="dsj_list_page" class="col-xs-12">
+          <nav aria-label="page" class="pull-right">
+            <p class="dsj_page"><span class="dsj_current_page">{{currentPage}}</span>/{{totalPage}}</p>
+            <ul class="pagination">
+              <li><a class="prev" aria-label="Previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
+              <li><a class="next" aria-label="Next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </script>
+
+	</div>
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="js/common/base.js"></script>
+	<script src="js/common/header.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/houseNews/house-news.js"></script>
+	<script type="text/javascript">
+         $(document).ready(function(){
+        	 
+           $('.dsj_rangepicker').click(function(argument) {
+             $(this).parent().find('input').trigger('click');
+           })
+           $('input[name="datefilter"]').daterangepicker({
+               autoUpdateInput: false,
+               locale: {
+                   cancelLabel: 'Clear'
+               }
+           });
+
+           $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+               $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+           });
+
+           $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+               $(this).val('');
+           });
+           
+          
+          var houseOption = {
+   		  container_id : "container_id",
+             dialogTemplate_id : "dsj_house_comment",
+             pageTemplate_id : "dsj_page_template",
+             url : _url
+			}
+           var houseList = new $.fn.HouseComment(houseOption);
+           houseList._init();
+           $('#search-button').click(function() {
+				houseList._init();
+			})
+			$('#reset-button').click(function() {
+ 	        	$("body").find(".form-group").find("input").val("");
+ 	        	$("body").find(".form-group").find("select").val("");
+ 	        })
+           
+        require(["text!common/commit.html"], function(tpl) {
+  	    	 $('body').append(tpl);
+  	    	 var source=$("#dailog_common_template").html();
+  	    	 var template = Handlebars.compile(source);
+  			 var html = template();
+  	    	 $('body').append(html);
+    		}); 
+         })  
+    </script>
+
+</body>
+</html>

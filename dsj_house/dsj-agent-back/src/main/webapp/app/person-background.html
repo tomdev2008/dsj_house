@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/fles.js"></script>
+  </head>
+  <body>
+
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-2">
+          <ul class="nav nav-pills nav-stacked nav-pills-stacked-example dsj_left_nav">
+            <li role="presentation"><a href="person-info.html">基本资料</a></li>
+            <li role="presentation"><a href="person-avatar.html">个人头像</a></li>
+            <li role="presentation"><a href="person-occupation.html">职业信息</a></li>
+            <li role="presentation"><a  href="person-password.html">修改密码</a></li>
+            <li role="presentation"><a href="person-phone.html">修改手机号</a></li>
+            <li role="presentation"  class="active"><a>个人主页背景管理</a></li>
+            <li role="presentation"><a href="person-mygrade.html">我的等级</a></li>
+            <li role="presentation"><a href="person-qp-evaluate.html">评价二维码</a></li>
+          </ul>
+        </div>
+        <div id="dsj_info_container" class="col-sm-9">
+        <form class="form-horizontal dsj_form">
+        <h4 class="dsj_title">个人主页背景管理</h4>
+       
+    		 <div id="pic_container" style="margin: 0 -10px;">
+
+        </div>
+      </form>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+     <script id="dsj_template_one" type="text/x-handlebars-template">
+	  <div class="form-group">
+        <div class="col-sm-5">
+          <div class="dsj_background_pic">
+            <img  class="img-responsive" src="http://dasouk.oss-cn-qingdao.aliyuncs.com/upload/pic/20171030153902846728.jpg">
+            <p>晚霞</p>
+          </div>
+        </div>
+		<div class="col-sm-5">
+          <div class="dsj_background_pic">
+            <img  class="img-responsive" src="http://dasouk.oss-cn-qingdao.aliyuncs.com/upload/pic/20171030153902846728.jpg">
+            <p>清晨</p>
+          </div>
+        </div>
+		<div class="col-sm-5">
+          <div class="dsj_background_pic">
+            <img  class="img-responsive" src="http://dasouk.oss-cn-qingdao.aliyuncs.com/upload/pic/20171030153902846728.jpg">
+            <p>艳阳</p>
+          </div>
+        </div>
+      </div>
+
+		<div class="row dsj_button_group">
+            <div class='col-sm-6'>
+			<input class='btn dsj_button btn-default' type='button' onclick='cancle()'value='取消'>
+			<input class='btn dsj_button btn-primary' type='button' onclick='save()' value='确定'>			              
+          </div>
+		</div>
+    </script>
+   
+    <script src="js/handlebars.js"></script>
+    <script src="js/require.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/alertBox.js"></script>
+    <script type="text/javascript">
+    var id= "";
+    var option={};
+    var source   = $("#dsj_template_one").html();
+    var template = Handlebars.compile(source);
+
+    $(function () {
+		$.ajax({
+			type:"post",
+			url:_url+"/back/frame/system/agent/getAgentInfo",
+			datatype:"json",
+			data:{r:Math.random()},
+			success:function(result){
+				if(result.status!=200){
+					 show_box(2,result.message);
+				}else{
+					id = result.data.id;
+					var html =  template(option);
+				    $("#pic_container").append(html);
+				    
+				    $("img[src='"+result.data.background+"']").closest("div").addClass("active").prepend('<div class="backgroud_checked"><img src="./img/checked.png"></div>')
+				}
+				
+			}
+		})
+    })
+
+    $(document).on("click",".dsj_background_pic",function(argument) {
+      $(".dsj_background_pic").removeClass("active");
+      $(this).toggleClass("active");
+      $(this).prepend('<div class="backgroud_checked"><img src="./img/checked.png"></div>')
+    })
+    function save(){
+    	var src = $(".dsj_background_pic.active").find(".img-responsive").attr('src');
+    	$.ajax({
+			type:"post",
+			url:_url+"/back/frame/system/agent/background",
+			datatype:"json",
+			data: {
+				background:src,
+				id:id
+			},
+			success:function(result){
+				if(result.status!=200){
+					show_box(2,result.message);
+				}else{
+					show_box(3,result.message);
+				}
+				
+			}
+		})
+    }
+    require(["text!common/commit.html"], function(tpl) {
+   	 $('body').append(tpl);
+   	 var source=$("#dailog_common_template").html();
+   	 var template = Handlebars.compile(source);
+		 var html = template();
+   	 $('body').append(html);
+	}); 
+	function cancle(){
+		window.location.href="agent-index.html";
+	}
+    </script>
+  </body>
+</html>

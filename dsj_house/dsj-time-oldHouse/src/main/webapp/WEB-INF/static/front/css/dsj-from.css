@@ -1,0 +1,27 @@
+*{
+	box-sizing: border-box;
+}
+.dsj-width-1 {
+    width:110px
+}
+
+.dsj-search-width {
+    width:110px
+}
+
+.dsj_btn_width{
+	 width:25%
+}
+.form_kuang>div{
+	width:476px;
+	margin-top:20px;
+}
+.form_kuang>div>span{
+	width:50px;
+}
+.form_kuang>.btngroup{
+	width:730px;
+}
+.form_kuang>.btngroup>button{
+	margin-right:30px;
+}

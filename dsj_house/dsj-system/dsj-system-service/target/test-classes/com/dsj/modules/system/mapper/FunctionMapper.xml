@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.FunctionDaoImpl">
+    
+    <sql id="tableName"> dsj_function a </sql>
+    <sql id="tableNameUpdate"> dsj_function </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.uri AS "uri",
+		a.pattern AS "pattern",
+		a.name_code AS "nameCode",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.pid AS "pid",
+		a.icon_uri AS "iconUri",
+		a.level AS "level",
+		a.sort AS "sort",
+		a.type AS "type"
+	</sql>
+	
+	<resultMap id="beanMap" type="FunctionPo">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="uri" property="uri" />
+		<result column="pattern" property="pattern" />
+		<result column="name_code" property="nameCode" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="pid" property="pid" />
+		<result column="icon_uri" property="iconUri" />
+		<result column="level" property="level"/>
+		<result column="sort" property="sort" />
+		<result column="type" property="type" />
+	</resultMap>
+	
+	<sql id="functionJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="uri != null and uri!= ''"> AND a.uri = #{uri}</if>
+		<if test="pattern != null and pattern!= ''"> AND a.pattern = #{pattern}</if>
+		<if test="nameCode != null and nameCode!= ''"> AND a.name_code = #{nameCode}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="pid != null and pid!= ''"> AND a.pid = #{pid}</if>
+		<if test="iconUri != null and iconUri!= ''"> AND a.icon_uri = #{iconUri}</if>
+		<if test="level != null and level != ''">AND a.level =#{level}</if>
+		<if test="sort != null and sort!= ''"> AND a.sort = #{sort}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+	</sql>
+    
+	<select id="getById" resultType="FunctionPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="functionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="functionList" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+			WHERE pid=#{pid}
+		ORDER BY a.sort ASC 
+	</select>
+	
+	<select id="findAllFunctionTwo" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+			<where>
+			<include refid="condition_sql"/>
+		</where>
+		ORDER BY a.sort ASC 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="FunctionPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			name,
+			uri,
+			pattern,
+			name_code,
+			create_time,
+			update_time,
+			pid,
+			icon_uri,
+			sort,
+			type
+		) VALUES (
+			#{id},
+			#{name},
+			#{uri},
+			#{pattern},
+			#{nameCode},
+			#{createTime},
+			#{updateTime},
+			#{pid},
+			#{iconUri},
+			#{sort},
+			#{type}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FunctionPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="name != null">name,</if>
+					<if test="uri != null">uri,</if>
+					<if test="pattern != null">pattern,</if>
+					<if test="nameCode != null">name_code,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="pid != null">pid,</if>
+					<if test="iconUri != null">icon_uri,</if>
+					<if test="sort != null">sort,</if>
+					<if test="type != null">type,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="uri != null">#{uri},</if>
+			<if test="pattern != null">#{pattern},</if>
+			<if test="nameCode != null">#{nameCode},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="pid != null">#{pid},</if>
+			<if test="iconUri != null">#{iconUri},</if>
+			<if test="sort != null">#{sort},</if>
+			<if test="type != null">#{type},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FunctionPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name = #{name},
+			uri = #{uri},
+			pattern = #{pattern},
+			name_code = #{nameCode},
+			update_time = #{updateTime},
+			pid = #{pid},
+			icon_uri = #{iconUri},
+			sort = #{sort},
+			type = #{type},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FunctionPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="name != null">name = #{name},</if>
+			<if test="uri != null">uri = #{uri},</if>
+			<if test="pattern != null">pattern = #{pattern},</if>
+			<if test="nameCode != null">name_code = #{nameCode},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="pid != null">pid = #{pid},</if>
+			<if test="iconUri != null">icon_uri = #{iconUri},</if>
+			<if test="sort != null">sort = #{sort},</if>
+			<if test="type != null">type = #{type},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getPatternsList" parameterType="java.util.Map" resultType="String">
+		SELECT DISTINCT
+			(a.pattern)AS "pattern"
+		FROM
+			dsj_function a,
+			dsj_role_function b
+		WHERE
+			a.id = b.func_id
+		AND b.role_id IN(
+			SELECT
+				d.id
+			FROM
+				dsj_user_role c,
+				dsj_role d
+			WHERE
+				c.role_id = d.id
+			<if test="userId != null">
+			AND c.user_id = #{userId}
+			</if>
+			
+		)
+		and a.pattern is not null
+		ORDER BY
+			a.sort
+	</select>
+	
+		
+	<!-- 获取用户关联下的所有菜单 -->
+	<select id="getListMenus" parameterType="java.util.List" resultType="FunctionPo">
+		SELECT
+			distinct(a.id) AS "id",
+			a.name AS "name",
+			a.uri AS "uri",
+			a.name_code AS "nameCode",
+			a.create_time AS "createTime",
+			a.update_time AS "updateTime",
+			a.pid AS "pid",
+			a.icon_uri AS "iconUri",
+			a.sort AS "sort",
+			a.pattern AS "pattern"
+		FROM
+			dsj_function a,
+			dsj_role_function b
+		WHERE
+			a.id = b.func_id
+		AND b.role_id IN
+		<foreach collection="list" index="index" item="role" open="(" separator="," close=")">
+			#{role.id}
+		</foreach>
+		ORDER BY a.sort
+	</select>
+	
+	<select id="getFunction" parameterType="java.util.Map" resultType="java.util.List">
+		SELECT
+			distinct(a.id) AS "id",
+			a.name AS "name",
+			a.uri AS "uri",
+			a.name_code AS "nameCode",
+			a.create_time AS "createTime",
+			a.update_time AS "updateTime",
+			a.pid AS "pid",
+			a.icon_uri AS "iconUri",
+			a.sort AS "sort",
+			a.pattern AS "pattern"
+		FROM
+			dsj_function a,
+			dsj_role_function b,
+			dsj_role c
+		WHERE
+			a.id = b.func_id
+		AND c.id=b.role_id
+		AND c.id=#{roleId}
+		ORDER BY a.sort
+	</select>
+</mapper>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/dsj_agent.css" rel="stylesheet">
+    <link href="../css/dsj_form.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/selectize.css" type="text/css"/>
+    <!-- <link rel="stylesheet" href="css/dsj_newhouse.css"> -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.js"></script>
+      <script src="../js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+        <!-- 头部 -->
+    <div class="container">
+      
+    <!-- 主体 -->
+    <div class="PGress"> 
+      <ul>
+        <li><a href="##">大搜家首页</a>
+        <div class="progressTriangle">
+          <div> 
+          </div>
+        </div>
+        </li>
+        <li><a href="##">新房</a>
+           <div class="progressTriangle">
+          <div> 
+          </div>
+        </div>
+        </li>
+        <li><a href="##">新房列表</a>
+         <div class="progressTriangle">
+          <div> 
+          </div>
+        </div></li>
+        <li><a href="##">北京楼盘</a>
+         <div class="progressTriangle">
+          <div> 
+          </div>
+        </div></li>
+        <li><a href="##">北京孔雀城</a>
+        </li>
+      </ul>
+    </div>
+    <div class="dsj-main">
+      <form id="dsj_form" class="form-horizontal dsj_form">
+       <script id="eveloper_compay_template" type="text/x-handlebars-template">
+        <h4 class="dsj_title">完善企业信息</h4>
+        <div class="form-group has-feedback">
+          <label for="username" class="col-sm-2 control-label"><span class="dsj_warn">*</span>账号：</label>
+          <div class="col-sm-3">
+            <p class="form-control-static">{{evelopers.username}}</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone" class="col-sm-2 control-label"><span class="dsj_warn">*</span>开发商企业名称：</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" value="{{evelopers.name}}" name="name" id="phone"  data-validate="required" placeholder="">
+          </div>
+        </div>
+        <div class="form-group form-inline">
+          <label for="id_number" class="col-sm-2 control-label"><span class="dsj_warn">*</span>所在地：</label>
+          <div class="col-sm-4">
+            <select class="form-control" onclick="getTwoArea()" id="areaOneId" name="areaOneId" style="width: 32%" >
+				<option value=""></option>             
+				{{#each firstAreaList}}
+					{{#compare ../evelopers.areaOneId "==" id}}
+					<option selected="selected" value="{{id}}">{{name}}</option>
+					{{else}}
+							<option value="{{id}}">{{name}}</option>
+					{{/compare}}
+			 	{{/each}}
+            </select>
+            <select class="form-control" id="areaTwoId" onclick="getThreeArea()" style="width: 32%" name="areaTwoId">
+              	{{#each secondAreaList}}
+					{{#compare ../evelopers.areaTwoId "==" id}}
+					<option selected="selected" value="{{id}}">{{name}}</option>
+					{{else}}
+							<option value="{{id}}">{{name}}</option>
+					{{/compare}}
+			 	{{/each}}
+            </select>
+            <select class="form-control" id="areaThreeId" style="width: 32%"  data-validate="required" name="areaThreeId">
+				{{#each threeAreaList}}
+					{{#compare ../evelopers.areaThreeId "==" id}}
+					<option selected="selected" value="{{id}}">{{name}}</option>
+					{{else}}
+							<option value="{{id}}">{{name}}</option>
+					{{/compare}}
+			 	{{/each}}
+            </select>
+			
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="id_number" class="col-sm-2 control-label"><span class="dsj_warn">*</span>企业营业执照号：</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" value="{{evelopers.companyLicenseNum}}" name="companyLicenseNum" id="id_number"  data-validate="required" placeholder="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="id_number" class="col-sm-2 control-label"><span class="dsj_warn">*</span>营业执照照片：</label>
+          <div class="col-sm-1" id="filePicker1">
+            <div class="dsj_source_img">
+ 			<img src="{{evelopers.companyLicensePhoto}}" alt="" id="showImg1" />
+              <div class="add-more">
+                <span>+</span>
+              </div>
+            </div>
+          </div>
+		<input name="companyLicensePhoto"  value="{{evelopers.companyLicensePhoto}}" id="licenseUri1"  data-validate="required"  style="width:0px;height:0px;border:0px">
+        </div>
+        <div class="form-group">
+          <label for="loupan_name" class="col-sm-2 control-label"><span class="dsj_warn">*</span>楼盘项目名称：</label>
+          <div class="col-sm-3">
+           
+			<input type="text" id="loupan_name" class="input-tags demo-default" value="{{evelopers.loupanNames}}">
+			<input name="loupanIds" id="loupanIds" type="hidden" value="{{evelopers.loupanIds}}" />
+		</div>
+        </div>
+        <div class="form-group">
+          <label for="id_number" class="col-sm-2 control-label"><span class="dsj_warn">*</span>上传承诺书照片：</label>
+          <div class="col-sm-1" id="filePicker2">
+            <div class="dsj_source_img">
+			  <img src="{{evelopers.promisePhoto}}" alt="" id="showImg2" />
+		
+              <div class="add-more">
+                <span>+</span>
+              </div>
+            </div>
+          </div>
+		 <input name="promisePhoto"  value="{{evelopers.promisePhoto}}" id="licenseUri2"  data-validate="required" style="width:0px;height:0px;border:0px" >
+          <div class="col-sm-9">
+            <a class="form-control-static" onclick = "toUrl("/back/user/export")" href="javascript:void(0);" target="_blank">下载承诺书文件</a>
+            <p class="form-control-static dsj_warn">下载后盖章提交审核，并承诺经由该账号发布的任何信息均属于企业行为与大搜家无关</p>
+          </div>
+        </div>
+        <div class="row dsj_button_group">
+          <div class="col-sm-12">
+          <button type="button" onclick="history.go(-1)" class="btn dsj_button btn-default">
+            取消
+          </button>
+          <button onclick="addEveloper()" type="button" class="btn dsj_button btn-primary">
+            确定
+          </button>
+          </div>
+        </div>
+      </form>
+	</script>
+
+    </div>
+    <!-- 底部 -->
+   
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/handlebars.js"></script>
+      <script src="../js/handlebars-utils.js"></script>
+    <script src="../js/person/eveloper.js"></script>
+    <script src="../js/common/area.js"></script>
+    <script src="../js/webupload/single-upload.js"></script>
+    <script src="../js/webupload/webuploader.js"></script>
+         <script src="../lib/validate/verify.notify.js"></script>
+    <script src="../lib/validate/verify.notify.ext.js"></script>
+    <script type="text/javascript" src="../js/selectize.min.js"></script> 
+      <script src="../js/require.js"></script>
+    	 <script src="../js/common/header.js"></script> 
+     <script type="text/javascript">
+ 	requirejs.config({
+		  baseUrl: '../'
+		});
+    var _url="/dsj-developer-back";
+      $(function () {
+    	  $.ajax({
+	  			type:"post",
+	  			data:{},
+	  			dataType:"json",
+	  			url:_url+"/back/person/eveloper/evelopers_edit",
+	  			success:function(resultVo){
+	  				if(resultVo.status!=200){
+	  					location=_url+"/app/person-detail.html";
+					}else{
+						reader(resultVo.data);
+					}
+	  			}
+	  		})
+	  	   
+      
+      })
+       function toUrl(url){
+    	  location=_url+url;
+      }
+
+    </script>
+    
+  </body>
+</html>

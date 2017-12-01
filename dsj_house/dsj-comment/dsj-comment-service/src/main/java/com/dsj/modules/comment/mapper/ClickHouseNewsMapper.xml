@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.comment.dao.impl.ClickHouseNewsDaoImpl">
+    
+    <sql id="tableName"> dsj_click_house_news a </sql>
+    <sql id="tableNameUpdate"> dsj_click_house_news </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.obj_type AS "objType",
+		a.obj_id AS "objId",
+		a.create_user AS "createUser",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="ClickHouseNewsPo">
+		<id column="id" property="id" />
+		<result column="obj_type" property="objType" />
+		<result column="obj_id" property="objId" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<sql id="clickHouseNewsJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="objType != null and objType!= ''"> AND a.obj_type = #{objType}</if>
+		<if test="objId != null and objId!= ''"> AND a.obj_id = #{objId}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+	</sql>
+    
+	<select id="getById" resultType="ClickHouseNewsPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="clickHouseNewsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="ClickHouseNewsPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			obj_type,
+			obj_id,
+			create_user,
+			create_time
+		) VALUES (
+			#{id},
+			#{objType},
+			#{objId},
+			#{createUser},
+			#{createTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="ClickHouseNewsPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="objType != null">obj_type,</if>
+					<if test="objId != null">obj_id,</if>
+					<if test="createUser != null">create_user,</if>
+					<if test="createTime != null">create_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="objType != null">#{objType},</if>
+			<if test="objId != null">#{objId},</if>
+			<if test="createUser != null">#{createUser},</if>
+			<if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="ClickHouseNewsPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			obj_type = #{objType},
+			obj_id = #{objId},
+			create_user = #{createUser},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="ClickHouseNewsPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="objType != null">obj_type = #{objType},</if>
+			<if test="objId != null">obj_id = #{objId},</if>
+			<if test="createUser != null">create_user = #{createUser},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

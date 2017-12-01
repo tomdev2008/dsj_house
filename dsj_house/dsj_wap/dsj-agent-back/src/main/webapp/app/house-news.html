@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<script type="text/javascript" src="js/fles.js"></script>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="css/daterangepicker.css" rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div class="container">
+		<div class="row"></div>
+		<div class="row">
+			<h4 class="dsj_title">楼盘动态</h4>
+		</div>
+		<div class="row dsj_search">
+			<form id="dsj_form" class="form-inline margin-b30">
+				<div class="form-group" style="position: relative;">
+					<span class="wenzi6" >创建时间:</span> <input id="LAY_demorange_s"
+						class="form-control layDateClass laydate-icon" placeholder="开始时间"
+						name="createTimeStart" style="width: 120px; height: 33px">
+					<span class="wenzi2">~</span> <input id="LAY_demorange_e"
+						class="form-control layDateClass laydate-icon" placeholder="结束时间"
+						name="createTimeEnd" style="width: 120px; height: 33px">
+				</div>
+				<div class="form-group">
+					<label class="sr-only" for="keyword">按楼盘名称关键字查询</label> <input
+						id="keyword" name="houseName" class="form-control"
+						placeholder="按楼盘名称关键字查询">
+				</div>
+				<div class="form-group">
+					<span class="wenzi6">审核状态</span> <select name="auditStatus"
+						class="form-control" style="min-width: 100px;">
+						<option value="">全部</option>
+						<option value="1">待审核</option>
+						<option value="2">已通过</option>
+						<option value="3">已驳回</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<span class="wenzi6">楼盘动态状态</span> <select name="upDownLine"
+						class="form-control" style="min-width: 100px;">
+						<option value="">全部</option>
+						<option value="1">已上线</option>
+						<option value="2">已下线</option>
+						<option value="3">未上线</option>
+					</select>
+				</div>
+				<!-- <div class="form-group">
+            <select name="isTure" class="form-control" style="min-width: 100px;">
+              <option value="">全部</option>
+              <option value="2">已上架</option>
+              <option value="3">已下架</option>
+              <option value="1">待上架</option>
+            </select>
+          </div> -->
+				<button id="search-button" type="button"
+					class="dsj_button btn btn-primary">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					查询
+				</button>
+				<button id="reset-button" type="button"
+					class="dsj_button btn btn-primary">重置</button>
+			</form>
+			<button id="new-button" onclick="newHouseNews();" type="button"
+				class="dsj_button btn btn-primary">新建楼盘动态</button>
+		</div>
+		<div id="container_id"></div>
+		<script id="dsj_building_news" type="text/x-handlebars-template">
+      <div class="row dsj_content dsj_responsible_row ">
+        <div class="col-xs-12">
+          <p class="responsible-info">
+			{{userTypeName}} · {{userName}} ·  {{updateTime}}
+          </p>
+        </div>
+        <div class="col-sm-10 col-xs-12">
+          <p class="responsible-title">
+           {{houseName}}  &nbsp; <span class="responsible-sub-title">{{title}}</span>
+          </p>
+			<p class="dsj_update_content" data-content="{{content}}" data-mark="more" >
+				{{#convertHtml contentst}}{{/convertHtml}}
+			</p>
+			<a onclick="showNewHouseNews({{id}})"><strong>查看详情>></strong></a>
+        </div>
+        <div class="col-sm-2 col-xs-12">
+          <div class="responsible-img">
+			{{#if pictureUrl}}
+				<img class="img-responsive" src="{{pictureUrl}}?x-oss-process=image/resize,m_mfit,h_123,w_123">
+			{{/if}}
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <p class="responsible-footer omit_kuang" style="padding-top: 10px;">
+
+			{{#compare auditStatus '==' 2 }} <!-- 已通过 -->
+				{{#compare upDownLine '==' 1 }}<!-- 已上线 -->
+					<a onclick="delNews({{id}});">下线</a>
+					{{#compare stick '==' 1 }}
+            			<a onclick="setUnTop({{id}});" >取消置顶</a>
+					{{else}}
+						<a onclick="setTop({{id}});" >置顶</a>
+					{{/compare}}
+				{{/compare}}
+			{{/compare}}
+			{{#compare auditStatus '==' 3 }} <!-- 已驳回 -->
+				{{#compare upDownLine '==' 3 }}<!-- 未上线 -->
+					<a onclick="newHouseNews({{id}})">编辑</a>
+				{{/compare}}
+			{{/compare}}
+			<span class="responsible-status omitCharacter">审核状态：{{auditStatusName}}</span>
+			{{#compare auditStatus '==' 3 }}
+				<span class="hint_box reverlAll">{{auditReason}}</span>
+			{{/compare}}
+			<span class="responsible-status">动态状态：{{upDownLineName}}</span>
+
+			<!--{{#if isTure}}
+				<span class="responsible-status">房源状态：{{isTureName}}</span>
+			{{/if}}-->
+          </p>
+        </div>
+      </div>
+	</script>
+		<script id="dsj_page_template" type="text/x-handlebars-template">
+      <div class="row">
+        <div id="dsj_list_page" class="col-xs-12">
+          <nav aria-label="page" class="pull-right">
+            <p class="dsj_page"><span class="dsj_current_page">{{currentPage}}</span>/{{totalPage}}</p>
+            <ul class="pagination">
+              <li><a class="prev" aria-label="Previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
+              <li><a class="next" aria-label="Next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </script>
+
+	</div>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="js/common/base.js"></script>
+	<script src="js/common/header.js"></script>
+	<script src="lib/layui/layui.js"></script>
+	<script src="js/common/laydate.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/houseNews/house-news.js"></script>
+	<script type="text/javascript">
+
+         $(document).ready(function(){
+ 			
+ 			$(document).on("mouseenter",".omitCharacter",function(event){
+ 				$(this).next(".reverlAll").show();
+ 			});
+ 			$(document).on("mouseleave",".omitCharacter",function(event){
+ 				$(this).next(".reverlAll").hide();
+ 			}); 
+        	 
+        	$(document).on("click",".dsj_update_content_more",function(argument) {
+ 	  			if( "more" == $(this).siblings(".dsj_update_content").data("mark")){
+ 	  				$(this).siblings(".dsj_update_content").text($(this).siblings(".dsj_update_content").attr("data-content"));
+ 	  				$(this).siblings(".dsj_update_content").data("mark","less");
+ 	 	  			$(this).text("收起");
+ 	  			}else if( "less" == $(this).siblings(".dsj_update_content").data("mark")){
+ 	  				$(this).siblings(".dsj_update_content").text($(this).siblings(".dsj_update_content").attr("data-content").substring(0,150)+"...");
+ 	  				$(this).siblings(".dsj_update_content").data("mark","more");
+ 	 	  			$(this).text("展开全文");
+ 	  			}
+ 	  		})
+ 	  		
+			//加载时间插件
+			//setLayDate();
+          
+          var houseOption = {
+   		  container_id : "container_id",
+             dialogTemplate_id : "dsj_building_news",
+             pageTemplate_id : "dsj_page_template",
+             url : _url
+			}
+           var houseList = new $.fn.HouseNews(houseOption);
+           houseList._init();
+           $('#search-button').click(function() {
+             houseList._init();
+           })
+	        $('#reset-button').click(function() {
+	        	$("body").find(".form-group").find("input").val("");
+	        	$("body").find(".form-group").find("select").val("");
+	        })
+           
+        require(["text!common/commit.html"], function(tpl) {
+  	    	 $('body').append(tpl);
+  	    	 var source=$("#dailog_common_template").html();
+  	    	 var template = Handlebars.compile(source);
+  			 var html = template();
+  	    	 $('body').append(html);
+    		}); 
+         })
+         /* require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#error_html_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html    = template();
+	    	 $('body').append(html);
+		});  */
+		
+    </script>
+
+</body>
+</html>

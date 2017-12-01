@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.HouseAgentCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_house_agent_crawler a </sql>
+    <sql id="tableNameUpdate"> old_house_agent_crawler </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.origin_house_id AS "originHouseId",
+		a.old_master_crawler_id AS "oldMasterCrawlerId",
+		a.agent_name AS "agentName",
+		a.agent_phone AS "agentPhone",
+		a.company_type AS "companyType",
+		a.origin_agent_pic_url AS "originAgentPicUrl",
+		a.agent_pic_url AS "agentPicUrl",
+		a.create_person AS "createPerson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.delete_flag AS "deleteFlag"
+	</sql>
+	
+	<resultMap id="beanMap" type="HouseAgentCrawlerPo">
+		<id column="id" property="id" />
+		<result column="origin_house_id" property="originHouseId" />
+		<result column="old_master_crawler_id" property="oldMasterCrawlerId" />
+		<result column="agent_name" property="agentName" />
+		<result column="agent_phone" property="agentPhone" />
+		<result column="company_type" property="companyType" />
+		<result column="origin_agent_pic_url" property="originAgentPicUrl" />
+		<result column="agent_pic_url" property="agentPicUrl" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="delete_flag" property="deleteFlag" />
+	</resultMap>
+	
+	<sql id="houseAgentCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="originHouseId != null and originHouseId!= ''"> AND a.origin_house_id = #{originHouseId}</if>
+		<if test="oldMasterCrawlerId != null and oldMasterCrawlerId!= ''"> AND a.old_master_crawler_id = #{oldMasterCrawlerId}</if>
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name = #{agentName}</if>
+		<if test="agentPhone != null and agentPhone!= ''"> AND a.agent_phone = #{agentPhone}</if>
+		<if test="companyType != null and companyType!= ''"> AND a.company_type = #{companyType}</if>
+		<if test="originAgentPicUrl != null and originAgentPicUrl!= ''"> AND a.origin_agent_pic_url = #{originAgentPicUrl}</if>
+		<if test="agentPicUrl != null and agentPicUrl!= ''"> AND a.agent_pic_url = #{agentPicUrl}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+	</sql>
+    
+	<select id="getById" resultType="HouseAgentCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="houseAgentCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="HouseAgentCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			origin_house_id,
+			old_master_crawler_id,
+			agent_name,
+			agent_phone,
+			company_type,
+			origin_agent_pic_url,
+			agent_pic_url,
+			create_person,
+			update_preson,
+			create_time,
+			update_time,
+			delete_flag
+		) VALUES (
+			#{id},
+			#{originHouseId},
+			#{oldMasterCrawlerId},
+			#{agentName},
+			#{agentPhone},
+			#{companyType},
+			#{originAgentPicUrl},
+			#{agentPicUrl},
+			#{createPerson},
+			#{updatePreson},
+			#{createTime},
+			#{updateTime},
+			#{deleteFlag}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="HouseAgentCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="originHouseId != null">origin_house_id,</if>
+					<if test="oldMasterCrawlerId != null">old_master_crawler_id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="agentPhone != null">agent_phone,</if>
+					<if test="companyType != null">company_type,</if>
+					<if test="originAgentPicUrl != null">origin_agent_pic_url,</if>
+					<if test="agentPicUrl != null">agent_pic_url,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="originHouseId != null">#{originHouseId},</if>
+			<if test="oldMasterCrawlerId != null">#{oldMasterCrawlerId},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="agentPhone != null">#{agentPhone},</if>
+			<if test="companyType != null">#{companyType},</if>
+			<if test="originAgentPicUrl != null">#{originAgentPicUrl},</if>
+			<if test="agentPicUrl != null">#{agentPicUrl},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="HouseAgentCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			origin_house_id = #{originHouseId},
+			old_master_crawler_id = #{oldMasterCrawlerId},
+			agent_name = #{agentName},
+			agent_phone = #{agentPhone},
+			company_type = #{companyType},
+			origin_agent_pic_url = #{originAgentPicUrl},
+			agent_pic_url = #{agentPicUrl},
+			create_person = #{createPerson},
+			update_preson = #{updatePreson},
+			update_time = #{updateTime},
+			delete_flag = #{deleteFlag},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="HouseAgentCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="originHouseId != null">origin_house_id = #{originHouseId},</if>
+			<if test="oldMasterCrawlerId != null">old_master_crawler_id = #{oldMasterCrawlerId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="agentPhone != null">agent_phone = #{agentPhone},</if>
+			<if test="companyType != null">company_type = #{companyType},</if>
+			<if test="originAgentPicUrl != null">origin_agent_pic_url = #{originAgentPicUrl},</if>
+			<if test="agentPicUrl != null">agent_pic_url = #{agentPicUrl},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

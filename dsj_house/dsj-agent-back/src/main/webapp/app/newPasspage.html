@@ -1,0 +1,242 @@
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="keywords" content="	楼盘信息，购房指导内容，新房销售，二手房买卖，购房需求，端口，大搜家">
+	<meta name="description" content="大搜家为经纪人提供卖房端口，房产销售品台，个人 运营平台，为经纪人匹配精准购房客户，帮助经纪人实现成交。">
+	<title>经纪人忘记密码-大搜家</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  	<link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+    <link href="css/popbox.css" rel="stylesheet">
+    <link href="css/warrant.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/fles.js"></script>
+  </head>
+  <body>
+      <div id="bingPhone">
+      <!-- header -->
+        <header class="BingHeader">
+          <div class="binglogo"> 
+            <h1>大搜家</h1>
+          </div>
+        </header>
+      <!-- mian -->
+        <main class="BingMain">
+        <div class="BingMainLaft">
+            <p>梦想开始的地方</p>
+            <p>
+                <span>大搜家成就你的专业梦想</span>
+            </p>
+        </div>
+          <!-- 登录框 -->
+          <div class="LoginKuang">
+              <!--登录table  -->
+              <h4>设置新密码</h4>
+              <!-- 错误提示 -->
+              <div class="errorHint" style="visibility: hidden;">
+              
+              </div>
+              <!-- form -->
+              <form class="form-inline">
+                <!-- 账户密码登录 -->
+                <div class="passworgRegister">
+                  <!--新密码  -->
+                  <div class="form-group new-password">
+                    <label for="password">新密码</label>
+                    <div class="input-group">
+                      <input type="password" class="form-control" id="password1" name="password1" placeholder="6至20位以内的字母、数字、下划线">
+                    </div>
+                    <div class="showText">
+                        <label for="showText" class="showTextlabel showTextlabel1"></label>
+                        <input name="showText" id="showText" type="checkbox" value="" />
+                      </div>
+                  </div>
+                  <!-- 确认密码 -->
+                  <div class="form-group new-password">
+                    <label for="confirm">确认密码</label>
+                    <div class="input-group">
+                      <input type="password" class="form-control" id="password2" name="password2" placeholder="请再次输入密码">
+                      <div class="showText">
+                        <label for="showText" class="showTextlabel showTextlabel2"></label>
+                        <input name="showText" id="showText" type="checkbox" value="" />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 确认登录 -->
+                  <div class="new-password-buttons">
+                     <button type="button" class="login_botton countersign">确定</button>
+                  </div>
+                  <!-- 下次自动登录 -->
+                  <div class="checkbox autoRegister">
+                    <ul class="forget">
+                      <li><a class="a_blue" onclick="goLogin()">返回登录</a></li>
+                    </ul>
+                  </div>
+                </div>
+                
+              </form>
+          </div>
+        </main>
+	<div id="popup_box" style="display:none">
+        
+        <div class=" box_style box_succeed" style="display:none">
+            <span class="box_close"></span>
+            <div class="box_kuang">
+                <div class="box_title "> 
+                    <span id="successMsg">成功</span>
+                </div> 
+                <form>
+                    <div class=" buttons">    
+                        <button type="button" class="btn submit_botton" id="successBox">确认</button>
+                    </div>  
+                </form>
+            </div>       
+        </div>
+	</div>
+     </div>
+      <!-- footer -->
+        <footer class="BingFooter">
+          <ul class="footer1">
+         		<li><a href="http://www.dasoujia.com/about/page?about=0">关于我们</a></li>
+         <li><a href="http://www.dasoujia.com/about/page?about=1">平台协议</a></li>
+         <li><a href="http://www.dasoujia.com/about/page?about=2">合作伙伴</a></li>
+     		 </ul>
+          <ul class="footer2">
+            <li>北京大搜家信息技术服务有限公司&nbsp;&nbsp;</li>
+            <li>京ICP备17018930号&nbsp;&nbsp;</li>
+            <li>Copyright © 2017 大搜家 All Rights Reserved</li>
+          </ul> 
+        </footer>
+ 
+       <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="js/jquery.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="js/bootstrap.js"></script>
+      <script src="js/alertBox.js"></script>
+      <script src="js/common/header.js"></script>
+  </body>
+  <script type="text/javascript">
+//弹出框
+   var _ctx="";
+  var pathName = window.document.location.pathname;
+ _ctx="/" +pathName.split("/")[1];
+ if(_ctx=="/app"){
+ 	_ctx='';
+ }
+  var box_succeed  = ".box_succeed";   //3
+  setTimeout(function(){
+
+  	    $(".submit_botton").on("click",function(event){
+  	    	 $("#popup_box>div").hide();
+  	         $("#popup_box").hide();
+  	         event.stopPropagation();
+  	    });
+  },2000);
+ 
+
+  function show_box(state,msg){
+      $("#popup_box").show();
+      $('#successMsg').html(msg);
+      $(box_succeed).show();
+
+  }
+  
+  
+  
+ 
+    $(".countersign").on("click",function () {
+    	var password2=$("#password2").val();
+    	var password1=$("#password1").val();
+    	if(!password2 && !password1){
+    		$(".errorHint").css("visibility","visible"); 
+	        $(".errorHint").html("密码不能为空");
+	        
+	        setTimeout(function(){
+	        	$(".errorHint").css("visibility","hidden"); 
+	        },2000)
+	        
+	        return false;
+    	}
+    	if(password2!=password1){
+    		$(".errorHint").css("visibility","visible"); 
+	        $(".errorHint").html("二次密码不一致");
+	        setTimeout(function(){
+	        	$(".errorHint").css("visibility","hidden"); 
+	        },2000)
+	        return false;
+    	}
+    	if(password1.length<6||password1.length>20){
+    	$(".errorHint").css("visibility","visible"); 
+	        $(".errorHint").html("密码长度应为6-20位");
+	        setTimeout(function(){
+	        	$(".errorHint").css("visibility","hidden"); 
+	        },2000)
+	        return;
+    	}else{
+    		$.ajax({
+	            type:"post",
+	            url:_ctx+"/loginuser/update_password",
+	            dataType:"json",
+	            data:{"password1":password1,"password2":password2},
+	            success:function(data){
+	                if(data.status == 200){
+	                	show_box(3,"修改密码成功,3秒后跳回登录页面");
+	                	setTimeout(function(){
+	        	        	window.location=_ctx+"/login/to_login";
+	        	        },2000)
+	                }else{
+	                	$(".errorHint").css("visibility","visible"); 
+	    		        $(".errorHint").html(data.message);
+	                }
+	            }
+	        	});
+    	}
+	    		
+    });
+    function goLogin(){
+    	window.location=_ctx+"/login/to_login";
+    }
+    // 小眼睛
+    $(".showTextlabel2").on("click",function(event){
+      var ursnameCode_value = $.trim($("#password2").val());
+      if(ursnameCode_value != ""){
+        var checked_input = $("#showText");
+        console.log(checked_input[0].checked);
+        if(checked_input[0].checked){
+          $(this).removeClass("showTextActive");
+          $("#password2").attr("type","password");
+        }
+        else{
+          $(this).addClass("showTextActive");
+          $("#password2").attr("type","text");
+        }
+      }
+      event.stopPropagation();
+    });
+    // 小眼睛
+    $(".showTextlabel1").on("click",function(event){
+      var ursnameCode_value = $.trim($("#password1").val());
+      if(ursnameCode_value != ""){
+        var checked_input = $("#showText");
+        console.log(checked_input[0].checked);
+        if(checked_input[0].checked){
+          $(this).removeClass("showTextActive");
+          $("#password1").attr("type","password");
+        }
+        else{
+          $(this).addClass("showTextActive");
+          $("#password1").attr("type","text");
+        }
+      }
+      event.stopPropagation();
+    });
+  </script>
+</html>

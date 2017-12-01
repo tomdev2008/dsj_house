@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<script type="text/javascript" src="js/fles.js"></script>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+
+<script type="text/javascript">
+    var _ctx=_url;
+    </script>
+
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+	<!-- 主体 -->
+	<div class="container">
+		<div class="row"></div>
+		<!-- 标题 -->
+		<div class="row">
+			<h4 class="dsj_title">新房列表</h4>
+		</div>
+		<div class="row dsj_search">
+			<form id="dsj_form" class="form-inline">
+				<div class="form-group">
+					<label class="sr-only" for="dsj_email"></label> <input name="name"
+						type="text" class="form-control" id="dsj_email"
+						placeholder="按楼盘或楼盘ID关键字搜索">
+				</div>
+				<div class="form-group">
+					<select name="status" class="form-control"
+						style="min-width: 100px;">
+						<option value="">请选择</option>
+						<option value="1">待售</option>
+						<option value="2">在售</option>
+						<option value="3">售完</option>
+					</select>
+				</div>
+				<button id="search-button" type="button" class="btn btn-primary">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					搜索
+				</button>
+				<button id="reset_form" type="button" class="btn btn-primary">
+					重置
+				</button>
+			</form>
+		</div>
+		<div class="row dsj_option">
+			<button id="row_view" type="button" class="btn btn-default"
+				aria-label="Left Align">
+				<span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+			</button>
+
+			<button id="card_view" type="button" class="btn btn-default"
+				aria-label="Left Align">
+				<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+			</button>
+		</div>
+		<div id="dsj_list" class="row dsj_content"></div>
+	</div>
+	<script id="dsj_row_template" type="text/x-handlebars-template">
+      <div class="dsj_content dsj_row clearfix">
+        <div class="col-sm-3 col-xs-12">
+          <div class="dsj_card_img">
+            <img class="img-responsive" src="{{this.pictureUrl}}">
+          {{#if isDutyString}}
+            <span class="Responsibility">{{isDutyString}}</span>
+            {{/if}}
+          </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <div class="dsj_card_title">
+            <span>
+           {{name}}
+            </span>
+            {{#compare this.status '==' 1}}                            
+             <span class="sale sale_on"> 待售 </span>
+              {{else}}
+               {{#compare this.status '=='2}} 
+               <span class="sale sale_wait"> 在售 </span>
+                {{else}}
+                 {{#compare this.status '=='3}} 
+                 <span class="sale sale_finish"> 售完 </span>
+                {{/compare}}
+              {{/compare}}
+             {{/compare}}
+          </div>
+          <table class="table" style="width: 50%;float: left;">
+            <tbody>
+                  <tr>
+                    <th scope="row">均价：</th>
+                     <td>
+                      {{#if aroundMinPrice}}
+                     <span class="price">
+                     {{aroundMinPrice}}
+                     </span> 元/平
+                     {{else}}
+                     <span class="price">
+                                                                  未公布
+                    </span> 
+                     {{/if}}
+                     </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">户型：</th>
+                    <td>{{housetypeNames}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">楼盘ID：</th>
+                    <td>{{id}}</td>
+                  </tr>
+                </tbody>
+          </table>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <div class="dsj_card_option">
+            <a onclick="selectNewHouse({{id}})">查看</a>
+            <a onclick="recommend({{id}},{{edit}});" id="recommend">{{recommend}}</a>
+            <a onclick="showShelves({{id}},{{authStatus}})">{{shelves}}</a>
+          </div>
+        </div>
+      </div>
+    </script>
+	<script id="dsj_card_template" type="text/x-handlebars-template">
+      <div class="col-sm-4 col-xs-12 min_height400">
+        <div class="dsj_card">
+          <div class="dsj_card_img">
+            <img class="img-responsive" src="{{this.pictureUrl}}">
+            {{#if isDutyString}}
+            <span class="Responsibility">{{isDutyString}}</span>
+            {{/if}}
+          </div>
+          <div class="dsj_card_title">
+            <span>
+              {{name}}
+            </span>
+             {{#compare status '==' 1}}                            
+             <span class="sale sale_on"> 待售 </span>
+              {{else}}
+               {{#compare status '=='2}} 
+               <span class="sale sale_wait"> 在售 </span>
+                {{else}}
+                 {{#compare status '=='3}} 
+                 <span class="sale sale_finish"> 售完 </span>
+                {{/compare}}
+              {{/compare}}
+             {{/compare}}
+          </div>
+          <div class="dsj_card_content">
+            <div class="table-responsive">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <th scope="row">均价：</th>
+                    <td>
+                      {{#if aroundMinPrice}}
+                     <span class="price">
+                     {{aroundMinPrice}}
+                     </span> 元/平
+                     {{else}}
+                     <span class="price">
+                                                                  未公布
+                    </span> 
+                     {{/if}}
+                     </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">户型：</th>
+                    <td>{{housetypeNames}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">楼盘ID：</th>
+                    <td>{{id}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="dsj_card_option">
+            <a onclick="selectNewHouse({{id}});">查看</a>
+            <a onclick="recommend({{id}},{{edit}});" id="recommend">{{recommend}}</a>
+            <a onclick="showShelves({{id}},{{authStatus}})">{{shelves}}</a>
+          </div>
+        </div>
+      </div>
+    </script>
+	<script id="dsj_page_template" type="text/x-handlebars-template">
+      <div id="dsj_list_page" class="col-xs-12">
+        <nav aria-label="page" class="pull-right">
+          <p class="dsj_page"><span class="dsj_current_page">{{currentPage}}</span>/{{totalPage}}</p>
+          <ul class="pagination">
+            <li><a class="prev" aria-label="Previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
+            <li><a class="next" aria-label="Next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/common/header.js"></script>
+	<script src="js/newHouse/newHouse_page.js"></script>
+	<script src="lib/validate/verify.notify.js"></script>
+	<script src="lib/validate/verify.notify.ext.js"></script>
+	<script src="js/common/base.js"></script>
+	<script src="lib/layui/layui.js"></script>
+	<script src="js/common/laydate.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
+	<script type="text/javascript">
+    $(document).ready(function(){
+      var houseOption = {
+        container_id : "dsj_list",
+        cardTemplate_id : "dsj_card_template",
+        rowTemplate_id : "dsj_row_template",
+        pageTemplate_id : "dsj_page_template",
+        url : _url+"agent/back/**/newHouse/newHouseDirectoryList"
+      }
+      var houseList = new $.fn.houseList(houseOption);
+      houseList._init();
+      $('#search-button').click(function() {
+    	  $.ajax({
+	            type: "GET",
+	            url: self._url+"/agent/back/**/newHouse/newHouseDirectoryList",
+	            data: $("form").serialize(),
+	            dataType: "json",
+	            success: function(data){
+	            	var newHouse =data.data;
+		              var totalPage=data.totalPage;
+		              self.firstSearch(newHouse,totalPage);
+	            }
+	      });
+      })
+      
+      $("#reset_form").off().on("click",function() {
+    	  $("form")[0].reset();
+      });
+    });
+    function recommend(newHouseId,edit){
+    	var msg="是否推荐?";
+    	if(edit==1){
+    		msg="是否取消推荐?"
+    	}
+    	setModelContent(msg,"recommendConfirm");
+    	 $("body").on("click","#recommendConfirm",function(){
+    		 $.ajax({
+ 	            type: "post",
+ 	            url: self._url+"/agent/back/**/newHouse/recommend",
+ 	            data: {newHouseId:newHouseId},
+ 	            dataType: "json",
+ 	            success: function(data){
+ 	            	if(data.status!=200){
+ 	            		alert(data.message);
+					}else{
+						location.reload();
+					}
+ 	            }
+ 	      });
+    	 });
+    	
+    }
+    
+    function showShelves(newHouseId,authStatus){
+    	var msg="是否展示在货架?";
+    	if(authStatus==1){
+    		msg="是否取消展示?"
+    	}
+    	setModelContent(msg,"showShelvesConfirm");
+    	 $("body").on("click","#showShelvesConfirm",function(){
+    		 $.ajax({
+ 	            type: "GET",
+ 	            url: self._url+"/agent/back/**/newHouse/showShelves",
+ 	            data: {newHouseId:newHouseId},
+ 	            dataType: "json",
+ 	            success: function(data){
+ 	            	if(data.status!=200){
+					}else{
+						location.reload();
+					}
+ 	            }
+ 	      });
+    	 });
+    	
+    }
+    require(["text!common/commit.html"], function(tpl) {
+      	 $('body').append(tpl);
+      	 var source=$("#dailog_common_template").html();
+      	 var template = Handlebars.compile(source);
+   		 var html = template();
+      	 $('body').append(html);
+   	}); 
+    
+    function selectNewHouse(newHouseId){
+    	location = _url+"/app/newHouse-select.html?id="+newHouseId;
+    }
+    </script>
+</body>
+</html>

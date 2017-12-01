@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+    <script type="text/javascript" src="js/fles.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dsj_agent2.css">
+    <link rel="stylesheet" href="css/selectize.css" type="text/css"/>
+
+  </head>
+  <body>
+    <!-- 主体 -->
+    
+        <!-- 进程 -->
+        <div class="PGress"> 
+          <ul>
+            <li><a href="##">大搜家首页</a>
+            <div class="progressTriangle">
+              <div> 
+              </div>
+            </div>
+            </li>
+            <li><a href="##">新房</a>
+               <div class="progressTriangle">
+              <div> 
+              </div>
+            </div>
+            </li>
+            <li><a href="##">新房信息查看</a></li>
+          </ul>
+        </div>
+      <div class="container">
+      <div class="row houseList_course">
+        <div class="col-xs-6 col-sm-4 group">
+          <div class="courseLeft">
+             <img src="img/5.jpg">
+              <p>基本信息</p>
+          </div>
+          <div class="courseRight"> 
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-4 group">
+           <div class="courseLeft">
+              <img src="img/invalid-name.jpg">
+              <p>楼盘相册</p>
+          </div>
+          <div class="courseRight"> 
+          </div>
+        </div>
+        <!-- Optional: clear the XS cols if their content doesn't match in height -->
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-xs-6 col-sm-4 group">
+           <div class="courseLeft">
+              <img src="img/adddoc.png">
+              <p>楼盘户型</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- form -->
+      <div class="row">
+        <form class="form-horizontal newHouseForm" id="newHouseForm">
+        <script id="master_add" type="text/x-handlebars-template">
+		<div style="display: none;" id="propertyRightDemoDiv">
+			 <div class="form-group">
+            <div class="col-sm-1">
+              <select class="form-control" id="propertyRightDemo" data-validate="required">
+				<option value="">请选择</option>
+                {{#each propertyRightMap}}
+						<option value="{{@key}}"> {{this}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+			</div>
+		</div>
+	<div style="display: none;" id="subwayDemoDiv">
+		<div class="form-group">
+            <label class="col-sm-1 control-label"></label>
+            <div class="col-sm-1">
+              <select  id="line" class="form-control" onchange="getLine(0)">
+                <option value="">地铁线</option>
+					{{#each subwayInitList}}
+						<option value="{{id}}"> {{name}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select id="station" class="form-control">
+				<option value="">站点</option>
+              </select>
+ 			</div>
+		<div class="col-sm-2">
+			<input type="text" id="distance" class="form-control dsj-width-1" placeholder="站点距离(米)" data-validate="isNumber">
+		</div>
+		</div>
+	</div>
+<input type="hidden" name="id" id="houseId" value="{{houseVo.id }}">
+<input type="hidden" name="edit"  value="{{houseVo.edit }}">
+          <h4 class="dsj_title">基本信息</h4>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘名称</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" name="name" value="{{houseVo.name}}"  placeholder="楼盘名称">
+            </div>
+          </div>
+		<div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘编码</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" value="{{houseVo.code}}"  placeholder="楼盘编码" readonly="readonly" >
+            </div>
+          </div>
+		<div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">楼盘户型</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" value="{{houseVo.housetypeNames}}" readonly="readonly"  placeholder="楼盘户型">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="loupan_spec" class="col-sm-1 control-label">楼盘特点</label>
+            <div class="col-sm-10">
+              <div class="dropdown dsj_tag">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dsj_dropdown" aria-haspopup="true" aria-expanded="true" style="display:none;">
+               		 添加楼盘特色
+                <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <p>注：请至少选择1个最多可以选4个楼盘特色</p>
+                  <div class="pl12">
+					{{#each dicTraitMap}}
+                    <label class="checkbox-inline">
+						{{#checkedbox @key ../houseVo.dicTrait }}
+ 							 <input type="checkbox" checked='checked' onchange="setDirectoryName(this,'{{@key}}','dicTraitName')"  name="dicTrait" value="{{@key}}"> {{this}}
+					 	{{else}}
+						    <input type="checkbox" onchange="setDirectoryName(this,'{{@key}}','dicTraitName')"  name="dicTrait" value="{{@key}}"> {{this}}
+						{{/checkedbox}}
+                    </label>
+                   	{{/each}}
+					<input type="text" id="dicTraitNameValidate"  style="width: 0px; border: 0px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="service" class="col-sm-1 control-label"><span class="dsj_warn">*</span>物业类型</label>
+            <div class="col-sm-10">
+              <div class="dropdown dsj_tag">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dsj_dropdown" aria-haspopup="true" aria-expanded="true" style="display:none;">
+               		 添加楼盘物业类型
+                <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <p>注：请至少选择1个物业类型</p>
+                  <div class="pl12">
+					{{#each wyTypeMap}}
+                    <label class="checkbox-inline">
+						{{#checkedbox @key ../houseVo.wyType }}
+ 							 <input type="checkbox" checked='checked' name="wyType" onchange="selectWyType(this,'{{this}}')" value="{{@key}}" wyName='{{this}}'> {{this}}
+					 	{{else}}
+						    <input type="checkbox" name="wyType" onchange="selectWyType(this,'{{this}}')" value="{{@key}}" wyName='{{@key}}'> {{this}}
+						{{/checkedbox}}
+                    </label>
+                   	{{/each}}
+                  </div>
+                </div>
+				<input type="text" id="wyTypeNameValidate"  style="width: 0px; border: 0px;" data-validate="required" value="1">
+              </div>
+            </div>
+          </div>
+
+		<div id="bigReferencePriceDiv">
+				<div class="form-group"> 
+					<label class="col-sm-1 control-label">参考单价</label>
+				</div>
+       			 {{#each houseVo.wyMsgList}}
+					<div class="form-group left_127" id="{{wyType}}smallReferencePriceDiv"> 
+						<label class="col-sm-1 control-label"></label>
+						<div class="col-sm-11 form-inline">
+						<label class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+						<div class="dsj_double_input">
+						<input id="{{wyType}}referencePriceMin" class="dsj_double_left_input form-control" value="{{referencePriceMin}}"> 
+						<input id="{{wyType}}referencePriceMax" class="dsj_double_right_input form-control" value="{{referencePriceMax}}" placeholder="万">
+						</div>
+						</div>
+					</div>
+                 {{/each}}
+		</div>
+		<div id="bigTotalPriceDiv">
+			<div class="form-group"> 
+				<label class="col-sm-1 control-label">楼盘总价</label>
+			</div>
+ 				{{#each houseVo.wyMsgList}}
+					<div class="form-group left_127" id="{{wyType}}smallTotalPriceDiv"> 
+						<label class="col-sm-1 control-label"></label>
+						<div class="col-sm-11 form-inline">
+						<label class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+						<div class="dsj_double_input">
+						<input id="{{wyType}}totalPriceMin" class="dsj_double_left_input form-control" value="{{totalPriceMin}}"> 
+						<input id="{{wyType}}totalPriceMax" class="dsj_double_right_input form-control" value="{{totalPriceMax}}" placeholder="万">
+						</div>
+						</div>
+					</div>
+                 {{/each}}
+		</div>
+
+          <div class="form-group">
+            <label for="housename" class="col-sm-1 control-label">周边单价</label>
+            <div class="col-sm-8 form-inline">
+              <div class="dsj_double_input">
+                <input id="aroundMinPrice" name="aroundMinPrice" value="{{houseVo.aroundMinPrice }}"  class="dsj_double_left_input form-control"  style="width: 145px;">
+                <input id="aroundMaxPrice" name="aroundMaxPrice" value="{{houseVo.aroundMaxPrice }}"  class="dsj_double_right_input form-control" placeholder="万"  style="width: 145px;">
+              </div>
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>开发商</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" name="developers" placeholder="开发商" value="{{houseVo.developers }}" data-validate="required">
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘地址</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control"  name="address"  placeholder="楼盘地址" value="{{houseVo.address }}" data-validate="required">
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘坐标</label>
+			<div class="col-sm-3">
+              <input type="text" class="form-control"   name="coordinate"  placeholder="楼盘坐标" value="{{houseVo.accuracy }},{{houseVo.dimension }}" data-validate="required,lngLat">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>区域位置</label>
+            <div class="col-sm-2">
+              <select class="form-control" name="lineNum">
+                <option value="">环线</option>
+                <option value="1" {{#compare  houseVo.lineNum "=="  1}}selected='selected'{{/compare}}>三环以内</option>
+				<option value="2" {{#compare  houseVo.lineNum "=="  2}}selected='selected'{{/compare}}>三环至四环</option>
+				<option value="3" {{#compare  houseVo.lineNum "=="  3}}selected='selected'{{/compare}}>四环至五环</option>
+				<option value="4" {{#compare  houseVo.lineNum "=="  4}}selected='selected'{{/compare}}>五环至六环</option>
+				<option value="5" {{#compare  houseVo.lineNum "=="  5}}selected='selected'{{/compare}}>六环以外</option>
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select id="areaOneId" class="form-control" name="areaLevalOne" onchange="getTwoArea()">
+				<option value="">省</option>
+                	{{#each firstAreaList}}
+						<option {{#compare  ../houseVo.areaLevalOne "=="  id}}selected='selected'{{/compare}} value="{{id}}">{{name}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select id="areaTwoId" class="form-control"  name="areaLevalTwo" onchange="getThreeArea()">
+                	<option value="">市</option>
+					{{#each twoAreaList}}
+						<option {{#compare  ../houseVo.areaLevalTwo "=="  id}}selected='selected'{{/compare}} value="{{id}}">{{name}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+			<div class="col-sm-1">
+              <select id="areaThreeId" class="form-control"  name="areaLevalThree" onchange="getFourArea()">
+                <option value="">区</option>
+					{{#each threeAreaList}}
+						<option {{#compare  ../houseVo.areaLevalThree "=="  id}}selected='selected'{{/compare}} value="{{id}}">{{name}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+			<div class="col-sm-1">
+              <select id="areaFourId" class="form-control"  name="tradingArea">
+                <option value="">商圈</option>
+				{{#each tradeAreaList}}
+						<option {{#compare  ../houseVo.tradingArea "=="  id}}selected='selected'{{/compare}} value="{{id}}">{{name}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+          </div>
+
+{{#each houseVo.subWayList}}
+{{#compare  @index "=="  0}}
+		<div class="form-group" id="subwayDiv">
+            <label class="col-sm-1 control-label"><span class="dsj_warn">*</span>地铁</label>
+            <div class="col-sm-1">
+              <select  id="line{{@index}}" class="form-control" onchange="getLine({{@index}})">
+                <option value="">地铁线</option>
+					{{#each ../subwayInitList}}
+						<option value="{{id}}" {{#compare  ../line "=="  id}}selected='selected'{{/compare}}> {{name}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select id="station{{@index}}" class="form-control">
+				<option value="">站点</option>
+				{{#each stationList}}
+						<option value="{{id}}" {{#compare  ../station "=="  id}}selected='selected'{{/compare}}> {{name}}</option>
+				{{/each}}
+              </select>
+ 			</div>
+		<div class="col-sm-2">
+			<input type="text" id="distance{{@index}}" value="{{distance}}" class="form-control dsj-width-3" placeholder="站点距离(米)" data-validate="isNumber">
+		</div>
+			<div class="col-sm-1">
+			 <p class="form-control-static">
+			</p>
+          </div>
+		</div>
+{{else}}
+<div class="form-group subway">
+            <label class="col-sm-1 control-label"></label>
+            <div class="col-sm-1">
+              <select  id="line@index" class="form-control" onchange="getLine({{@index}})">
+                <option value="">地铁线</option>
+					{{#each ../subwayInitList}}
+						<option value="{{id}}" {{#compare  ../line "=="  id}}selected='selected'{{/compare}}> {{name}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <select id="station{{@index}}" class="form-control">
+				<option value="">站点</option>
+				{{#each stationList}}
+						<option value="{{id}}" {{#compare  ../station "=="  id}}selected='selected'{{/compare}}> {{name}}</option>
+				{{/each}}
+              </select>
+ 			</div>
+		<div class="col-sm-2">
+			<input type="text" id="distance{{@index}}" value="{{distance}}" class="form-control dsj-width-3" placeholder="站点距离(米)" data-validate="isNumber">
+		</div>
+		</div>
+{{/compare}}
+	{{/each}}
+
+		{{#if houseVo.phoneList}} 
+					{{#each houseVo.phoneList}}
+ 						{{#compare  @index "=="  0}}
+						<div class="form-group has-feedback" id="phoneDiv">
+           				 <label class="col-sm-1 control-label"><span class="dsj_warn">*</span>售楼处电话</label>
+            			<div class="col-sm-3">
+             			 <input type="text" class="form-control" value="{{this}}" name="phone" placeholder="售楼处电话" data-validate="required,isPhoneAndMobile">
+            			</div>
+            			<div class="col-sm-1">
+           				 </div>
+          				</div>
+						{{else}}
+							<div class="form-group has-feedback phone">
+           					 <label class="col-sm-1 control-label"></label>
+            				<div class="col-sm-3">
+             				 <input type="text" class="form-control" value="{{this}}" name="phone" placeholder="售楼处电话" data-validate="required,isPhoneAndMobile">
+            				</div>
+          					</div>
+						{{/compare}}
+                   	{{/each}}
+         {{else}} 
+					<div class="form-group has-feedback" id="phoneDiv">
+           				 <label class="col-sm-1 control-label"><span class="dsj_warn">*</span>售楼处电话</label>
+            			<div class="col-sm-3">
+             			 <input type="text" class="form-control" value="" name="phone" placeholder="售楼处电话" data-validate="required,isPhoneAndMobile">
+            			</div>
+            			<div class="col-sm-1">
+           				 </div>
+          				</div>
+		{{/if}}
+          <h4 class="dsj_title">销售信息</h4>
+			
+          <div id="bigPaymentsDiv">
+				<div class="form-group"> 
+					<label class="col-sm-1 control-label">最低首付</label>
+				</div>
+				{{#each houseVo.wyMsgList}}
+		<div class="form-group left_127" id="{{wyType}}smallPaymentsDiv">
+			<label class="col-sm-1 control-label"></label>
+			<div class="col-sm-11 form-inline">
+			<label  class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+			<div class="col-sm-6"><input id="{{wyType}}payments" value="{{payments}}" type="text" class="form-control" placeholder="最低首付">
+			</div></div>
+		</div>
+		{{/each}}
+          </div>
+          <div id="bigMonthPayDiv">
+			<div class="form-group"> 
+				<label class="col-sm-1 control-label">最低月供</label>
+			</div>
+	{{#each houseVo.wyMsgList}}
+		<div class="form-group left_127" id="{{wyType}}smallMonthPayDiv">
+			<label class="col-sm-1 control-label"></label>
+			<div class="col-sm-11 form-inline">
+			<label  class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+			<div class="col-sm-6"><input id="{{wyType}}monthPay" value="{{monthPay}}" type="text" class="form-control" placeholder="最低月供">
+			</div></div>
+		</div>
+        {{/each}}
+          </div>
+         {{#if houseVo.discountList}} 
+			{{#each houseVo.discountList}}
+ 			{{#compare  @index "=="  0}}
+			<div class="form-group has-feedback" id="discountDiv">
+           	 <label for="inputPassword" class="col-sm-1 control-label">楼盘优惠</label>
+            	<div class="col-sm-3">
+              <input type="text" name="discount" value="{{this}}" class="form-control"  placeholder="楼盘优惠">
+            </div>
+            <div class="col-sm-1">
+            </div>
+          </div>
+			{{else}}
+			<div class="form-group has-feedback discount">
+            <label for="inputPassword" class="col-sm-1 control-label"></label>
+            <div class="col-sm-3">
+              <input type="text" name="discount" value="{{this}}" class="form-control"  placeholder="楼盘优惠">
+            	</div>
+          	</div>
+			{{/compare}}
+        	{{/each}}
+		{{else}}
+		<div class="form-group has-feedback" id="discountDiv">
+           	 <label for="inputPassword" class="col-sm-1 control-label">楼盘优惠</label>
+            	<div class="col-sm-3">
+              <input type="text" name="discount" class="form-control"  placeholder="楼盘优惠">
+            </div>
+            <div class="col-sm-1">
+            </div>
+          </div>
+		{{/if}}
+		
+
+		 <div id="bigOpenTimeDiv">
+			<div class="form-group">
+				<label class="col-sm-1 control-label">开盘时间</label>
+			</div>
+			{{#each houseVo.openTimeList}}
+			{{#each this}}
+				<div class="form-group left_127 {{wyType}}smallOpenTimeDiv">
+				<label class="col-sm-1 control-label"></label>
+				<div class="col-sm-11 form-inline">
+				<label class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+				<div class="col-sm-2">
+				<input type="text" class="form-control" placeholder="楼栋" value="{{describes}}" id="{{wyType}}openTimeContent{{@index}}" style="width: 100%;"></div>
+				<div class="pull-left"><span class="form-control-static"> ~ </span></div>
+				<div class="col-sm-2"><input class="form-control layDateClass" id="{{wyType}}openTime{{@index}}" placeholder="开盘时间" style="width: 100%;"  value="{{openHandTime}}"></div>
+					</div></div>				
+				{{/each}}       		
+ 			{{/each}}
+          </div>
+		<div id="bigHandTimeDiv">
+			<div class="form-group">
+				<label class="col-sm-1 control-label">交房时间</label>
+			</div>
+				{{#each houseVo.handTimeList}}
+				{{#each this}}
+				<div class="form-group left_127 {{wyType}}smallHandTimeDiv">
+				<label class="col-sm-1 control-label"></label>
+				<div class="col-sm-11 form-inline">
+				<label class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+				<div class="col-sm-2">
+				<input type="text" class="form-control" placeholder="楼栋" value="{{describes}}" id="{{wyType}}handTimeContent{{@index}}" style="width: 100%;"></div>
+				<div class="pull-left"><span class="form-control-static"> ~ </span></div>
+				<div class="col-sm-2"><input class="form-control layDateClass" id="{{wyType}}handTime{{@index}}" placeholder="交房时间" style="width: 100%;" value="{{openHandTime}}"></div>
+				</div></div>
+			{{/each}}       	
+ 			{{/each}}
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>售楼处地址</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control"   name="saleAddress" value="{{houseVo.saleAddress }}"  placeholder="售楼处地址" data-validate="required">
+            </div>
+          </div>
+		{{#if houseVo.prepList}}
+		{{#each houseVo.prepList}}
+ 			{{#compare  @index "=="  0}}
+			<div class="form-group has-feedback" id="prepDiv">
+            <label class="col-sm-1 control-label">预售许可证</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" value="{{this}}"   name="prep" placeholder="预售许可证">
+            </div>
+            <div class="col-sm-1">
+            </div>
+          </div>
+			{{else}}
+		<div class="form-group has-feedback prep">
+            <label class="col-sm-1 control-label"></label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" value="{{this}}"  name="prep" placeholder="预售许可证">
+            </div>
+          </div>
+			{{/compare}}
+			{{/each}}
+ 		{{else}}
+			<div class="form-group has-feedback" id="prepDiv">
+            <label class="col-sm-1 control-label">预售许可证</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control"   name="prep" placeholder="预售许可证">
+            </div>
+            <div class="col-sm-1">
+            </div>
+          </div>
+		{{/if}}
+
+
+
+          <div class="form-group">
+            <label for="inputPassword" class="col-sm-1 control-label"><span class="dsj_warn">*</span>销售状态</label>
+            <div class="col-sm-6">
+              <label class="radio-inline">
+                <input type="radio" name="status" {{#compare  houseVo.status "=="  1}}checked='checked'{{/compare}}  value="1"> 在售
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="status" {{#compare  houseVo.status "=="  2}}checked='checked'{{/compare}}  value="2"> 待售
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="status" {{#compare  houseVo.status "=="  3}}checked='checked'{{/compare}} value="3"> 售完
+              </label>
+            </div>
+          </div>
+
+          <h4 class="dsj_title">小区情况</h4>
+          <div class="form-group">
+            <label for="loupan_type" class="col-sm-1 control-label">建筑类型</label>
+            <div class="col-sm-10">
+              <div class="dropdown dsj_tag">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dsj_dropdown" aria-haspopup="true" aria-expanded="true" style="display:none;">
+               		 添加建筑类型
+                <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                  <p>注：请至少选择1个最多可以选4个建筑类型</p>
+                  <div class="pl12">
+					{{#each achTypeMap}}
+                    <label class="checkbox-inline">
+						{{#checkedbox @key ../houseVo.achType }}
+ 							  <input type="checkbox" checked="checked" onchange="setDirectoryName(this,'{{@key}}','achTypeName')"  name="achType"  value="{{@key}}"> {{this}}
+					 	{{else}}
+						     <input type="checkbox" onchange="setDirectoryName(this,'{{@key}}','achTypeName')"  name="achType"  value="{{@key}}"> {{this}}
+						{{/checkedbox}}
+                    </label>
+                   	{{/each}}
+					 <input type="text" id="achTypeNameValidate"  style="width: 0px; border: 0px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         <div id="bigPropertyRightDiv">
+			<div class="form-group">
+			<label class="col-sm-1 control-label"><span class="dsj_warn">*</span>产权年限</label>
+			</div> 
+		{{#each houseVo.wyMsgList}}
+			<div class="form-group left_127" id="{{wyType}}smallPropertyRightDiv"><label class="col-sm-1 control-label"></label><div class="col-sm-11 form-inline"><label class="col-sm-1 dsj_double_label">{{wyTypeName}}</label><div class="col-sm-1">
+			 <div class="form-group">
+            <div class="col-sm-1">
+              <select class="form-control" id="{{wyType}}propertyRight" data-validate="required">
+					<option value="">请选择</option>
+					 {{#each ../propertyRightMap}}
+						<option {{#compare  @key "=="  ../propertyRight}}selected='selected'{{/compare}}  value="{{@key}}"> {{this}}</option>
+                   	{{/each}}
+              </select>
+            </div>
+			</div>
+		</div></div></div>
+        {{/each}}
+		</div>
+		<div id="bigPlotRatioDiv">
+		<div class="form-group">
+			<label class="col-sm-1 control-label">容积率</label>
+			</div> 
+		{{#each houseVo.wyMsgList}}
+		<div class="form-group left_127" id="{{wyType}}smallPlotRatioDiv">
+			<label class="col-sm-1 control-label"></label>
+			<div class="col-sm-11 form-inline">
+			<label  class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+			<div class="col-sm-6"><input id="{{wyType}}plotRatio" value="{{plotRatio}}" type="text" class="form-control" placeholder="容积率">
+			</div></div>
+		</div>
+        {{/each}}
+		</div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">绿化率</label>
+            <div class="col-sm-2">
+               <input type="text" class="form-control" name="greenRate" placeholder="绿化率" value="{{houseVo.greenRate}}">
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">规划户数</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" name="houseCount" placeholder="规划户数" value="{{houseVo.houseCount}}">
+            </div>
+          </div>
+
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">楼层状况</label>
+            <div class="col-sm-3">
+             <input type="text" class="form-control" name="floorMsg" placeholder="楼层状况" value="{{houseVo.floorMsg}}">
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">栋座</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" name="banMsg" placeholder="栋座" value="{{houseVo.banMsg}}">
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">工程进度</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" name="schedule" placeholder="工程进度" value="{{houseVo.schedule}}">
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">物业公司</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" name="property" placeholder="物业公司" value="{{houseVo.property}}">
+            </div>
+          </div>
+		<div id="bigPropertyFeeDiv">
+		<div class="form-group" >
+			<label class="col-sm-1 control-label">物业管理费</label>
+		</div>
+		{{#each houseVo.wyMsgList}}
+			<div class="form-group left_127" id="{{wyType}}smallPropertyFeeDiv">
+			<label class="col-sm-1 control-label"></label>
+			<div class="col-sm-11 form-inline">
+			<label  class="col-sm-1 dsj_double_label">{{wyTypeName}}</label>
+			<div class="col-sm-6"><input type="text" value="{{propertyFee}}" class="form-control" id="{{wyType}}propertyFee" placeholder="物业管理费 (元/m²/月)">
+			</div></div></div>
+        {{/each}}
+		</div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">车位数</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" name="parkNumber" placeholder="车位数" value="{{houseVo.parkNumber}}">
+            </div>
+          </div>
+          <div class="form-group has-feedback">
+            <label for="inputPassword" class="col-sm-1 control-label">车位比</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" name="parkingSpace"  placeholder="车位比"  value="{{houseVo.parkingSpace}}">
+            </div>
+          </div>
+          <div class="row dsj_button_group">
+            <div class="col-sm-12">
+              <a href="javascript:void(0);" role="button" onclick="nextPage()">下一步</a>
+             <button type="button" class="btn btn-primary" onclick="cancelF()">返回</button>
+            </div>
+          </div>
+			</script>
+        </form>
+      </div>
+      </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/dsj_tags.js"></script>
+    <script src="js/common/base.js"></script>
+    <script src="lib/validate/verify.notify.js"></script>
+    <script src="lib/validate/verify.notify.ext.js"></script>
+    <script src="js/formUtils.js"></script>
+    <script src="lib/layui/layui.js"></script>
+	<script src="js/common/laydate.js"></script>
+    <script type="text/javascript" src="js/selectize.min.js"></script>    
+    <script src="js/require.js"></script>
+     <script src="js/newHouse/newHouse_add.js"></script>
+      <script src="js/common/header.js"></script>
+    <script type="text/javascript">
+      $(function(){
+  		var source  = $("#master_add").html();
+  	    var template = Handlebars.compile(source);
+  	    $.ajax({
+  	    	type: "post",
+            url: _url+"/agent/back/newHouse/newHouseData",
+            async:false,
+            data:{
+            	houseId:GetQueryString("id")
+            },
+            dataType: "json",
+            success: function(result){
+               var html  = template(result.data);
+        	    $("#newHouseForm").append( html);
+        	    $('input[checked="checked"]').each(function(){
+        	    	$(this).trigger("show.dsj")
+        	    })
+            }
+  	    })
+  	   
+      })
+      
+      $(function(){
+	$("select").prop("disabled",true);
+	$("input").prop("disabled",true);
+	$("checkbox").prop("disabled",true);
+})
+
+function cancelF(){
+	location=_url+"/app/index.html"
+}
+      function nextPage(){
+    		$("#popup_box").show();
+    		location=_url+"/app/newHouse-selectPicture.html?id="+$("#houseId").val();
+    	}
+      
+      </script>
+  </body>
+</html>

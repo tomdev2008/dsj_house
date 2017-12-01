@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.DepartmentDaoImpl">
+    
+    <sql id="tableName"> dsj_department a </sql>
+    <sql id="tableNameUpdate"> dsj_department </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.dept_name AS "deptName",
+		a.parent_id AS "parentId",
+		a.delete_flag AS "deleteFlag",
+		a.create_person AS "createPerson",
+		a.create_time AS "createTime",
+		a.dept_duty AS "deptDuty",
+		a.dept_mess AS "deptMess",
+		a.prefix AS "prefix"
+	</sql>
+	
+	<resultMap id="beanMap" type="DepartmentPo">
+		<id column="id" property="id" />
+		<result column="dept_name" property="deptName" />
+		<result column="parent_id" property="parentId" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_person" property="createPerson" />
+		<result column="create_time" property="createTime" />
+		<result column="dept_duty" property="deptDuty" />
+		<result column="dept_mess" property="deptMess" />
+		<result column="prefix" property="prefix" />
+	</resultMap>
+	
+	<sql id="departmentJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="deptName != null and deptName!= ''"> AND a.dept_name = #{deptName}</if>
+		<if test="parentId != null "> AND a.parent_id = #{parentId}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="deptDuty != null and deptDuty!= ''"> AND a.dept_duty = #{deptDuty}</if>
+		<if test="deptMess != null and deptMess!= ''"> AND a.dept_mess = #{deptMess}</if>
+		<if test="prefix != null and prefix!= ''"> AND a.prefix = #{prefix}</if>
+	</sql>
+    
+	<select id="getById" resultType="DepartmentPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="departmentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="DepartmentPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			dept_name,
+			parent_id,
+			delete_flag,
+			create_person,
+			create_time,
+			dept_duty,
+			dept_mess,
+			prefix
+		) VALUES (
+			#{id},
+			#{deptName},
+			#{parentId},
+			#{deleteFlag},
+			#{createPerson},
+			#{createTime},
+			#{deptDuty},
+			#{deptMess},
+			#{prefix}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="DepartmentPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="deptName != null">dept_name,</if>
+					<if test="parentId != null">parent_id,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="deptDuty != null">dept_duty,</if>
+					<if test="deptMess != null">dept_mess,</if>
+					<if test="prefix != null">prefix,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="deptName != null">#{deptName},</if>
+			<if test="parentId != null">#{parentId},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="deptDuty != null">#{deptDuty},</if>
+			<if test="deptMess != null">#{deptMess},</if>
+			<if test="prefix != null">#{prefix},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="DepartmentPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			dept_name = #{deptName},
+			parent_id = #{parentId},
+			delete_flag = #{deleteFlag},
+			create_person = #{createPerson},
+			dept_duty = #{deptDuty},
+			dept_mess = #{deptMess},
+			prefix = #{prefix},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="DepartmentPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="deptName != null">dept_name = #{deptName},</if>
+			<if test="parentId != null">parent_id = #{parentId},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="deptDuty != null">dept_duty = #{deptDuty},</if>
+			<if test="deptMess != null">dept_mess = #{deptMess},</if>
+			<if test="prefix != null">prefix = #{prefix},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

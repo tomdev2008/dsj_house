@@ -1,0 +1,67 @@
+  <script id="header_template" type="text/x-handlebars-template">
+     
+   <!-- 头部 -->
+    <div class="">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar_top" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <header class="A_Header">
+          <h1>大搜家</h1>
+          <ul>
+            <li>客服电话：400-898-6868转888</li>
+            <li>{{username}}</li>
+            <li><a href='{{developerProductName}}/login/logout'>安全退出</a></li>
+          </ul>
+        </header>
+    </div>
+    <!-- 导航 -->
+    <nav class="A_Nav">
+     <div class="navKuang">
+		{{#compare status "==" 2}}	
+     	   {{#compare avatar "==" null}}	
+			 <img src="./img/agent.jpg">
+			{{else}}
+				 <img id="headerId" src="{{avatar}}">
+			{{/compare}}
+          <p>{{username}}<span>已认证<i></i></span></p>
+          <ul>
+            <li><a href="responsible.html">楼盘动态</a></li>
+            <li><a href="basic-info.html">企业中心</a></li>
+          </ul>
+		{{else}}
+			
+			{{#compare avatar "==" null}}	
+			 <img src="./img/agent.jpg">
+			{{else}}
+				 <img id="headerId" src="{{avatar}}">
+			{{/compare}}
+          <p>{{realname}}<span>
+			{{#compare status "==" 1}}	
+			待审核
+			{{else}}
+			未认证
+			{{/compare}}
+			</span><i></i></p>
+			 <ul>
+            <li><a >楼盘动态</a></li>
+            <li><a >企业中心</a></li>
+          </ul>
+		{{/compare}}
+        
+		
+        </div>
+    </nav>
+</script>
+  <script type="text/javascript">
+ 
+ 	$(function(){
+ 		$(document).on('hidden.bs.modal', function (e) {
+ 		   clearData(e);
+ 		});
+ 	})
+ </script> 

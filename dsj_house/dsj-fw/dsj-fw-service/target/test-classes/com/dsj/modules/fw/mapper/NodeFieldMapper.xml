@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.NodeFieldDaoImpl">
+    
+    <sql id="tableName"> dsj_node_field a </sql>
+    <sql id="tableNameUpdate"> dsj_node_field </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.node_id AS "nodeId",
+		a.field_name AS "fieldName",
+		a.type
+	</sql>
+	
+	<resultMap id="beanMap" type="NodeFieldPo">
+		<id column="id" property="id" />
+		<result column="node_id" property="nodeId" />
+		<result column="field_name" property="fieldName" />
+		<result column="type" property="type" />
+	</resultMap>
+	
+	<sql id="nodeFieldJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="nodeId != null and nodeId!= ''"> AND a.node_id = #{nodeId}</if>
+		<if test="fieldName != null and fieldName!= ''"> AND a.field_name = #{fieldName}</if>
+	</sql>
+    
+	<select id="getById" resultType="NodeFieldPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="nodeFieldJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listNewBy" resultType="com.dsj.modules.fw.po.NodeFieldPo" parameterType="java.util.Map">
+	  	SELECT
+	  		a.id,
+			a.field_name as fieldName,
+			a.type,
+			b.field_val as fieldVal
+		FROM
+			dsj_node_field a
+		LEFT JOIN dsj_order_node_detail b ON a.id = b.field_id and b.order_detail_id = ${orderDetailId}
+		WHERE
+			a.node_id = ${nodeId}
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="NodeFieldPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			node_id,
+			field_name
+		) VALUES (
+			#{id},
+			#{nodeId},
+			#{fieldName}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NodeFieldPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="nodeId != null">node_id,</if>
+					<if test="fieldName != null">field_name,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="nodeId != null">#{nodeId},</if>
+			<if test="fieldName != null">#{fieldName},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="NodeFieldPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			node_id = #{nodeId},
+			field_name = #{fieldName},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NodeFieldPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="nodeId != null">node_id = #{nodeId},</if>
+			<if test="fieldName != null">field_name = #{fieldName},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,181 @@
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+    <script type="text/javascript" src="js/fles.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dsj_agent2.css">
+    <link rel="stylesheet" type="text/css" href="css/album.css">
+  </head>
+  <body>
+    <!-- logo顶部 -->
+    <!--头部  -->
+    <!-- 进程 -->
+    <div class="PGress"> 
+      <ul>
+        <li>大搜家首页
+        <div class="progressTriangle">
+          <div> 
+          </div>
+        </div>
+        </li>
+        <li>新房
+           <div class="progressTriangle">
+          <div> 
+          </div>
+        </div>
+        </li>
+        <li>楼盘编辑</li>
+      </ul>
+    </div>
+      <!-- 户型进程 -->
+      <div class="row houseList_course">
+        <div class="col-xs-6 col-sm-4 group active">
+          <div class="courseLeft">
+              <img src="img/greencorrect.png" style="width: 57px;height: 57px;">
+              <p>基本信息</p>
+          </div>
+          <div class="courseRight"> 
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-4 group">
+           <div class="courseLeft">
+             <img src="img/2.jpg">
+              <p>楼盘相册</p>
+          </div>
+          <div class="courseRight"> 
+          </div>
+        </div>
+        <!-- Optional: clear the XS cols if their content doesn't match in height -->
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-xs-6 col-sm-4 group">
+           <div class="courseLeft">
+              <img src="img/invalid-name.jpg">
+              <p>楼盘户型</p>
+          </div>
+        </div>
+      </div>
+      <!-- 楼盘户型 -->
+      <h2 class="HeadLine">楼盘相册</h2>
+      <!-- 楼盘主体 -->
+      <div class="main" id="photo">
+          <!-- 楼盘户型 -->  
+         
+           <script id="phone_list" type="text/x-handlebars-template">
+			<div class="row selectDeleteAdd clearfix">
+			<input type="hidden" id="newHouseId" value="{{newHouseId}}">
+			<input type="hidden" id="pictureStatus" value="">
+			<input type="hidden" id="pictureStatusName" value="">
+            <span class="album-tip">单张宽高不低于600像素，图片体积小于1兆</span>
+            <button type="button" class="dsj_button btn btn-primary pull-right" onclick="openPhoto({{newHouseId}})">添加图片</button>
+          </div>
+          <div class="row loupan-album" >
+			{{#each countList}}
+ 			<div class="col-xs-6 col-md-3">
+              <div class="album-item">
+			{{#if pictureUrl}} 
+				<a href="javascript:void(0);" onclick="gotoBaseUrl('/app/newHouse-picture-detail.html?id={{../newHouseId}}&type={{id}}')"><img class="img-responsive" src="{{pictureUrl}}"></a>
+			{{else}}
+                <a href="javascript:void(0);" onclick="gotoBaseUrl('/app/newHouse-picture-detail.html?id={{../newHouseId}}&type={{id}}')"><img class="img-responsive" src="http://dasouk.oss-cn-qingdao.aliyuncs.com/upload/pic/20170929211001818806.png"></a>
+			{{/if}}
+              </div> <p class="text-center"><a href="javascript:void(0);" onclick="gotoBaseUrl('/app/newHouse-picture-detail.html?id={{../newHouseId}}&type={{id}}')">{{typegroupname }}(<span countAttr="count">{{count }}</span>)</a></p>
+            </div>
+			{{/each}}
+ 		</div>
+          <div class="row dsj_button_group">
+            <div class="col-sm-12">
+              <a class="btn btn-default dsj_buuton" href="javascript:void(0)" onclick="concelFun({{newHouseCode}})" role="button">上一步</a>
+              <a class="btn btn-default dsj_buuton" href="javascript:void(0)" onclick="toAddHouseType()">下一步</a>
+            </div>
+          </div>
+			</script>
+         
+      </div>
+<div id="ImageModalContent" style="display: none;">
+	<div class="modal-header">
+           <div class="row">
+          	 <h4 class="modal-title">添加图片描述</h4>
+	    	</div>
+      </div>
+      <div class="modal-body">
+		<div class="col-xs-12 row" >
+			<div >
+				<div class="row">
+					<form id="picturesDescribeForm" novalidate="novalidate"  class="col-xs-8 col-xs-offset-2">
+						<div id="bootstrap-wizard-1">
+							<div class="tab-content mt30">
+								<div class="tab-pane active">
+									<div class="row mt20"  id="imagesList">
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+        <button class="btn btn-primary" type="button" onclick="savePicture()">提交</button>
+    </div>
+</div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/formUtils.js"></script>
+      <script src="js/common/base.js"></script>
+       <script type="text/javascript" src="js/newHouse-webuploader.js"></script>
+       <script type="text/javascript" src="js/newHouse/newHouse_pictures_add.js"></script>
+       <script src="js/require.js"></script>
+        <script src="js/common/header.js"></script>
+     <script type="text/javascript">
+     function openPhoto(id){
+    	 openCommonModal(_url+'/app/newHouse-pictures-add.html?id='+id,1200,12)
+     }
+      $(function(){
+  		var source  = $("#phone_list").html();
+  	    var template = Handlebars.compile(source);
+  	    $.ajax({
+  	    	type: "post",
+            url: _url+"/agent/back/newHouse/photoData",
+            data:{
+            	houseId:GetQueryString("id")
+            },
+            dataType: "json",
+            success: function(result){
+               var html  = template(result.data);
+        	    $("#photo").append(html);
+            }
+  	    })
+  	    
+      })
+	function toAddHouseType(){
+		var flag = false;
+		$("span[countAttr='count']").each(function(){
+			if($(this).text()>0){
+				flag=true;
+				return false;
+			}
+		})
+		if(flag){
+			location=_url+"/app/houseList.html?id="+$("#newHouseId").val();
+		}else{
+			setErrorContent("请至少添加一张图片!");
+		}
+		
+	}
+	function concelFun(param){
+		location=_url+"/app/newHouse-update.html?id="+param;
+	}
+      </script>
+  </body>
+</html>

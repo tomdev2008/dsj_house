@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.PropertyDaoImpl">
+    
+    <sql id="tableName"> dsj_property a </sql>
+    <sql id="tableNameUpdate"> dsj_property </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.avatar_re_url AS "avatarReUrl",
+		a.avatar_url AS "avatarUrl",
+		a.avatar_master_url AS "avatarMasterUrl",
+		a.company AS "company",
+		a.company_name AS "companyName",
+		a.name AS "name",
+		a.tell_phone AS "tellPhone",
+		a.province AS "province",
+		a.province_name AS "provinceName",
+		a.city AS "city",
+		a.city_name AS "cityName",
+		a.area AS "area",
+		a.area_name AS "areaName",
+		a.business AS "business",
+		a.business_name AS "businessName",
+		a.audit_status AS "auditStatus",
+		a.update_user AS "updateUser",
+		a.create_user AS "createUser",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.sort AS "sort",
+		a.sex AS "sex",
+		a.deal AS "deal",
+		a.recommend AS "recommend",
+		a.recommend_time AS "recommendTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="PropertyPo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="avatar_re_url" property="avatarReUrl" />
+		<result column="avatar_url" property="avatarUrl" />
+		<result column="avatar_master_url" property="avatarMasterUrl" />
+		<result column="company" property="company" />
+		<result column="company_name" property="companyName" />
+		<result column="name" property="name" />
+		<result column="tell_phone" property="tellPhone" />
+		<result column="province" property="province" />
+		<result column="province_name" property="provinceName" />
+		<result column="city" property="city" />
+		<result column="city_name" property="cityName" />
+		<result column="area" property="area" />
+		<result column="area_name" property="areaName" />
+		<result column="business" property="business" />
+		<result column="business_name" property="businessName" />
+		<result column="audit_status" property="auditStatus" />
+		<result column="update_user" property="updateUser" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="sort" property="sort" />
+		<result column="sex" property="sex" />
+		<result column="deal" property="deal" />
+		<result column="recommend" property="recommend" />
+		<result column="recommend_time" property="recommendTime" />
+	</resultMap>
+	
+	<sql id="propertyJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="avatarReUrl != null and avatarReUrl!= ''"> AND a.avatar_re_url = #{avatarReUrl}</if>
+		<if test="avatarUrl != null and avatarUrl!= ''"> AND a.avatar_url = #{avatarUrl}</if>
+		<if test="avatarMasterUrl != null and avatarMasterUrl!= ''"> AND a.avatar_master_url = #{avatarMasterUrl}</if>
+		<if test="company != null and company!= ''"> AND a.company = #{company}</if>
+		<if test="companyName != null and companyName!= ''"> AND a.company_name = #{companyName}</if>
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="tellPhone != null and tellPhone!= ''"> AND a.tell_phone = #{tellPhone}</if>
+		<if test="province != null and province!= ''"> AND a.province = #{province}</if>
+		<if test="provinceName != null and provinceName!= ''"> AND a.province_name = #{provinceName}</if>
+		<if test="city != null and city!= ''"> AND a.city = #{city}</if>
+		<if test="cityName != null and cityName!= ''"> AND a.city_name = #{cityName}</if>
+		<if test="area != null and area!= ''"> AND a.area = #{area}</if>
+		<if test="areaName != null and areaName!= ''"> AND a.area_name = #{areaName}</if>
+		<if test="business != null and business!= ''"> AND a.business = #{business}</if>
+		<if test="businessName != null and businessName!= ''"> AND a.business_name = #{businessName}</if>
+		<if test="auditStatus != null and auditStatus!= ''"> AND a.audit_status = #{auditStatus}</if>
+		<if test="updateUser != null and updateUser!= ''"> AND a.update_user = #{updateUser}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="sort != null and sort!= ''"> AND a.sort = #{sort}</if>
+		<if test="sex != null and sex!= ''"> AND a.sex = #{sex}</if>
+		<if test="deal != null and deal!= ''"> AND a.deal = #{deal}</if>
+		<if test="recommend != null and recommend!= ''"> AND a.recommend = #{recommend}</if>
+		<if test="recommendTime != null and recommendTime != ''"> AND a.recommend_time = #{recommendTime}</if>
+	</sql>
+	
+	<sql id="condition_sql_two">	
+			<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+			<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+			<if test="companyName != null and companyName!= ''"> AND b.company_name like concat('%',#{companyName},'%') </if>
+			<if test="name != null and name != ''"> AND a.name like concat('%',#{name},'%') </if>
+			<if test="tellPhone != null and tellPhone!= ''"> AND a.tell_phone like concat('%',#{tellPhone},'%') </if>
+			<if test="auditStatus != null and auditStatus != ''"> AND a.audit_status = #{auditStatus}</if>
+	</sql>
+    
+	<select id="getById" resultType="PropertyPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="propertyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+  	
+	<select id="getProByTuiJian" resultType="com.dsj.modules.system.vo.PropertyVo">
+		SELECT
+			a.id,
+			a.user_id as userId,
+			a.avatar_url as avatarUrl,
+			a.avatar_re_url AS avatarReUrl,
+			a.avatar_master_url AS avatarMasterUrl,
+			b.username as userName,
+			b.realname as realName,
+			a.area_name AS areaName,
+			a.business_name AS businessName,
+			d.company_name as companyName,
+			f.goodCommentLv as haoPingLv,
+			e.mobile as tellPhone,
+			a.deal,
+			f.orderCount
+		FROM
+			dsj_property a
+		LEFT JOIN dsj_user b ON a.user_id = b.id
+		LEFT JOIN dsj_company d ON a.company = d.id
+		LEFT JOIN dsj_mobile e on (e.type=3 and e.property_id = a.id)
+		LEFT JOIN	(
+		SELECT
+					g.fwuser_id as fwuserId,
+					CONCAT(round((g.totalCount/t.totalCount) * 100, 0),'%') AS goodCommentLv,
+					o.orderCount
+				FROM
+					dsj_fwuser_comment a
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					WHERE
+						type = 3
+					GROUP BY
+						fwuser_id
+				) g ON g.fwuser_id = a.fwuser_id
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					GROUP BY
+						fwuser_id
+				) t ON t.fwuser_id = g.fwuser_id
+				LEFT JOIN (
+					SELECT
+						o2.dbuserid, count(1) AS orderCount
+					FROM
+						dsj_fw_order o1
+					LEFT JOIN dsj_fw_order_detail o2 ON o1.id = o2.order_id
+					WHERE
+						o1. STATUS != 1 and o1.`status` != 2 and o1.`status` != 3
+					GROUP BY
+						o2.dbuserid
+				) o ON t.fwuser_id = o.dbuserid
+		)f on a.id = f.fwuserId
+	where a.recommend = 1 GROUP BY a.id order by a.recommend_time DESC
+	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="PropertyPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			user_id,
+			avatar_re_url,
+			avatar_url,
+			avatar_master_url,
+			company,
+			company_name,
+			name,
+			tell_phone,
+			province,
+			province_name,
+			city,
+			city_name,
+			area,
+			area_name,
+			business,
+			business_name,
+			audit_status,
+			update_user,
+			create_user,
+			create_time,
+			update_time,
+			sort,
+			sex,
+			deal
+		) VALUES (
+			#{id},
+			#{userId},
+			#{avatarReUrl},
+			#{avatarUrl},
+			#{avatarMasterUrl},
+			#{company},
+			#{companyName},
+			#{name},
+			#{tellPhone},
+			#{province},
+			#{provinceName},
+			#{city},
+			#{cityName},
+			#{area},
+			#{areaName},
+			#{business},
+			#{businessName},
+			#{auditStatus},
+			#{updateUser},
+			#{createUser},
+			#{createTime},
+			#{updateTime},
+			#{sort},
+			#{sex},
+			#{deal}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="PropertyPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="avatarReUrl != null">avatar_re_url,</if>
+					<if test="avatarUrl != null">avatar_url,</if>
+					<if test="avatarMasterUrl != null">avatar_master_url,</if>
+					<if test="company != null">company,</if>
+					<if test="companyName != null">company_name,</if>
+					<if test="name != null">name,</if>
+					<if test="tellPhone != null">tell_phone,</if>
+					<if test="province != null">province,</if>
+					<if test="provinceName != null">province_name,</if>
+					<if test="city != null">city,</if>
+					<if test="cityName != null">city_name,</if>
+					<if test="area != null">area,</if>
+					<if test="areaName != null">area_name,</if>
+					<if test="business != null">business,</if>
+					<if test="businessName != null">business_name,</if>
+					<if test="auditStatus != null">audit_status,</if>
+					<if test="updateUser != null">update_user,</if>
+					<if test="createUser != null">create_user,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="sort != null">sort,</if>
+					<if test="sex != null">sex,</if>
+					<if test="deal != null">deal,</if>
+					<if test="recommend != null">recommend,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="avatarReUrl != null">#{avatarReUrl},</if>
+			<if test="avatarUrl != null">#{avatarUrl},</if>
+			<if test="avatarMasterUrl != null">#{avatarMasterUrl},</if>
+			<if test="company != null">#{company},</if>
+			<if test="companyName != null">#{companyName},</if>
+			<if test="name != null">#{name},</if>
+			<if test="tellPhone != null">#{tellPhone},</if>
+			<if test="province != null">#{province},</if>
+			<if test="provinceName != null">#{provinceName},</if>
+			<if test="city != null">#{city},</if>
+			<if test="cityName != null">#{cityName},</if>
+			<if test="area != null">#{area},</if>
+			<if test="areaName != null">#{areaName},</if>
+			<if test="business != null">#{business},</if>
+			<if test="businessName != null">#{businessName},</if>
+			<if test="auditStatus != null">#{auditStatus},</if>
+			<if test="updateUser != null">#{updateUser},</if>
+			<if test="createUser != null">#{createUser},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="sort != null">#{sort},</if>
+			<if test="sex != null">#{sex},</if>
+			<if test="deal != null">#{deal},</if>
+			<if test="recommend != null">#{recommend},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="PropertyPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			user_id = #{userId},
+			avatar_re_url = #{avatarReUrl},
+			avatar_url = #{avatarUrl},
+			avatar_master_url = #{avatarMasterUrl},
+			company = #{company},
+			company_name = #{companyName},
+			name = #{name},
+			tell_phone = #{tellPhone},
+			province = #{province},
+			province_name = #{provinceName},
+			city = #{city},
+			city_name = #{cityName},
+			area = #{area},
+			area_name = #{areaName},
+			business = #{business},
+			business_name = #{businessName},
+			audit_status = #{auditStatus},
+			update_user = #{updateUser},
+			create_user = #{createUser},
+			update_time = #{updateTime},
+			sort = #{sort},
+			sex = #{sex},
+			deal = #{deal},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="PropertyPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="avatarReUrl != null">avatar_re_url = #{avatarReUrl},</if>
+			<if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
+			<if test="avatarMasterUrl != null">avatar_master_url = #{avatarMasterUrl},</if>
+			<if test="company != null">company = #{company},</if>
+			<if test="companyName != null">company_name = #{companyName},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="tellPhone != null">tell_phone = #{tellPhone},</if>
+			<if test="province != null">province = #{province},</if>
+			<if test="provinceName != null">province_name = #{provinceName},</if>
+			<if test="city != null">city = #{city},</if>
+			<if test="cityName != null">city_name = #{cityName},</if>
+			<if test="area != null">area = #{area},</if>
+			<if test="areaName != null">area_name = #{areaName},</if>
+			<if test="business != null">business = #{business},</if>
+			<if test="businessName != null">business_name = #{businessName},</if>
+			<if test="auditStatus != null">audit_status = #{auditStatus},</if>
+			<if test="updateUser != null">update_user = #{updateUser},</if>
+			<if test="createUser != null">create_user = #{createUser},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="sort != null">sort = #{sort},</if>
+			<if test="sex != null">sex = #{sex},</if>
+			<if test="deal != null">deal = #{deal},</if>
+			<if test="recommend != null">recommend = #{recommend},</if>
+			<if test="recommendTime != null">recommend_time = #{recommendTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="listNewPageList" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.PropertyVo">
+		SELECT
+			a.id AS "id",
+			a.user_id AS "userId",
+			a.avatar_re_url AS "avatarReUrl",
+			a.avatar_url AS "avatarUrl",
+			a.avatar_master_url AS "avatarMasterUrl",
+			a.company AS "company",
+			b.company_name AS "companyName",
+			a. NAME AS "name",
+			a.tell_phone AS "tellPhone",
+			a.province AS "province",
+			a.province_name AS "provinceName",
+			a.city AS "city",
+			a.city_name AS "cityName",
+			a.area AS "area",
+			a.area_name AS "areaName",
+			a.business AS "business",
+			a.business_name AS "businessName",
+			a.audit_status AS "auditStatus",
+			a.update_user AS "updateUser",
+			a.create_user AS "createUser",
+			a.create_time AS "createTime",
+			a.update_time AS "updateTime",
+			a.sort AS "sort",
+			a.sex AS "sex",
+			a.deal AS "deal",
+			a.recommend AS "recommend",
+			a.recommend_time AS "recommendTime"
+		FROM
+			dsj_property a
+		LEFT JOIN dsj_company b ON a.company = b.id
+		<where>
+			<include refid="condition_sql_two"/>
+		</where>
+		ORDER BY a.create_time DESC
+		LIMIT #{pageFirst} , #{pageSize}
+	</select>
+	
+	<select id="listFwUserPage" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.PropertyVo">
+		SELECT
+			a.id,
+			a.user_id as userId,
+			a.avatar_url AS avatarUrl,
+			a.avatar_re_url AS avatarReUrl,
+			a.avatar_master_url AS avatarMasterUrl,
+			b.username as userName,
+			b.realname as realName,
+			a.area_name AS areaName,
+			a.business_name AS businessName,
+			d.company_name as companyName,
+			f.goodCommentLv as haoPingLv,
+			e.mobile as tellPhone,
+			a.deal,
+			f.orderCount
+		FROM
+			dsj_property a
+		LEFT JOIN dsj_user b ON a.user_id = b.id
+		LEFT JOIN (
+			SELECT
+				a.id,
+				GROUP_CONCAT(b. NAME) fwNames
+			FROM
+				dsj_property a
+			LEFT JOIN dsj_fw_spu b ON FIND_IN_SET(b.id, a.business)
+			GROUP BY
+				a.id
+		) c ON a.id = c.id
+		LEFT JOIN dsj_company d ON a.company = d.id
+		LEFT JOIN dsj_mobile e on (e.type=3 and e.property_id = a.id)
+		LEFT JOIN	(
+		SELECT
+					g.fwuser_id as fwuserId,
+					CONCAT(round((g.totalCount/t.totalCount) * 100, 0),'%') AS goodCommentLv,
+					o.orderCount
+				FROM
+					dsj_fwuser_comment a
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					WHERE
+						type = 3
+					GROUP BY
+						fwuser_id
+				) g ON g.fwuser_id = a.fwuser_id
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					GROUP BY
+						fwuser_id
+				) t ON t.fwuser_id = g.fwuser_id
+				LEFT JOIN (
+					SELECT
+						o2.dbuserid, count(1) AS orderCount
+					FROM
+						dsj_fw_order o1
+					LEFT JOIN dsj_fw_order_detail o2 ON o1.id = o2.order_id
+					WHERE
+						o1. STATUS != 1 and o1. STATUS != 2
+					GROUP BY
+						o2.dbuserid
+				) o ON t.fwuser_id = o.dbuserid
+		)f on a.id = f.fwuserId
+		<where>
+			<if test="auditStatus != null and auditStatus != ''"> AND a.audit_status = #{auditStatus}</if>
+			<if test="business != null and business != ''"> AND  FIND_IN_SET(#{business}, a.business)</if>
+			<if test="area != null and area != ''"> AND  FIND_IN_SET(#{area}, a.area)</if>
+		</where>
+		group by a.id
+		<if test="orderType == 1"> ORDER BY f.goodCommentLv DESC</if>
+		<if test="orderType == 2"> ORDER BY (a.deal + ifnull(f.orderCount,0)) DESC</if>
+		<if test="orderType != 1 and orderType != 2"> 	ORDER BY a.create_time DESC</if>
+		LIMIT #{pageFirst} , #{pageSize}
+	</select>
+	<select id="listFwUserPageCount" parameterType="java.util.Map" resultType="long">
+	select count(1) from 
+		(SELECT
+			a.id
+		FROM
+			dsj_property a
+		LEFT JOIN dsj_user b ON a.user_id = b.id
+		LEFT JOIN (
+			SELECT
+				a.id,
+				GROUP_CONCAT(b. NAME) fwNames
+			FROM
+				dsj_property a
+			LEFT JOIN dsj_fw_spu b ON FIND_IN_SET(b.id, a.business)
+			GROUP BY
+				a.id
+		) c ON a.id = c.id
+		LEFT JOIN dsj_company d ON a.company = d.id
+		LEFT JOIN dsj_mobile e on (e.type=3 and e.property_id = a.id)
+		LEFT JOIN	(
+		SELECT
+					g.fwuser_id as fwuserId,
+					g.totalCount/t.totalCount*100 AS goodCommentLv,
+					o.orderCount
+				FROM
+					dsj_fwuser_comment a
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					WHERE
+						type = 3
+					GROUP BY
+						fwuser_id
+				) g ON g.fwuser_id = a.fwuser_id
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					GROUP BY
+						fwuser_id
+				) t ON t.fwuser_id = g.fwuser_id
+				LEFT JOIN (
+					SELECT
+						o2.dbuserid, count(1) AS orderCount
+					FROM
+						dsj_fw_order o1
+					LEFT JOIN dsj_fw_order_detail o2 ON o1.id = o2.order_id
+					WHERE
+						o1. STATUS != 1 and o1. STATUS != 2
+					GROUP BY
+						o2.dbuserid
+				) o ON t.fwuser_id = o.dbuserid
+		)f on a.id = f.fwuserId
+		<where>
+			<if test="auditStatus != null and auditStatus != ''"> AND a.audit_status = #{auditStatus}</if>
+			<if test="business != null and business != ''"> AND  FIND_IN_SET(#{business}, a.business)</if>
+			<if test="area != null and area != ''"> AND  FIND_IN_SET(#{area}, a.area)</if>
+		</where>
+		group by a.id) a
+	</select>
+	
+	
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT count(1) from <include refid="tableName"/>
+		LEFT JOIN dsj_company b ON a.company = b.id
+				<where>
+					<include refid="condition_sql_two"/>
+				</where>
+	</select>
+	
+	
+	<select id="getProIdByOrderStatus" resultType="int">
+		SELECT DISTINCT
+			a.id
+		FROM
+			dsj_property a
+		INNER JOIN dsj_fw_order_detail b ON a.id = b.dbuserid
+		LEFT JOIN (
+			SELECT
+				c.id
+			FROM
+				dsj_fw_order c
+			WHERE
+				c.statusone IN (1, 2, 3, 4)
+			OR c.`status` = 1
+		) d ON b.order_id = d.id
+		
+	</select>
+	
+	<select id="getTuiJianPropertyCount" resultType="int">
+		SELECT count(1) FROM <include refid="tableNameUpdate"/> WHERE recommend=1
+	</select>
+	 
+	<select id="getTuiJianTimeLimitYi" resultMap="beanMap">
+		select <include refid="tableColumns"/> from dsj_property a WHERE recommend=1 ORDER BY recommend_time ASC LIMIT 1
+	</select>
+	
+	<select id="getAboutArea" resultType="string" parameterType="string">
+	SELECT GROUP_CONCAT(DISTINCT area) from dsj_property where FIND_IN_SET(#{_parameter},business)  and audit_status = 1
+	</select>
+	<select id="getVoById" parameterType="long" resultType="com.dsj.modules.system.vo.PropertyVo">
+			SELECT
+			<include refid="tableColumns"/>,
+			b.username as userName,
+			b.realname as realName,
+			d.company_name as companyName,
+			f.goodCommentLv as haoPingLv,
+			e.mobile as phone,
+			f.orderCount
+		FROM
+			dsj_property a
+		LEFT JOIN dsj_user b ON a.user_id = b.id
+		LEFT JOIN (
+			SELECT
+				a.id,
+				GROUP_CONCAT(b. NAME) fwNames
+			FROM
+				dsj_property a
+			LEFT JOIN dsj_fw_spu b ON FIND_IN_SET(b.id, a.business)
+			GROUP BY
+				a.id
+		) c ON a.id = c.id
+		LEFT JOIN dsj_company d ON a.company = d.id
+		LEFT JOIN dsj_mobile e on (e.type=3 and e.property_id = a.id)
+		LEFT JOIN	(
+		SELECT
+					g.fwuser_id as fwuserId,
+					CONCAT(round((g.totalCount/t.totalCount) * 100, 0),'%') AS goodCommentLv,
+					o.orderCount
+				FROM
+					dsj_fwuser_comment a
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					WHERE
+						type = 3
+					GROUP BY
+						fwuser_id
+				) g ON g.fwuser_id = a.fwuser_id
+				LEFT JOIN (
+					SELECT
+						fwuser_id,
+						count(1) AS totalCount
+					FROM
+						dsj_fwuser_comment
+					GROUP BY
+						fwuser_id
+				) t ON t.fwuser_id = g.fwuser_id
+				LEFT JOIN (
+					SELECT
+						o2.dbuserid, count(1) AS orderCount
+					FROM
+						dsj_fw_order o1
+					LEFT JOIN dsj_fw_order_detail o2 ON o1.id = o2.order_id
+					WHERE
+						o1. STATUS != 3 and o1. STATUS != 1 and o1. STATUS != 2
+					GROUP BY
+						o2.dbuserid
+				) o ON t.fwuser_id = o.dbuserid
+		)f on a.id = f.fwuserId where a.id = #{0} GROUP BY a.id
+	</select>
+	
+	<select id="listNewBy" resultType="java.util.Map" resultMap="beanMap">
+    	SELECT 
+    		b.realname AS NAME,
+    		a.tell_phone AS tellPhone,
+    		a.id AS id
+    	FROM dsj_property a,dsj_user b 
+    	where a.user_id = b.id and b.del_flag = #{delFlag} and b.realname like concat(#{preName},'%')
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="getPoCountByPhone" parameterType="String" resultType="long">
+  		SELECT
+			count(1)
+		FROM
+			dsj_user a
+		<where>
+			<if test="phone != null "> and a.phone=#{phone}</if>
+			<if test="id != null "> and a.id!=#{id}</if>
+		</where>
+  	</select>
+	
+	
+	<update id="updatePhoto" parameterType="UserPo">
+		update dsj_property set avatar_re_url=#{avatar} where user_id=#{id}
+	</update>
+	
+	<update id="updatePhoneUserById" parameterType="PropertyPo">
+		update dsj_property set tell_phone=#{tellPhone} where user_id=#{userId}
+	</update>
+	
+  <update id="updateResetPwdMany" parameterType="java.util.Map">
+    UPDATE dsj_user
+    SET   
+      password = #{password}
+    WHERE id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+	
+</mapper>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.evaluate.dao.impl.AgentStandardDaoImpl">
+    
+    <sql id="tableName"> dsj_agent_standard a </sql>
+    <sql id="tableNameUpdate"> dsj_agent_standard </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.item AS "item",
+		a.paragraph AS "paragraph",
+		a.paragraph_no AS "paragraphNo",
+		a.section AS "section",
+		a.section_no AS "sectionNo",
+		a.count AS "count",
+		a.daily_score AS "dailyScore",
+		a.score AS "score",
+        a.sort AS "sort",
+		a.update_time AS "updateTime",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.create_person AS "createPerson"
+	</sql>
+	
+	<resultMap id="beanMap" type="AgentStandardPo">
+		<id column="id" property="id" />
+		<result column="item" property="item" />
+		<result column="paragraph" property="paragraph" />
+		<result column="paragraph_no" property="paragraphNo" />
+		<result column="section" property="section" />
+		<result column="section_no" property="sectionNo" />
+		<result column="count" property="count" />
+		<result column="daily_score" property="dailyScore" />
+		<result column="score" property="score" />
+        <result column="sort" property="sort" />
+		<result column="update_time" property="updateTime" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="create_person" property="createPerson" />
+	</resultMap>
+	
+	<sql id="agentScoreJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="item != null and item!= ''"> AND a.item = #{item}</if>
+		<if test="paragraph != null and paragraph!= ''"> AND a.paragraph = #{paragraph}</if>
+		<if test="paragraphNo != null and paragraphNo!= ''"> AND a.paragraph_no = #{paragraphNo}</if>
+		<if test="section != null and section!= ''"> AND a.section = #{section}</if>
+		<if test="sectionNo != null and sectionNo!= ''"> AND a.section_no = #{sectionNo}</if>
+		<if test="count != null and count!= ''"> AND a.count = #{count}</if>
+		<if test="dailyScore != null and dailyScore!= ''"> AND a.daily_score = #{dailyScore}</if>
+		<if test="score != null and score!= ''"> AND a.score = #{score}</if>
+        <if test="sort != null and sort!= ''"> AND a.sort = #{sort}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+	</sql>
+    
+	<select id="getById" resultType="AgentStandardPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="agentScoreJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.sort
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="AgentStandardPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			item,
+			paragraph,
+			paragraph_no,
+			section,
+			section_no,
+			count,
+			daily_score,
+			score,
+            sort,
+			update_time,
+			update_person,
+			create_time,
+			create_person
+		) VALUES (
+			#{id},
+			#{item},
+			#{paragraph},
+			#{paragraphNo},
+			#{section},
+			#{sectionNo},
+			#{count},
+			#{dailyScore},
+			#{score},
+            #{sort},
+			#{updateTime},
+			#{updatePerson},
+			#{createTime},
+			#{createPerson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="AgentStandardPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="item != null">item,</if>
+					<if test="paragraph != null">paragraph,</if>
+					<if test="paragraphNo != null">paragraph_no,</if>
+					<if test="section != null">section,</if>
+					<if test="sectionNo != null">section_no,</if>
+					<if test="count != null">count,</if>
+					<if test="dailyScore != null">daily_score,</if>
+					<if test="score != null">score,</if>
+                    <if test="sort != null">sort,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="updatePerson != null">update_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="createPerson != null">create_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="item != null">#{item},</if>
+			<if test="paragraph != null">#{paragraph},</if>
+			<if test="paragraphNo != null">#{paragraphNo},</if>
+			<if test="section != null">#{section},</if>
+			<if test="sectionNo != null">#{sectionNo},</if>
+			<if test="count != null">#{count},</if>
+			<if test="dailyScore != null">#{dailyScore},</if>
+			<if test="score != null">#{score},</if>
+            <if test="sort != null">#{sort},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="AgentStandardPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			item = #{item},
+			paragraph = #{paragraph},
+			paragraph_no = #{paragraphNo},
+			section = #{section},
+			section_no = #{sectionNo},
+			count = #{count},
+			daily_score = #{dailyScore},
+			score = #{score},
+            sort = #{sort},
+			update_time = #{updateTime},
+			update_person = #{updatePerson},
+			create_person = #{createPerson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="AgentStandardPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="item != null">item = #{item},</if>
+			<if test="paragraph != null">paragraph = #{paragraph},</if>
+			<if test="paragraphNo != null">paragraph_no = #{paragraphNo},</if>
+			<if test="section != null">section = #{section},</if>
+			<if test="sectionNo != null">section_no = #{sectionNo},</if>
+			<if test="count != null">count = #{count},</if>
+			<if test="dailyScore != null">daily_score = #{dailyScore},</if>
+			<if test="score != null">score = #{score},</if>
+            <if test="sort != null">score = #{sort},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

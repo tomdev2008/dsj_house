@@ -1,0 +1,153 @@
+*{
+	margin:0;
+	padding:0;
+	box-sizing: border-box;
+}
+ul,li{
+	list-style: none;
+}
+.new_dynamic{
+	width: 1190px;
+	margin:0 auto;
+}
+.nd_list_kuang{
+	width:74%;
+	float: left;
+}
+.nd_like_kuang{
+	width: 24%;
+	height: 300px;
+	float: right;
+}
+.nd_list{
+	width: 100%;
+	height: 110px;
+	margin-bottom: 50px;
+}
+.ndl_left{
+	width: 16%;
+	height: 110px;
+	background-color:#f7f7f7; 
+	color:#9dafcb;
+	padding: 0 12px;
+	text-align: left;
+	padding-top:36px;
+	float: left;
+}
+.ls_day{
+	font-size: 48px;
+	font-weight: bold;
+	float: left;
+	height: 40px;
+	line-height: 40px;
+}
+.ls_ri{
+	font-size: 16px;
+}
+.ls_mon{
+	font-size: 14px;
+}
+.ls_mkuang{
+	float: right;
+}
+.ndl_center{
+	width:84%;
+	height: 110px;
+	padding-left: 10px;
+	float: left;
+	position: relative;
+}
+.nalc_name{
+	font-size: 18px;
+	font-weight: bold;
+	color:#333;
+	text-decoration: none;
+	margin-top:-3px;
+	display: inline-block;
+}
+.nalc_name:hover{
+	color:#3172dc;
+}
+.nalc_cen:hover{
+	color:#3172dc;
+}
+.nalc_cen:visited{
+	color:#999;
+}
+.nalc_cen:visited:hover{
+	color:#3172dc;
+}
+.nalc_name:visited:hover{
+	color:#3172dc;
+}
+.nalc_cen{
+	font-size: 14px;
+	color:#666;
+	margin-top: 15px;
+	display: block;
+	text-decoration: none;
+	line-height: 21px;
+}
+.fabu_icon{
+	font-size: 14px;
+	color:#ccc;
+	position: absolute;
+	bottom: 0;
+	left:10;
+}
+.fabu_icon>a{
+	color:#666;
+}
+.fabu_icon>a:hover{
+	color:#3172dc;
+	text-decoration: underline;
+}
+.nd_dongtai_kuang{
+	border:1px solid #f2f2f2;
+	padding:30px;
+	margin-bottom: 30px;
+}
+.nd_dongtai_kuang>h4{
+	text-align: center;
+	color:#333;
+	font-size: 24px;
+}
+.dongtai_msg{
+	text-align: center;
+	height: 52px;
+	line-height: 52px;
+}
+.msg_icon{
+	font-size: 14px;
+	color:#ccc;
+	display: inline-block;
+	margin-right: 25px;
+}
+.msg_icon>a{
+	color:#666;
+}
+.msg_icon>a:hover{
+	color:#3172dc;
+	text-decoration: underline;
+}
+.dongtai_news{
+	width: 100%;
+	text-align: center;
+}
+.nd_dongtai_kuang img{
+	max-width: 100%;
+	margin-bottom: 30px;
+}
+.dongtai_cneter{
+	width: 100%;
+	text-align: left;
+	color:#666;
+	font-size: 16px;
+	line-height: 30px;
+}
+.visited_999{
+	color:#999 !important;
+}
+.nd_list_kuang .dsj_page_container  .pagination{
+	margin-top:0;
+}

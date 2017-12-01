@@ -1,0 +1,96 @@
+*{
+	margin:0;
+	padding:0;
+	box-sizing: border-box;
+}
+.color_0{
+	background-color:  #fefbe4;
+}
+.color_1{
+	background-color: #eff4ff;
+}
+.color_2{
+ 	background-color: #fff1eb;
+}
+.color_3{
+	background-color: #ecfdf4;
+}
+.cap_main .sale{
+    font-size: 12px;
+    padding: 5px 8px;
+    margin-left: 15px;
+    vertical-align: text-bottom;
+}
+.cap_main .sale_on{
+	background-color: #ecfdf4;
+	color: #3fb96a;
+}
+.cap_main  .sale_wait{
+	background-color:#eff4ff;
+	color:#0066ff;
+}
+.cap_main  .sale_finish{
+	background-color: #f0e7e1;
+    color: #a98d78;
+}
+.cap_main{
+	width: 1190px;
+	margin: 0 auto;
+	height: 122px;
+	padding-top:30px;
+	font-family: "MicrosoftYaHei";
+	color:#333;
+}
+.cm_left{
+	width: 73px;
+	height: 73px;
+	float: left;
+	margin-right: 20px;
+}
+.cm_left>img{
+	width: 100%;
+	height: 100%;
+}
+.cm_labelling{
+	padding:0;
+	margin-top: 17px;
+}
+ .cm_labelling>span{
+	display: inline-block;
+	padding:3px 5px;
+	margin-right: 10px;
+	font-size:12px;
+	color:#666;
+	float: left;
+}
+.cm_center{
+	height: 73px;
+	float: left;
+}
+.cmc_div{
+	font-size: 0;
+}
+.cm_h4{
+	display: inline-block;
+	font-size: 30px;
+	margin-top: -6px;
+}
+.cm_right{
+	height: 73px;
+	float: right;
+	text-align: right;
+}
+.or_phone{
+	color:#ff5a12;
+	font-size: 24px;
+	font-weight: bold;
+}
+.or_minphone{
+	font-size: 14px;
+	font-weight: normal;
+}
+.gengxin{
+	font-size: 12px;
+	color:#ccc;
+	margin-top: 16px;
+}

@@ -1,0 +1,73 @@
+
+<script id="header_template" type="text/x-handlebars-template">
+     
+   <!-- 头部 -->
+    <div class="container">
+        <!--头部  -->
+        <div class="A_Header">
+          <a href="http://pc.dasoujia.com" target="_blank"><h1>大搜家</h1></a>
+          <ul>
+            <li>客服电话：400-898-6868转888</li>
+            <li>{{#compare realname "!="  null}}
+				{{realname}}
+			{{else}}
+				{{username}}
+			{{/compare}}</li>
+            <li><a onclick="loginOut()">退出</a></li>
+          </ul>
+        </div>
+    </div>
+    <!-- 导航 -->
+    <nav class="A_Nav">
+     <div class="navKuang">
+			{{#if avatar}}
+        		 <img src="{{avatar}}">
+			{{else}}
+ 				 <img src="img/z44@3x.png">
+			{{/if}}
+
+
+          <p>
+			{{#compare realname "!="  null}}
+				{{realname}}
+			{{else}}
+				{{username}}
+			{{/compare}}
+
+			<span class="vip_icon">{{auditName}}<i></i></span>
+			</p>
+          <ul>
+            <li><a href="agent-index.html">主页</a></li>
+            <li><a href="##" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">新房楼盘</a>
+                <ul class="dsj_second_dropdown dropdown-menu" aria-labelledby="dLabel">
+                <li><a href="index.html">新房列表</a></li>
+                <li><a href="newHouse-responsible.html">责任楼盘</a></li>
+                </ul>
+             </li>
+            <li><a href="ershou.html">二手房源</a></li>
+           
+            <li><a href="house-news.html">楼盘动态</a></li>
+            <li><a href="comment.html">我的点评</a></li>
+            <li><a href="industry-news.html">业内动态</a></li>
+            <li><a href="person-info.html">个人中心</a></li>
+          </ul>
+        </div>
+    </nav>
+	<div class="dsj_footer">
+      <div class="container">
+        <div class="dsj_upper_footer">
+          <span><a href="http://www.dasoujia.com/about/page?about=0">关于我们</a></span>
+          <span><a href="http://www.dasoujia.com/about/page?about=1">平台协议</a></span>
+          <span><a href="http://www.dasoujia.com/about/page?about=2">合作伙伴</a></span>
+        </div>
+        <div>
+          <ul class="dsj_lower_footer">
+            <li>北京大搜家信息技术服务有限公司&nbsp;&nbsp;|</li>
+            <li>京ICP备17018930号&nbsp;&nbsp;|</li>
+            <li>Copyright © 2017 大搜家 All Rights Reserved</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</script>
+

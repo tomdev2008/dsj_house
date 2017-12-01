@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+            http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://code.alibabatech.com/schema/dubbo  
+            http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="fanthful-area-service" />
+	
+	<!-- 超时时间，重试次数 -->
+	<dubbo:provider delay="-1" timeout="120000" retries="0"/>
+	<dubbo:consumer timeout="300000" retries="0" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" />
+
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="dubbo" port="${dubbo.other.port}" />
+
+	<dubbo:service interface="com.dsj.modules.other.service.AreaService" ref="areaServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.other.service.TradeAreaService" ref="tradeAreaServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.other.service.GroupTypeService" ref="groupTypeServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.other.service.SubwayService" ref="subwayServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.other.service.SubwayObjService" ref="subwayObjServiceImpl" version="1.0"/>
+	
+	<!-- 楼盘字典 -->
+	<dubbo:service interface="com.dsj.modules.other.service.HouseDirectoryService" ref="houseDirectoryServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.other.service.HousePictureService" ref="housePictureServiceImpl" version="1.0"/>
+	
+	<!-- 短信通道 -->
+	<dubbo:service interface="com.dsj.modules.other.service.SmsLogsService" ref="smsLogsServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.other.service.VerifyCodeService" ref="verifyCodeServiceImpl" version="1.0"/>
+	
+	<dubbo:reference interface="com.dsj.modules.solr.service.CommonIndexService" id="commonIndexServiceImpl" check="false"  version="1.0"/>
+	
+	
+</beans>  

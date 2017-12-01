@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.FwTypeNodeDaoImpl">
+    
+    <sql id="tableName"> dsj_fw_type_node a </sql>
+    <sql id="tableNameUpdate"> dsj_fw_type_node </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.type_id AS "typeId",
+		a.name AS "name",
+		a.pcname AS "pcname",
+		a.node_num AS "nodeNum",
+		a.next AS "next",
+		a.delete_flag AS "deleteFlag",
+		a.isauth AS "isauth",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwTypeNodePo">
+		<id column="id" property="id" />
+		<result column="type_id" property="typeId" />
+		<result column="name" property="name" />
+		<result column="pcname" property="pcname" />
+		<result column="node_num" property="nodeNum" />
+		<result column="next" property="next" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="isauth" property="isauth" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="fwTypeNodeJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="typeId != null and typeId!= ''"> AND a.type_id = #{typeId}</if>
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="pcname != null and pcname != ''"> AND a.pcname = #{pcname}</if>
+		<if test="nodeNum != null and nodeNum!= ''"> AND a.node_num = #{nodeNum}</if>
+		<if test="next != null and next != ''"> AND a.next = #{next}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="FwTypeNodePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwTypeNodeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id asc
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="FwTypeNodePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			type_id,
+			name,
+			node_num,
+			delete_flag,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{typeId},
+			#{name},
+			#{nodeNum},
+			#{deleteFlag},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwTypeNodePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="typeId != null">type_id,</if>
+					<if test="name != null">name,</if>
+					<if test="nodeNum != null">node_num,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="deleteFlag != null">isauth,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="typeId != null">#{typeId},</if>
+			<if test="name != null">#{name},</if>
+			<if test="nodeNum != null">#{nodeNum},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="deleteFlag != null">#{isauth},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FwTypeNodePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			type_id = #{typeId},
+			name = #{name},
+			node_num = #{nodeNum},
+			delete_flag = #{deleteFlag},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwTypeNodePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="typeId != null">type_id = #{typeId},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="nodeNum != null">node_num = #{nodeNum},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

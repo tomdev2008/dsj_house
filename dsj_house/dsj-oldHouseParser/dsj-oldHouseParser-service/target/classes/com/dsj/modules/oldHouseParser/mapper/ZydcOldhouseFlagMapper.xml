@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.ZydcOldhouseFlagDaoImpl">
+    
+    <sql id="tableName"> dsj_zydc_oldhouse_flag a </sql>
+    <sql id="tableNameUpdate"> dsj_zydc_oldhouse_flag </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.pageflag AS "pageflag",
+		a.pagenum AS "pagenum",
+		a.url AS "url",
+		a.pageurl AS "pageurl"
+	</sql>
+	
+	<resultMap id="beanMap" type="ZydcOldhouseFlagPo">
+		<id column="id" property="id" />
+		<result column="pageflag" property="pageflag" />
+		<result column="pagenum" property="pagenum" />
+		<result column="url" property="url" />
+		<result column="pageurl" property="pageurl" />
+	</resultMap>
+	
+	<sql id="zydcOldhouseFlagJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="pageflag != null and pageflag!= ''"> AND a.pageflag = #{pageflag}</if>
+		<if test="pagenum != null and pagenum!= ''"> AND a.pagenum = #{pagenum}</if>
+		<if test="url != null and url!= ''"> AND a.url = #{url}</if>
+		<if test="pageurl != null and pageurl!= ''"> AND a.pageurl = #{pageurl}</if>
+	</sql>
+    
+	<select id="getById" resultType="ZydcOldhouseFlagPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="zydcOldhouseFlagJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	
+  	<select id="getLastPo" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC limit 1
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="listPageCountWoai" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM dsj_woaiwojia a
+		<where>
+			a.url=#{loupanUrl}
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="ZydcOldhouseFlagPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			pageflag,
+			pagenum,
+			url,
+			pageurl
+		) VALUES (
+			#{id},
+			#{pageflag},
+			#{pagenum},
+			#{url},
+			#{pageurl}
+		)
+	</insert>
+	
+	<insert id="insertZydc" parameterType="ZydcOldhouseFlagPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO dsj_woaiwojia
+		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="pageflag != null">pageflag,</if>
+					<if test="pagenum != null">pagenum,</if>
+					<if test="url != null">url,</if>
+					<if test="pageurl != null">pageurl,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="pageflag != null">#{pageflag},</if>
+			<if test="pagenum != null">#{pagenum},</if>
+			<if test="url != null">#{url},</if>
+			<if test="pageurl != null">#{pageurl},</if>
+        </trim>
+	</insert>
+	
+	<insert id="insertDynamic" parameterType="ZydcOldhouseFlagPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="pageflag != null">pageflag,</if>
+					<if test="pagenum != null">pagenum,</if>
+					<if test="url != null">url,</if>
+					<if test="pageurl != null">pageurl,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="pageflag != null">#{pageflag},</if>
+			<if test="pagenum != null">#{pagenum},</if>
+			<if test="url != null">#{url},</if>
+			<if test="pageurl != null">#{pageurl},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="ZydcOldhouseFlagPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			pageflag = #{pageflag},
+			pagenum = #{pagenum},
+			url = #{url},
+			pageurl = #{pageurl},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="ZydcOldhouseFlagPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="pageflag != null">pageflag = #{pageflag},</if>
+			<if test="pagenum != null">pagenum = #{pagenum},</if>
+			<if test="url != null">url = #{url},</if>
+			<if test="pageurl != null">pageurl = #{pageurl},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteAll">
+		DELETE FROM <include refid="tableNameUpdate"/>
+	</update>
+	
+	
+	<update id="deleteWawjAll">
+		DELETE FROM dsj_woaiwojia
+	</update>
+	
+</mapper>

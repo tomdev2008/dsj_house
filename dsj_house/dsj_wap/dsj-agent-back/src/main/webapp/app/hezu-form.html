@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<script type="text/javascript" src="js/fles.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<nav class="navbar navbar-default dsj_navbar_top navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar_top"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbar_top" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="./"><span
+							class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>北京</a></li>
+					<li><a href="./">首页</a></li>
+					<li><a href="./">新房</a></li>
+					<li class="active"><a href="./">二手房</a></li>
+					<li><a href="./">租房</a></li>
+					<li><a href="./">经纪人</a></li>
+					<li><a href="./">我要卖房</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</nav>
+	<nav class="navbar navbar-default dsj_navbar navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img class="avator"
+					src="./img/agent.jpg"></a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="./">主页</a></li>
+					<li><a href="./">新房楼盘</a></li>
+					<li class="active"><a href="./">二手房源</a></li>
+					<li><a href="./">租房房源</a></li>
+					<li><a href="./">楼盘动态</a></li>
+					<li><a href="./">我的点评</a></li>
+					<li><a href="./">业内动态</a></li>
+					<li><a href="./">个人中心</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<ol class="breadcrumb dsj_breadcrumb">
+				<li><a href="#">大搜家首页</a></li>
+				<li><a href="#">新房</a></li>
+				<li class="active">新房列表</li>
+			</ol>
+		</div>
+		<div id="dsj_info_container" class="row"></div>
+	</div>
+	<script id="dsj_info_template" type="text/x-handlebars-template">
+      <form class="form-horizontal dsj_form">
+        <h4 class="dsj_title">房源基本信息</h4>
+        <div class="form-group has-feedback">
+          <label for="inputPassword" class="col-sm-2 control-label">类型</label>
+          <div class="col-sm-2">
+            <label class="checkbox-inline">
+              <input type="checkbox" id="inlineCheckbox1" value="option1"> 合租
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" id="inlineCheckbox2" value="option2"> 整租
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="housename" class="col-sm-2 control-label">*小区名称</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="housename" placeholder="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">房屋户型</label>
+          <div class="col-sm-1">
+            <select class="form-control"  placeholder="室">
+              <option>五室</option>
+              <option>五室</option>
+              <option>五室</option>
+              <option>五室</option>
+              <option>五室</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <select class="form-control" placeholder="厅">
+              <option>两厅</option>
+              <option>两厅</option>
+              <option>两厅</option>
+              <option>两厅</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <select class="form-control" placeholder="卫生间">
+              <option>两卫</option>
+              <option>两卫</option>
+              <option>两卫</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label for="" class="col-sm-2 control-label">楼层</label>
+          <div class="col-sm-1">
+            <input type="" class="form-control" id="" placeholder="楼">
+          </div>
+          <div class="col-sm-1">
+            <input type="" class="form-control" id="" placeholder="共几楼">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">房屋情况</label>
+          <div class="col-sm-1">
+            <select class="form-control"  placeholder="物业类型">
+              <option>房屋情况</option>
+              <option>五室</option>
+              <option>五室</option>
+              <option>五室</option>
+              <option>五室</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <select class="form-control" placeholder="装修情况">
+              <option>装修情况</option>
+              <option>两厅</option>
+              <option>两厅</option>
+              <option>两厅</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <select class="form-control" placeholder="朝向">
+              <option>朝向</option>
+              <option>两卫</option>
+              <option>两卫</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <select class="form-control" placeholder="男女不限">
+              <option>男女不限</option>
+              <option>两卫</option>
+              <option>两卫</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="form-group">
+          <label for="area" class="col-sm-2 control-label">面积</label>
+          <div class="col-sm-1">
+            <input type="" class="form-control" id="area" placeholder="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="" class="col-sm-2 control-label">房屋配置</label>
+          <div class="col-sm-10">
+            <div class="dropdown dsj_tag">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dsj_dropdown" aria-haspopup="true" aria-expanded="true">
+              添加房屋特色标签
+              <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <p>注：请至少选择1个最多可以选6个服务类型标签</p>
+                <div class="pl12">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" id="inlineCheckbox1" name="tag[]" value="option1"> 唯一住房
+                  </label>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" id="inlineCheckbox2" name="tag[]" value="option2"> 南北通透
+                  </label>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" id="inlineCheckbox3" name="tag[]" value="option3"> 双面朝南
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="area" class="col-sm-2 control-label">*租金</label>
+          <div class="col-sm-1">
+            <input type="" class="form-control" id="area" placeholder="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">付款方式</label>
+          <div class="col-sm-1">
+            <select class="form-control"  placeholder="请选择">
+              <option>请选择</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="text" class="col-sm-2 control-label">房屋描述</label>
+          <div class="col-sm-10">
+            <ins></ins>
+            <input type="" name="" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="text" class="col-sm-2 control-label">房屋描述</label>
+          <div class="col-sm-10">
+            <textarea id="text" class="form-control" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="row dsj_button_group">
+          <div class="col-sm-12">
+            <a class="btn btn-default" href="#" role="button">取消</a>
+            <button class="btn btn-default" type="submit">保存</button>
+            <input class="btn btn-default" type="button" value="下一步">
+          </div>
+        </div>
+
+      </form>
+    </script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.js"></script>
+	<script src="js/common/header.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/dsj_tags.js"></script>
+	<script type="text/javascript">
+      $(function () {
+
+        var source   = $("#dsj_info_template").html();
+        var template = Handlebars.compile(source);
+        var html = template();
+        $("#dsj_info_container").prepend(html);
+        $.ajax({
+      type:"post",
+      url:_url+"/back/frame/system/agent/getAgentInfo",
+      data:{
+        userId:539
+      },
+      datatype:"json",
+      success:function(result){
+        //alert(result.data.name);
+        var option = result.data;
+        
+        var html = template(option);
+            $("#dsj_info_container").prepend(html);
+      }
+    })
+        
+        
+      })
+    </script>
+
+</body>
+</html>

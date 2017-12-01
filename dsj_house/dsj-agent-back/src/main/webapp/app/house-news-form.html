@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<script type="text/javascript" src="js/fles.js"></script>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="js/jquery.js"></script>
+<script src="ue1433/ueditor.config.js"></script>
+<script src="ue1433/ueditor.all.js"></script>
+
+</head>
+<body>
+
+	<div class="container">
+		<div class="row"></div>
+		<div class="row">
+			<form id="dsj_form" class="form-horizontal dsj_form">
+				<script id="master_add" type="text/x-handlebars-template">
+		<h4 class="dsj_title">楼盘动态</h4>
+		<input type="hidden" name="id" value="{{houseNewsPo.id}}" class="form-control" >
+		<div class="form-group">
+            <label for="housename" class="col-sm-1 control-label"><span class="dsj_warn">*</span>楼盘名称</label>
+            <div class="col-sm-2">
+         		<select name="houseId" onchange="changeHouseId(this);" class="form-control" data-validate="required" >
+					<option value="" >请选择</option>
+					{{#each authList}}
+						{{#compare ../houseNewsPo.houseId '==' this.id }}
+     						<option value="{{this.id}}" selected="selected">{{ this.name }}</option>
+     					{{else}}
+     						<option value="{{this.id}}" >{{ this.name }}</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+            </div>
+		</div>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-1 control-label">楼盘ID</label>
+            <div class="col-sm-2">
+				<input type="text" id="houseId" value="{{houseNewsPo.houseId}}" readonly="readonly" class="form-control"  placeholder="楼盘ID">
+            </div>
+		</div>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-1 control-label"><span class="dsj_warn">*</span>动态名称</label>
+            <div class="col-sm-4">
+				<input type="text" maxlength="20" name="title" value="{{houseNewsPo.title}}" class="form-control" data-validate="required" placeholder="不超过20字">
+            </div>
+		</div>
+<!--
+		<div class="form-group">
+			<label for="text" class="col-sm-1 control-label"><span class="dsj_warn">*</span>内容</label>
+			<div class="col-sm-8">
+				<textarea name="content" id="content" class="form-control" data-validate="required" rows="3"
+					onchange="this.value=this.value.substring(0,2000)" 
+					onkeydown="this.value=this.value.substring(0,2000)" 
+					onkeyup="this.value=this.value.substring(0,2000)" >{{#convertHtml houseNewsPo.content}}{{/convertHtml}}</textarea>
+			</div>
+			<div id="contentDis" style="display:none">{{#convertHtml houseNewsPo.content}}{{/convertHtml}}</div>
+		</div>
+		<div class="form-group">
+			<label for="id_number" class="col-sm-1 control-label">显示图片：</label>
+			<div class="col-sm-2" id="filePicker1">
+				<div class="dsj_source_img">
+					<img src="{{houseNewsPo.pictureUrl}}" alt="" id="showImg1" />
+					<div class="add-more">
+						<span>+</span>
+					</div>
+				</div>
+			</div>
+			<input name="pictureUrl" value="{{houseNewsPo.pictureUrl}}" id="licenseUri1" style="width:0px;height:0px;border:0px">
+        </div>
+-->
+		<div class="form-group">
+			<label for="text" class="col-sm-1 control-label"><span class="dsj_warn">*</span>动态内容</label>
+			<div class="col-sm-8">
+				<script name="content" id="saveEditor" type="text/plain"
+					style="width: 800px; height: 600px;margin-left:0px;">{{#getScriptEnd}}{{/getScriptEnd}}
+				<div id="ueHidden" style="display:none">{{houseNewsPo.content}}</div>
+				<input id="contentst" type="hidden" name="contentst" >
+				<input id="pictureUrl" type="hidden" name="pictureUrl" >
+				<div id="jqk" class="hide"><p style="color:#F00;">不能为空<p></div>
+			</div>
+		</div>
+		{{#compare houseNewsPo.auditStatus '==' 2}}
+		<div class="form-group">
+			<label class="col-sm-2 control-label">上下线</label>
+			<div class="col-sm-2">
+		        <select name="upDownLine" class="form-control">
+					{{#if houseNewsPo.upDownLine}}
+						{{#compare houseNewsPo.upDownLine '==' 3}}
+     						<option value="3" selected="selected">未上线</option>
+							<option value="1" >已上线</option>
+							<option value="2" >已下线</option>
+ 						{{/compare}}
+						{{#compare houseNewsPo.upDownLine '==' 1}}
+     						<option value="3" >未上线</option>
+							<option value="1" selected="selected">已上线</option>
+							<option value="2" >已下线</option>
+ 						{{/compare}}
+						{{#compare houseNewsPo.upDownLine '==' 2}}
+     						<option value="3" >未上线</option>
+							<option value="1" >已上线</option>
+							<option value="2" selected="selected">已下线</option>
+ 						{{/compare}}
+					{{else}}
+						<option value="3" >未上线</option>
+						<option value="1" >已上线</option>
+						<option value="2" >已下线</option>
+					{{/if}}
+				</select>
+		    </div>
+		</div>
+		{{/compare}}
+		{{#compare houseNewsPo.auditStatus '==' 3}}
+		<div class="form-group">
+			<label for="text" class="col-sm-2 control-label">驳回理由</label>
+			<div class="col-sm-8" style="left:-68px;">
+				<textarea readonly="readonly" name="auditReason" class="form-control" rows="3">{{houseNewsPo.auditReason}}</textarea>
+			</div>
+		</div>
+        {{/compare}}
+ 		<div class="row dsj_button_group">
+            <div class="col-sm-6">
+				<button class="btn btn-default sub-btn" onclick="saveOrUpdate()" type="button">提交</button>
+				<a class="btn btn-default" onclick="yulan()" role="button" data-toggle="modal" data-target="#yulanNews" >预览</a>				
+				<a class="btn btn-default" onclick="cancel()" role="button">取消</a>
+            </div>
+		</div>
+		</script>
+			</form>
+		</div>
+	</div>
+	
+	<!-- 公用model -->
+	<div class="modal fade" id="yulanNews" style="padding-right: 0px;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 746px;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						预览
+					</h4>
+				</div>
+				<div class="modal-body" id="yulan_cc">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/alertBox.js"></script>
+	<script src="js/common/base.js"></script>
+	<script src="js/common/header.js"></script>
+	<script type="text/javascript" src="js/webuploader.js"></script>
+	<script type="text/javascript" src="js/single-upload.js"></script>
+	<script src="js/dsj_tags.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="lib/validate/verify.notify.js"></script>
+	<script src="lib/validate/verify.notify.ext.js"></script>
+	<script src="js/houseNews/house-news-form.js"></script>
+	
+	<script type="text/javascript">
+	var editor = null;	
+    $(function(){
+		var id = GetQueryString("id"); 
+		var p_url;
+		if(id){ 
+			p_url = _url+"/back/houseNews/to_house_news_form?id="+id
+		}else{ 
+			p_url = _url+"/back/houseNews/to_house_news_form" 
+		}
+		var option = { url : p_url}
+		var fun = new $.fn.houseNewsAdd(option);
+		fun._init();
+		
+		require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#dailog_common_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html    = template();
+	    	 $('body').append(html);
+  		});
+		require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#error_html_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html    = template();
+	    	 $('body').append(html);
+ 		}); 
+		
+    })
+    </script>
+	<script src="lib/select2/4.0.3/js/select2.min.js""></script>
+	<script src="js/require.js"></script>
+</body>
+</html>

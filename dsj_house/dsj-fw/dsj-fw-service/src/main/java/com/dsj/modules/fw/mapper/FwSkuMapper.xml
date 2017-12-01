@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.FwSkuDaoImpl">
+    
+    <sql id="tableName"> dsj_fw_sku a </sql>
+    <sql id="tableNameUpdate"> dsj_fw_sku </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.spu_id AS "spuId",
+		a.type_id AS "typeId",
+		a.area_code_one AS "areaCodeOne",
+		a.area_code_two AS "areaCodeTwo",
+		a.area_code_three AS "areaCodeThree",
+		a.price AS "price",
+		a.describes AS "describes",
+		a.guarantee AS "guarantee",
+		a.describeswap AS "describeswap",
+		a.guaranteewap AS "guaranteewap",
+		a.delete_flag AS "deleteFlag",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwSkuPo">
+		<id column="id" property="id" />
+		<result column="spu_id" property="spuId" />
+		<result column="type_id" property="typeId" />
+		<result column="area_code_one" property="areaCodeOne" />
+		<result column="area_code_two" property="areaCodeTwo" />
+		<result column="area_code_three" property="areaCodeThree" />
+		<result column="price" property="price" />
+		<result column="describes" property="describes" />
+		<result column="guarantee" property="guarantee" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="fwSkuJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="spuId != null and spuId!= ''"> AND a.spu_id = #{spuId}</if>
+		<if test="typeId != null and typeId!= ''"> AND a.type_id = #{typeId}</if>
+		<if test="areaCodeOne != null and areaCodeOne!= ''"> AND a.area_code_one = #{areaCodeOne}</if>
+		<if test="areaCodeTwo != null and areaCodeTwo!= ''"> AND a.area_code_two = #{areaCodeTwo}</if>
+		<if test="areaCodeThree != null and areaCodeThree!= ''"> AND a.area_code_three = #{areaCodeThree}</if>
+		<if test="price != null and price!= ''"> AND a.price = #{price}</if>
+		<if test="describes != null and describes!= ''"> AND a.describes = #{describes}</if>
+		<if test="guarantee != null and guarantee!= ''"> AND a.guarantee = #{guarantee}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="FwSkuPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/>
+		<include refid="fwSkuJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="getSkuVoBySpuId" parameterType="long" resultType="com.dsj.modules.fw.vo.FwSkuVo">
+    	SELECT 
+    		 <include refid="tableColumns"/>,
+    		 b.name AS "name"
+    	from 
+    		dsj_fw_sku a INNER JOIN dsj_fw_spu b ON a.spu_id=b.id
+    	where 
+    		a.spu_id=#{spuId}
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="FwSkuPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			spu_id,
+			type_id,
+			area_code_one,
+			area_code_two,
+			area_code_three,
+			price,
+			describes,
+			guarantee,
+			delete_flag,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{spuId},
+			#{typeId},
+			#{areaCodeOne},
+			#{areaCodeTwo},
+			#{areaCodeThree},
+			#{price},
+			#{describes},
+			#{guarantee},
+			#{deleteFlag},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwSkuPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="spuId != null">spu_id,</if>
+					<if test="typeId != null">type_id,</if>
+					<if test="areaCodeOne != null">area_code_one,</if>
+					<if test="areaCodeTwo != null">area_code_two,</if>
+					<if test="areaCodeThree != null">area_code_three,</if>
+					<if test="price != null">price,</if>
+					<if test="describes != null">describes,</if>
+					<if test="guarantee != null">guarantee,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="spuId != null">#{spuId},</if>
+			<if test="typeId != null">#{typeId},</if>
+			<if test="areaCodeOne != null">#{areaCodeOne},</if>
+			<if test="areaCodeTwo != null">#{areaCodeTwo},</if>
+			<if test="areaCodeThree != null">#{areaCodeThree},</if>
+			<if test="price != null">#{price},</if>
+			<if test="describes != null">#{describes},</if>
+			<if test="guarantee != null">#{guarantee},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FwSkuPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			spu_id = #{spuId},
+			type_id = #{typeId},
+			area_code_one = #{areaCodeOne},
+			area_code_two = #{areaCodeTwo},
+			area_code_three = #{areaCodeThree},
+			price = #{price},
+			describes = #{describes},
+			guarantee = #{guarantee},
+			delete_flag = #{deleteFlag},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwSkuPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="spuId != null">spu_id = #{spuId},</if>
+			<if test="typeId != null">type_id = #{typeId},</if>
+			<if test="areaCodeOne != null">area_code_one = #{areaCodeOne},</if>
+			<if test="areaCodeTwo != null">area_code_two = #{areaCodeTwo},</if>
+			<if test="areaCodeThree != null">area_code_three = #{areaCodeThree},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="describes != null">describes = #{describes},</if>
+			<if test="guarantee != null">guarantee = #{guarantee},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getFwSkuVoList" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwSkuVo">
+		SELECT 
+    		<include refid="tableColumns"/>,
+    		b.name as typeName
+    	FROM <include refid="tableName"/> 
+    	left join dsj_fw_type b on a.type_id = b.id
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+	</select>
+	
+	<select id="getSkuNameAndTypeId"  parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwSkuVo">
+		SELECT
+			a.id,
+			b.`name`,
+			c.id as typeId
+		FROM
+			dsj_fw_sku a
+		LEFT JOIN dsj_fw_spu b ON a.spu_id = b.id
+		LEFT JOIN dsj_fw_type c ON a.type_id = c.id
+		<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	<select id="getFwSkuVoById" parameterType="long" resultType="com.dsj.modules.fw.vo.FwSkuVo">
+    	SELECT 
+    		 <include refid="tableColumns"/>,
+    		 b.name AS "name"
+    	from 
+    		dsj_fw_sku a INNER JOIN dsj_fw_spu b ON a.spu_id=b.id
+    	where 
+    		a.id=#{skuId}
+  	</select>
+	
+</mapper>

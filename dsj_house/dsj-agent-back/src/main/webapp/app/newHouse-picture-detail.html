@@ -1,0 +1,257 @@
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+    <script type="text/javascript" src="js/fles.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dsj_agent2.css">
+    <link rel="stylesheet" type="text/css" href="css/album.css">
+  </head>
+  <body>
+    <!-- 进程 -->
+    <div class="PGress"> 
+      <ul>
+        <li>大搜家首页
+        <div class="progressTriangle">
+          <div> 
+          </div>
+        </div>
+        </li>
+        <li>新房
+           <div class="progressTriangle">
+          <div> 
+          </div>
+        </div>
+        </li>
+        <li>新房编辑
+         <div class="progressTriangle">
+          <div> 
+          </div>
+        </div></li>
+      </ul>
+    </div>
+      <!-- 户型进程 -->
+      <div class="row houseList_course">
+        <div class="col-xs-6 col-sm-4 group active">
+          <div class="courseLeft">
+               <img src="img/greencorrect.png" style="width: 57px;height: 57px;">
+              <p>基本信息</p>
+          </div>
+          <div class="courseRight"> 
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-4 group">
+           <div class="courseLeft">
+              <img src="img/2.jpg">
+              <p>楼盘相册</p>
+          </div>
+          <div class="courseRight"> 
+          </div>
+        </div>
+        <!-- Optional: clear the XS cols if their content doesn't match in height -->
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-xs-6 col-sm-4 group">
+           <div class="courseLeft">
+              <img src="img/invalid-name.jpg">
+              <p>楼盘户型</p>
+          </div>
+        </div>
+      </div>
+      <!-- 楼盘户型 -->
+      <div id="photo_detail_list">
+      
+      </div>
+      <script id="photo_detail" type="text/x-handlebars-template">
+		<h2 class="HeadLine">{{pictureStatusName}}</h2>
+      <!-- 楼盘主体 -->
+      <div class="main">
+			<div class="row selectDeleteAdd clearfix">
+			<span class="album-tip">单张宽高不低于600像素，图片体积小于1兆</span>
+			<input type="hidden" id="newHouseId" value="{{newHouseId}}">
+			<input type="hidden" id="pictureStatusName" value="">
+			<input type="hidden" id="pictureStatus" value="{{pictureStatus }}">
+			<button class="dsj_btn btn btn-default" type="button" onclick="selectAll()">全选</button>
+			<button class="dsj_btn btn btn-default" type="button" onclick="deleteSelectAll()">删除</button>
+            <button type="button" class="dsj_button btn btn-primary pull-right" onclick="openPhoto({{newHouseId}})">添加图片</button>
+          </div>
+          <!-- 楼盘户型 -->  
+          <div class="row loupan-album">
+          {{#each pictureList}}
+			<div class="col-xs-6 col-md-3">
+              <div class="album-item no-hover">
+				<input type="checkbox" class="album_checkbox" value="{{id}}">
+                <img class="img-responsive" src="{{pictureUrl}}">
+			{{#compare pictureFrist "==" 2 }}
+				 <div class="set-cover" onclick="setFirstPicture({{id}},{{../newHouseId }})">设为封面</div>
+			{{else}}
+				 <div class="set-cover">已为封面</div>
+			{{/compare}}
+              </div>
+		      <p class="text-center" onclick="setDescribes(this)">{{describes}}</p>
+			  <input onblur="updatePictureDescribes(this)" type="text" style="width:100%;color:black;display: none;" idVal="{{id}}" value="{{describes }}">
+			 <p class="text-right">{{createTime}}</p>
+            </div>
+		{{/each}}
+          </div>
+          <div class="row dsj_button_group">
+            <div class="col-sm-12">
+              <button class="btn btn-primary dsj_buuton" onclick="concelFun({{newHouseId}})" type="button">返回</button>
+            </div>
+          </div>
+      </div>
+	</script>
+	<div id="ImageModalContent" style="display: none;">
+	<div class="modal-header">
+           <div class="row">
+          	 <h4 class="modal-title">添加图片描述</h4>
+	    	</div>
+      </div>
+      <div class="modal-body">
+		<div class="col-xs-12 row" >
+			<div >
+				<div class="row">
+					<form id="picturesDescribeForm" novalidate="novalidate"  class="col-xs-8 col-xs-offset-2">
+						<div id="bootstrap-wizard-1">
+							<div class="tab-content mt30">
+								<div class="tab-pane active">
+									<div class="row mt20"  id="imagesList">
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+        <button class="btn btn-primary" type="button" onclick="savePicture()">提交</button>
+    </div>
+</div>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+     <script src="js/formUtils.js"></script>
+     <script src="js/common/base.js"></script>
+     <script type="text/javascript" src="js/newHouse-webuploader.js"></script>
+      <script type="text/javascript" src="js/newHouse/newHouse_pictures_add.js"></script>
+     <script src="js/require.js"></script>
+      <script src="js/common/header.js"></script>
+    <script type="text/javascript">
+    function openPhoto(id){
+   	 openCommonModal(_url+'/app/newHouse-pictures-add.html?id='+id,1200,12)
+    }
+    var ids = [];
+    $(function(){
+		var source  = $("#photo_detail").html();
+	    var template = Handlebars.compile(source);
+	    $.ajax({
+	    	type: "post",
+          url: _url+"/agent/back/newHouse/newHousePicturesDetail",
+          data:{
+          	houseId:GetQueryString("id"),
+          	pictureStatus:GetQueryString("type")
+          },
+          dataType: "json",
+          success: function(result){
+             var html  = template(result.data);
+      	    $("#photo_detail_list").append(html);
+          }
+	    })
+    })
+    function concelFun(id){
+    	location = _url+"/app/newHouse-picture.html?id="+id
+    }
+    
+
+	function setFirstPicture(id,newHouseId){
+		$.ajax({
+				type:"post",
+				data:{
+					newHouseId:newHouseId,
+					id:id
+				},
+				dataType:"json",
+				url:_url+"/agent/back/newHouse/newHouse_savePicture_first",
+				success:function(resultVo){
+					if(resultVo.status!=200){
+					 setErrorContent(resultVo.message);
+				}else{
+					location.reload();
+				}
+				}
+			})
+	}
+	
+	function selectAll(){
+		if($("input[type='checkbox']:checked").length==$("input[type='checkbox']").length){
+			$("input[type='checkbox']").prop("checked",false);
+		}else{
+			$("input[type='checkbox']").prop("checked",true);
+		}
+	}
+	function deleteSelectAll(){
+		if($("input[type='checkbox']:checked").length==0){
+			setErrorContent("请选择要删除的图片!");
+		}else{
+			setModelContent("确认删除?","delPictureConfirm");
+			  $("body").on("click","#delPictureConfirm",function(){
+				  $.ajax({
+						type:"post",
+						data:JSON.stringify(getPictures()),
+						dataType:"json",
+						url:_url+"/agent/back/newHouse/newHouse_Picture_del",
+						contentType: 'application/json',  
+						success:function(resultVo){
+							if(resultVo.status!=200){
+								setErrorContent(resultVo.message);
+							}else{
+								location.reload();
+							}
+						}
+				})
+			  });
+		}
+	}
+	
+	function getPictures(){
+		ids = new Array();
+		$("input[type='checkbox']:checked").each(function(){
+			 ids.push($(this).val());
+		})
+		return ids;
+	}
+	function setDescribes(obj){
+		$(obj).hide()
+		$(obj).next().show()
+	}
+	function updatePictureDescribes(obj){
+ 		$.ajax({
+ 			type:"post",
+ 			data:{
+ 				describes:$(obj).val(),
+ 				id:$(obj).attr("idVal")
+ 			},
+ 			dataType:"json",
+ 			url:_url+"/agent/back/newHouse/newHouse_saveUpdatePicture",
+ 			success:function(resultVo){
+ 				if(resultVo.status!=200){
+					 setErrorContent(resultVo.message);
+				}else{
+					$(obj).hide();
+					$(obj).prev().show();
+					$(obj).prev().text(resultVo.data);
+				}
+ 			}
+ 		})
+}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.evaluate.dao.impl.AgentInfoDaoImpl">
+    
+    <sql id="tableName"> dsj_agent_info a </sql>
+    <sql id="tableNameUpdate"> dsj_agent_info </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+
+		a.agent_id AS "agentId",
+		a.city_name AS "cityName",
+		a.city_code AS "cityCode",
+		a.total_score AS "totalScore",
+		a.base_score AS "baseScore",
+		a.business_score AS "businessScore",
+		a.education_score AS "educationScore",
+		a.experience_score AS "experienceScore",
+		a.update_time AS "updateTime",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.create_person AS "createPerson"
+	</sql>
+	
+	<resultMap id="beanMap" type="AgentInfoPo">
+		<id column="id" property="id" />
+		<result column="agent_name" property="agentName" />
+		<result column="agent_id" property="agentId" />
+		<result column="city_name" property="cityName" />
+		<result column="city_code" property="cityCode" />
+		<result column="total_score" property="totalScore" />
+		<result column="base_score" property="baseScore" />
+		<result column="business_score" property="businessScore" />
+		<result column="education_score" property="educationScore" />
+		<result column="experience_score" property="experienceScore" />
+		<result column="update_time" property="updateTime" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="create_person" property="createPerson" />
+	</resultMap>
+
+	<sql id="agentInfoJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name LIKE CONCAT(CONCAT('%', #{agentName}), '%')</if>
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="cityName != null and cityName!= ''"> AND a.city_name = #{cityName}</if>
+		<if test="cityCode != null and cityCode!= ''"> AND a.city_code = #{cityCode}</if>
+		<if test="educationScore != null and educationScore!= ''"> AND a.education_score = #{educationScore}</if>
+		<if test="experienceScore != null and experienceScore!= ''"> AND a.experience_score = #{experienceScore}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+	</sql>
+    
+	<select id="getById" resultType="AgentInfoPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="agentInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+  
+    <select id="listPageByParams" parameterType="java.util.Map" resultType="com.dsj.modules.evaluate.vo.AgentInfoVo">
+        SELECT 
+            <include refid="tableColumns"/>,
+            j.name as "agentName",
+            g.id AS "gradeId",
+            g.name AS "gradeName"
+        FROM <include refid="tableName"/> 
+        LEFT JOIN dsj_agent j ON a.agent_id=j.agent_code 
+        LEFT JOIN dsj_agent_grade g 
+            ON a.total_score &gt;= g.min_score AND a.total_score &lt; g.max_score 
+        <where>
+            <include refid="condition_sql" />
+            <if test="minTotalScore != null and minTotalScore!= ''"> AND a.total_score &gt;= #{minTotalScore}</if>
+            <if test="maxTotalScore != null and maxTotalScore!= ''"> AND a.total_score &lt;= #{maxTotalScore}</if>
+            <if test="minBusinessScore != null and minBusinessScore!= ''"> AND a.business_score &gt;= #{minBusinessScore}</if>
+            <if test="maxBusinessScore != null and maxBusinessScore!= ''"> AND a.business_score &lt;= #{maxBusinessScore}</if>
+            <if test="minBaseScore != null and minBaseScore!= ''"> AND a.base_score &gt;= #{minBaseScore}</if>
+            <if test="maxBaseScore != null and maxBaseScore!= ''"> AND a.base_score &lt;= #{maxBaseScore}</if>
+            <if test="minScore != null and minScore!= '' and maxScore != null and maxScore!= ''"> AND a.total_score &gt;= #{minScore} AND a.total_score &lt; #{maxScore}</if>
+        </where>
+        ORDER BY a.total_score DESC 
+        LIMIT #{pageFirst} , #{pageSize} 
+    </select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+    <select id="listPageCountByParams" parameterType="java.util.Map" resultType="long">
+        SELECT 
+            COUNT(1) 
+        FROM <include refid="tableName"/>
+        LEFT JOIN dsj_agent j ON a.agent_id=j.agent_code 
+        LEFT JOIN dsj_agent_grade g 
+            ON a.total_score &gt;= g.min_score AND a.total_score &lt; g.max_score 
+		<where>
+			<include refid="condition_sql"/>
+            <if test="minTotalScore != null and minTotalScore!= ''"> AND a.total_score &gt;= #{minTotalScore}</if>
+            <if test="maxTotalScore != null and maxTotalScore!= ''"> AND a.total_score &lt; #{maxTotalScore!=}</if>
+            <if test="minBusinessScore != null and minBusinessScore!= ''"> AND a.business_score &gt;= #{minBusinessScore}</if>
+            <if test="maxBusinessScore != null and maxBusinessScore!= ''"> AND a.business_score &lt; #{minBusinessScore}</if>
+            <if test="minBaseScore != null and minBaseScore!= ''"> AND a.base_score &gt;= #{minBaseScore}</if>
+            <if test="maxBaseScore != null and maxBaseScore!= ''"> AND a.base_score &lt; #{maxBaseScore}</if>
+            <if test="minScore != null and minScore!= '' and maxScore != null and maxScore!= ''"> AND a.total_score &gt;= #{minScore} AND a.total_score &lt; #{maxScore}</if>
+		</where>
+    </select>
+	
+	<insert id="insert" parameterType="AgentInfoPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			agent_name,
+			agent_id,
+			city_name,
+			city_code,
+			total_score,
+			base_score,
+			business_score,
+			education_score,
+			experience_score,
+			update_time,
+			update_person,
+			create_time,
+			create_person
+		) VALUES (
+			#{id},
+			#{agentName},
+			#{agentId},
+			#{cityName},
+			#{cityCode},
+			#{totalScore},
+			#{baseScore},
+			#{businessScore},
+			#{educationScore},
+			#{experienceScore},
+			#{updateTime},
+			#{updatePerson},
+			#{createTime},
+			#{createPerson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="AgentInfoPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="cityName != null">city_name,</if>
+					<if test="cityCode != null">city_code,</if>
+					<if test="totalScore != null">total_score,</if>
+					<if test="baseScore != null">base_score,</if>
+					<if test="businessScore != null">business_score,</if>
+					<if test="educationScore != null">education_score,</if>
+					<if test="experienceScore != null">experience_score,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="updatePerson != null">update_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="createPerson != null">create_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="cityName != null">#{cityName},</if>
+			<if test="cityCode != null">#{cityCode},</if>
+			<if test="totalScore != null">#{totalScore},</if>
+			<if test="baseScore != null">#{baseScore},</if>
+			<if test="businessScore != null">#{businessScore},</if>
+			<if test="educationScore != null">#{educationScore},</if>
+			<if test="experienceScore != null">#{experienceScore},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="AgentInfoPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			agent_name = #{agentName},
+			agent_id = #{agentId},
+			city_name = #{cityName},
+			city_code = #{cityCode},
+			total_score = #{totalScore},
+			base_score = #{baseScore},
+			business_score = #{businessScore},
+			education_score = #{educationScore},
+			experience_score = #{experienceScore},
+			update_time = #{updateTime},
+			update_person = #{updatePerson},
+			create_person = #{createPerson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="AgentInfoPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="cityName != null">city_name = #{cityName},</if>
+			<if test="cityCode != null">city_code = #{cityCode},</if>
+			<if test="totalScore != null">total_score = #{totalScore},</if>
+			<if test="baseScore != null">base_score = #{baseScore},</if>
+			<if test="businessScore != null">business_score = #{businessScore},</if>
+			<if test="educationScore != null">education_score = #{educationScore},</if>
+			<if test="experienceScore != null">experience_score = #{experienceScore},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	
+	
+</mapper>

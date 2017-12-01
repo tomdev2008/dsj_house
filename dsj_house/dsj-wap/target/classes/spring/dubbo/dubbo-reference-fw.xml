@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <dubbo:reference interface="com.dsj.modules.fw.service.FwOrderService" id="fwOrderService" check="false"  version="1.0"/>    
+    <dubbo:reference interface="com.dsj.modules.fw.service.FwOrderDetailService" id="fwOrderDetailService" check="false"  version="1.0"/>    
+    <dubbo:reference interface="com.dsj.modules.fw.service.FwSkuService" id="fwSkuService" check="false"  version="1.0"/>    
+    <dubbo:reference interface="com.dsj.modules.fw.service.FwSpuService" id="fwSpuService" check="false"  version="1.0"/>  
+    <dubbo:reference interface="com.dsj.modules.fw.service.FwTypeNodeService" id="fwTypeNodeService" check="false"  version="1.0"/>    
+    <dubbo:reference interface="com.dsj.modules.fw.service.FwTypeService" id="fwTypeService" check="false"  version="1.0"/>    
+    <dubbo:reference interface="com.dsj.modules.fw.service.OrderNodeJdService" id="orderNodeJdService" check="false"  version="1.0"/>    
+    <dubbo:reference interface="com.dsj.modules.fw.service.FwuserCommentService" id="fwuserCommentService" check="false" version="1.0"/>   
+    <dubbo:reference interface="com.dsj.modules.fw.service.NodeFieldService" id="nodeFieldService" check="false" version="1.0"/>   
+    <dubbo:reference interface="com.dsj.modules.fw.service.OrderNodeDetailService" id="orderNodeDetailService" check="false" version="1.0"/>   
+    <dubbo:reference interface="com.dsj.modules.fw.service.OrderNodeAuthService" id="orderNodeAuthService" check="false" version="1.0"/>   
+	<dubbo:reference interface="com.dsj.modules.fw.service.FwuserComService" id="fwuserComService" check="false" version="1.0"/>  
+</beans>  

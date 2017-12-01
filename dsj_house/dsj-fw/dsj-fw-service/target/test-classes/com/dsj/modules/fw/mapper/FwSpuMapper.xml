@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.FwSpuDaoImpl">
+    
+    <sql id="tableName"> dsj_fw_spu a </sql>
+    <sql id="tableNameUpdate"> dsj_fw_spu </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.content AS "content",
+		a.type AS "type",
+		a.img AS "img",
+		a.img1 AS "img1",
+		a.delete_flag AS "deleteFlag",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwSpuPo">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="content" property="content" />
+		<result column="type" property="type" />
+		<result column="img" property="img" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="fwSpuJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		<if test="img != null and img!= ''"> AND a.img = #{img}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="ids != null and ids != ''"> AND a.id in (${ids})</if>
+	</sql>
+    
+	<select id="getById" resultType="FwSpuPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwSpuJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	
+  	<select id="getFwSpuVoList" resultType="com.dsj.modules.fw.vo.FwSpuVo" parameterType="java.util.Map">
+    	SELECT 
+    		<include refid="tableColumns"/>,
+    		b.minPrice,
+    		b.id as skuId
+    	FROM <include refid="tableName"/>
+    	left join (SELECT id,spu_id,MIN(price) as minPrice from dsj_fw_sku GROUP BY spu_id) b on a.id = b.spu_id
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.ordernum
+  	</select>
+  	
+  	<select id="getSanFwSpuVoList" resultType="com.dsj.modules.fw.vo.FwSpuVo" parameterType="java.util.Map">
+    	SELECT 
+    		<include refid="tableColumns"/>,
+    		b.minPrice,
+    		b.id as skuId
+    	FROM <include refid="tableName"/>
+    	left join (SELECT id,spu_id,MIN(price) as minPrice from dsj_fw_sku GROUP BY spu_id) b on a.id = b.spu_id
+    	ORDER BY a.ordernum
+    	LIMIT 0,6
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="FwSpuPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			name,
+			content,
+			type,
+			img,
+			delete_flag,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{name},
+			#{content},
+			#{type},
+			#{img},
+			#{deleteFlag},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwSpuPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="name != null">name,</if>
+					<if test="content != null">content,</if>
+					<if test="type != null">type,</if>
+					<if test="img != null">img,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="content != null">#{content},</if>
+			<if test="type != null">#{type},</if>
+			<if test="img != null">#{img},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FwSpuPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name = #{name},
+			content = #{content},
+			type = #{type},
+			img = #{img},
+			delete_flag = #{deleteFlag},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwSpuPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="name != null">name = #{name},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="type != null">type = #{type},</if>
+			<if test="img != null">img = #{img},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getThree" resultType="FwSpuPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwSpuJoins"/>
+		WHERE a.id in (1,5,7)
+		ORDER BY a.id ASC
+	</select>
+	
+</mapper>

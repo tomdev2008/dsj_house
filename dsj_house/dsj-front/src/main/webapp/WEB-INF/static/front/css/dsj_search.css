@@ -1,0 +1,25 @@
+/*搜索div*/
+.grabble_kuang{
+    width: 455px;
+    max-height: 352px;
+	background: #fff;
+    border:1px solid #e0e0e0;
+    border-top:none;
+    position: absolute;
+    top:72px;
+    display: block;
+    overflow-y:auto;
+    display: none;
+    z-index:100;
+}
+.grabble_kuang>li{
+	height: 35px;
+	line-height: 35px;
+	text-align: left;
+	padding-left: 10px;
+	cursor:pointer;
+}
+ .grabble_kuang>li:hover{
+	background: #f6f6f6;
+	color:#3172dc;
+} 

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.PcAgentDaoImpl">
+    
+    <sql id="tableName"> dsj_pc_agent a </sql>
+    <sql id="tableNameUpdate"> dsj_pc_agent </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.agent_id AS "agentId",
+		a.agent_name AS "agentName",
+		a.comment AS "comment",
+		a.link_address AS "linkAddress"
+	</sql>
+	
+	<resultMap id="beanMap" type="PcAgentPo">
+		<id column="id" property="id" />
+		<result column="agent_id" property="agentId" />
+		<result column="agent_name" property="agentName" />
+		<result column="comment" property="comment" />
+		<result column="link_address" property="linkAddress" />
+	</resultMap>
+	
+	<sql id="pcAgentJoins">
+	</sql>
+    
+    <sql id="condition_sql">
+       <if test="id !=null and id != ''">AND a.id=#{id}</if>	
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name = #{agentName}</if>
+		<if test="comment != null and comment!= ''"> AND a.comment = #{comment}</if>
+		<if test="linkAddress != null and linkAddress!= ''"> AND a.link_address = #{linkAddress}</if>
+	</sql>
+    
+	<select id="getById" resultType="PcAgentPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="pcAgentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	<select id="getAgentOldHouse" resultMap="beanMap">
+	  SELECT 
+			<include refid="tableColumns"/>
+		FROM  dsj_pc_agent_old a 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="PcAgentPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			agent_id,
+			agent_name,
+			comment,
+			link_address
+		) VALUES (
+			#{id},
+			#{agentId},
+			#{agentName},
+			#{comment},
+			#{linkAddress}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="PcAgentPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="comment != null">comment,</if>
+					<if test="linkAddress != null">link_address,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="comment != null">#{comment},</if>
+			<if test="linkAddress != null">#{linkAddress},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="PcAgentPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			agent_id = #{agentId},
+			agent_name = #{agentName},
+			comment = #{comment},
+			link_address = #{linkAddress},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="PcAgentPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="comment != null">comment = #{comment},</if>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+    
+    <update id="updateAgentOldHouse" parameterType="PcAgentPo">
+   		 UPDATE dsj_pc_agent_old  
+    	 <set>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="comment != null">comment = #{comment},</if>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getAgentPc" resultMap="beanMap">
+	  select 
+	    a.id AS "id",
+		a.agent_id AS "agentId",
+		d.name AS "agentName",
+		a.comment AS "comment",
+		a.link_address AS "linkAddress"
+		from dsj_pc_agent a
+		left join dsj_agent d on d.user_id=a.agent_id
+		where a.id=#{id}
+	</select>
+	
+</mapper>

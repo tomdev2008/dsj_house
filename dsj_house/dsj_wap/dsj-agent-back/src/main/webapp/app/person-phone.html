@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    
+
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-2">
+          <ul class="nav nav-pills nav-stacked nav-pills-stacked-example dsj_left_nav">
+            <li role="presentation"><a href="person-info.html">基本资料</a></li>
+            <li role="presentation"><a href="person-avatar.html">个人头像</a></li>
+            <li role="presentation"><a href="person-occupation.html">职业信息</a></li>
+            <li role="presentation" ><a href="person-password.html">修改密码</a></li>
+            <li role="presentation" class="active"><a>修改手机号</a></li>
+            <li role="presentation"><a href="person-background.html">个人主页背景管理</a></li>
+            <li role="presentation"><a href="person-mygrade.html">我的等级</a></li>
+            <li role="presentation"><a href="person-qp-evaluate.html">评价二维码</a></li>
+          </ul>
+        </div>
+        <div id="dsj_info_container" class="col-sm-10">
+        <form class="form-horizontal dsj_form">
+        <h4 class="dsj_title">修改手机</h4>
+       
+		 <div id="person_phone_container">
+    </div>
+      </form>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+     <script id="dsj_phone_template_one" type="text/x-handlebars-template">
+		 <div class="form-group">
+			<label class='col-sm-1 control-label'>现手机号</label>
+						          <div class='col-sm-3'>{{tellPhone}}</div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="beianbianhao" class="col-sm-1 control-label">验证码</label>
+          <div class="col-sm-2">
+            <input type="text" id="vcode"class="form-control" >
+          </div>
+			<div class="col-sm-1">
+				<input type="button" value="获取验证码" onclick="vCode(this)" class="dsj_button btn btn-primary"/>
+			</div>
+ 		</div>
+
+			
+
+		<div class="row dsj_button_group">
+            <div class='col-sm-6'>
+			<input class='btn dsj_button btn-default' type='button' onclick='back()'value='取消' style="margin-right:18px;">
+			<input class='btn dsj_button btn-primary' type='button' onclick='next()' value='下一步'>		              
+          </div>
+		</div>
+    </script>
+    <script id="dsj_phone_template_two" type="text/x-handlebars-template">
+		 <div class="form-group">
+			<label class='col-sm-2 control-label'>新手机号</label>
+			<div class='col-sm-3'><input type='text' id='newPhone'class='form-control' ></div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="beianbianhao" class="col-sm-2 control-label">验证码</label>
+          <div class="col-sm-2">
+            <input type="text" id="vcode"class="form-control" >
+          </div>
+		<div class="col-sm-1">
+			<input type="button" value="获取验证码" onclick="vCode(this)" class="dsj_button btn btn-primary"/>
+ 		</div>
+        </div>
+			
+
+		<div class="row dsj_button_group">
+            <div class='col-sm-12'>
+			<input class='btn btn-default' type='button' onclick='go()' value='确认'>
+			<input class='btn btn-default' type='button' onclick='back()'value='取消'>
+		</div>
+          </div>
+    </script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/require.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/alertBox.js"></script>
+    <script type="text/javascript">
+    var userId= "";
+    var agentId ="";
+    var option={};
+    option.step = 1;
+    var oldPhone ="";
+    var source   = $("#dsj_phone_template_one").html();
+    var template = Handlebars.compile(source);
+    $(function () {
+		$.ajax({
+			type:"post",
+			url:_url+"/back/frame/system/agent/getAgentInfo",
+			datatype:"json",
+			data:{r:Math.random()},
+			success:function(result){
+				if(result.status!=200){
+					 show_box(2,result.message);
+				}else{
+					userId=result.data.userId;
+					agentId = result.data.id;
+					oldPhone = result.data.tellPhone; 
+					option.tellPhone = result.data.tellPhone;
+					 var html =  template(option);
+				       $("#person_phone_container").append(html);
+				}
+				
+			}
+		})
+    })
+	function back(){
+		window.location.href="agent-index.html";
+	}
+    
+	var countdown=60; 
+	function settime(obj) { 
+		if (countdown <= 0) { 
+			obj.removeAttribute("disabled");    
+			obj.value="获取验证码"; 
+			countdown = 60; 
+		} else { 
+			obj.setAttribute("disabled", true); 
+			obj.value="重新发送(" + countdown + ")"; 
+			countdown--; 
+			setTimeout(function() { 
+				settime(obj);
+				},1000)
+		} 
+	} 
+	var phone = "";
+    function vCode(obj){
+    	phone = oldPhone;
+    	if(option.step==2){
+    		phone = $("#newPhone").val();
+    		if($("#newPhone").val()==""){
+    			show_box(2,"请输入手机号");
+    			return ;
+    		}else{
+				send(obj,option.step);   			
+    		}
+    	}else{
+    		send(obj,option.step);   
+    	}
+    	
+    }   
+    function send(obj,step){
+    	settime(obj);
+		$.ajax({
+			type:"post",
+			url:_url+"/back/frame/system/agent/verifyCode",
+			data:{
+				userId:userId,
+				phone:phone,
+				step:step
+			},
+			datatype:"json",
+			success:function(result){
+				if(result.status!=200){
+					 show_box(2,result.message);
+				}else{
+					show_box(3,result.message);
+				}
+			}
+		})
+    }
+    function next(){
+    	if($("#vcode").val()==''){
+    		show_box(2,"请输入验证码");
+    	}else{
+    		$.ajax({
+    			type:"post",
+    			url:_url+"/back/frame/system/agent/changePhone",
+    			data:{
+    				userId:userId,
+    				phone:oldPhone,
+    				step:option.step,
+    				verifyCode:$("#vcode").val()
+    			},
+    			datatype:"json",
+    			success:function(result){
+    				if(result.status!=200){
+    					 show_box(2,result.message);
+    				}else{
+    					option.step = 2;
+    					source   = $("#dsj_phone_template_two").html();
+    				    template = Handlebars.compile(source);
+						 var html =  template(option);
+						 $('#person_phone_container').empty();
+					       $("#person_phone_container").append(html);
+					       countdown = 0;
+    				}
+    			}
+    		})
+    	}
+    	
+    }
+    function go(){
+    	if($("#vcode").val()==''){
+    		show_box(2,"请输入验证码");
+    	}else{
+    		$.ajax({
+    			type:"post",
+    			url:_url+"/back/frame/system/agent/changePhone",
+    			data:{
+    				userId:userId,
+    				phone:$("#newPhone").val(),
+    				step:option.step,
+    				agentId:agentId,
+    				verifyCode:$("#vcode").val()
+    			},
+    			datatype:"json",
+    			success:function(result){
+    				if(result.status!=200){
+    					 show_box(2,result.message);
+    				}else{
+    					show_box(3,result.message);
+    					setTimeout(function(){
+    						window.location.href="person-phone.html";
+    					},2000);
+    					
+    				}
+    			}
+    		})
+    	}
+    	
+    }
+    require(["text!common/commit.html"], function(tpl) {
+   	 $('body').append(tpl);
+   	 var source=$("#dailog_common_template").html();
+   	 var template = Handlebars.compile(source);
+		 var html = template();
+   	 $('body').append(html);
+	}); 
+
+    </script>
+  </body>
+</html>

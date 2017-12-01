@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite                PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+                "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<urlrewrite>
+    <!-- 二手房列表 -->
+    
+     <rule>
+        <from>/oldmaster/([0-9]+).html</from>
+        <to type="forward">/oldmaster?id=$1</to>
+    </rule>
+ 
+    
+    <rule>
+        <from>/ershoufang/d([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/ershoufang?areaCode3=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/ershoufang/d([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/ershoufang?areaCode3=$1&amp;tradingAreaId=$2&amp;params=$3</to>
+    </rule>
+    
+    <rule>
+        <from>/ershoufang/d([0-9]+)_([0-9]+)</from>
+        <to type="forward">/ershoufang?areaCode3=$1&amp;tradingAreaId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/ershoufang/d([0-9]+)</from>
+        <to type="forward">/ershoufang?areaCode3=$1</to>
+    </rule>
+   
+    <rule>
+        <from>/ershoufang/line/s([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/ershoufang?line=line&amp;subwayLineId=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/ershoufang/line/s([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/ershoufang?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;params=$3</to>
+    </rule>
+    
+         <rule>
+        <from>/ershoufang/line/s([0-9]+)_([0-9]+)</from>
+        <to type="forward">/ershoufang?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/ershoufang/line/s([0-9]+)</from>
+        <to type="forward">/ershoufang?line=line&amp;subwayLineId=$1</to>
+    </rule>
+    
+    <rule>
+        <from>/ershoufang/line</from>
+        <to type="forward">/ershoufang?line=line</to>
+    </rule>
+     <rule>
+        <from>/ershoufang/line/([\s\S]*)</from>
+        <to type="forward">/ershoufang?line=line&amp;params=$1</to>
+    </rule>
+    
+      <rule>
+        <from>/ershoufang/([\s\S]*)</from>
+        <to type="forward">/ershoufang?params=$1</to>
+    </rule>
+    
+  <!-- 租房搜索 -->
+    <rule>
+        <from>/rentHouse/d([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/rentHouse?areaCode3=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/rentHouse/d([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/rentHouse?areaCode3=$1&amp;tradingAreaId=$2&amp;params=$3</to>
+    </rule>
+    
+         <rule>
+        <from>/rentHouse/d([0-9]+)_([0-9]+)</from>
+        <to type="forward">/rentHouse?areaCode3=$1&amp;tradingAreaId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/rentHouse/d([0-9]+)</from>
+        <to type="forward">/rentHouse?areaCode3=$1</to>
+    </rule>
+   
+    <rule>
+        <from>/rentHouse/line/s([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/rentHouse?line=line&amp;subwayLineId=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/rentHouse/line/s([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/rentHouse?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;params=$3</to>
+    </rule>
+    
+         <rule>
+        <from>/rentHouse/line/s([0-9]+)_([0-9]+)</from>
+        <to type="forward">/rentHouse?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/rentHouse/line/s([0-9]+)</from>
+        <to type="forward">/rentHouse?line=line&amp;subwayLineId=$1</to>
+    </rule>
+    
+    <rule>
+        <from>/rentHouse/line</from>
+        <to type="forward">/rentHouse?line=line</to>
+    </rule>
+     <rule>
+        <from>/rentHouse/line/([\s\S]*)</from>
+        <to type="forward">/rentHouse?line=line&amp;params=$1</to>
+    </rule>
+       <rule>
+        <from>/rentHouse/([\s\S]*)</from>
+        <to type="forward">/rentHouse?params=$1</to>
+    </rule>
+    
+    <!-- 经纪人列表 -->
+    <rule>
+        <from>/front/agent/([\s\S]*)</from>
+        <to type="forward">/front/agent?params=$1</to>
+    </rule>
+    
+    <!-- 新房 -->
+    
+      <rule>
+        <from>/front/newHouse/list/d([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/list?areaCode3=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/front/newHouse/list/d([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/list?areaCode3=$1&amp;tradingAreaId=$2&amp;params=$3</to>
+    </rule>
+    
+    <rule>
+        <from>/front/newHouse/list/d([0-9]+)_([0-9]+)</from>
+        <to type="forward">/front/newHouse/list?areaCode3=$1&amp;tradingAreaId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/front/newHouse/list/d([0-9]+)</from>
+        <to type="forward">/front/newHouse/list?areaCode3=$1</to>
+    </rule>
+   
+    <rule>
+        <from>/front/newHouse/list/line/s([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/list?line=line&amp;subwayLineId=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/front/newHouse/list/line/s([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/list?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;params=$3</to>
+    </rule>
+    
+         <rule>
+        <from>/front/newHouse/list/line/s([0-9]+)_([0-9]+)</from>
+        <to type="forward">/front/newHouse/list?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/front/newHouse/list/line/s([0-9]+)</from>
+        <to type="forward">/front/newHouse/list?line=line&amp;subwayLineId=$1</to>
+    </rule>
+    
+    <rule>
+        <from>/front/newHouse/list/line</from>
+        <to type="forward">/front/newHouse/list?line=line</to>
+    </rule>
+     <rule>
+        <from>/front/newHouse/list/line/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/list?line=line&amp;params=$1</to>
+    </rule>
+    
+      <rule>
+        <from>/front/newHouse/list/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/list?params=$1</to>
+    </rule>
+    
+    <!-- jd -->
+    
+    <rule>
+        <from>/front/newHouse/jdlist/d([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/jdlist?areaCode3=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/front/newHouse/jdlist/d([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/jdlist?areaCode3=$1&amp;tradingAreaId=$2&amp;params=$3</to>
+    </rule>
+    
+    <rule>
+        <from>/front/newHouse/jdlist/d([0-9]+)_([0-9]+)</from>
+        <to type="forward">/front/newHouse/jdlist?areaCode3=$1&amp;tradingAreaId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/front/newHouse/jdlist/d([0-9]+)</from>
+        <to type="forward">/front/newHouse/jdlist?areaCode3=$1</to>
+    </rule>
+   
+    <rule>
+        <from>/front/newHouse/jdlist/line/s([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/jdlist?line=line&amp;subwayLineId=$1&amp;params=$2</to>
+    </rule>
+
+     <rule>
+        <from>/front/newHouse/jdlist/line/s([0-9]+)_([0-9]+)/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/jdlist?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;params=$3</to>
+    </rule>
+    
+         <rule>
+        <from>/front/newHouse/jdlist/line/s([0-9]+)_([0-9]+)</from>
+        <to type="forward">/front/newHouse/jdlist?line=line&amp;subwayLineId=$1&amp;subwayId=$2&amp;</to>
+    </rule>
+     <rule>
+        <from>/front/newHouse/jdlist/line/s([0-9]+)</from>
+        <to type="forward">/front/newHouse/jdlist?line=line&amp;subwayLineId=$1</to>
+    </rule>
+    
+    <rule>
+        <from>/front/newHouse/jdlist/line</from>
+        <to type="forward">/front/newHouse/jdlist?line=line</to>
+    </rule>
+     <rule>
+        <from>/front/newHouse/jdlist/line/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/jdlist?line=line&amp;params=$1</to>
+    </rule>
+    
+      <rule>
+        <from>/front/newHouse/jdlist/([\s\S]*)</from>
+        <to type="forward">/front/newHouse/jdlist?params=$1</to>
+    </rule>
+</urlrewrite>

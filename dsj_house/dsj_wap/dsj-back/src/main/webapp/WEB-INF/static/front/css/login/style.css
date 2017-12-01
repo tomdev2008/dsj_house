@@ -1,0 +1,278 @@
+html,body,div,span,iframe,map,font,img,a img,samp,strong,hr,
+h1,h2,h3,h4,h5,h6,b,p,blockquote,a,address,code,dl,dt,dd,ol,
+ul,li,form,label,table,tr,td,th{padding:0;margin:0;border:0;font-weight:normal;font-size:12px;font-family:'微软雅黑'; color:#000;}
+body{background: #fff;}ul,li{list-style:none;}dl{}.f_l{float:left;}.f_r{float:right;}
+
+header{
+	height: 11.4%;
+	width: 100%;
+	background: #fff;
+}
+
+header img{
+	width: 172px;
+	height: 67px;
+	margin: 18px 0 18px 2.5%;
+}
+/*首页*/
+
+/*登录报错提示*/
+.dengLuTiShi{
+	font-family: '微软雅黑';
+	visibility:hidden;
+	width: 88.5%;
+	margin-left: 5.9%;
+	margin-top: 1.5%;
+	text-align: left;
+	background: #f8ccc7;
+	color: #cc0000;
+	border: 1px solid #f8ccc7;
+	height:20px;
+}
+.dengLuTiShiTu{
+	margin-top: 2px;
+	margin-left: 2.7%;
+	color: #cc0000
+}
+.cuo{
+	margin-left: 3.3%;
+	color: #cc0000
+}
+/*提示框end*/
+
+/*中间内容区域*/
+/*内容区域容器*/
+.city{
+	background:#0598e2;
+	position: absolute;
+	width: 100%;
+	height: 69.6%;
+}
+/*内容区域图片*/
+.city img{
+	max-height: 60.5%;
+	position: absolute;
+	left: 5.7%;
+	top: 12%;
+}
+
+/*登录框容器*/
+.denglu{
+	position: absolute;
+	width: 21.5%;
+	height: 68.4%;
+	background: #fff;
+	right: 9.4%;
+	top: 6.1%;
+	text-align: center;
+	z-index: 9
+}
+
+/*密码输入框*/
+.mima{
+	position: absolute;
+	width: 412px;
+	height: 428px;
+	background: #fff;
+	right: 9.4%;
+	top: 6.1%;
+	text-align: center;
+	z-index: 9
+}
+
+/*登录文字容器*/
+.titBian{
+	margin-top: 5.1%;
+}
+/*登录问题*/
+.tit{
+
+	 width: 100px;
+  height: 23px;
+  font-family: 'MicrosoftYaHei';
+  font-size: 24px;
+  /*line-height: 3;*/
+
+  letter-spacing: 1.2px;
+/*  text-align: justify;
+*/  color: #0598e2;
+}
+/*账号容器*/
+.name{
+    width: 88.5%;
+    margin: auto;
+    margin-top: 1.6%;
+}
+/*账号头像密码图片*/
+.tupian{
+	margin-top: 2px;
+	margin-left: -2px
+}
+/*账号输入框有边框*/
+.name input{
+	border-right: none;
+}
+/*X的背景色*/
+.cha1{
+	background: #fff!important;
+}
+/*账号头像容器*/
+.tx1{
+	width: 40px!important;
+}
+/*密码容器*/
+.password{
+	    width: 88.5%;
+    margin: auto;
+    margin-top: 5.9%;
+
+}
+/*密码颜色*/
+.password input{
+	color: #000;
+}
+
+/*忘记密码样式*/
+.wangjimima{
+	position: absolute;
+	right: 10%;
+	margin-top: 5.8%;
+	color: #0598e2;
+	font-family: '微软雅黑'
+}
+
+/*登录按钮样式*/
+.btnDL{
+	width: 88.5%;
+	font-family: '微软雅黑';
+	margin-top: 16.3%
+}
+
+/*分割线*/
+.fengexian{
+	width: 88.5%;
+	border: 1px solid #ddd;
+	margin: auto;
+	margin-top: 5.1%;
+}
+
+
+
+/*设置密码页分割线*/
+.mimaXian{
+	width: 364px;
+	border: 1px solid #ddd;
+	margin: auto;
+	margin-top: 21.6px;
+}
+
+
+/*底部白云*/
+.yun{
+	position: fixed;
+	width: 100%;
+	height: 36%;
+	background: #d2d2d2;
+	background: url(../../images/login/1.png) no-repeat center;
+	bottom: 0%;
+	/*background-position-y:30px; */
+}
+/*底部按钮容器*/
+.kuanCont{
+	width: 80%;
+	position: absolute;
+	bottom: 3.4%;
+	text-align: center;
+	left: 10%;
+	font-size: 0px
+}
+/**/
+/*底部按钮*/
+.kuan{
+	font-family: '微软雅黑';
+	padding-right: 5px;
+    border-right: 1px solid #333;
+    padding-left: 5px;
+	color: #333;
+}
+/*找回密码最后一个*/
+.kuanLast{
+	border-right: none;
+}
+
+/*获取验证码样式*/
+.getCode{
+	font-family: '微软雅黑';
+	font-size: 12px;
+	background:#ccc;
+	width: 34.1%;
+	height: 86.2%;
+	position: absolute;
+	right: 1.2%;
+	margin-top: 1.2%;
+	bottom:8.4%;
+	z-index: 99;
+	line-height: 2.5;
+	overflow: hidden;
+}
+
+/*按钮下一步*/
+.xiayibu{
+	font-family: '微软雅黑';
+	width: 88.5%;
+	margin-top: 16.3%
+}
+/*设置密码*/
+/*新密码容器*/
+.xinMiMaCont{
+	text-align: right;
+	margin-top: 6.7px
+}
+/*新密码文字*/
+.xinMiMaCont span{
+	font-family: '微软雅黑';
+	margin-right: 15px;
+}
+/*新密码输入框*/
+.xinMiMaCont input{
+	display: inline-block;
+	width: 289px;
+	margin-right: 23.9px
+}
+
+/*确认密码容器*/
+.queRenMiamCont{
+	text-align: right;
+	margin-top: 25px
+}
+/*确认密码文字*/
+.queRenMiamCont span{
+	font-family: '微软雅黑';
+	margin-right: 15px
+}
+/*确认密码输入框*/
+.queRenMiamCont input{
+	display: inline-block;
+	width: 289px;
+	margin-right: 23.9px
+}
+
+/*找回面密码取消*/
+.quXiaoBtn{
+	font-family: '微软雅黑';
+	background: #c9c9c9!important;
+	border: none!important; 
+	width: 170px;
+	height: 56px;
+	margin-top: 70px;
+	margin-right: 25.2px
+}
+/*找回密码页确定按钮*/
+.queDingBtn{
+	font-family: '微软雅黑';
+	background: #0598e2;
+	border: none;
+	width: 170px;
+	height: 56px;
+	margin-top: 70px
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+        
+        
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseDirectoryAuthService" id="newHouseDirectoryAuthServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseDirectoryAuthHistoryService" id="newHouseDirectoryAuthHistoryServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseDirectorySortService" id="newHouseDirectorySortServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseOpenHandTimeAuthService" id="newHouseOpenHandTimeAuthServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseOpenHandTimeAuthHistoryService" id="newHouseOpenHandAuthHistoryTimeServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHousePictureAuthService" id="newHousePictureAuthServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHousePictureAuthHistoryService" id="newHousePictureAuthHistoryServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseTypeAuthService" id="newHouseTypeAuthServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseTypeAuthHistoryService" id="newHouseTypeAuthHistoryServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseWyMsgAuthService" id="newHouseWyMsgAuthServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.newhouse.service.NewHouseWyMsgAuthHistoryService" id="newHouseWyMsgAuthHistoryServiceImpl" check="false"  version="1.0"/>
+	
+</beans>  

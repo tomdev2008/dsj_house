@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<script type="text/javascript" src="js/fles.js"></script>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/webuploader.css" />
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<!-- 头部 -->
+
+	<!-- 主体 -->
+	<div class="container">
+		<div class="row">
+			<!-- 进程 -->
+			<div class="PGress">
+				<ul>
+					<li><a href="#">大搜家首页</a></li>
+					<li><a href="ershou.html">二手房列表</a></li>
+					<li class="active">二手房查看</li>
+					
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<h4 class="dsj_title">室内图</h4>
+			
+			<div class="dsj_upload clearfix">
+				<div id="container">
+					<!--头部，相册选择和格式选择-->
+
+					<div id="uploader">
+						<div class="queueList">
+							<div id="dndArea" class="placeholder"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper1" class="dsj_upload clearfix">
+				<div id="filePicker1" style="display: none"></div>
+
+
+				<div class="col-sm-2">
+					<div class="dsj_source_img">
+						<div class="add-more" style="display: none"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h4 class="dsj_title">户型图</h4>
+
+			<div id="wrapper2" class="dsj_upload">
+				<div id="filePicker2" style="display: none"></div>
+
+				<div class="col-sm-2">
+					<div class="dsj_source_img">
+						<div class="add-more" style="display: none"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h4 class="dsj_title">室外图</h4>
+		
+			<div id="wrapper3" class="dsj_upload">
+				<div id="filePicker3" style="display: none"></div>
+
+
+				<div class="col-sm-2">
+					<div class="dsj_source_img">
+						<div class="add-more" style="display: none"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row dsj_button_group">
+			<div class="col-sm-12">
+
+
+				<input class="btn btn-default" type="button"
+					onclick="history.go(-1)" value="返回">
+
+			</div>
+		</div>
+	</div>
+	<script id="dsj_uploader_template" type="text/x-handlebars-template">
+	{{#each this}}
+      <div class="col-sm-2">
+        <div class="dsj_source_img">
+			 <div >
+               
+              </div>
+			  <img class="img-responsive" src="{{pictureUrl}}">
+			
+        </div>
+      </div>
+	{{/each}}
+    </script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+
+	<script type="text/javascript" src="js/webuploader.js"></script>
+	<script type="text/javascript" src="js/upload.js"></script>
+	<script type="text/javascript" src="js/formUtils.js"></script>
+
+	<script src="js/handlebars.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/common/header.js"></script>
+	<script src="js/common/base.js"></script>
+	<script type="text/javascript">
+    
+    require(["text!common/commit.html"], function(tpl) {
+	    	
+	    	 $('body').append(tpl);
+	    	 var source=$("#dailog_common_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html    = template();
+	    	 $('body').append(html);
+	}); 
+   
+    (function( $ ){
+    	 
+    	
+        // 当domReady的时候开始初始化
+        $(function() {
+        	var objId=GetQueryString("id");
+        	
+        	   $.ajax({
+   	            type: "GET",
+   	            url: _url+"/back/oldHouse/master/master_image_list",
+   	            data:{"id":objId},
+   	            dataType: "json",
+   	            success: function(result){
+   	            	readerImageList(result.data.insideImages,"dsj_uploader_template","#wrapper1");
+   	            	readerImageList(result.data.houseTypeImages,"dsj_uploader_template","#wrapper2");
+   	            	readerImageList(result.data.outInsideImages,"dsj_uploader_template","#wrapper3");
+   	            }
+   	      });
+        });
+		
+    })( jQuery );
+    
+    function setOldCover(id){
+		$.ajax({
+			type:"post",
+			async:true,
+			data:{"id":id},
+			dataType:"json",
+			url:_url+"/back/oldHouse/master/set_cover",
+			success:function(resultVo){
+				if(resultVo.status!=200){
+					 setErrorContent(resultVo.message);
+				}else{
+					 location.reload() ;
+				}
+			}
+		})
+    }
+
+    function upOrDownMaster(status){
+    	var id=GetQueryString("id");
+    	var msg="确定发布房源吗?";
+    	
+    	setModelContent(msg,"upOrDownMasterModalConfirm");
+    	upOrDwonAjax(id,status)
+    }
+	
+
+    function upOrDwonAjax(ids,status){
+    	  $("body").on("click","#upOrDownMasterModalConfirm",function(){
+    		  $.ajax({
+    				type:"post",
+    				async:true,
+    				data:{"ids[]":ids,"status":status},
+    				dataType:"json",
+    				url:_url+"/back/oldHouse/master/master_upDown",
+    				success:function(resultVo){
+    					if(resultVo.status!=200){
+    						// setErrorContent(resultVo.message);
+    					}else{
+    						//modalSuccess("发布成功");
+    						$("#isSureCancel").click();
+    						location.reload();
+    					}
+    				}
+    		})
+    	  });
+    }
+
+    </script>
+
+
+</body>
+</html>

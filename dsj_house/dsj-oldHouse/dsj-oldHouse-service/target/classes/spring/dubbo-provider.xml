@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+            http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://code.alibabatech.com/schema/dubbo  
+            http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="dsj-oldHouse-service" />
+	
+	<!-- 超时时间，重试次数 -->
+	<dubbo:provider delay="-1" timeout="120000" retries="0" threadpool="fixed" threads="100"/>
+	<dubbo:consumer timeout="300000" retries="0" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" />
+
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="dubbo" port="${dubbo.oldHouse.port}" />
+  
+	<!--
+		interface：服务接口名（包名+类名），必填
+		ref：服务对象实现引用（spring注册BeanID），必填
+		group：服务分组，当一个接口有多个实现，可以用分组区分，可选（有多实现介意必填）
+		version：服务版本，建议使用两位数字版本，通常在接口不兼容时版本号才需要升级，建议配置 -->
+	<!-- 暴露后台管理admin_role服务  -->
+	
+	<dubbo:service interface="com.dsj.modules.oldhouse.service.OldHouseEntrustService" ref="oldHouseEntrustServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.oldhouse.service.OldHouseMasterService" ref="oldHouseMasterServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.oldhouse.service.OldHouseRequireService" ref="oldHouseRequireServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.oldhouse.service.OldHousePictureService" ref="oldHousePictureServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.oldhouse.service.OldHouseAgentService" ref="oldHouseAgentServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.oldhouse.service.OldMasterAgentRecommendService" ref="oldMasterAgentRecommendServiceImpl" version="1.0"/>
+	
+	<dubbo:reference interface="com.dsj.modules.solr.service.ErshoufangIndexService" id="ershoufangIndexServiceImpl" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.solr.service.CommonIndexService" id="commonIndexServiceImpl" check="false"  version="1.0"/>
+	
+	
+	<dubbo:reference interface="com.dsj.modules.other.service.SubwayObjService" id="subwayObjService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.other.service.GroupTypeService" id="groupTypeService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.other.service.HouseDirectoryService" id="houseDirectoryService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.other.service.AreaService" id="areaervice" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.other.service.TradeAreaService" id="tradeAreaService" check="false"  version="1.0"/>
+
+	<dubbo:reference interface="com.dsj.modules.other.service.HousePictureService" id="housePictureService" check="false"  version="1.0"/>
+ 
+</beans>  

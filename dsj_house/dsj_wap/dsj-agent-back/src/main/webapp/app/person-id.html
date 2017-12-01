@@ -1,0 +1,195 @@
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/UploadId.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/fles.js"></script>
+  </head>
+  <body>
+  <div id="UploadId">
+    
+    
+  </div>
+    <div class="container" style="margin-top:50px;">
+      <!-- 上传证件照标题 -->
+      <form id="agentInfoForm" class="form-horizontal dsj_form">
+        <h4 class="dsj_title">个人身份信息</h4>
+        <div class="form-group">
+          <label for="housename" class="col-sm-2 control-label"><span class="dsj_warn">*</span>身份证号</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="idNumber" data-validate="required,people_card">
+          </div>
+        </div>
+        <div class="form-group">
+		                <label  class="col-sm-2 control-label"><span class="dsj_warn">*</span>手持身份证照片:</label>
+		                 <div class="col-sm-6">
+			                 <img id="idCardPhoto1ShowImg" style="width: 180px;height: 180px;"/>
+			                 <div id="idCardPhoto1FilePicker" style="display: inline-block;"> 
+			     				 <button class="btn btn-primary" type="button" >选择图片</button>            
+			                 </div>
+			                 <input name="idCardUrl" style="width: 0px;border: 0px;" type="text" data-validate="required"id="idCardPhoto1FileUrl" >
+		                 </div>
+		          
+          <div class="col-sm-3">
+            <p class="form-control-static dsj_id_detail">
+              1. 请上传本人手持身份证信息面照片，照片中含有本人头部或上半身<br>
+              2. 照片中本人形象需为免冠且并未化妆，五官清晰<br>
+              3. 拍照时对焦点请置于身份证上，保证身份证信息清晰且未遮挡<br>
+              4. 文件为数码照片，请勿进行美化和修改，以免申请失败<br>
+              5. 上传文件格式支持png，jpg<br>
+              6. 文件大小不超过3MB，文件尺寸最小为500px * 500px<br>
+            </p>
+          </div>
+
+        </div>
+        <div class="form-group">
+          <label  class="col-sm-2 control-label"><span class="dsj_warn">*</span>身份证国徽面照片:</label>
+		                 <div class="col-sm-6">
+			                 <img id="idCardPhoto2ShowImg" style="width: 180px;height: 180px;"/>
+			                 <div id="idCardPhoto2FilePicker" style="display: inline-block;"> 
+			     				 <button class="btn btn-primary" type="button" >选择图片</button>            
+			                 </div>
+			                 <input name="idCardUrlBack" style="width: 0px;border: 0px;" data-validate="required" type="text" id="idCardPhoto2FileUrl" >
+		                 </div>
+          <div class="col-sm-3">
+            <p class="form-control-static dsj_id_detail">
+              1. 身份证国徽面与信息面信息应为同一身份证的信息且在有效期内，照片清晰且未遮挡，无需手持拍照。<br>
+              2. 文件为数码照片，请勿进行美化和修改，以免申请失败<br>
+              3. 上传文件格式支持png，jpg<br>
+              4. 文件大小不超过3MB，文件尺寸最小为500px * 500px<br>
+            </p>
+          </div>
+
+        </div>
+        <div class="form-group">
+          <label for="" class="col-sm-2 control-label">工牌或名片照片:</label>
+   
+		                 <div class="col-sm-6">
+			                 <img id="cardPhotoShowImg" style="width: 180px;height: 180px;"/>
+			                 <div id="cardPhotoFilePicker" style="display: inline-block;"> 
+			     				 <button class="btn btn-primary" type="button" >选择图片</button>            
+			                 </div>
+			                 <input name="cardUrl" style="width: 0px;border: 0px;" type="text" id="cardPhotoFileUrl" >
+		                 </div>
+          <div class="col-sm-3">
+            <p class="form-control-static dsj_id_detail">
+              1. 上传个人名片或工牌，身份信息和公司名称需清晰无遮挡。<br>
+              2. 文件为数码照片，请勿进行美化和修改，以免申请失败<br>
+              3. 上传文件格式支持png，jpg<br>
+              4. 文件大小不超过3MB，文件尺寸最小为500px * 500px<br>
+            </p>
+          </div>
+
+        </div>
+        <div class="row dsj_button_group">
+          <div class="col-sm-12">
+          	<input class="btn btn-primary dsj_button" type="button"onclick="save()" value="确认上传">
+            <input class="btn btn-default dsj_button" type="button" onclick="cancle()"value="取消">
+            
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="lib/validate/verify.notify.ext.js"></script>
+    <script src="lib/validate/verify.notify.js"></script>
+    <script src="js/webupload/webuploader.js"></script>
+    <script src="js/webupload/single-upload-ex.js"></script>
+    <script src="js/webupload/loading-back.js"></script>
+    <script src="js/require.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/alertBox.js"></script>
+    <script type="text/javascript">
+    var id = '';
+    $(function(){
+        singleUpload("idCardPhoto1FilePicker","idCardPhoto1FileUrl","idCardPhoto1ShowImg",beforeUpload,afterUpload);
+        singleUpload("idCardPhoto2FilePicker","idCardPhoto2FileUrl","idCardPhoto2ShowImg",beforeUpload,afterUpload);
+        singleUpload("cardPhotoFilePicker","cardPhotoFileUrl","cardPhotoShowImg",beforeUpload,afterUpload);
+   })
+    	$(function(){
+    		$.ajax({
+					type:"post",
+					url:_url+"/back/frame/system/agent/getAgentInfo",
+					datatype:"json",
+					data:{r:Math.random()},
+					success:function(result){
+						if(result.status==200){
+							id= result.data.id;
+							$("input[name=idNumber]").val(result.data.idNumber);
+							$("#idCardPhoto1ShowImg").attr("src",result.data.idCardUrl);
+							$("#idCardPhoto1FileUrl").val(result.data.idCardUrl);
+
+							$("#idCardPhoto2ShowImg").attr("src",result.data.idCardUrlBack);
+							$("#idCardPhoto2FileUrl").val(result.data.idCardUrlBack);
+
+							$("#cardPhotoShowImg").attr("src",result.data.cardUrl);
+							$("#cardPhotoFileUrl").val(result.data.cardUrl);
+						}
+					}
+				})
+    	})
+    	
+    	 function beforeUpload()
+		 {
+		     loading_szyq("上传中...",true);
+		 }
+
+    function save(){
+   	 $("#agentInfoForm").validate(function (result) {
+   		  	if(result){
+   		  		$.ajax({
+   		  			type:"post",
+   		  			async:true,
+   		  			data:$("#agentInfoForm").serialize()+"&id="+id,
+   		  			dataType:"json",
+   		  			url:_url+"/back/frame/system/agent/saveAgent",
+   		  			success:function(result){
+   		  				if(result.status!=200){
+   		  					show_box(2,result.message);
+   						}else{
+   							show_box(3,"保存成功");
+   							setTimeout(function(){
+   								window.location.href="person-detail.html";
+   							},2000);
+   							
+   						}
+   		  			}
+   		  		})
+   		  	}
+   	 })
+   }
+    function cancle(){
+    	window.location.href="person-detail.html";
+    }
+ function afterUpload()
+ {
+     loading_szyq(false);
+ }
+ require(["text!common/commit.html"], function(tpl) {
+	 $('body').append(tpl);
+	 var source=$("#dailog_common_template").html();
+	 var template = Handlebars.compile(source);
+	 var html = template();
+	 $('body').append(html);
+	}); 
+    </script>
+  </body>
+</html>

@@ -1,0 +1,175 @@
+#popup_box{
+    position: fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    background-color: rgba(0,0,0,.3);
+    z-index: 1000000;
+    text-align: center;
+    color:#333;
+}
+.pointer{
+	cursor:pointer;
+}
+#feedback_box{
+    position: fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    background-color: rgba(0,0,0,.3);
+    z-index: 1000000;
+    text-align: center;
+    color:#333;
+}
+#popup_box .box_style{
+    width: 539px;
+    height: 202px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-250px,-101px);
+    -ms-transform:translate(-250px,-101px); 	
+	-moz-transform:translate(-250px,-101px);	
+	-webkit-transform:translate(-250px,-101px); 
+	-o-transform:translate(-250px,-101px); 	
+    background-color: #fff;
+    text-align: center;  
+}
+#popup_box .box_close{
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    background-color: red;
+    background:url(../img/index/x.png) no-repeat center;
+    position: absolute;
+    top:0;
+    right: 0;
+}
+#popup_box .box_close:hover{
+    background-color: #f5f5f5;
+}
+#popup_box .box_title{
+    height: 42px;
+    margin:0 auto 8px auto;
+}
+#popup_box .box_title>span{
+    padding-left: 52px;
+    height: 42px;
+    line-height: 42px;
+    display:inline-block;
+    font-size: 16px;
+    background: url(../img/index/01.png) no-repeat center left;
+}
+#popup_box .box_defeated .box_title>span{
+    background-image:url(../img/index/02.png); 
+}
+#popup_box .box_succeed .box_title>span{
+    background-image:url(../img/index/03.png); 
+}
+#popup_box .hint{
+    margin:0;
+    font-size: 12px;
+}
+#popup_box .box_button{
+    height: 42px;
+    margin:55px auto 10px auto;
+}
+
+#popup_box form{
+    display: inline-block;
+}
+
+#popup_box .buttons{
+    width: auto;
+    height: 28px;
+    line-height: 10px;
+    display: inline-block;
+    margin:30px 0 0 0;
+}
+
+#popup_box .buttons .reset_botton{
+    margin:0;
+    height: 28px;
+    line-height: 10px;
+    border-color:#878787;
+    color:#333;
+    background-color: #fff;
+    outline: none;
+    margin:0 20px 0 0;
+}
+
+#popup_box .buttons .reset_botton:hover{     
+    color:#2775e9;
+    background-color: #e6eef5;
+    border-color:#2775e9;
+}
+
+#popup_box .buttons .submit_botton{
+    margin:0;
+    height: 28px;
+    line-height: 10px;
+    outline: none;
+}
+
+#popup_box .buttons .submit_botton:hover{
+    background-color:#0066cc;
+}
+#popup_box .box_kuang{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    -ms-transform:translate(-50%,-50%); 	
+	-moz-transform:translate(-50%,-50%); 	
+	-webkit-transform:translate(-50%,-50%); 
+	-o-transform:translate(-50%,-50%);	
+}
+#popup_box  .box_defeated .box_kuang{
+     left:40%;
+     transform: translate(-35%,-50%);
+     -ms-transform:translate(-35%,-50%); 	
+	-moz-transform:translate(-35%,-50%);	
+	-webkit-transform:translate(-35%,-50%);
+	-o-transform:translate(-35%,-50%);	
+} 
+#popup_box .refund_cause{
+    width: 500px;
+    height: 512px;
+    padding:30px 50px;
+    transform: translate(-50%,-50%);
+   -ms-transform:translate(-50%,-50%); 	
+	-moz-transform:translate(-50%,-50%); 	
+	-webkit-transform:translate(-50%,-50%);
+	-o-transform:translate(-50%,-50%);	
+}
+#popup_box .user_back_kuang{
+    height:512px;
+    top:213px;
+    transform: translate(-250px,-101px);
+    -ms-transform: translate(-250px,-101px); 	
+	-moz-transform: translate(-250px,-101px);	
+	-webkit-transform: translate(-250px,-101px); 
+	-o-transform: translate(-250px,-101px);
+}
+#popup_box .buttons .reset_botton {
+    margin: 0;
+    height: 28px;
+    line-height: 10px;
+    border-color: #878787;
+    color: #333;
+    background-color: #fff;
+    outline: none;
+    margin: 0 20px 0 0;
+    border-radius: 0px;
+}
+#popup_box .buttons .submit_botton {
+    font-size: 14px;
+    letter-spacing: 0.7px;
+    text-align: center;
+    color: #3172dc;
+    color: #fff;
+    background-color: #3a7ee3;
+    border-radius: 0px;
+}

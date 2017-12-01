@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.newhouse.dao.impl.NewHouseOpenHandTimeAuthDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_open_hand_time_auth a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_open_hand_time_auth </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.type AS "type",
+		a.wy_type AS "wyType",
+		a.wy_type_name AS "wyTypeName",
+		a.describes AS "describes",
+		a.open_hand_time AS "openHandTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHouseOpenHandTimeAuthPo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="type" property="type" />
+		<result column="wy_type" property="wyType" />
+		<result column="describes" property="describes" />
+		<result column="open_hand_time" property="openHandTime" />
+	</resultMap>
+	
+	<sql id="newHouseOpenHandTimeAuthJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		<if test="wyType != null and wyType!= ''"> AND a.wy_type = #{wyType}</if>
+		<if test="describes != null and describes!= ''"> AND a.describes = #{describes}</if>
+		<if test="openHandTime != null and openHandTime!= ''"> AND a.open_hand_time = #{openHandTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHouseOpenHandTimeAuthPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="newHouseOpenHandTimeAuthJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+  	
+  	<select id="getNewBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+		and type = 1 and open_hand_time &gt;=now()
+		order by open_hand_time asc limit 1
+  	</select>
+  	
+	<select id="getNewBy2" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+		and type = 1 and open_hand_time &lt;= now()
+		order by open_hand_time desc limit 1
+  	</select>
+	
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	<select id="listNewBy" resultMap="beanMap">
+    	SELECT 
+    		id AS "id",
+			house_id AS "houseId",
+			type AS "type",
+			wy_type AS "wyType",
+			wy_type_name AS "wyTypeName",
+			describes AS "describes",
+			open_hand_time AS "openHandTime"
+    	FROM dsj_new_house_open_hand_time_auth 
+    	<where>
+			<if test="houseId != null and houseId!= ''"> AND house_id = #{houseId}</if>
+			<if test="type != null and type!= ''"> AND type = #{type}</if>
+			<if test="nowtime != null"> AND open_hand_time &gt;= now()</if>
+		</where>
+    	union
+    	SELECT 
+    		id AS "id",
+			house_id AS "houseId",
+			type AS "type",
+			wy_type AS "wyType",
+			wy_type_name AS "wyTypeName",
+			describes AS "describes",
+			open_hand_time AS "openHandTime"
+    	FROM dsj_new_house_open_hand_time_auth 
+    	<where>
+			<if test="houseId != null and houseId!= ''"> AND house_id = #{houseId}</if>
+			<if test="type != null and type!= ''"> AND type = #{type}</if>
+			<if test="nowtime != null"> AND open_hand_time &lt;= now()</if>
+		</where>
+    	ORDER BY openHandTime desc
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="NewHouseOpenHandTimeAuthPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_id,
+			type,
+			wy_type,
+			wy_type_name,
+			describes,
+			open_hand_time
+		) VALUES (
+			#{id},
+			#{houseId},
+			#{type},
+			#{wyType},
+			#{wyTypeName},
+			#{describes},
+			#{openHandTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NewHouseOpenHandTimeAuthPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="type != null">type,</if>
+					<if test="wyType != null">wy_type,</if>
+					<if test="wyTypeName != null">wy_type_name,</if>
+					<if test="describes != null">describes,</if>
+					<if test="openHandTime != null">open_hand_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="type != null">#{type},</if>
+			<if test="wyType != null">#{wyType},</if>
+			<if test="wyTypeName != null">#{wyTypeName},</if>
+			<if test="describes != null">#{describes},</if>
+			<if test="openHandTime != null">#{openHandTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="NewHouseOpenHandTimeAuthPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_id = #{houseId},
+			type = #{type},
+			wy_type = #{wyType},
+			describes = #{describes},
+			open_hand_time = #{openHandTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHouseOpenHandTimeAuthPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="type != null">type = #{type},</if>
+			<if test="wyType != null">wy_type = #{wyType},</if>
+			<if test="describes != null">describes = #{describes},</if>
+			<if test="openHandTime != null">open_hand_time = #{openHandTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	<update id="deleteByNewHouseId" parameterType="long">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE house_id = #{0}
+	</update>
+	<update id="updateNewHouseId" parameterType="java.util.Map">
+		update <include refid="tableNameUpdate"/> set house_id =#{yesId} where house_id=#{noId}
+	</update>
+	
+	<insert id="saveList" parameterType="java.util.Map">  
+	    INSERT INTO <include refid="tableNameUpdate"/>(
+			house_id,
+			type,
+			wy_type,
+			wy_type_name,
+			describes,
+			open_hand_time
+		) VALUES 
+	    <foreach collection="openHandTimelist" item="item" index="index" separator="," >  
+	        (
+			#{newHouseId},
+			#{item.type},
+			#{item.wyType},
+			#{item.wyTypeName},
+			#{item.describes},
+			#{item.openHandTime}
+	      )  
+	    </foreach>  
+	</insert>  
+</mapper>

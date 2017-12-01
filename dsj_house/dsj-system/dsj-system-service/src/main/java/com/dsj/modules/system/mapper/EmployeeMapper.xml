@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.EmployeeDaoImpl">
+    
+    <sql id="tableName"> dsj_employee a</sql>
+    <sql id="tableNameUpdate"> dsj_employee </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.emp_num AS "empNum",
+		a.real_name AS "realName",
+		a.tell_phone AS "tellPhone",
+		a.department AS "department",
+		a.default_role AS "defaultRole",
+		a.extend_role AS "extendRole",
+		a.role_name AS "roleName",
+		a.birthday AS "birthday",
+		a.education AS "education",
+		a.major AS "major",
+		a.skilled AS "skilled",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="EmployeePo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="emp_num" property="empNum" />
+		<result column="real_name" property="realName" />
+		<result column="tell_phone" property="tellPhone" />
+		<result column="department" property="department" />
+		<result column="default_role" property="defaultRole" />
+		<result column="extend_role" property="extendRole" />
+		<result column="role_name" property="roleName" />
+		<result column="birthday" property="birthday" />
+		<result column="education" property="education" />
+		<result column="major" property="major" />
+		<result column="skilled" property="skilled" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="employeeJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="empNum != null and empNum!= ''"> AND a.emp_num = #{empNum}</if>
+		<if test="realName != null and realName!= ''"> AND a.real_name = #{realName}</if>
+		<if test="tellPhone != null and tellPhone!= ''"> AND a.tell_phone = #{tellPhone}</if>
+		<if test="department != null and department!= ''"> AND a.department = #{department}</if>
+		<if test="defaultRole != null and defaultRole!= ''"> AND a.default_role = #{defaultRole}</if>
+		<if test="extendRole != null and extendRole!= ''"> AND a.extend_role = #{extendRole}</if>
+		<if test="roleName != null and roleName!= ''"> AND a.roleName = #{roleName}</if>
+		<if test="birthday != null and birthday!= ''"> AND a.birthday = #{birthday}</if>
+		<if test="education != null and education!= ''"> AND a.education = #{education}</if>
+		<if test="major != null and major!= ''"> AND a.major = #{major}</if>
+		<if test="skilled != null and skilled!= ''"> AND a.skilled = #{skilled}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>		
+	</sql>
+    
+	<select id="getById" resultType="EmployeePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="employeeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM dsj_user,<include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+			<if test="delFlag != null and delFlag!= ''"> AND dsj_user.del_flag = #{delFlag}</if>
+		AND dsj_user.id = a.user_id
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM dsj_user,<include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+			<if test="delFlag != null and delFlag!= ''"> AND dsj_user.del_flag = #{delFlag}</if>
+		AND dsj_user.id = a.user_id
+		</where>
+	</select>
+	
+	<select id="selectUser" parameterType="java.util.Map" resultType="long">
+	   SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			default_role=#{default_role}
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="EmployeePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			user_id,
+			emp_num,
+			real_name,
+			tell_phone,
+			department,
+			default_role,
+			extend_role,
+			role_name,
+			birthday,
+			education,
+			major,
+			skilled,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{userId},
+			#{empNum},
+			#{realName},
+			#{tellPhone},
+			#{department},
+			#{defaultRole},
+			#{extendRole},
+			#{roleName},
+			#{birthday},
+			#{education},
+			#{major},
+			#{skilled},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="EmployeePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="empNum != null">emp_num,</if>
+					<if test="realName != null">real_name,</if>
+					<if test="tellPhone != null">tell_phone,</if>
+					<if test="department != null">department,</if>
+					<if test="defaultRole != null">default_role,</if>
+					<if test="extendRole != null">extend_role,</if>
+					<if test="roleName != null">roleName,</if>
+					<if test="birthday != null">birthday,</if>
+					<if test="education != null">education,</if>
+					<if test="major != null">major,</if>
+					<if test="skilled != null">skilled,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="empNum != null">#{empNum},</if>
+			<if test="realName != null">#{realName},</if>
+			<if test="tellPhone != null">#{tellPhone},</if>
+			<if test="department != null">#{department},</if>
+			<if test="defaultRole != null">#{defaultRole},</if>
+			<if test="extendRole != null">#{extendRole},</if>
+			<if test="roleName != null">#{roleName},</if>
+			<if test="birthday != null">#{birthday},</if>
+			<if test="education != null">#{education},</if>
+			<if test="major != null">#{major},</if>
+			<if test="skilled != null">#{skilled},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="EmployeePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			user_id = #{userId},
+			emp_num = #{empNum},
+			real_name = #{realName},
+			tell_phone = #{tellPhone},
+			department = #{department},
+			default_role = #{defaultRole},
+			extend_role = #{extendRole},
+			role_name = #{roleName},
+			birthday = #{birthday},
+			education = #{education},
+			major = #{major},
+			skilled = #{skilled},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="EmployeePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="empNum != null">emp_num = #{empNum},</if>
+			<if test="realName != null">real_name = #{realName},</if>
+			<if test="tellPhone != null">tell_phone = #{tellPhone},</if>
+			<if test="department != null">department = #{department},</if>
+			<if test="defaultRole != null">default_role = #{defaultRole},</if>
+			<if test="extendRole != null">extend_role = #{extendRole},</if>
+			<if test="roleName != null">role_name = #{roleName},</if>
+			<if test="birthday != null">birthday = #{birthday},</if>
+			<if test="education != null">education = #{education},</if>
+			<if test="major != null">major = #{major},</if>
+			<if test="skilled != null">skilled = #{skilled},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+
+	<update id="deleteByIds" parameterType="java.util.Map">
+		UPDATE dsj_user SET
+		del_flag = #{delFlag}
+		WHERE id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	<insert id="insertRole" parameterType="java.util.Map">
+		insert into dsj_user_role 
+		(role_id,user_id)
+		values 
+		<foreach collection="list" index="index" item="role" separator=",">
+			(#{role},#{userId})
+		</foreach>
+		
+	</insert>
+	<select id="getRoleIdList" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		select role_id from dsj_user_role where user_id = #{userId}
+ 	</select>
+ 	<select id="getRoleNameList" parameterType="java.util.List" resultType="RolePo">
+		select * from dsj_role 
+ 	</select>
+ 	<select id="getRoleNameString" parameterType="java.util.List" resultType="java.lang.String">
+		select name from dsj_role where id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+ 	</select>
+ 	<delete id="deleteRole" parameterType="java.lang.Long">
+ 		delete from dsj_user_role where user_id = #{userId}
+ 	</delete>
+ 	<select id="getEmpNums" resultType="java.lang.Integer">
+ 		select emp_num from dsj_employee 
+ 	</select>
+ 	
+ 	
+	
+</mapper>

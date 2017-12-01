@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/webuploader.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+      </div>
+      <div class="row">
+        <h4 class="dsj_title">室内图</h4>
+        <p>共6张,还能上传4张(单张宽高不低于600像素，图片体积小于1兆,可同时上传一张或多张)  </p>
+        <div  class="dsj_upload clearfix">
+            <div id="container">
+                <!--头部，相册选择和格式选择-->
+
+                <div id="uploader">
+                    <div class="queueList">
+                        <div id="dndArea" class="placeholder">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="wrapper1" class="dsj_upload clearfix">
+        <div id="filePicker1"  style="display:none"></div>
+    
+         
+          <div class="col-sm-2">
+            <div class="dsj_source_img">
+              <div class="add-more">
+                <span>+</span>
+              </div>
+            </div>
+	          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h4 class="dsj_title">户型图</h4>
+        <div class="dsj_alert" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          您输入的密码有误
+        </div>
+
+        <p>共6张,还能上传4张(单张宽高不低于600像素，图片体积小于1兆,可同时上传一张或多张)  </p>
+        <div id="wrapper2" class="dsj_upload">
+        <div id="filePicker2" style="display:none"></div>
+     
+          <div class="col-sm-2">
+            <div class="dsj_source_img">
+              <div class="add-more">
+                <span>+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h4 class="dsj_title">室外图</h4>
+        <p>共6张,还能上传4张(单张宽高不低于600像素，图片体积小于1兆,可同时上传一张或多张)  </p>
+        <div id="wrapper3" class="dsj_upload">
+        <div id="filePicker3" style="display:none"></div>
+       
+         
+          <div class="col-sm-2">
+            <div class="dsj_source_img">
+              <div class="add-more">
+                <span>+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row dsj_button_group">
+        <div class="col-sm-12">
+          <button class="btn btn-default" onclick="canelPublish(2);" >发布</button>
+          <button class="btn btn-default" onclick="canelPublish(1);" >保存</button>
+          <button class="btn btn-default" onclick="canelPublish(1);" >取消</button>
+        </div>
+      </div>
+    </div>
+    <script id="dsj_uploader_template" type="text/x-handlebars-template">
+	{{#each this}}
+      <div class="col-sm-2">
+        <div class="dsj_source_img">
+			 <div class="delete-pic">
+                <span onclick="removeImage(this,{{objType}},{{id}})">&times;<input type="hidden" value="{{id}}"></span>
+              </div>
+			  <img class="img-responsive" src="{{pictureUrl}}">
+			{{#compare isCover '==' 1 }}
+				<div class="set-cover" style="background-color:#2775e9;" onclick="setCover(this,{{objType}},{{id}})">设为封面</div>
+			{{else}}
+				<div class="set-cover" onclick="setCover(this,{{objType}},{{id}})">设为封面</div>
+			{{/compare}}
+        </div>
+      </div>
+	{{/each}}
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/webuploader.js"></script>
+    <script src="js/upload.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/common/header.js"></script>
+    <script type="text/javascript">
+
+    var objId;
+    (function( $ ){
+        // 当domReady的时候开始初始化
+        $(function() {
+        	
+        	objId =GetQueryString("id");
+        	var objType=3;//普通租房
+        	uploadImage("#wrapper1","filePicker1",1,objId,objType);
+        	uploadImage("#wrapper2","filePicker2",2,objId,objType);
+        	uploadImage("#wrapper3","filePicker3",3,objId,objType);
+        	
+        	$.ajax({
+   	            type: "GET",
+   	            url: _url+"/back/rentHouse/general/origin/to_image_list",
+   	            data:{"id":objId},
+   	            dataType: "json",
+   	            success: function(result){
+   	            	readerImageList(result.data.insideImages,"dsj_uploader_template","#wrapper1");
+   	            	readerImageList(result.data.houseTypeImages,"dsj_uploader_template","#wrapper2");
+   	            	readerImageList(result.data.outInsideImages,"dsj_uploader_template","#wrapper3");
+   	            }
+			});
+        });
+        
+    })( jQuery );
+    
+    function canelPublish(num){
+    	if(num == 1 ){
+    		location=_url+"/app/rent-origin-list.html";
+    		return ;
+    	}
+    	var ids = new Array();
+    	ids.push(parseInt(objId));
+   		$.ajax({
+   			type:"post",
+   			async:true,
+   			data:{"ids":ids,"status": 2 },
+   			dataType:"json",
+   			url:_url+"/back/rentHouse/general/origin/origin_upDown",
+   			success:function(resultVo){
+   				if(resultVo.status!=200){
+   					
+   				}else{
+   					location=_url+"/app/rent-origin-list.html";
+   				}
+   			}
+   		})
+    }
+	
+    </script>
+  </body>
+</html>

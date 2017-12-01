@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.RoleBusinessDaoImpl">
+    
+    <sql id="tableName"> dsj_role_business a </sql>
+    <sql id="tableNameUpdate"> dsj_role_business </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.role_id AS "roleId",
+		a.business_id AS "businessId"
+	</sql>
+	
+	<resultMap id="beanMap" type="RoleBusinessPo">
+		<id column="id" property="id" />
+		<result column="role_id" property="roleId" />
+		<result column="business_id" property="businessId" />
+	</resultMap>
+	
+	<sql id="roleBusinessJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="roleId != null and roleId!= ''"> AND a.role_id = #{roleId}</if>
+		<if test="businessId != null and businessId!= ''"> AND a.business_id = #{businessId}</if>
+	</sql>
+    
+	<select id="getById" resultType="RoleBusinessPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="roleBusinessJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="RoleBusinessPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			role_id,
+			business_id
+		) VALUES (
+			#{id},
+			#{roleId},
+			#{businessId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="RoleBusinessPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="roleId != null">role_id,</if>
+					<if test="businessId != null">business_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="roleId != null">#{roleId},</if>
+			<if test="businessId != null">#{businessId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="RoleBusinessPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			role_id = #{roleId},
+			business_id = #{businessId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="RoleBusinessPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="roleId != null">role_id = #{roleId},</if>
+			<if test="businessId != null">business_id = #{businessId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

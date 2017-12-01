@@ -1,0 +1,338 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  
+  <parent>
+    <groupId>com.dsj</groupId>
+    <artifactId>dsj-common-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../dsj-common/dsj-common-parent</relativePath>
+  </parent>
+
+  <artifactId>dsj-front</artifactId>
+  <packaging>war</packaging>
+
+  <name>dsj-front</name>
+  
+  <properties>
+    <!-- environment setting -->
+    <jdk.version>1.8</jdk.version>
+    <jetty.version>7.6.14.v20131031</jetty.version>
+    <tomcat.version>2.2</tomcat.version>
+    <webserver.port>8181</webserver.port>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <profiles>  
+        <profile>  
+            <id>dev</id>  
+            <properties>  
+                <!-- 部署配置 -->
+        <deployName>dsj-front</deployName>
+        <sshConfig>root:123456@192.168.40.252:22/root</sshConfig>
+            </properties>  
+            <activation>  
+                <activeByDefault>true</activeByDefault>  
+            </activation>  
+        </profile>  
+        <profile>  
+            <id>test</id>  
+            <properties>  
+                <!-- 部署配置 -->
+        <deployName>dsj-front</deployName>
+        <sshConfig></sshConfig>
+            </properties>  
+        </profile>
+         <profile>  
+            <id>prod1</id>  
+            <properties>  
+                <!-- 部署配置 -->
+        <deployName>dsj-front</deployName>
+        <sshConfig></sshConfig>
+            </properties>  
+        </profile>
+         <profile>  
+            <id>prod2</id>  
+            <properties>  
+                <!-- 部署配置 -->
+        <deployName>dsj-front</deployName>
+        <sshConfig></sshConfig>
+            </properties>  
+        </profile>
+    </profiles>  
+
+  <build>
+    <finalName>dsj-front</finalName>
+    <resources>
+      <resource>
+        <targetPath>${project.build.directory}/classes</targetPath>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
+    
+    <plugins>
+    
+      <!-- jetty插件 -->
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
+        <configuration>
+          <connectors>
+            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+              <port>8061</port>
+            </connector>
+          </connectors>
+          <webAppConfig>
+            <contextPath></contextPath>
+          </webAppConfig>
+          <systemProperties>  
+            <systemProperty>
+              <name>org.mortbay.util.URI.charset</name>
+              <value>${project.build.sourceEncoding}</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin>
+       <!-- ssh 文件上传插件 -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>wagon-maven-plugin</artifactId>
+            <version>1.0</version>
+            <configuration>
+              <serverId>nw_server</serverId>
+              <fromFile>target/${deployName}.war</fromFile>
+              <url>scp://${sshConfig}/upload/war</url>
+                <commands>
+                  <!-- 改名 -->
+                  <command>mv ~/upload/war/${deployName}.war ~/upload/war/ROOT.war</command>
+                  <!-- 部署 Tomcat -->
+                  <command>sh ~/upload/war/autoDeploy.sh </command>
+                        <!-- 删除 -->
+                  <command>rm ~/upload/war/ROOT.war</command>
+                </commands>
+              <displayCommandOutputs>true</displayCommandOutputs>
+            </configuration>
+        </plugin>
+
+        </plugins>
+            <!-- ssh 文件上传插件 -->
+           <extensions>
+          <extension>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh</artifactId>
+            <version>2.8</version>
+          </extension>
+        </extensions>
+  </build>
+
+  <dependencies>
+    <!-- freemarker的jar -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.23</version>
+    </dependency>
+  
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>sitemesh</artifactId>
+      <version>2.4.2</version>
+      <scope>runtime</scope>
+    </dependency>
+    
+      <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>0.2.23</version>
+        </dependency>
+    
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-common-utils</artifactId>
+      <version>${dsj-common-utils.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-common-config</artifactId>
+      <version>${dsj-common-config.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-common-web</artifactId>
+      <version>${dsj-common-web.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-other-api</artifactId>
+      <version>${dsj-other-api.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-oldHouse-api</artifactId>
+      <version>${dsj-oldHouse-api.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-newHouse-api</artifactId>
+      <version>${dsj-newHouse-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aliyun.oss</groupId>
+      <artifactId>aliyun-sdk-oss</artifactId>
+      <version>2.0.5</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-rentHouse-api</artifactId>
+      <version>${dsj-rentHouse-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-solr-api</artifactId>
+      <version>${dsj-solr-api.version}</version>
+    </dependency>
+    
+        <dependency>
+          <groupId>com.dsj</groupId>
+          <artifactId>dsj-easemob-api</artifactId>
+          <version>${dsj-system-api.version}</version>
+        </dependency>
+    
+        <dependency>
+          <groupId>com.dsj</groupId>
+          <artifactId>dsj-mobile400-api</artifactId>
+          <version>${dsj-mobile400-api.version}</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-pageLayout-api</artifactId>
+			<version>${dsj-pageLayout-api.version}</version>
+		</dependency>
+        <dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-fw-api</artifactId>
+			<version>${dsj-fw-api.version}</version>
+		</dependency>
+    <dependency>
+      <groupId>com.dsj</groupId>
+      <artifactId>dsj-system-api</artifactId>
+      <version>${dsj-system-api.version}</version>
+    </dependency>
+    <!-- Others Begin -->
+    <dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <!-- Others End -->
+    
+    <dependency>
+         <groupId>com.qiniu</groupId>
+         <artifactId>qiniu-java-sdk</artifactId>
+         <version>7.2.0</version>
+     </dependency>
+
+    <!-- dubbo 需要的jar start -->
+    <dependency>
+      <groupId>org.jboss.netty</groupId>
+      <artifactId>netty</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>dubbo</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.101tec</groupId>
+      <artifactId>zkclient</artifactId>
+    </dependency>
+    <!-- dubbo 需要的jar end -->
+  <!-- shiro 需要的jar start --> 
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>1.2.4</version>
+    </dependency>
+  
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <version>1.2.4</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.github.jknack</groupId>
+        <artifactId>handlebars</artifactId>
+        <version>4.0.5</version>
+    </dependency>
+    <dependency>
+        <groupId>com.github.jknack</groupId>
+        <artifactId>handlebars-springmvc</artifactId>
+         <version>4.0.5</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-spring</artifactId>
+      <version>1.2.4</version>
+    </dependency>
+  <!-- shiro 需要的jar end -->
+    <dependency>
+      <groupId>org.tuckey</groupId>
+      <artifactId>urlrewritefilter</artifactId>
+      <version>4.0.3</version>
+    </dependency>
+    
+    <dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	    <version>1.1.40</version>
+	</dependency>
+    
+    <dependency>
+	    <groupId>com.belerweb</groupId>
+	    <artifactId>pinyin4j</artifactId>
+	    <version>2.5.0</version>
+	</dependency>
+    
+  </dependencies>
+
+</project>

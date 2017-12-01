@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.PcNewHouseDaoImpl">
+    
+    <sql id="tableName"> dsj_pc_new_house a </sql>
+    <sql id="tableNameUpdate"> dsj_pc_new_house </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.newHouse_id AS "newHouseId",
+		a.newHouse_name AS "newHouseName",
+		a.link_address AS "linkAddress",
+		a.picture AS "picture",
+		a.agent_id 	AS "agentId",
+		a.recommend AS "recommend",
+		a.label_id AS "labelId"
+	</sql>
+	
+	<resultMap id="beanMap" type="PcNewHousePo">
+		<id column="id" property="id" />
+		<result column="newHouse_id" property="newHouseId" />
+		<result column="newHouse_name" property="newHouseName" />
+		<result column="link_address" property="linkAddress" />
+		<result column="picture" property="picture" />
+		<result column="agent_id" property="agentId" />
+		<result column="recommend" property="recommend" />
+		<result column="label_id" property="labelId" />
+	</resultMap>
+	
+	<sql id="pcNewHouseJoins">
+	</sql>
+    
+    <sql id="condition_sql">
+        <if test="id != null and id!= ''">AND a.id =#{id}</if>	
+		<if test="newHouseId != null and newHouseId!= ''"> AND a.newHouse_id = #{newHouseId}</if>
+		<if test="newHouseName != null and newHouseName!= ''"> AND a.newHouse_name = #{newHouseName}</if>
+		<if test="linkAddress != null and linkAddress!= ''"> AND a.link_address = #{linkAddress}</if>
+		<if test="picture != null and picture!= ''"> AND a.picture = #{picture}</if>
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="recommend != null and recommend!= ''"> AND a.recommend = #{recommend}</if>
+		<if test="labelId != null and labelId!= ''"> AND a.label_id = #{labelId}</if>
+	</sql>
+    
+	<select id="getById" resultType="PcNewHousePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="pcNewHouseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="PcNewHousePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			newHouse_id,
+			newHouse_name,
+			link_address,
+			picture,
+			agent_id,
+			label_id,
+			recommend
+		) VALUES (
+			#{id},
+			#{newHouseId},
+			#{newHouseName},
+			#{linkAddress},
+			#{picture},
+			#{agentId},
+			#{recommend},
+			#{labelId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="PcNewHousePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="newHouseId != null">newHouse_id,</if>
+					<if test="newHouseName != null">newHouse_name,</if>
+					<if test="linkAddress != null">link_address,</if>
+					<if test="picture != null">picture,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="recommend != null">recommend,</if>
+					<if test="labelId != null">label_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="newHouseId != null">#{newHouseId},</if>
+			<if test="newHouseName != null">#{newHouseName},</if>
+			<if test="linkAddress != null">#{linkAddress},</if>
+			<if test="picture != null">#{picture},</if>
+			<if test="agentId != null">#{agent_id},</if>
+			<if test="recommend != null">#{recommend},</if>
+			<if test="labelId != null">#{label_id},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="PcNewHousePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			newHouse_id = #{newHouseId},
+			newHouse_name = #{newHouseName},
+			link_address = #{linkAddress},
+			picture = #{picture},
+			agent_id=#{agentId},
+			recommend = #{recommend},
+			label_id=#{labelId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="PcNewHousePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="newHouseId != null">newHouse_id = #{newHouseId},</if>
+			<if test="newHouseName != null">newHouse_name = #{newHouseName},</if>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="recommend != null">recommend = #{recommend},</if>
+			<if test="labelId != null">label_id = #{labelId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+    
+    <update id="updateNewHousePage" parameterType="PcNewHousePo">
+   		 UPDATE dsj_pc_new_house_page  
+    	 <set>
+			<if test="newHouseId != null">newHouse_id = #{newHouseId},</if>
+			<if test="newHouseName != null">newHouse_name = #{newHouseName},</if>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="recommend != null">recommend = #{recommend},</if>
+			<if test="labelId != null">label_id = #{labelId},</if>
+    	</set>
+    	WHERE pid = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getLableNewHouseList" resultType="com.dsj.modules.pagelayout.vo.NewHouseLabelVo">
+  	 SELECT
+	p.label_id AS labelId,
+	d.id AS newHouseId,
+	d.around_min_price AS referencePriceMin,
+	d.around_max_price as referencePriceMan,
+	p.id AS pcNewHouseId,
+	j.id AS agentId,
+    i.total_score AS totalScore,
+    g.user_id AS userId,
+    ag.name AS agName,
+    ag.small_icon as smallIcon,
+    ag.big_icon as bigIcon,
+	d. NAME,
+	d.around_min_price AS price,
+	m.mobile AS phone,
+	dm.mobile AS agentPhone,
+	u.username as userName,
+	t.room AS room,
+	t.hall AS hall,
+	t.toilet AS toilet,
+	t.wy_type_name AS wyTypeName,
+	t.built_up AS occupyArea,
+	p.picture,
+	j.agent_id AS agentId,
+	j.agent_name AS agentName,
+	j.`comment` AS COMMENT,
+	j.link_address AS agentAddress,
+	g.avatar_url AS avatarUrl,
+	p.recommend
+FROM
+	dsj_pc_new_house p
+LEFT JOIN (
+	SELECT
+		dic_id,
+		wy_type_name,
+		room,
+		hall,
+		toilet,
+		built_up
+	FROM
+		dsj_new_house_type_auth
+	WHERE
+		house_status = 1
+) t ON p.newHouse_id = t.dic_id
+LEFT JOIN dsj_new_house_directory_auth d ON d.id = p.newHouse_id
+LEFT JOIN dsj_pc_agent j ON j.id = p.agent_id
+LEFT JOIN dsj_agent g ON g.user_id = j.agent_id
+LEFT JOIN dsj_mobile m ON m.house_id = d.id
+LEFT JOIN dsj_mobile dm ON dm.agent_id=g.id
+LEFT JOIN dsj_user u ON u.id=g.user_id
+LEFT JOIN dsj_agent_info i ON i.agent_id=g.agent_code
+LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score  
+GROUP BY
+	p.id
+  	</select>
+  	
+  	<select id="getLableNewHouseListPage" resultType="com.dsj.modules.pagelayout.vo.NewHouseLabelVo">
+  	  SELECT
+	p.label_id AS labelId,
+	d.id AS newHouseId,
+	d.around_min_price AS referencePriceMin,
+	d.around_max_price as referencePriceMan,
+	p.id AS pcNewHouseId,
+	j.id AS agentId,
+    i.total_score AS totalScore,
+    g.user_id AS userId,
+    ag.name AS agName,
+    ag.small_icon as smallIcon,
+    ag.big_icon as bigIcon,
+	d. NAME,
+	d.around_min_price AS price,
+	m.mobile AS phone,
+	dm.mobile AS agentPhone,
+	u.username as userName,
+	t.room AS room,
+	t.hall AS hall,
+	t.toilet AS toilet,
+	t.wy_type_name AS wyTypeName,
+	t.built_up AS occupyArea,
+	p.picture,
+	j.agent_id AS agentId,
+	j.agent_name AS agentName,
+	j.`comment` AS COMMENT,
+	j.link_address AS agentAddress,
+	g.avatar_url AS avatarUrl,
+	p.recommend
+FROM
+	dsj_pc_new_house_page p
+LEFT JOIN (
+	SELECT
+		dic_id,
+		wy_type_name,
+		room,
+		hall,
+		toilet,
+		built_up
+	FROM
+		dsj_new_house_type_auth
+	WHERE
+		house_status = 1
+) t ON p.newHouse_id = t.dic_id
+LEFT JOIN dsj_new_house_directory_auth d ON d.id = p.newHouse_id
+LEFT JOIN dsj_pc_agent j ON j.id = p.agent_id
+LEFT JOIN dsj_agent g ON g.user_id = j.agent_id
+LEFT JOIN dsj_mobile m ON m.house_id = d.id
+LEFT JOIN dsj_mobile dm ON dm.agent_id=g.id
+LEFT JOIN dsj_user u ON u.id=g.user_id
+LEFT JOIN dsj_agent_info i ON i.agent_id=g.agent_code
+LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score  
+GROUP BY
+	p.id
+  	</select>
+  	
+  	<select id="getNewHouse" resultMap="beanMap">
+  	    select 
+  	    a.id AS "id",
+		a.newHouse_id AS "newHouseId",
+		d.name AS "newHouseName",
+		a.link_address AS "linkAddress",
+		a.picture AS "picture",
+		a.agent_id 	AS "agentId",
+		a.recommend AS "recommend",
+		a.label_id AS "labelId"
+		from dsj_pc_new_house a
+		left join dsj_new_house_directory_auth d on d.id=a.newHouse_id
+		where a.id=#{id}
+  	 </select>
+	<select id="getFindAll" resultMap="beanMap">
+	  select a.newHouse_id as id,d.name as newHouseName
+	  from dsj_pc_new_house_page a
+	  left join dsj_new_house_directory_auth d on d.id=a.newHouse_id
+	</select>
+</mapper>

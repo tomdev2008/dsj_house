@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.DicHouseTypeCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_dic_house_type_crawler a </sql>
+    <sql id="tableNameUpdate"> old_dic_house_type_crawler </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.room AS "room",
+		a.hall AS "hall",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.orientations_name AS "orientationsName",
+		a.use_rate AS "useRate",
+		a.origin_house_type_id AS "originHouseTypeId",
+		a.create_time AS "createTime",
+		a.origin_dic_id AS "originDicId",
+		a.image_url AS "imageUrl",
+		a.origin_image_url AS "originImageUrl"
+	</sql>
+	
+	<resultMap id="beanMap" type="DicHouseTypeCrawlerPo">
+		<id column="id" property="id" />
+		<result column="room" property="room" />
+		<result column="hall" property="hall" />
+		<result column="toilet" property="toilet" />
+		<result column="kitchen" property="kitchen" />
+		<result column="orientations_name" property="orientationsName" />
+		<result column="use_rate" property="useRate" />
+		<result column="origin_house_type_id" property="originHouseTypeId" />
+		<result column="create_time" property="createTime" />
+		<result column="origin_dic_id" property="originDicId" />
+		<result column="image_url" property="imageUrl" />
+		<result column="origin_image_url" property="originImageUrl" />
+	</resultMap>
+	
+	<sql id="dicHouseTypeCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="room != null and room!= ''"> AND a.room = #{room}</if>
+		<if test="hall != null and hall!= ''"> AND a.hall = #{hall}</if>
+		<if test="toilet != null and toilet!= ''"> AND a.toilet = #{toilet}</if>
+		<if test="kitchen != null and kitchen!= ''"> AND a.kitchen = #{kitchen}</if>
+		<if test="orientationsName != null and orientationsName!= ''"> AND a.orientations_name = #{orientationsName}</if>
+		<if test="useRate != null and useRate!= ''"> AND a.use_rate = #{useRate}</if>
+		<if test="originHouseTypeId != null and originHouseTypeId!= ''"> AND a.origin_house_type_id = #{originHouseTypeId}</if>
+		<if test="originDicId != null and originDicId!= ''"> AND a.origin_dic_id = #{originDicId}</if>
+		<if test="imageUrl != null and imageUrl!= ''"> AND a.image_url = #{imageUrl}</if>
+		<if test="originImageUrl != null and originImageUrl!= ''"> AND a.origin_image_url = #{originImageUrl}</if>
+	</sql>
+    
+	<select id="getById" resultType="DicHouseTypeCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="dicHouseTypeCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="DicHouseTypeCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			room,
+			hall,
+			toilet,
+			kitchen,
+			orientations_name,
+			use_rate,
+			origin_house_type_id,
+			create_time,
+			origin_dic_id,
+			image_url,
+			origin_image_url
+		) VALUES (
+			#{id},
+			#{room},
+			#{hall},
+			#{toilet},
+			#{kitchen},
+			#{orientationsName},
+			#{useRate},
+			#{originHouseTypeId},
+			#{createTime},
+			#{originDicId},
+			#{imageUrl},
+			#{originImageUrl}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="DicHouseTypeCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="room != null">room,</if>
+					<if test="hall != null">hall,</if>
+					<if test="toilet != null">toilet,</if>
+					<if test="kitchen != null">kitchen,</if>
+					<if test="orientationsName != null">orientations_name,</if>
+					<if test="useRate != null">use_rate,</if>
+					<if test="originHouseTypeId != null">origin_house_type_id,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="originDicId != null">origin_dic_id,</if>
+					<if test="imageUrl != null">image_url,</if>
+					<if test="originImageUrl != null">origin_image_url,</if>
+					
+					<if test="buildArea != null">build_area,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="room != null">#{room},</if>
+			<if test="hall != null">#{hall},</if>
+			<if test="toilet != null">#{toilet},</if>
+			<if test="kitchen != null">#{kitchen},</if>
+			<if test="orientationsName != null">#{orientationsName},</if>
+			<if test="useRate != null">#{useRate},</if>
+			<if test="originHouseTypeId != null">#{originHouseTypeId},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="originDicId != null">#{originDicId},</if>
+			<if test="imageUrl != null">#{imageUrl},</if>
+			<if test="originImageUrl != null">#{originImageUrl},</if>
+			
+			<if test="buildArea != null">#{buildArea},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="DicHouseTypeCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			room = #{room},
+			hall = #{hall},
+			toilet = #{toilet},
+			kitchen = #{kitchen},
+			orientations_name = #{orientationsName},
+			use_rate = #{useRate},
+			origin_house_type_id = #{originHouseTypeId},
+			origin_dic_id = #{originDicId},
+			image_url = #{imageUrl},
+			origin_image_url = #{originImageUrl},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="DicHouseTypeCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="room != null">room = #{room},</if>
+			<if test="hall != null">hall = #{hall},</if>
+			<if test="toilet != null">toilet = #{toilet},</if>
+			<if test="kitchen != null">kitchen = #{kitchen},</if>
+			<if test="orientationsName != null">orientations_name = #{orientationsName},</if>
+			<if test="useRate != null">use_rate = #{useRate},</if>
+			<if test="originHouseTypeId != null">origin_house_type_id = #{originHouseTypeId},</if>
+			<if test="originDicId != null">origin_dic_id = #{originDicId},</if>
+			<if test="imageUrl != null">image_url = #{imageUrl},</if>
+			<if test="originImageUrl != null">origin_image_url = #{originImageUrl},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

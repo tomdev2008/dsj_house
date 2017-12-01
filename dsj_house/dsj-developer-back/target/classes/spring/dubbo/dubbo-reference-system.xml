@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+        
+        
+	<!-- 开发商 start-->
+	<dubbo:reference interface="com.dsj.modules.system.service.EvelopersService" id="evelopersService" check="false"  version="1.0"/>
+	<!-- 开发商 end-->
+
+	<!-- 权限 start-->
+	<dubbo:reference interface="com.dsj.modules.system.service.UserService" id="userService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.system.service.RoleService" id="roleService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.system.service.FunctionService" id="functionService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.system.service.RoleFunctionService" id="roleFunctionService" check="false"  version="1.0"/>
+	
+	<!-- 权限 end -->
+
+    <!-- 品牌公寓用户 start-->
+    <dubbo:reference interface="com.dsj.modules.system.service.FlatUserService" id="flatUserService" check="false"  version="1.0"/>
+    <!-- 品牌公寓用户 end-->
+	
+	<dubbo:reference interface="com.dsj.modules.system.service.DepartmentService" id="departmentService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.system.service.EmployeeService" id="employeeService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.system.service.AgentService" id="agentService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.system.service.MemberService" id="memberService" check="false"  version="1.0"/>
+</beans>  

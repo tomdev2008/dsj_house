@@ -1,0 +1,644 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ * 
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+ body {
+ 	font-size:14px;
+ }
+.dsj_logo {
+	margin: 20px 0 20px 20px;
+}
+.mr20 {
+	margin-right: 20px;
+}
+
+ #left-panel {
+ 	padding-top: 0;
+ }
+
+ .minifyme {
+ 	top:20px;
+ 	z-index: 9999;
+ 	color: #0598e2;
+ 	background:none;
+    font-size: 26px;
+ }
+
+
+.minifyme:hover {
+     background:none; 
+}
+
+ #ribbon {
+ 	min-height: 76px;
+ 	background-color: #3a4655;
+ }
+
+ aside { 
+ 	color:  #ffffff;
+    display: block;
+    background: #2b333e;
+    min-height: 100%;
+}
+
+.page-footer {
+    height: 52px;
+    padding: 15px 13px 0;
+    padding-left: 233px;
+    border-top: 1px solid #CECECE;
+    background: #ededed;
+    width: 100%;
+    position: absolute;
+    display: block;
+    bottom: -52px;
+}
+
+.top-right div {
+	line-height: 76px;
+	color: #ffffff;
+	margin-right: 20px;
+	font-size: 14px;
+
+}
+
+nav ul ul {
+    background:  #252c35;
+}
+
+nav ul li a {
+    color: #aab3be;
+}
+nav ul ul li>a:hover {
+    background: none;
+    color: #fff
+}
+
+nav>ul>li>ul::before {
+    border-left: none; 
+}
+
+nav>ul ul li::before {
+    border-top: none;
+}
+
+.t0 {
+	top: 0px;
+}
+
+nav ul li.active>a:before {
+    content: "\f105";
+    right: -7px;
+}
+
+nav >ul>li.active>a:before {
+    content: "";
+}
+
+.hide-angle >a:before {
+    content: "" !important;
+    right: -7px;
+}
+
+
+.minified nav>ul>li.active>a::before {
+    content: ""
+}
+.minified nav>ul>li>ul>li {
+    background-color: #252c35;
+}
+
+.minified nav>ul>li>ul {
+    background: #252c35;
+}
+
+.minified nav>ul>li>a>.menu-item-parent {
+	border:none;
+    display: none;
+    position: absolute;
+    left: 40px;
+    top: -3px;
+    width: 186px;
+    height: 38px;
+    line-height: 38px;
+    background-color: #252c35;
+    color: #ffffff;
+    z-index: 3;
+    -webkit-box-shadow: 2px 1px 2px 0 rgba(0,0,0,.2);
+    -moz-box-shadow: 2px 1px 2px 0 rgba(0,0,0,.2);
+    box-shadow: 2px 1px 2px 0 rgba(0,0,0,.2);
+    padding-left: 12px;
+}
+
+.minified nav>ul>li>ul {
+     border: none; 
+}
+
+.breadcrumb>li+li:before {
+    content: "\f101";
+    font-family: FontAwesome;
+    padding: 0 5px;
+    color: #ccc;
+}
+
+.breadcrumb {
+    color: #333;
+    font-size: 14px;
+    background:none; 
+    padding: 0px;
+}
+.page-title {
+    margin:24px 0 12px;
+    font-size: 28px;
+    letter-spacing: 0.4px;
+    color: #697882;
+}
+.foot {
+    display: inline-block;
+}
+.foot li {
+    float: left;
+    display: inline-block;
+}
+
+.white-head {
+    background-color: #fff;
+    padding: 10px 0 10px 20px;
+    margin-top: 15px;
+}
+.white-content {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 15px;
+    min-height:850px;
+}
+.small-input {
+   width: 30%; 
+}
+
+.small-input9 {
+   width: 9% !important; 
+}
+
+.small-input.form-control{
+    display: inline-block;
+}
+
+.mt20 {
+    margin-top:20px;
+}
+.mt10 {
+    margin-top:10px;
+}
+
+.ml13 {
+    margin-left:13px;
+}
+
+.dsj_btn {
+	width:120px;
+    height: 30px;
+    border-radius: 2px;
+    margin: 0 5px;
+
+}
+
+.dsj_btn_blue {
+    color: #fff;
+    background-color: #0598e2;
+
+}
+.dsj_btn_blue:active,.dsj_btn_blue:hover {
+    background-color: #208ec5;
+    border-color: #208ec5;
+    color: #fff;
+}
+
+.dsj_btn_green {
+    color: #fff;
+    background-color: #5bcc29;
+}
+
+.dsj_btn_green:active,.dsj_btn_green:hover {
+    background-color: #4eaf24;
+    border-color: #4eaf24;
+    color: #fff;
+}
+
+.dsj_btn_grey {
+    color: #333333;
+    background-color: #5bcc29;
+    border-radius: 2px;
+    background-color: #f3f3f3;
+    border: solid 1px #dddddd;
+
+}
+
+.dsj_btn_grey:active,.dsj_btn_grey:hover {
+    background-color: #e2e2e2;
+    border-color: #e2e2e2;
+    color: #333333;
+}
+
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width:30%;
+        margin: 30px auto
+    }
+}
+
+.modal-header {
+    background-color: #f5f5f5;
+}
+.modal-footer {
+    padding: 20px;
+    text-align: center;
+    border:none;
+}
+
+.padding-foot {
+    padding-bottom: 50px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
+
+#content label {
+    font-weight: normal;
+}
+
+.font16 {
+    font-size: 16px;
+
+    font-weight: bold;
+}
+
+.delete:hover {
+    background-color: #dcedfb;
+}
+
+.add,.delete {
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.form-inline.form-group .w20 {
+    width: 20%;
+}
+
+.form-inline.form-group .w58 {
+    width: 58%;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.nav-tabs>li.active>a {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border-top-width: 1px!important;
+    margin-top: 1px!important;
+    font-weight: 700
+}
+
+.nav-tabs>li.active>a {
+    border-radius: 2px;
+    background-color: #ffffff;
+    border: solid 1px #0598e2;
+}
+
+.nav-tabs>li.active>a,.nav-tabs>li.active>a:focus,.nav-tabs>li.active>a:hover {
+    color: #fff;
+    background-color: #0598e2;
+    border: 1px solid #0598e2;
+    border-bottom-color: #0598e2;
+    cursor: default
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #0598e2;
+}
+
+.nav-tabs>li>a {
+    text-align: center;
+    border: 1px solid #0598e2;
+    margin-top: 1px;
+    border-radius: 0;
+    color: #0598e2;
+}
+
+.nav-tabs>li>a:hover {
+    border-color: inherit;
+}
+
+
+.nav>li>a:focus,.nav>li>a:hover {
+    text-decoration: none;
+    background: none;
+}
+
+.nav-tabs>li {
+    margin-right: 10px;
+    float: left;
+    margin-bottom: -1px;
+}
+
+.collapse-sign {
+    color: #0598e2;
+    font-size: 16px;
+}
+
+.minified .minifyme .fa:before {
+    content: "\f18e";
+    color: #0598e2;
+}
+
+nav ul ul li {
+    padding-left: 30px;
+}
+
+.blue-font {
+    color:#0598e2;
+}
+
+
+#house_condition.table-bordered>tbody>tr>td {
+	text-align:left;
+}
+
+.laydate-icon,.laydate-icon-dahong,.laydate-icon-danlan,.laydate-icon-default,.laydate-icon-molv {
+    height:32px !important; 
+    line-height:1.42857143 !important; 
+    padding-right: 20px;
+    border: 1px solid #C6C6C6;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-color: #fff;
+    outline: 0;
+}
+
+
+.dsj_photo {
+    background-color: #697b91;
+    height:250px;
+    color: #ffffff;
+}
+
+.dsj_photo .panel-body img {
+	height: 150px;
+}
+
+.dsj_photo_xc {
+    background-color: #697b91;
+    height:200px;
+    color: #ffffff;
+}
+
+.dsj_photo .panel-body{
+    padding: 5px;
+}
+
+.dsj_notify {
+    font-size: 12px;
+    line-height: 2.5;
+    color: #999999;
+}
+
+.dropzone {
+    min-height: 150px;
+    border: none; 
+    background: white;
+    padding: 20px 20px;
+}
+
+.dsj_tag {
+
+}
+.dsj_tag p {
+    padding-left: 12px;
+
+}
+.pl12 {
+    padding-left: 12px;
+}
+.dsj_tag .dropdown-menu {
+    width: 100%;
+}
+
+.dsj_pic_checkbox {
+	z-index:5;
+    zoom:150%;
+    visibility: visible !important;
+    margin: 0 !important;
+    position: absolute;
+}
+
+
+.dsj_img_single_action {
+    line-height: 22px; 
+    width: 100%;
+    color: #ffffff;
+    cursor: pointer;
+    height: 22px;
+    margin: 0;
+    bottom: 0px;
+    text-align: center;
+    position: absolute;
+    background: black;
+    opacity: 0.5;
+}
+.dsj_img_wraper {
+    position: relative;
+}
+.dsj_img_wraper img {
+	width: 100%;
+	height:150px;
+}
+.dsj_inline_input {
+    display: inline-block;
+    width: 60%;
+}
+.dsj_set_cover {
+    position: absolute;
+    width: 50%;
+    right: 11px;
+    text-align: right;
+}
+.dsj_span{
+	display: inline-block;
+    width: 80px;
+}
+.dsj_set_cover .dsj_cover_checkbox {
+    zoom: 150%;
+    visibility: visible !important;
+    margin: 0 !important;
+}
+
+
+.add_more_pic {
+    border: 3px dashed #e6e6e6;
+    background: url(../img/image.png) center no-repeat;
+    padding-bottom: 60%;
+    height: 150px
+}
+
+
+.bootstrapWizard li {
+    width: 33%;
+}
+
+.dsj_img {
+	min-width:100%;
+	height:150px;
+}
+
+.dsj_house_tab_form {
+	min-height:600px;
+	position:relative;
+}
+
+.dsj_house_tab_form .dsj_bottom_button {
+	position:absolute;
+	bottom:0;
+}
+
+.button_tab {
+	border:none;
+	margin-bottom:10px;
+	padding: 0 15px;
+}
+
+
+.embed-responsive {
+    position: relative;
+    display: block;
+    height: 0;
+    padding: 0;
+    overflow: hidden
+}
+
+.embed-responsive .embed-responsive-item,.embed-responsive embed,.embed-responsive iframe,.embed-responsive object,.embed-responsive video {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0
+}
+
+.embed-responsive-16by9 {
+    padding-bottom: 56.25%
+}
+
+.embed-responsive-4by3 {
+    padding-bottom: 75%
+}
+.agent .wrapper .dsj_btn {
+	margin: 10px 0;
+	width:80px;
+}
+
+.set-index .embed-responsive p {
+	position: absolute;
+    height: 150px;
+    bottom: 0;
+    width: 100%;
+    background: rgba(37, 138, 228, 0.8);
+    margin: 0;
+    padding: 10px;
+    color: #fff;
+    display:none;
+}
+
+.set-index .embed-responsive:hover p {
+	display:block;
+   
+}
+
+.set-index .small_button .dsj_btn {
+	width:45%;
+}
+.buttons{
+	width: 210px;
+    height: 26px;
+    display: inline-block;
+    text-align: center;
+    margin-top:20px;
+}
+.buttons button:first-child{
+	margin-right:20px;
+}
+.input_css {
+	width:19%;
+}
+.input_css .input-group .form-control{
+ width: 67%;
+}
+
+.dsj-pic-describe {
+	display: inline-block;width: 100%;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.footer-banner .content-agent__img>img{
+	width:1157px;
+}
+.agent>.wrapper{
+	float: left;
+}
+.agent>.dsj_btn{
+	width:70px;
+}
+.ground{
+	margin-bottom:10px;
+}
+.ground>img{
+	width: 20px;
+    height: 25px;
+}
+.agent>.groun-right{
+	width: 479px;
+	float: left;
+	padding:20px;
+	padding-bottom:0;
+}
+.agent_name{
+	font-size: 16px;
+    font-weight: bold;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+.agent>.groun-right2{
+	width: 263px;
+    float: left;
+    padding-left: 20px;
+}
+.agent>.groun-right2>img{
+	width: 20px;
+    height: 25px;
+}
+.btngroup{
+	margin-top:20px;
+}
+.row>.font16{
+	margin-bottom:20px;
+	margin-top:20px;
+}

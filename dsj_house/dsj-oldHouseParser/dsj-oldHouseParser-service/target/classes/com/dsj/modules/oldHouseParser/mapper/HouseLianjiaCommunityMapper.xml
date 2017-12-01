@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.HouseLianjiaCommunityDaoImpl">
+    
+    <sql id="tableName"> old_house_lianjia_community a </sql>
+    <sql id="tableNameUpdate"> old_house_lianjia_community </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.nick_name AS "nickName",
+		a.average_price AS "averagePrice",
+		a.built_year AS "builtYear",
+		a.building_type AS "buildingType",
+		a.building_num AS "buildingNum",
+		a.house_type_num AS "houseTypeNum",
+		a.sale_number AS "saleNumber",
+		a.property_fee AS "propertyFee",
+		a.property_company AS "propertyCompany",
+		a.total_house AS "totalHouse",
+		a.store AS "store",
+		a.origin_community_id AS "originCommunityId",
+		a.developer AS "developer",
+		a.resblock_position AS "resblockPosition",
+		a.page_url AS "pageUrl",
+		a.status AS "status",
+		a.company AS "company",
+		a.dic_id AS "dicId",
+		a.area_code1 AS "areaCode1",
+		a.area_name1 AS "areaName1",
+		a.area_code2 AS "areaCode2",
+		a.area_name2 AS "areaName2",
+		a.area_code3 AS "areaCode3",
+		a.area_name3 AS "areaName3",
+		a.trading_area_id AS "tradingAreaId",
+		a.trading_area_name AS "tradingAreaName",
+		a.create_time AS "createTime",
+		a.built_up AS "builtUp",
+		a.heating_mode AS "heatingMode",
+		a.heating_mode_name AS "heatingModeName",
+		a.house_num AS "houseNum",
+		a.plot_ratio AS "plotRatio",
+		a.green_rate AS "greenRate",
+		a.parking_space AS "parkingSpace"
+	</sql>
+	
+	<resultMap id="beanMap" type="HouseLianjiaCommunityPo">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="nick_name" property="nickName" />
+		<result column="average_price" property="averagePrice" />
+		<result column="built_year" property="builtYear" />
+		<result column="building_type" property="buildingType" />
+		<result column="building_num" property="buildingNum" />
+		<result column="house_type_num" property="houseTypeNum" />
+		<result column="sale_number" property="saleNumber" />
+		<result column="property_fee" property="propertyFee" />
+		<result column="property_company" property="propertyCompany" />
+		<result column="total_house" property="totalHouse" />
+		<result column="store" property="store" />
+		<result column="origin_community_id" property="originCommunityId" />
+		<result column="developer" property="developer" />
+		<result column="resblock_position" property="resblockPosition" />
+		<result column="page_url" property="pageUrl" />
+		<result column="status" property="status" />
+		<result column="company" property="company" />
+		<result column="dic_id" property="dicId" />
+		<result column="area_code1" property="areaCode1" />
+		<result column="area_name1" property="areaName1" />
+		<result column="area_code2" property="areaCode2" />
+		<result column="area_name2" property="areaName2" />
+		<result column="area_code3" property="areaCode3" />
+		<result column="area_name3" property="areaName3" />
+		<result column="trading_area_id" property="tradingAreaId" />
+		<result column="trading_area_name" property="tradingAreaName" />
+		<result column="create_time" property="createTime" />
+		<result column="built_up" property="builtUp" />
+		<result column="heating_mode" property="heatingMode" />
+		<result column="heating_mode_name" property="heatingModeName" />
+		<result column="house_num" property="houseNum" />
+		<result column="plot_ratio" property="plotRatio" />
+		<result column="green_rate" property="greenRate" />
+		<result column="parking_space" property="parkingSpace" />
+	</resultMap>
+	
+	<sql id="houseLianjiaCommunityJoins">
+	</sql>
+    
+    <sql id="condition_sql">
+       	<if test="id != null and id!= ''"> AND a.id = #{id}</if>
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="nickName != null and nickName!= ''"> AND a.nick_name = #{nickName}</if>
+		<if test="averagePrice != null and averagePrice!= ''"> AND a.average_price = #{averagePrice}</if>
+		<if test="builtYear != null and builtYear!= ''"> AND a.built_year = #{builtYear}</if>
+		<if test="buildingType != null and buildingType!= ''"> AND a.building_type = #{buildingType}</if>
+		<if test="buildingNum != null and buildingNum!= ''"> AND a.building_num = #{buildingNum}</if>
+		<if test="houseTypeNum != null and houseTypeNum!= ''"> AND a.house_type_num = #{houseTypeNum}</if>
+		<if test="saleNumber != null and saleNumber!= ''"> AND a.sale_number = #{saleNumber}</if>
+		<if test="propertyFee != null and propertyFee!= ''"> AND a.property_fee = #{propertyFee}</if>
+		<if test="propertyCompany != null and propertyCompany!= ''"> AND a.property_company = #{propertyCompany}</if>
+		<if test="totalHouse != null and totalHouse!= ''"> AND a.total_house = #{totalHouse}</if>
+		<if test="store != null and store!= ''"> AND a.store = #{store}</if>
+		<if test="originCommunityId != null and originCommunityId!= ''"> AND a.origin_community_id = #{originCommunityId}</if>
+		<if test="developer != null and developer!= ''"> AND a.developer = #{developer}</if>
+		<if test="resblockPosition != null and resblockPosition!= ''"> AND a.resblock_position = #{resblockPosition}</if>
+		<if test="pageUrl != null and pageUrl!= ''"> AND a.page_url = #{pageUrl}</if>
+		<if test="company != null and company!= ''"> AND a.company = #{company}</if>
+		<if test="dicId != null and dicId!= ''"> AND a.dic_id = #{dicId}</if>
+		<if test="areaCode1 != null and areaCode1!= ''"> AND a.area_code1 = #{areaCode1}</if>
+		<if test="areaName1 != null and areaName1!= ''"> AND a.area_name1 = #{areaName1}</if>
+		<if test="areaCode2 != null and areaCode2!= ''"> AND a.area_code2 = #{areaCode2}</if>
+		<if test="areaName2 != null and areaName2!= ''"> AND a.area_name2 = #{areaName2}</if>
+		<if test="areaCode3 != null and areaCode3!= ''"> AND a.area_code3 = #{areaCode3}</if>
+		<if test="areaName3 != null and areaName3!= ''"> AND a.area_name3 = #{areaName3}</if>
+		<if test="tradingAreaId != null and tradingAreaId!= ''"> AND a.trading_area_id = #{tradingAreaId}</if>
+		<if test="tradingAreaName != null and tradingAreaName!= ''"> AND a.trading_area_name = #{tradingAreaName}</if>
+		<if test="builtUp != null and builtUp!= ''"> AND a.built_up = #{builtUp}</if>
+		<if test="heatingMode != null and heatingMode!= ''"> AND a.heating_mode = #{heatingMode}</if>
+		<if test="heatingModeName != null and heatingModeName!= ''"> AND a.heating_mode_name = #{heatingModeName}</if>
+		<if test="houseNum != null and houseNum!= ''"> AND a.house_num = #{houseNum}</if>
+		<if test="plotRatio != null and plotRatio!= ''"> AND a.plot_ratio = #{plotRatio}</if>
+		<if test="greenRate != null and greenRate!= ''"> AND a.green_rate = #{greenRate}</if>
+		<if test="parkingSpace != null and parkingSpace!= ''"> AND a.parking_space = #{parkingSpace}</if>
+	</sql>
+    
+	<select id="getById" resultType="HouseLianjiaCommunityPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="houseLianjiaCommunityJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+	<select id="selectLianjia" parameterType="java.util.Map" resultMap="beanMap">
+	  SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	<select id="selectLianjiaCommunity" parameterType="java.util.Map" resultMap="beanMap">
+	  SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="HouseLianjiaCommunityPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			name,
+			nick_name,
+			average_price,
+			built_year,
+			building_type,
+			building_num,
+			house_type_num,
+			sale_number,
+			property_fee,
+			property_company,
+			total_house,
+			store,
+			origin_community_id,
+			developer,
+			resblock_position,
+			page_url,
+			status,
+			company,
+			dic_id,
+			area_code1,
+			area_name1,
+			area_code2,
+			area_name2,
+			area_code3,
+			area_name3,
+			trading_area_id,
+			trading_area_name,
+			create_time,
+			built_up,
+			heating_mode,
+			heating_mode_name,
+			house_num,
+			plot_ratio,
+			green_rate,
+			parking_space
+		) VALUES (
+			#{id},
+			#{name},
+			#{nickName},
+			#{averagePrice},
+			#{builtYear},
+			#{buildingType},
+			#{buildingNum},
+			#{houseTypeNum},
+			#{saleNumber},
+			#{propertyFee},
+			#{propertyCompany},
+			#{totalHouse},
+			#{store},
+			#{originCommunityId},
+			#{developer},
+			#{resblockPosition},
+			#{pageUrl},
+			#{status},
+			#{company},
+			#{dicId},
+			#{areaCode1},
+			#{areaName1},
+			#{areaCode2},
+			#{areaName2},
+			#{areaCode3},
+			#{areaName3},
+			#{tradingAreaId},
+			#{tradingAreaName},
+			#{createTime},
+			#{builtUp},
+			#{heatingMode},
+			#{heatingModeName},
+			#{houseNum},
+			#{plotRatio},
+			#{greenRate},
+			#{parkingSpace}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="HouseLianjiaCommunityPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="name != null">name,</if>
+					<if test="nickName != null">nick_name,</if>
+					<if test="averagePrice != null">average_price,</if>
+					<if test="builtYear != null">built_year,</if>
+					<if test="buildingType != null">building_type,</if>
+					<if test="buildingNum != null">building_num,</if>
+					<if test="houseTypeNum != null">house_type_num,</if>
+					<if test="saleNumber != null">sale_number,</if>
+					<if test="propertyFee != null">property_fee,</if>
+					<if test="propertyCompany != null">property_company,</if>
+					<if test="totalHouse != null">total_house,</if>
+					<if test="store != null">store,</if>
+					<if test="originCommunityId != null">origin_community_id,</if>
+					<if test="developer != null">developer,</if>
+					<if test="resblockPosition != null">resblock_position,</if>
+					<if test="pageUrl != null">page_url,</if>
+					<if test="status != null">status,</if>
+					<if test="company != null">company,</if>
+					<if test="dicId != null">dic_id,</if>
+					<if test="areaCode1 != null">area_code1,</if>
+					<if test="areaName1 != null">area_name1,</if>
+					<if test="areaCode2 != null">area_code2,</if>
+					<if test="areaName2 != null">area_name2,</if>
+					<if test="areaCode3 != null">area_code3,</if>
+					<if test="areaName3 != null">area_name3,</if>
+					<if test="tradingAreaId != null">trading_area_id,</if>
+					<if test="tradingAreaName != null">trading_area_name,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="builtUp != null">built_up,</if>
+					<if test="heatingMode != null">heating_mode,</if>
+					<if test="heatingModeName != null">heating_mode_name,</if>
+					<if test="houseNum != null">house_num,</if>
+					<if test="plotRatio != null">plot_ratio,</if>
+					<if test="greenRate != null">green_rate,</if>
+					<if test="parkingSpace != null">parking_space,</if>
+					
+					<if test="buildingTypeName != null">building_type_name,</if>
+					<if test="certificate != null">certificate,</if>
+					<if test="certificateName != null">certificate_name,</if>
+					<if test="propertyRight != null">property_right,</if>
+					<if test="propertyRightName != null">property_right_name,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="nickName != null">#{nickName},</if>
+			<if test="averagePrice != null">#{averagePrice},</if>
+			<if test="builtYear != null">#{builtYear},</if>
+			<if test="buildingType != null">#{buildingType},</if>
+			<if test="buildingNum != null">#{buildingNum},</if>
+			<if test="houseTypeNum != null">#{houseTypeNum},</if>
+			<if test="saleNumber != null">#{saleNumber},</if>
+			<if test="propertyFee != null">#{propertyFee},</if>
+			<if test="propertyCompany != null">#{propertyCompany},</if>
+			<if test="totalHouse != null">#{totalHouse},</if>
+			<if test="store != null">#{store},</if>
+			<if test="originCommunityId != null">#{originCommunityId},</if>
+			<if test="developer != null">#{developer},</if>
+			<if test="resblockPosition != null">#{resblockPosition},</if>
+			<if test="pageUrl != null">#{pageUrl},</if>
+			<if test="status != null">#{status},</if>
+			<if test="company != null">#{company},</if>
+			<if test="dicId != null">#{dicId},</if>
+			<if test="areaCode1 != null">#{areaCode1},</if>
+			<if test="areaName1 != null">#{areaName1},</if>
+			<if test="areaCode2 != null">#{areaCode2},</if>
+			<if test="areaName2 != null">#{areaName2},</if>
+			<if test="areaCode3 != null">#{areaCode3},</if>
+			<if test="areaName3 != null">#{areaName3},</if>
+			<if test="tradingAreaId != null">#{tradingAreaId},</if>
+			<if test="tradingAreaName != null">#{tradingAreaName},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="builtUp != null">#{builtUp},</if>
+			<if test="heatingMode != null">#{heatingMode},</if>
+			<if test="heatingModeName != null">#{heatingModeName},</if>
+			<if test="houseNum != null">#{houseNum},</if>
+			<if test="plotRatio != null">#{plotRatio},</if>
+			<if test="greenRate != null">#{greenRate},</if>
+			<if test="parkingSpace != null">#{parkingSpace},</if>
+			
+			<if test="buildingTypeName != null">#{buildingTypeName},</if>
+			<if test="certificate != null">#{certificate},</if>
+			<if test="certificateName != null">#{certificateName},</if>
+			<if test="propertyRight != null">#{propertyRight},</if>
+			<if test="propertyRightName != null">#{propertyRightName},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="HouseLianjiaCommunityPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name = #{name},
+			nick_name = #{nickName},
+			average_price = #{averagePrice},
+			built_year = #{builtYear},
+			building_type = #{buildingType},
+			building_num = #{buildingNum},
+			house_type_num = #{houseTypeNum},
+			sale_number = #{saleNumber},
+			property_fee = #{propertyFee},
+			property_company = #{propertyCompany},
+			total_house = #{totalHouse},
+			store = #{store},
+			origin_community_id = #{originCommunityId},
+			developer = #{developer},
+			resblock_position = #{resblockPosition},
+			page_url = #{pageUrl},
+			company = #{company},
+			dic_id = #{dicId},
+			area_code1 = #{areaCode1},
+			area_name1 = #{areaName1},
+			area_code2 = #{areaCode2},
+			area_name2 = #{areaName2},
+			area_code3 = #{areaCode3},
+			area_name3 = #{areaName3},
+			trading_area_id = #{tradingAreaId},
+			trading_area_name = #{tradingAreaName},
+			built_up = #{builtUp},
+			heating_mode = #{heatingMode},
+			heating_mode_name = #{heatingModeName},
+			house_num = #{houseNum},
+			plot_ratio = #{plotRatio},
+			green_rate = #{greenRate},
+			parking_space = #{parkingSpace},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="HouseLianjiaCommunityPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="name != null">name = #{name},</if>
+			<if test="nickName != null">nick_name = #{nickName},</if>
+			<if test="averagePrice != null">average_price = #{averagePrice},</if>
+			<if test="builtYear != null">built_year = #{builtYear},</if>
+			<if test="buildingType != null">building_type = #{buildingType},</if>
+			<if test="buildingNum != null">building_num = #{buildingNum},</if>
+			<if test="houseTypeNum != null">house_type_num = #{houseTypeNum},</if>
+			<if test="saleNumber != null">sale_number = #{saleNumber},</if>
+			<if test="propertyFee != null">property_fee = #{propertyFee},</if>
+			<if test="propertyCompany != null">property_company = #{propertyCompany},</if>
+			<if test="totalHouse != null">total_house = #{totalHouse},</if>
+			<if test="store != null">store = #{store},</if>
+			<if test="originCommunityId != null">origin_community_id = #{originCommunityId},</if>
+			<if test="developer != null">developer = #{developer},</if>
+			<if test="resblockPosition != null">resblock_position = #{resblockPosition},</if>
+			<if test="pageUrl != null">page_url = #{pageUrl},</if>
+			<if test="company != null">company = #{company},</if>
+			<if test="dicId != null">dic_id = #{dicId},</if>
+			<if test="areaCode1 != null">area_code1 = #{areaCode1},</if>
+			<if test="areaName1 != null">area_name1 = #{areaName1},</if>
+			<if test="areaCode2 != null">area_code2 = #{areaCode2},</if>
+			<if test="areaName2 != null">area_name2 = #{areaName2},</if>
+			<if test="areaCode3 != null">area_code3 = #{areaCode3},</if>
+			<if test="areaName3 != null">area_name3 = #{areaName3},</if>
+			<if test="tradingAreaId != null">trading_area_id = #{tradingAreaId},</if>
+			<if test="tradingAreaName != null">trading_area_name = #{tradingAreaName},</if>
+			<if test="builtUp != null">built_up = #{builtUp},</if>
+			<if test="heatingMode != null">heating_mode = #{heatingMode},</if>
+			<if test="heatingModeName != null">heating_mode_name = #{heatingModeName},</if>
+			<if test="houseNum != null">house_num = #{houseNum},</if>
+			<if test="plotRatio != null">plot_ratio = #{plotRatio},</if>
+			<if test="greenRate != null">green_rate = #{greenRate},</if>
+			<if test="parkingSpace != null">parking_space = #{parkingSpace},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

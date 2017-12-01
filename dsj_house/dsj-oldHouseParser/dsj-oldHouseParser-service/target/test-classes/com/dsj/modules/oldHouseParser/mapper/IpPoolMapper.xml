@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.IpPoolDaoImpl">
+    
+    <sql id="tableName"> dsj_ip_pool1 a </sql>
+    <sql id="tableNameUpdate"> dsj_ip_pool1 </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.ip AS "ip",
+		a.port AS "port",
+		a.create_time AS "createTime",
+		a.time AS "time"
+	</sql>
+	
+	<resultMap id="beanMap" type="IpPoolPo">
+		<id column="id" property="id" />
+		<result column="ip" property="ip" />
+		<result column="port" property="port" />
+		<result column="create_time" property="createTime" />
+		<result column="time" property="time" />
+	</resultMap>
+	
+	<sql id="ipPoolJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="ip != null and ip!= ''"> AND a.ip = #{ip}</if>
+		<if test="port != null and port!= ''"> AND a.port = #{port}</if>
+		<if test="time != null and time!= ''"> AND a.time = #{time}</if>
+	</sql>
+    
+	<select id="getById" resultType="IpPoolPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="ipPoolJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	
+	<select id="getByLast" resultType="IpPoolPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		order by rand()
+		limit 1
+	</select>
+	
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="IpPoolPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			ip,
+			port,
+			create_time,
+			time
+		) VALUES (
+			#{id},
+			#{ip},
+			#{port},
+			#{createTime},
+			#{time}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="IpPoolPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="ip != null">ip,</if>
+					<if test="port != null">port,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="time != null">time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="ip != null">#{ip},</if>
+			<if test="port != null">#{port},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="time != null">#{time},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="IpPoolPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			ip = #{ip},
+			port = #{port},
+			time = #{time},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="IpPoolPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="ip != null">ip = #{ip},</if>
+			<if test="port != null">port = #{port},</if>
+			<if test="time != null">time = #{time},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

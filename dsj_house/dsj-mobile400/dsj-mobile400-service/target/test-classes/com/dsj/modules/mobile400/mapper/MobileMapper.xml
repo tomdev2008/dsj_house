@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.mobile400.dao.impl.MobileDaoImpl">
+    
+    <sql id="tableName"> dsj_mobile a </sql>
+    <sql id="tableNameUpdate"> dsj_mobile </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.mobile AS "mobile",
+		a.mobilePro AS 'mobilePro',
+		a.type AS "type",
+		a.house_id AS "houseId",
+		<!-- a.house_name AS "houseName", -->
+		
+		a.house_code AS "houseCode",
+		a.agent_id AS "agentId",
+		<!-- a.agent_name AS "agentName", -->
+		
+		a.agent_code AS "agentCode",
+		a.property_id AS "propertyId",
+		<!-- a.property_name AS "propertyName", -->
+		
+		a.channel AS "channel",
+		a.phone AS "phone",
+		a.msg_phone AS "msgPhone",
+		a.last_binding_time AS "lastBindingTime",
+		a.way AS "way",
+		a.time_out AS "timeOut",
+		a.status AS "status",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.create_preson AS "createPreson",
+		a.update_preson AS "updatePreson"
+	</sql>
+	
+	<resultMap id="beanMap" type="MobilePo">
+		<id column="id" property="id" />
+		<result column="mobile" property="mobile" />
+		<result column="mobilePro" property="mobilePro" />
+		<result column="type" property="type" />
+		<result column="house_id" property="houseId" />
+		<result column="house_name" property="houseName" />
+		<result column="agent_id" property="agentId" />
+		<result column="agent_name" property="agentName" />
+		<result column="property_id" property="propertyId" />
+		<result column="property_name" property="propertyName" />
+		<result column="channel" property="channel" />
+		<result column="phone" property="phone" />
+		<result column="msg_phone" property="msgPhone" />
+		<result column="last_binding_time" property="lastBindingTime" />
+		<result column="way" property="way" />
+		<result column="time_out" property="timeOut" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="create_preson" property="createPreson" />
+		<result column="update_preson" property="updatePreson" />
+	</resultMap>
+	
+	<sql id="mobileJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="mobile != null and mobile!= ''"> AND a.mobile like concat('%',#{mobile},'%')</if>
+		<if test="mobilePro != null and mobilePro!= ''"> AND a.mobilePro like concat('%',#{mobilePro},'%')</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		
+		<if test="houseCode != null and houseCode != ''"> AND a.house_code like concat('%',#{houseCode},'%')</if>
+		<if test="houseId != null and houseId != ''"> AND a.house_id = #{houseId}</if>
+        <if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+	
+		<if test="agentCode != null and agentCode != ''"> AND a.agent_code like concat('%',#{agentCode},'%')</if>
+		<if test="propertyId != null and propertyId!= ''"> AND a.property_id = #{propertyId}</if>
+		
+		<if test="channel != null and channel!= ''"> AND a.channel = #{channel}</if>
+		<if test="phone != null and phone!= ''"> AND a.phone = #{phone}</if>
+		<if test="msgPhone != null and msgPhone!= ''"> AND a.msg_phone = #{msgPhone}</if>
+		
+		<if test="startTime != null and startTime != ''"><![CDATA[  AND a.last_binding_time >= STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.last_binding_time <= STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+		
+		<if test="way != null and way!= ''"> AND a.way = #{way}</if>
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+		<if test="timeOut != null and timeOut!= ''"> AND a.time_out = #{timeOut}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="createPreson != null and createPreson!= ''"> AND a.create_preson = #{createPreson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+	</sql>
+    
+	<select id="getById" resultType="MobilePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="mobileJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>,
+    		b.name as houseName,
+    		c.name as propertyName,
+    		d.name as agentName
+    	FROM <include refid="tableName"/>  left join dsj_new_house_directory_auth b on a.house_id = b.id
+    	left join dsj_property c on a.property_id = c.id
+    	left join dsj_agent d on a.agent_id = d.id
+		<where>
+			<include refid="condition_sql" />
+			<if test="agentName != null and agentName!= ''"> AND d.name like concat('%',#{agentName},'%')</if>
+			<if test="houseName != null and houseName!= ''"> AND b.name like concat('%',#{houseName},'%')</if>
+			<if test="propertyName != null and propertyName!= ''"> AND c.name like concat('%',#{propertyName},'%')</if>
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/> left join dsj_new_house_directory_auth b on a.house_id = b.id
+    	left join dsj_property c on a.property_id = c.id
+    	left join dsj_agent d on a.agent_id = d.id
+		<where>
+			<include refid="condition_sql"/>
+			<if test="agentName != null and agentName!= ''"> AND d.name like concat('%',#{agentName},'%')</if>
+			<if test="houseName != null and houseName!= ''"> AND b.name like concat('%',#{houseName},'%')</if>
+			<if test="propertyName != null and propertyName!= ''"> AND c.name like concat('%',#{propertyName},'%')</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="MobilePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			mobile,
+			mobilePro,
+			type,
+			house_id,
+			house_name,
+			agent_id,
+			agent_name,
+			property_id,
+			property_name,
+			channel,
+			phone,
+			msg_phone,
+			last_binding_time,
+			way,
+			time_out,
+			status,
+			create_time,
+			update_time,
+			create_preson,
+			update_preson
+		) VALUES (
+			#{id},
+			#{mobile},
+			#{mobilePro},
+			#{type},
+			#{houseId},
+			#{houseName},
+			#{agentId},
+			#{agentName},
+			#{propertyId},
+			#{propertyName},
+			#{channel},
+			#{phone},
+			#{msgPhone},
+			#{lastBindingTime},
+			#{way},
+			#{timeOut},
+			#{status},
+			#{createTime},
+			#{updateTime},
+			#{createPreson},
+			#{updatePreson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="MobilePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="mobile != null">mobile,</if>
+					<if test="type != null">type,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="houseName != null">house_name,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="propertyId != null">property_id,</if>
+					<if test="propertyName != null">property_name,</if>
+					<if test="channel != null">channel,</if>
+					<if test="phone != null">phone,</if>
+					<if test="msgPhone != null">msg_phone,</if>
+					<if test="lastBindingTime != null">last_binding_time,</if>
+					<if test="way != null">way,</if>
+					<if test="timeOut != null">time_out,</if>
+					<if test="status != null">status,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="createPreson != null">create_preson,</if>
+					<if test="updatePreson != null">update_preson,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="mobile != null">(SELECT auto_increment FROM  information_schema.`TABLES` WHERE TABLE_SCHEMA='dasoujia' AND TABLE_NAME='dsj_mobile'),</if>
+			<if test="type != null">#{type},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="houseName != null">#{houseName},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="propertyId != null">#{propertyId},</if>
+			<if test="propertyName != null">#{propertyName},</if>
+			<if test="channel != null">#{channel},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="msgPhone != null">#{msgPhone},</if>
+			<if test="lastBindingTime != null">#{lastBindingTime},</if>
+			<if test="way != null">#{way},</if>
+			<if test="timeOut != null">#{timeOut},</if>
+			<if test="status != null">#{status},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="MobilePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			mobile = #{mobile},
+			type = #{type},
+			house_id = #{houseId},
+			house_name = #{houseName},
+			agent_id = #{agentId},
+			agent_name = #{agentName},
+			property_id=#{propertyId},
+			property_name=#{propertyName},
+			channel = #{channel},
+			phone = #{phone},
+			msg_phone = #{msgPhone},
+			last_binding_time = #{lastBindingTime},
+			way = #{way},
+			time_out = #{timeOut},
+			update_time = #{updateTime},
+			create_preson = #{createPreson},
+			update_preson = #{updatePreson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="MobilePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="mobile != null">mobile = #{mobile},</if>
+			<if test="type != null">type = #{type},</if>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="houseName != null">house_name = #{houseName},</if>
+			<if test="houseCode != null">house_code = #{houseCode},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="agentCode != null">agent_code = #{agentCode},</if>
+			<if test="propertyId != null">property_id = #{propertyId},</if>
+			<if test="propertyName != null">property_name = #{propertyName},</if>
+			<if test="channel != null">channel = #{channel},</if>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="msgPhone != null">msg_phone = #{msgPhone},</if>
+			<if test="lastBindingTime != null">last_binding_time = #{lastBindingTime},</if>
+			<if test="way != null">way = #{way},</if>
+			<if test="timeOut != null">time_out = #{timeOut},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="createPreson != null">create_preson = #{createPreson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	<update id="updateRemoveBinding"  parameterType="java.util.Map">
+		update
+			<include refid="tableNameUpdate"/>
+		set
+				 house_id = null,house_name= null,house_code=null,agent_id=null,
+			    agent_name=null,agent_code=null,property_id=null,property_name=null,
+			    phone=null,msg_phone=null,way=null,time_out=null,status=2,
+			    update_time=now(),update_preson=#{updatePreson}
+		WHERE id = #{id}
+	</update>
+	<select id="getMaxMobile" resultType="string">
+    	SELECT 
+    		a.mobile
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC LIMIT 1
+  	</select>
+  	
+  	<update id="updateMobileByFwId" parameterType="com.dsj.modules.mobile400.po.MobilePo">
+  		update 
+  			<include refid="tableNameUpdate"/>
+  		set 
+  			property_name=#{propertyName},phone=#{phone}
+  		where 
+  			property_id=#{propertyId}
+  	</update>
+</mapper>

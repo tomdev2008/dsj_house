@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.other.dao.impl.SubwayObjDaoImpl">
+    
+    <sql id="tableName"> dsj_subway_obj a </sql>
+    <sql id="tableNameUpdate"> dsj_subway_obj </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.obj_type AS "objType",
+		a.obj_id AS "objId",
+		a.subway_pid AS "subwayPid",
+		a.subway_id AS "subwayId",
+		a.distance AS "distance",
+		a.delete_flag AS "deleteFlag",
+		a.create_person AS "createPerson",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="SubwayObjPo">
+		<id column="id" property="id" />
+		<result column="obj_type" property="objType" />
+		<result column="obj_id" property="objId" />
+		<result column="subway_pid" property="subwayPid" />
+		<result column="subway_id" property="subwayId" />
+		<result column="distance" property="distance" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="subwayObjJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="objType != null and objType!= ''"> AND a.obj_type = #{objType}</if>
+		<if test="objId != null and objId!= ''"> AND a.obj_id = #{objId}</if>
+		<if test="subwayPid != null and subwayPid!= ''"> AND a.subway_pid = #{subwayPid}</if>
+		<if test="subwayId != null and subwayId!= ''"> AND a.subway_id = #{subwayId}</if>
+		<if test="distance != null and distance!= ''"> AND a.distance = #{distance}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="SubwayObjPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="subwayObjJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="SubwayObjPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			obj_type,
+			obj_id,
+			subway_pid,
+			subway_id,
+			distance,
+			delete_flag,
+			create_person,
+			update_person,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{objType},
+			#{objId},
+			#{subwayPid},
+			#{subwayId},
+			#{distance},
+			#{deleteFlag},
+			#{createPerson},
+			#{updatePerson},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="SubwayObjPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="objType != null">obj_type,</if>
+					<if test="objId != null">obj_id,</if>
+					<if test="subwayPid != null">subway_pid,</if>
+					<if test="subwayId != null">subway_id,</if>
+					<if test="distance != null">distance,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePerson != null">update_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="objType != null">#{objType},</if>
+			<if test="objId != null">#{objId},</if>
+			<if test="subwayPid != null">#{subwayPid},</if>
+			<if test="subwayId != null">#{subwayId},</if>
+			<if test="distance != null">#{distance},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="SubwayObjPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			obj_type = #{objType},
+			obj_id = #{objId},
+			subway_pid = #{subwayPid},
+			subway_id = #{subwayId},
+			distance = #{distance},
+			delete_flag = #{deleteFlag},
+			create_person = #{createPerson},
+			update_person = #{updatePerson},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="SubwayObjPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="objType != null">obj_type = #{objType},</if>
+			<if test="objId != null">obj_id = #{objId},</if>
+			<if test="subwayPid != null">subway_pid = #{subwayPid},</if>
+			<if test="subwayId != null">subway_id = #{subwayId},</if>
+			<if test="distance != null">distance = #{distance},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="saveList" parameterType="java.util.Map">  
+		INSERT INTO <include refid="tableNameUpdate"/>
+	    (
+			obj_type,
+			obj_id,
+			subway_pid,
+			subway_id,
+			distance,
+			delete_flag,
+			create_person,
+			update_person,
+			create_time,
+			update_time)
+        VALUES 
+	    <foreach collection="subList" item="item" index="index" separator="," >
+	   	( 
+			#{item.objType},
+			#{item.objId},
+			#{item.subwayPid},
+			#{item.subwayId},
+			#{item.distance},
+			#{item.deleteFlag},
+			#{item.createPerson},
+			#{item.updatePerson},
+			#{item.createTime},
+			#{item.updateTime})
+	    </foreach>  
+	</insert>  
+	
+	<delete id="deleteByObjTypeAndObjId" parameterType="java.util.Map">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE obj_type = #{objType} and obj_id = #{objId} 
+	</delete>
+	
+	<select id="getLineBy" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		group_concat(a.subway_pid)
+    	FROM <include refid="tableName"/> 
+		where a.obj_type = #{objType}
+			and a.obj_id = #{objId}
+	</select>
+	
+	<select id="getStationBy" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		group_concat(a.subway_id) 
+    	FROM <include refid="tableName"/> 
+		where a.obj_type = #{objType}
+			and a.obj_id = #{objId}
+	</select>
+	
+	<select id="getLineByNewHouse" parameterType="java.util.Map" resultType="java.lang.String">
+	  SELECT 
+    		group_concat(a.line)
+    	FROM dsj_new_house_subway_auth a
+		where 
+	   a.house_id=#{house_id}
+	</select>
+	
+	<select id="getStationByNewHouse" parameterType="java.util.Map" resultType="java.lang.String">
+	  SELECT 
+    		group_concat(a.station) 
+    	FROM dsj_new_house_subway_auth a 
+		where 
+		 a.house_id=#{house_id}
+	</select>
+</mapper>

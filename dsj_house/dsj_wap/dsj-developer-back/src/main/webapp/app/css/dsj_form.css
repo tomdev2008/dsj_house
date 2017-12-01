@@ -1,0 +1,13 @@
+.dsj_form {
+	width: 1190px;
+	margin: 0 auto;
+	margin-top: 40px;
+}
+
+.dsj_form.form-horizontal .form-group {
+   margin-right: 0px; 
+   margin-left: 0px; 
+}
+ .dsj_form h4 {
+ 	margin-bottom: 20px;
+ }

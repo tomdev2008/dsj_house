@@ -1,0 +1,42 @@
+.pointer{
+	cursor:pointer;
+}
+.webim-expend {
+    z-index: 300;
+    box-sizing: border-box;
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    right: 38px;
+    width: 240px;
+    border-top: 1px solid #e8e8e8;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.1);
+}
+.webim-expend-ico {
+    position: relative;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    display: inline-block;
+}
+.webim-expend-arrow {
+    margin-top: 5px;
+    width: 14px;
+    height: 8px;
+    float: right;
+}
+.dsj_chat {
+	display:none;
+    position: fixed;
+    z-index: 9;
+    width: 200px;
+    height: 500px;
+    bottom: 83px;
+    right: 240px;
+}
+.dsj_chat {
+  height: auto !important;
+}

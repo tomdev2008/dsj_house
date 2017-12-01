@@ -1,0 +1,39 @@
+*{
+    box-sizing: border-box;
+}
+html,body{
+  font-style: Arial,'Microsoft Yahei';
+}
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, figure, 
+dl, dt, dd, ul, ol, li,
+fieldset, button, input, textarea, 
+th, td,
+pre  {
+    margin: 0;
+}
+
+ul, ol, menu {
+    padding: 0;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+address, cite, dfn, em, var {
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+img{
+    border:none;
+}
+
+.clear:after {
+    content: '';
+    display: block;
+    clear: both;
+}

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.other.dao.impl.SubwayDaoImpl">
+    
+    <sql id="tableName"> dsj_subway a </sql>
+    <sql id="tableNameUpdate"> dsj_subway </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.pid AS "pid",
+		a.city_id AS "cityId",
+		a.name AS "name",
+		a.dimension AS "dimension",
+		a.accuracy AS "accuracy",
+		a.sort AS "sort",
+		a.is_complete AS "isComplete",
+		a.delete_flag AS "deleteFlag",
+		a.create_person AS "createPerson",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="SubwayPo">
+		<id column="id" property="id" />
+		<result column="pid" property="pid" />
+		<result column="city_id" property="cityId" />
+		<result column="name" property="name" />
+		<result column="dimension" property="dimension" />
+		<result column="accuracy" property="accuracy" />
+		<result column="sort" property="sort" />
+		<result column="is_complete" property="isComplete" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="subwayJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="pid != null "> AND a.pid = #{pid}</if>
+		<if test="cityId != null and cityId!= ''"> AND a.city_id = #{cityId}</if>
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="dimension != null and dimension != ''"> AND a.dimension = #{dimension}</if>
+		<if test="accuracy != null and accuracy != ''"> AND a.accuracy = #{accuracy}</if>
+		<if test="sort != null and sort!= ''"> AND a.sort = #{sort}</if>
+		<if test="isComplete != null and isComplete!= ''"> AND a.is_complete = #{isComplete}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="SubwayPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="subwayJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.sort ASC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.sort ASC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="SubwayPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			pid,
+			city_id,
+			name,
+			dimension,
+			accuracy,
+			sort,
+			is_complete,
+			delete_flag,
+			create_person,
+			update_person,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{pid},
+			#{cityId},
+			#{name},
+			#{dimension},
+			#{accuracy},
+			#{sort},
+			#{isComplete},
+			#{deleteFlag},
+			#{createPerson},
+			#{updatePerson},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="SubwayPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="pid != null">pid,</if>
+					<if test="cityId != null">city_id,</if>
+					<if test="name != null">name,</if>
+					<if test="dimension != null">dimension,</if>
+					<if test="accuracy != null">accuracy,</if>
+					<if test="sort != null">sort,</if>
+					<if test="isComplete != null">is_complete,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePerson != null">update_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="pid != null">#{pid},</if>
+			<if test="cityId != null">#{cityId},</if>
+			<if test="name != null">#{name},</if>
+			<if test="dimension != null">#{dimension},</if>
+			<if test="accuracy != null">#{accuracy},</if>
+			<if test="sort != null">#{sort},</if>
+			<if test="isComplete != null">#{isComplete},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="SubwayPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			pid = #{pid},
+			city_id = #{cityId},
+			name = #{name},
+			dimension = #{dimension},
+			accuracy = #{accuracy},
+			sort = #{sort},
+			is_complete = #{isComplete},
+			delete_flag = #{deleteFlag},
+			create_person = #{createPerson},
+			update_person = #{updatePerson},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="SubwayPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="pid != null">pid = #{pid},</if>
+			<if test="cityId != null">city_id = #{cityId},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="dimension != null">dimension = #{dimension},</if>
+			<if test="accuracy != null">accuracy = #{accuracy},</if>
+			<if test="sort != null">sort = #{sort},</if>
+			<if test="isComplete != null">is_complete = #{isComplete},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	<select id="getNewSubWayLine" parameterType="java.util.Map" resultType="com.dsj.modules.other.po.SubwayPo">
+	 SELECT
+	b.count,
+	b.id,
+	b.dimension,
+	b.accuracy,
+	b.pid,
+	b.`name`
+    FROM
+	(
+		SELECT
+			m.count,
+			s.dimension,
+			s.accuracy,
+			s.pid,
+			s.`name`,
+			sb.house_id,
+			s.id
+		FROM
+			dsj_subway s
+		LEFT JOIN dsj_new_house_subway_auth sb ON sb.station = s.id
+		LEFT JOIN dsj_new_house_directory_auth da ON da.id = sb.house_id
+		LEFT JOIN (
+		SELECT
+				count(1) AS count,
+				a.station
+			FROM
+				dsj_new_house_subway_auth a
+       LEFT JOIN dsj_new_house_directory_auth c ON c.id=a.house_id
+       WHERE c.auth_status = 3
+			GROUP BY
+				a.station
+		) m ON m.station = s.id
+		WHERE
+			s.pid = #{pid}
+		AND s.delete_flag =#{deleteFlag}
+	) b
+ 
+      GROUP BY
+	  b.id
+	</select>
+	
+	<select id="getSubWayLine" parameterType="java.util.Map" resultType="com.dsj.modules.other.po.SubwayPo">
+	  SELECT
+	SUM(b.count) AS count,
+	b.id,
+	b.dimension,
+	b.accuracy,
+	b.`name`,
+	b.pid
+FROM
+	(
+		SELECT
+			m.count,
+			s.dimension,
+			s.accuracy,
+			s.pid,
+			s.`name`,
+			o.obj_id,
+			s.id,
+			o.subway_id AS subwayId
+		FROM
+			dsj_subway s
+		LEFT JOIN dsj_subway_obj o ON o.subway_id = s.id
+		LEFT JOIN dsj_house_directory h ON h.id = o.obj_id
+		LEFT JOIN (
+			SELECT
+				count(1) AS count,
+				dic_id
+			FROM
+				old_house_master
+			GROUP BY
+				dic_id
+		) m ON m.dic_id = h.id
+		WHERE
+			s.pid = #{pid}
+		AND s.delete_flag = #{deleteFlag}
+	) b
+        GROUP BY
+	b.subwayId
+	</select>
+	
+</mapper>

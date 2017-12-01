@@ -1,0 +1,1230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldhouse.dao.impl.OldHouseMasterDaoImpl">
+    
+    <sql id="tableName"> old_house_master a </sql>
+    <sql id="tableNameUpdate"> old_house_master </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.dic_id AS "dicId",
+		a.record_no AS "recordNo",
+		a.hall AS "hall",
+		a.room AS "room",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.house_type AS "houseType",
+		a.renovation AS "renovation",
+		a.floor AS "floor",
+		a.floor_num AS "floorNum",
+		a.room_number1 AS "roomNumber1",
+		a.room_number1_cell AS "roomNumber1Cell",
+		a.room_number2 AS "roomNumber2",
+		a.room_number2_cell AS "roomNumber2Cell",
+		a.room_number AS "roomNumber",
+		a.build_area AS "buildArea",
+		a.build_year AS "buildYear",
+		a.certificate AS "certificate",
+		a.certificate_two AS "certificateTwo",
+		a.certificate_five AS "certificateFive",
+		a.house_only AS "houseOnly",
+		a.payments AS "payments",
+		a.price AS "price",
+		a.features AS "features",
+		a.title AS "title",
+		a.selling_point AS "sellingPoint",
+		a.house_detail AS "houseDetail",
+		a.owne_mentality AS "owneMentality",
+		a.village_matching AS "villageMatching",
+		a.service_intro AS "serviceIntro",
+		a.balcony AS "balcony",
+		a.built_up AS "builtUp",
+		a.orientations AS "orientations",
+		a.house_year AS "houseYear",
+		a.structure AS "structure",
+		a.lift_ratio AS "liftRatio",
+		a.heating_mode AS "heatingMode",
+		a.lift AS "lift",
+		a.listing_date AS "listingDate",
+		a.deal_date AS "dealDate",
+		a.property AS "property",
+		a.mortgage AS "mortgage",
+		a.room_book AS "roomBook",
+		a.delete_flag AS "deleteFlag",
+		a.unit_price AS "unitPrice",
+		a.monthpay AS "monthpay",
+		a.create_person AS "createPerson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.status AS "status",
+		a.image_url as imageUrl,
+		a.company_type as companyType,
+		a.company_types as companyTypes,
+		a.owner_name as ownerName,
+		a.owner_phone as ownerPhone,
+		a.floor_type AS floorType,
+		a.father_id AS fatherId,
+		a.is_key AS isKey,
+		a.certificate_type AS certificateType
+ 	</sql>
+	
+	    
+	<sql id="tableSolrColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.dic_id AS "dicId",
+		a.record_no AS "recordNo",
+		a.hall AS "hall",
+		a.room AS "room",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.house_type AS "houseType",
+		a.renovation AS "renovation",
+		a.floor AS "floor",
+		a.floor_type AS "floorType",
+		a.floor_num AS "floorNum",
+		a.room_number1 AS "roomNumber1",
+		a.room_number1_cell AS "roomNumber1Cell",
+		a.room_number2 AS "roomNumber2",
+		a.room_number2_cell AS "roomNumber2Cell",
+		a.room_number AS "roomNumber",
+		a.build_area AS "buildArea",
+		a.build_year AS "buildYear",
+		a.certificate AS "certificate",
+		a.certificate_two AS "certificateTwo",
+		a.certificate_five AS "certificateFive",
+		a.house_only AS "houseOnly",
+		a.payments AS "payments",
+		a.price AS "price",
+		a.features AS "features",
+		a.title AS "title",
+		a.selling_point AS "sellingPoint",
+		a.house_detail AS "houseDetail",
+		a.owne_mentality AS "owneMentality",
+		a.village_matching AS "villageMatching",
+		a.service_intro AS "serviceIntro",
+		a.balcony AS "balcony",
+		a.built_up AS "builtUp",
+		a.orientations AS "orientations",
+		a.house_year AS "houseYear",
+		a.structure AS "structure",
+		a.lift_ratio AS "liftRatio",
+		a.heating_mode AS "heatingMode",
+		a.lift AS "lift",
+		a.listing_date AS "listingDate",
+		a.deal_date AS "dealDate",
+		a.property AS "property",
+		a.mortgage AS "mortgage",
+		a.room_book AS "roomBook",
+		a.delete_flag AS "deleteFlag",
+		a.unit_price AS "unitPrice",
+		a.monthpay AS "monthpay",
+		a.create_person AS "createPerson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.status AS "status",
+		a.image_url as imageUrl,
+		a.company_types companyTypes,
+		d.spray_name dicName,
+		d.area_code1 areaCode1,
+		d.area_code2 areaCode2,
+		d.area_code3 areaCode3,
+		d.area_name1 areaName1,
+		d.area_name2 areaName2,
+		d.area_name3 areaName3,
+		d.trading_area_name tradingAreaName,
+		d.trading_area_id tradingAreaId,
+		d.dimension dimension,
+		d.accuracy accuracy,
+		da.dimension areaDimension,
+		da.accuracy areaAccuracy,
+		t.dimension tradeDimension,
+		t.accuracy tradeAccuracy
+	</sql>
+	
+	<resultMap id="beanMap" type="OldHouseMasterPo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="dic_id" property="dicId" />
+		<result column="record_no" property="recordNo" />
+		<result column="hall" property="hall" />
+		<result column="room" property="room" />
+		<result column="toilet" property="toilet" />
+		<result column="kitchen" property="kitchen" />
+		<result column="house_type" property="houseType" />
+		<result column="renovation" property="renovation" />
+		<result column="floor" property="floor" />
+		<result column="floor_num" property="floorNum" />
+		<result column="room_number1" property="roomNumber1" />
+		<result column="room_number1_cell" property="roomNumber1Cell" />
+		<result column="room_number2" property="roomNumber2" />
+		<result column="room_number2_cell" property="roomNumber2Cell" />
+		<result column="room_number" property="roomNumber" />
+		<result column="build_area" property="buildArea" />
+		<result column="build_year" property="buildYear" />
+		<result column="certificate" property="certificate" />
+		<result column="certificate_two" property="certificateTwo" />
+		<result column="certificate_five" property="certificateFive" />
+		<result column="house_only" property="houseOnly" />
+		<result column="payments" property="payments" />
+		<result column="price" property="price" />
+		<result column="features" property="features" />
+		<result column="title" property="title" />
+		<result column="selling_point" property="sellingPoint" />
+		<result column="house_detail" property="houseDetail" />
+		<result column="owne_mentality" property="owneMentality" />
+		<result column="village_matching" property="villageMatching" />
+		<result column="service_intro" property="serviceIntro" />
+		<result column="balcony" property="balcony" />
+		<result column="built_up" property="builtUp" />
+		<result column="orientations" property="orientations" />
+		<result column="house_year" property="houseYear" />
+		<result column="structure" property="structure" />
+		<result column="lift_ratio" property="liftRatio" />
+		<result column="heating_mode" property="heatingMode" />
+		<result column="lift" property="lift" />
+		<result column="listing_date" property="listingDate" />
+		<result column="deal_date" property="dealDate" />
+		<result column="property" property="property" />
+		<result column="mortgage" property="mortgage" />
+		<result column="room_book" property="roomBook" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="unit_price" property="unitPrice" />
+		<result column="monthpay" property="monthpay" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="status" property="status" />
+		<result column="image_url" property="imageUrl" />
+		<result column="company_type" property="companyType" />
+		<result column="company_types" property="companyTypes" />
+		<result column="owner_name" property="ownerName" />
+		<result column="owner_phone" property="ownerPhone" />
+		<result column="floor_type" property="floorType" />
+		<result column="father_id" property="fatherId" />
+		<result column="is_key" property="isKey" />
+		<result column="certificate_type" property="certificateType" />
+		
+	</resultMap>
+	
+	<resultMap id="beanVoMap" type="OldHouseMasterVo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="dic_id" property="dicId" />
+		<result column="record_no" property="recordNo" />
+		<result column="hall" property="hall" />
+		<result column="room" property="room" />
+		<result column="toilet" property="toilet" />
+		<result column="kitchen" property="kitchen" />
+		<result column="house_type" property="houseType" />
+		<result column="renovation" property="renovation" />
+		<result column="floor" property="floor" />
+		<result column="floor_num" property="floorNum" />
+		<result column="room_number1" property="roomNumber1" />
+		<result column="room_number1_cell" property="roomNumber1Cell" />
+		<result column="room_number2" property="roomNumber2" />
+		<result column="room_number2_cell" property="roomNumber2Cell" />
+		<result column="room_number" property="roomNumber" />
+		<result column="build_area" property="buildArea" />
+		<result column="build_year" property="buildYear" />
+		<result column="certificate" property="certificate" />
+		<result column="certificate_two" property="certificateTwo" />
+		<result column="certificate_five" property="certificateFive" />
+		<result column="house_only" property="houseOnly" />
+		<result column="payments" property="payments" />
+		<result column="price" property="price" />
+		<result column="features" property="features" />
+		<result column="title" property="title" />
+		<result column="selling_point" property="sellingPoint" />
+		<result column="house_detail" property="houseDetail" />
+		<result column="owne_mentality" property="owneMentality" />
+		<result column="village_matching" property="villageMatching" />
+		<result column="service_intro" property="serviceIntro" />
+		<result column="balcony" property="balcony" />
+		<result column="built_up" property="builtUp" />
+		<result column="orientations" property="orientations" />
+		<result column="house_year" property="houseYear" />
+		<result column="structure" property="structure" />
+		<result column="lift_ratio" property="liftRatio" />
+		<result column="heating_mode" property="heatingMode" />
+		<result column="lift" property="lift" />
+		<result column="listing_date" property="listingDate" />
+		<result column="deal_date" property="dealDate" />
+		<result column="property" property="property" />
+		<result column="mortgage" property="mortgage" />
+		<result column="room_book" property="roomBook" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="unit_price" property="unitPrice" />
+		<result column="monthpay" property="monthpay" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="status" property="status" />
+		<result column="spray_name" property="sprayName" />
+		<result column="area_name3" property="areaName3" />
+		<result column="trading_area_name" property="tradingAreaName" />
+		<result column="image_url" property="imageUrl" />
+		<result column="isRecomend" property="isRecomend" />
+			<result column="loupanShowId" property="loupanShowId" />
+		
+	</resultMap>
+	
+	
+	<sql id="oldHouseMasterJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+    	<if test="status != null "> AND a.status = #{status}</if>
+    	<if test="fatherId != null "> AND a.father_id = #{fatherId}</if>
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="dicId != null and dicId!= ''"> AND a.dic_id = #{dicId}</if>
+		<if test="recordNo != null and recordNo!= ''"> AND a.record_no = #{recordNo}</if>
+		<if test="hall != null and hall!= ''"> AND a.hall = #{hall}</if>
+		<if test="room != null and room!= ''"> AND a.room = #{room}</if>
+		<if test="toilet != null and toilet!= ''"> AND a.toilet = #{toilet}</if>
+		<if test="kitchen != null and kitchen!= ''"> AND a.kitchen = #{kitchen}</if>
+		<if test="houseType != null and houseType!= ''"> AND a.house_type = #{houseType}</if>
+		<if test="renovation != null and renovation!= ''"> AND a.renovation = #{renovation}</if>
+		<if test="floor != null and floor!= ''"> AND a.floor = #{floor}</if>
+		<if test="floorNum != null and floorNum!= ''"> AND a.floor_num = #{floorNum}</if>
+		<if test="roomNumber1 != null and roomNumber1!= ''"> AND a.room_number1 = #{roomNumber1}</if>
+		<if test="roomNumber1Cell != null and roomNumber1Cell!= ''"> AND a.room_number1_cell = #{roomNumber1Cell}</if>
+		<if test="roomNumber2 != null and roomNumber2!= ''"> AND a.room_number2 = #{roomNumber2}</if>
+		<if test="roomNumber2Cell != null and roomNumber2Cell!= ''"> AND a.room_number2_cell = #{roomNumber2Cell}</if>
+		<if test="roomNumber != null and roomNumber!= ''"> AND a.room_number = #{roomNumber}</if>
+		<if test="buildArea != null and buildArea!= ''"> AND a.build_area = #{buildArea}</if>
+		<if test="buildYear != null and buildYear!= ''"> AND a.build_year = #{buildYear}</if>
+		<if test="certificate != null and certificate!= ''"> AND a.certificate = #{certificate}</if>
+		<if test="certificateTwo != null and certificateTwo!= ''"> AND a.certificate_two = #{certificateTwo}</if>
+		<if test="certificateFive != null and certificateFive!= ''"> AND a.certificate_five = #{certificateFive}</if>
+		<if test="houseOnly != null and houseOnly!= ''"> AND a.house_only = #{houseOnly}</if>
+		<if test="payments != null and payments!= ''"> AND a.payments = #{payments}</if>
+		<if test="price != null and price!= ''"> AND a.price = #{price}</if>
+		<if test="features != null and features!= ''"> AND a.features = #{features}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="sellingPoint != null and sellingPoint!= ''"> AND a.selling_point = #{sellingPoint}</if>
+		<if test="houseDetail != null and houseDetail!= ''"> AND a.house_detail = #{houseDetail}</if>
+		<if test="owneMentality != null and owneMentality!= ''"> AND a.owne_mentality = #{owneMentality}</if>
+		<if test="villageMatching != null and villageMatching!= ''"> AND a.village_matching = #{villageMatching}</if>
+		<if test="serviceIntro != null and serviceIntro!= ''"> AND a.service_intro = #{serviceIntro}</if>
+		<if test="balcony != null and balcony!= ''"> AND a.balcony = #{balcony}</if>
+		<if test="builtUp != null and builtUp!= ''"> AND a.built_up = #{builtUp}</if>
+		<if test="orientations != null and orientations!= ''"> AND a.orientations = #{orientations}</if>
+		<if test="houseYear != null and houseYear!= ''"> AND a.house_year = #{houseYear}</if>
+		<if test="structure != null and structure!= ''"> AND a.structure = #{structure}</if>
+		<if test="liftRatio != null and liftRatio!= ''"> AND a.lift_ratio = #{liftRatio}</if>
+		<if test="heatingMode != null and heatingMode!= ''"> AND a.heating_mode = #{heatingMode}</if>
+		<if test="lift != null and lift!= ''"> AND a.lift = #{lift}</if>
+		<if test="listingDate != null and listingDate!= ''"> AND a.listing_date = #{listingDate}</if>
+		<if test="dealDate != null and dealDate!= ''"> AND a.deal_date = #{dealDate}</if>
+		<if test="property != null and property!= ''"> AND a.property = #{property}</if>
+		<if test="mortgage != null and mortgage!= ''"> AND a.mortgage = #{mortgage}</if>
+		<if test="roomBook != null and roomBook!= ''"> AND a.room_book = #{roomBook}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="unitPrice != null and unitPrice!= ''"> AND a.unit_price = #{unitPrice}</if>
+		<if test="monthpay != null and monthpay!= ''"> AND a.monthpay = #{monthpay}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="nofathful != null and nofathful != ''"> AND (a.father_id IS NULL or a.father_id=0)</if>
+		<if test="notDicId != null and notDicId != ''"> AND a.dic_id is not null</if>
+		
+		<if test="companyType != null and companyType != ''"> AND a.company_type=#{companyType}</if>
+		
+		<if test="notCompanyTypes != null and notCompanyTypes != ''"> AND a.company_types not like  CONCAT('%',#{notCompanyTypes},'%')</if>
+	</sql>
+    
+	<select id="getById" resultType="OldHouseMasterPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="oldHouseMasterJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	<select id="listJoinDicBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	left join dsj_house_directory dic on dic.id=a.dic_id
+    	<where>
+			<include refid="condition_sql" />
+			and dic.spray_name=#{dicName}
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	
+	<select id="listLeftAgentPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	
+    	LEFT JOIN old_house_agent oah on oah.old_master_id=a.id
+		<where>
+			oah.user_id is null
+			<include refid="condition_sql" />
+		</where>
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="getAllCount"  resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		LEFT JOIN old_house_agent_crawler ohac on ohac.old_master_id=a.id
+		where aohac.user_id is null
+	</select>
+	
+	<insert id="insert" parameterType="OldHouseMasterPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_id,
+			dic_id,
+			record_no,
+			hall,
+			room,
+			toilet,
+			kitchen,
+			house_type,
+			renovation,
+			floor,
+			floor_num,
+			room_number1,
+			room_number1_cell,
+			room_number2,
+			room_number2_cell,
+			room_number,
+			build_area,
+			build_year,
+			certificate,
+			certificate_two,
+			certificate_five,
+			house_only,
+			payments,
+			price,
+			features,
+			title,
+			selling_point,
+			house_detail,
+			owne_mentality,
+			village_matching,
+			service_intro,
+			balcony,
+			built_up,
+			orientations,
+			house_year,
+			structure,
+			lift_ratio,
+			heating_mode,
+			lift,
+			listing_date,
+			deal_date,
+			property,
+			mortgage,
+			room_book,
+			delete_flag,
+			unit_price,
+			monthpay,
+			create_person,
+			update_preson,
+			create_time,
+			update_time,
+			status
+		) VALUES (
+			#{id},
+			#{houseId},
+			#{dicId},
+			#{recordNo},
+			#{hall},
+			#{room},
+			#{toilet},
+			#{kitchen},
+			#{houseType},
+			#{renovation},
+			#{floor},
+			#{floorNum},
+			#{roomNumber1},
+			#{roomNumber1Cell},
+			#{roomNumber2},
+			#{roomNumber2Cell},
+			#{roomNumber},
+			#{buildArea},
+			#{buildYear},
+			#{certificate},
+			#{certificateTwo},
+			#{certificateFive},
+			#{houseOnly},
+			#{payments},
+			#{price},
+			#{features},
+			#{title},
+			#{sellingPoint},
+			#{houseDetail},
+			#{owneMentality},
+			#{villageMatching},
+			#{serviceIntro},
+			#{balcony},
+			#{builtUp},
+			#{orientations},
+			#{houseYear},
+			#{structure},
+			#{liftRatio},
+			#{heatingMode},
+			#{lift},
+			#{listingDate},
+			#{dealDate},
+			#{property},
+			#{mortgage},
+			#{roomBook},
+			#{deleteFlag},
+			#{unitPrice},
+			#{monthpay},
+			#{createPerson},
+			#{updatePreson},
+			#{createTime},
+			#{updateTime},
+			#{status}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OldHouseMasterPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="dicId != null">dic_id,</if>
+					<if test="recordNo != null">record_no,</if>
+					<if test="hall != null">hall,</if>
+					<if test="room != null">room,</if>
+					<if test="toilet != null">toilet,</if>
+					<if test="kitchen != null">kitchen,</if>
+					<if test="houseType != null">house_type,</if>
+					<if test="renovation != null">renovation,</if>
+					<if test="floor != null">floor,</if>
+					<if test="floorNum != null">floor_num,</if>
+					<if test="roomNumber1 != null">room_number1,</if>
+					<if test="roomNumber1Cell != null">room_number1_cell,</if>
+					<if test="roomNumber2 != null">room_number2,</if>
+					<if test="roomNumber2Cell != null">room_number2_cell,</if>
+					<if test="roomNumber != null">room_number,</if>
+					<if test="buildArea != null">build_area,</if>
+					<if test="buildYear != null">build_year,</if>
+					<if test="certificate != null">certificate,</if>
+					<if test="certificateTwo != null">certificate_two,</if>
+					<if test="certificateFive != null">certificate_five,</if>
+					<if test="houseOnly != null">house_only,</if>
+					<if test="payments != null">payments,</if>
+					<if test="price != null">price,</if>
+					<if test="features != null">features,</if>
+					<if test="title != null">title,</if>
+					<if test="sellingPoint != null">selling_point,</if>
+					<if test="houseDetail != null">house_detail,</if>
+					<if test="owneMentality != null">owne_mentality,</if>
+					<if test="villageMatching != null">village_matching,</if>
+					<if test="serviceIntro != null">service_intro,</if>
+					<if test="balcony != null">balcony,</if>
+					<if test="builtUp != null">built_up,</if>
+					<if test="orientations != null">orientations,</if>
+					<if test="houseYear != null">house_year,</if>
+					<if test="structure != null">structure,</if>
+					<if test="liftRatio != null">lift_ratio,</if>
+					<if test="heatingMode != null">heating_mode,</if>
+					<if test="lift != null">lift,</if>
+					<if test="listingDate != null">listing_date,</if>
+					<if test="dealDate != null">deal_date,</if>
+					<if test="property != null">property,</if>
+					<if test="mortgage != null">mortgage,</if>
+					<if test="roomBook != null">room_book,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="unitPrice != null">unit_price,</if>
+					<if test="monthpay != null">monthpay,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="status != null">status,</if>
+					<if test="companyType != null">company_type,</if>
+					<if test="companyTypes != null">company_types,</if>
+					<if test="ownerName != null">owner_name,</if>
+					<if test="ownerPhone != null">owner_phone,</if>
+					<if test="floorType != null">floor_type,</if>
+					<if test="fatherId != null">father_id,</if>
+					
+					<if test="isKey != null">is_key,</if>
+					<if test="certificateType != null">certificate_type,</if>
+					<if test="isCrawlerAdd != null">is_crawler_add,</if>
+					<if test="originHouseId != null">origin_house_id,</if>
+					<if test="imageUrl != null">image_url,</if>
+					
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="dicId != null">#{dicId},</if>
+			<if test="recordNo != null">#{recordNo},</if>
+			<if test="hall != null">#{hall},</if>
+			<if test="room != null">#{room},</if>
+			<if test="toilet != null">#{toilet},</if>
+			<if test="kitchen != null">#{kitchen},</if>
+			<if test="houseType != null">#{houseType},</if>
+			<if test="renovation != null">#{renovation},</if>
+			<if test="floor != null">#{floor},</if>
+			<if test="floorNum != null">#{floorNum},</if>
+			<if test="roomNumber1 != null">#{roomNumber1},</if>
+			<if test="roomNumber1Cell != null">#{roomNumber1Cell},</if>
+			<if test="roomNumber2 != null">#{roomNumber2},</if>
+			<if test="roomNumber2Cell != null">#{roomNumber2Cell},</if>
+			<if test="roomNumber != null">#{roomNumber},</if>
+			<if test="buildArea != null">#{buildArea},</if>
+			<if test="buildYear != null">#{buildYear},</if>
+			<if test="certificate != null">#{certificate},</if>
+			<if test="certificateTwo != null">#{certificateTwo},</if>
+			<if test="certificateFive != null">#{certificateFive},</if>
+			<if test="houseOnly != null">#{houseOnly},</if>
+			<if test="payments != null">#{payments},</if>
+			<if test="price != null">#{price},</if>
+			<if test="features != null">#{features},</if>
+			<if test="title != null">#{title},</if>
+			<if test="sellingPoint != null">#{sellingPoint},</if>
+			<if test="houseDetail != null">#{houseDetail},</if>
+			<if test="owneMentality != null">#{owneMentality},</if>
+			<if test="villageMatching != null">#{villageMatching},</if>
+			<if test="serviceIntro != null">#{serviceIntro},</if>
+			<if test="balcony != null">#{balcony},</if>
+			<if test="builtUp != null">#{builtUp},</if>
+			<if test="orientations != null">#{orientations},</if>
+			<if test="houseYear != null">#{houseYear},</if>
+			<if test="structure != null">#{structure},</if>
+			<if test="liftRatio != null">#{liftRatio},</if>
+			<if test="heatingMode != null">#{heatingMode},</if>
+			<if test="lift != null">#{lift},</if>
+			<if test="listingDate != null">#{listingDate},</if>
+			<if test="dealDate != null">#{dealDate},</if>
+			<if test="property != null">#{property},</if>
+			<if test="mortgage != null">#{mortgage},</if>
+			<if test="roomBook != null">#{roomBook},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="unitPrice != null">#{unitPrice},</if>
+			<if test="monthpay != null">#{monthpay},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="status != null">#{status},</if>
+			<if test="companyType != null">#{companyType},</if>
+			<if test="companyTypes != null">#{companyTypes},</if>
+			<if test="ownerName != null">#{ownerName},</if>
+			<if test="ownerPhone != null">#{ownerPhone},</if>
+			<if test="floorType != null">#{floorType},</if>
+					<if test="fatherId != null">#{fatherId},</if>
+			<if test="isKey != null">#{isKey},</if>
+					<if test="certificateType != null">#{certificateType},</if>
+				<if test="isCrawlerAdd != null">#{isCrawlerAdd},</if>
+				<if test="originHouseId != null">#{originHouseId},</if>
+			<if test="imageUrl != null">#{imageUrl},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="OldHouseMasterPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_id = #{houseId},
+			dic_id = #{dicId},
+			record_no = #{recordNo},
+			hall = #{hall},
+			room = #{room},
+			toilet = #{toilet},
+			kitchen = #{kitchen},
+			house_type = #{houseType},
+			renovation = #{renovation},
+			floor = #{floor},
+			floor_num = #{floorNum},
+			room_number1 = #{roomNumber1},
+			room_number1_cell = #{roomNumber1Cell},
+			room_number2 = #{roomNumber2},
+			room_number2_cell = #{roomNumber2Cell},
+			room_number = #{roomNumber},
+			build_area = #{buildArea},
+			build_year = #{buildYear},
+			certificate = #{certificate},
+			certificate_two = #{certificateTwo},
+			certificate_five = #{certificateFive},
+			house_only = #{houseOnly},
+			payments = #{payments},
+			price = #{price},
+			features = #{features},
+			title = #{title},
+			selling_point = #{sellingPoint},
+			house_detail = #{houseDetail},
+			owne_mentality = #{owneMentality},
+			village_matching = #{villageMatching},
+			service_intro = #{serviceIntro},
+			balcony = #{balcony},
+			built_up = #{builtUp},
+			orientations = #{orientations},
+			house_year = #{houseYear},
+			structure = #{structure},
+			lift_ratio = #{liftRatio},
+			heating_mode = #{heatingMode},
+			lift = #{lift},
+			listing_date = #{listingDate},
+			deal_date = #{dealDate},
+			property = #{property},
+			mortgage = #{mortgage},
+			room_book = #{roomBook},
+			delete_flag = #{deleteFlag},
+			unit_price = #{unitPrice},
+			monthpay = #{monthpay},
+			create_person = #{createPerson},
+			update_preson = #{updatePreson},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OldHouseMasterPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+    	 <if test="status != null">status = #{status},</if>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="dicId != null">dic_id = #{dicId},</if>
+			<if test="recordNo != null">record_no = #{recordNo},</if>
+			<if test="hall != null">hall = #{hall},</if>
+			<if test="room != null">room = #{room},</if>
+			<if test="toilet != null">toilet = #{toilet},</if>
+			<if test="kitchen != null">kitchen = #{kitchen},</if>
+			<if test="houseType != null">house_type = #{houseType},</if>
+			<if test="renovation != null">renovation = #{renovation},</if>
+			<if test="floor != null">floor = #{floor},</if>
+			<if test="floorNum != null">floor_num = #{floorNum},</if>
+			<if test="roomNumber1 != null">room_number1 = #{roomNumber1},</if>
+			<if test="roomNumber1Cell != null">room_number1_cell = #{roomNumber1Cell},</if>
+			<if test="roomNumber2 != null">room_number2 = #{roomNumber2},</if>
+			<if test="roomNumber2Cell != null">room_number2_cell = #{roomNumber2Cell},</if>
+			<if test="roomNumber != null">room_number = #{roomNumber},</if>
+			<if test="buildArea != null">build_area = #{buildArea},</if>
+			<if test="buildYear != null">build_year = #{buildYear},</if>
+			<if test="certificate != null">certificate = #{certificate},</if>
+			<if test="certificateTwo != null">certificate_two = #{certificateTwo},</if>
+			<if test="certificateFive != null">certificate_five = #{certificateFive},</if>
+			<if test="houseOnly != null">house_only = #{houseOnly},</if>
+			<if test="payments != null">payments = #{payments},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="features != null">features = #{features},</if>
+			<if test="title != null">title = #{title},</if>
+			<if test="sellingPoint != null">selling_point = #{sellingPoint},</if>
+			<if test="houseDetail != null">house_detail = #{houseDetail},</if>
+			<if test="owneMentality != null">owne_mentality = #{owneMentality},</if>
+			<if test="villageMatching != null">village_matching = #{villageMatching},</if>
+			<if test="serviceIntro != null">service_intro = #{serviceIntro},</if>
+			<if test="balcony != null">balcony = #{balcony},</if>
+			<if test="builtUp != null">built_up = #{builtUp},</if>
+			<if test="orientations != null">orientations = #{orientations},</if>
+			<if test="houseYear != null">house_year = #{houseYear},</if>
+			<if test="structure != null">structure = #{structure},</if>
+			<if test="liftRatio != null">lift_ratio = #{liftRatio},</if>
+			<if test="heatingMode != null">heating_mode = #{heatingMode},</if>
+			<if test="lift != null">lift = #{lift},</if>
+			<if test="listingDate != null">listing_date = #{listingDate},</if>
+			<if test="dealDate != null">deal_date = #{dealDate},</if>
+			<if test="property != null">property = #{property},</if>
+			<if test="mortgage != null">mortgage = #{mortgage},</if>
+			<if test="roomBook != null">room_book = #{roomBook},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="unitPrice != null">unit_price = #{unitPrice},</if>
+			<if test="monthpay != null">monthpay = #{monthpay},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="imageUrl != null">image_url = #{imageUrl},</if>
+			<if test="ownerName != null">owner_name = #{ownerName},</if>
+			<if test="ownerPhone != null">owner_phone = #{ownerPhone},</if>
+			<if test="floorType != null">floor_type = #{floorType},</if>
+			<if test="fatherId != null">father_id = #{fatherId},</if>
+			
+			<if test="isKey != null">is_key = #{isKey},</if>
+			<if test="certificateType != null">certificate_type = #{certificateType},</if>
+		
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="updateCompanyTypes" parameterType="java.util.Map">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			company_types=#{companyTypes}
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+		<select id="listOldMasterPage" parameterType="java.util.Map" resultMap="beanVoMap">
+		SELECT a.*,dic.spray_name,dic.area_name3,dic.trading_area_name FROM old_house_master a 
+			LEFT JOIN dsj_house_directory dic ON a.dic_id=dic.id
+		<where>
+				(a.father_id is null or a.father_id=0)
+				<if test="name != null and name!= ''"> 
+				AND (dic.spray_name like CONCAT("%",#{name},"%") or a.id = #{name})
+				</if>
+				<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+					<if test="status != null and status != ''"> AND a.status = #{status}</if>
+				<if test="areaCode1 != null and areaCode1 != ''"> AND dic.area_code1 = #{areaCode1}</if>
+				<if test="areaCode2 != null and areaCode2 != ''"> AND dic.area_code2 = #{areaCode2}</if>
+				<if test="areaCode3 != null and areaCode3 != ''"> AND dic.area_code3 = #{areaCode3}</if>
+				<if test="tradingAreaId != null and tradingAreaId != ''"> AND dic.trading_area_id = #{tradingAreaId}</if>
+				<if test="priceMin != null and priceMin != ''"> AND a.price &gt;= #{priceMin}</if>
+				<if test="priceMax != null and priceMax != ''"> AND a.price &lt;= #{priceMax}</if>
+				<if test="buildAreaMin != null and buildAreaMin != ''"> AND a.build_area &gt;= #{buildAreaMin}</if>
+				<if test="buildAreaMax != null and buildAreaMax != ''"> AND a.build_area &lt;= #{buildAreaMax}</if>
+				<if test="roomMin != null and roomMin != ''"> AND a.room &gt;= #{roomMin}</if>
+				<if test="roomMax != null and roomMax != ''"> AND a.room &lt;= #{roomMax}</if>
+				<if test="startCreateTime != null and startCreateTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startCreateTime},'%Y-%m-%d')]]></if>
+    			<if test="endCreateTime != null and endCreateTime != ''"><![CDATA[ AND a.create_time<=STR_TO_DATE(#{endCreateTime},'%Y-%m-%d')]]> </if>
+	
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listOldMasterPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		 FROM old_house_master a 
+			LEFT JOIN dsj_house_directory dic ON a.dic_id=dic.id
+		<where>
+			(a.father_id is null or a.father_id=0)
+			<if test="name != null and name!= ''"> 
+				AND (dic.spray_name like CONCAT("%",#{name},"%") or a.id = #{name})
+				</if>
+				<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+					<if test="status != null and status != ''"> AND a.status = #{status}</if>
+				<if test="areaCode1 != null and areaCode1 != ''"> AND dic.area_code1 = #{areaCode1}</if>
+				<if test="areaCode2 != null and areaCode2 != ''"> AND dic.area_code2 = #{areaCode2}</if>
+				<if test="areaCode3 != null and areaCode3 != ''"> AND dic.area_code3 = #{areaCode3}</if>
+				<if test="tradingAreaId != null and tradingAreaId != ''"> AND dic.trading_area_id = #{tradingAreaId}</if>
+				<if test="priceMin != null and priceMin != ''"> AND a.price &gt;= #{priceMin}</if>
+				<if test="priceMax != null and priceMax != ''"> AND a.price &lt;= #{priceMax}</if>
+				<if test="buildAreaMin != null and buildAreaMin != ''"> AND a.build_area &gt;= #{buildAreaMin}</if>
+				<if test="buildAreaMax != null and buildAreaMax != ''"> AND a.build_area &lt;= #{buildAreaMax}</if>
+				<if test="roomMin != null and roomMin != ''"> AND a.room &gt;= #{roomMin}</if>
+				<if test="roomMax != null and roomMax != ''"> AND a.room &lt;= #{roomMax}</if>
+				<if test="startCreateTime != null and startCreateTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startCreateTime},'%Y-%m-%d')]]></if>
+    			<if test="endCreateTime != null and endCreateTime != ''"><![CDATA[ AND a.create_time<=STR_TO_DATE(#{endCreateTime},'%Y-%m-%d')]]> </if>
+		
+		</where>
+	</select>
+	
+	
+		<select id="listAgentOldMasterPage" parameterType="java.util.Map" resultMap="beanVoMap">
+		SELECT a.*,dic.spray_name,dic.area_name3,dic.trading_area_name,oha.is_recomend isRecomend,ls.id loupanShowId FROM old_house_master a 
+			LEFT JOIN dsj_house_directory dic ON a.dic_id=dic.id
+			
+			JOIN old_house_agent oha on oha.old_master_id=a.id AND oha.delete_flag = #{deleteFlag}
+			LEFT JOIN dsj_loupan_show ls on ls.house_id=a.id and ls.type=2
+		<where>
+				<if test="name != null and name!= ''"> 
+				AND (dic.spray_name like CONCAT("%",#{name},"%") or a.dic_id = #{name})
+				</if>
+				<if test="userId != null and userId !=''"> AND oha.user_id = #{userId}</if>
+				<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+					<if test="status != null and status != ''"> AND a.status = #{status}</if>
+				<if test="areaCode1 != null and areaCode1 != ''"> AND dic.area_code1 = #{areaCode1}</if>
+				<if test="areaCode2 != null and areaCode2 != ''"> AND dic.area_code2 = #{areaCode2}</if>
+				<if test="areaCode3 != null and areaCode3 != ''"> AND dic.area_code3 = #{areaCode3}</if>
+				<if test="tradingAreaId != null and tradingAreaId != ''"> AND dic.trading_area_id = #{tradingAreaId}</if>
+				<if test="priceMin != null and priceMin != ''"> AND a.price &gt;= #{priceMin}</if>
+				<if test="priceMax != null and priceMax != ''"> AND a.price &lt;= #{priceMax}</if>
+				<if test="buildAreaMin != null and buildAreaMin != ''"> AND a.build_area &gt;= #{buildAreaMin}</if>
+				<if test="buildAreaMax != null and buildAreaMax != ''"> AND a.build_area &lt;= #{buildAreaMax}</if>
+				<if test="roomMin != null and roomMin != ''"> AND a.room &gt;= #{roomMin}</if>
+				<if test="roomMax != null and roomMax != ''"> AND a.room &lt;= #{roomMax}</if>
+				<if test="startCreateTime != null and startCreateTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startCreateTime},'%Y-%m-%d')]]></if>
+    			<if test="endCreateTime != null and endCreateTime != ''"><![CDATA[ AND a.create_time<=STR_TO_DATE(#{endCreateTime},'%Y-%m-%d')]]> </if>
+	
+		</where>
+		GROUP BY a.id
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	
+	</select>
+	
+	<select id="listAgentOldMasterPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+			FROM (select a.id FROM old_house_master a 
+			LEFT JOIN dsj_house_directory dic ON a.dic_id=dic.id
+			LEFT JOIN old_master_agent_recommend r on r.old_master_id=a.id and r.user_id=#{userId} 
+				JOIN old_house_agent oha on oha.old_master_id=a.id AND oha.delete_flag = #{deleteFlag}
+		<where>
+			<if test="name != null and name!= ''"> 
+				AND (dic.spray_name like CONCAT("%",#{name},"%") or a.dic_id = #{name})
+				</if>
+				<if test="userId != null and userId !=''"> AND oha.user_id = #{userId}</if>
+				<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+					<if test="status != null and status != ''"> AND a.status = #{status}</if>
+				<if test="areaCode1 != null and areaCode1 != ''"> AND dic.area_code1 = #{areaCode1}</if>
+				<if test="areaCode2 != null and areaCode2 != ''"> AND dic.area_code2 = #{areaCode2}</if>
+				<if test="areaCode3 != null and areaCode3 != ''"> AND dic.area_code3 = #{areaCode3}</if>
+				<if test="tradingAreaId != null and tradingAreaId != ''"> AND dic.trading_area_id = #{tradingAreaId}</if>
+				<if test="priceMin != null and priceMin != ''"> AND a.price &gt;= #{priceMin}</if>
+				<if test="priceMax != null and priceMax != ''"> AND a.price &lt;= #{priceMax}</if>
+				<if test="buildAreaMin != null and buildAreaMin != ''"> AND a.build_area &gt;= #{buildAreaMin}</if>
+				<if test="buildAreaMax != null and buildAreaMax != ''"> AND a.build_area &lt;= #{buildAreaMax}</if>
+				<if test="roomMin != null and roomMin != ''"> AND a.room &gt;= #{roomMin}</if>
+				<if test="roomMax != null and roomMax != ''"> AND a.room &lt;= #{roomMax}</if>
+				<if test="startCreateTime != null and startCreateTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startCreateTime},'%Y-%m-%d')]]></if>
+    			<if test="endCreateTime != null and endCreateTime != ''"><![CDATA[ AND a.create_time<=STR_TO_DATE(#{endCreateTime},'%Y-%m-%d')]]> </if>
+		
+		</where>
+			GROUP BY a.id) t
+	</select>
+	
+	
+	<update id="updateDeleteFlag">
+		UPDATE  <include refid="tableNameUpdate"/>
+		SET delete_flag = #{deleteFlag} WHERE id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 				#{item}  
+		</foreach>  
+	</update>
+	
+	<update id="updateMasterStatus">
+		UPDATE  <include refid="tableNameUpdate"/>
+		SET status = #{status} WHERE  id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 				#{item}  
+		</foreach>  
+	</update>
+	
+	<update id="updateImageUrlById">
+		UPDATE  <include refid="tableNameUpdate"/>
+		SET image_url = #{imageUrl} WHERE id =#{id}
+	</update>
+	
+		
+  	
+  	<select id="getErshoufangSolrByIds" resultType="ErshoufangIndexFiled">
+    	SELECT
+    	<include refid="tableSolrColumns"/>
+    	from old_house_master a LEFT JOIN dsj_house_directory d
+			on a.dic_id =d.id LEFT JOIN dsj_trade_area t on d.trading_area_id=t.id 
+    		LEFT JOIN dsj_area da on da.area_code=t.parent_id
+    	 WHERE a.id in
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 				#{item}  
+			</foreach>  
+    	ORDER BY a.id DESC
+  	</select>
+
+	<select id="getSameVillageList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+		where  a.dic_id = #{dicId} 
+			and a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			order by ABS(a.price - #{price}) ASC , a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<select id="getSameTradeList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		where  dic.trading_area_id = #{tradingId} 
+			and a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			order by ABS(a.price - #{price}) ASC , a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<select id="getSimilarList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		where a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			and ABS(a.price - #{price}) &lt;= #{price}
+			order by 
+			( ABS( dic.dimension - #{dimension}) + ABS( dic.accuracy - #{accuracy}) )  ASC ,
+			 a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<select id="getLateList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+		where a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			order by a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<update id="deleteOldRecommend" >
+		delete from old_house_recommend where house_id = #{id}
+	</update>
+	
+	<insert id="updateOldRecommend" parameterType="java.util.Map" keyProperty="id" useGeneratedKeys="true">
+	    INSERT INTO old_house_recommend
+	    (	
+	    	house_id,
+			recommend_id,
+			create_time
+		)
+        VALUES 
+        <foreach collection="ids" item="item" index="index" separator="," > 
+	   	(	
+	   		#{houseId},
+			#{item},
+	        now()
+		)
+	    </foreach>  
+	</insert>
+
+	<select id="listCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		where  a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+	</select>
+	
+	
+
+	<select id="getCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	<select id="selectByLimit" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		a.id AS "id",
+    		a.price AS "price",
+    		a.dic_id AS "dicId"
+    	FROM <include refid="tableName"/> 
+		where  a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+		ORDER BY a.id DESC 
+		LIMIT #{startNum} , #{endNum} 
+	</select>
+	
+	<select id="findAgentOldHouse" parameterType="java.util.Map" resultType="com.dsj.modules.oldhouse.vo.OldHouseMasterVo">
+		SELECT d.spray_name AS 'sprayName',c.short_name AS 'companyName',<include refid="tableColumns"/>,
+		(select GROUP_CONCAT(typegroupname) from house_group_type where  FIND_IN_SET(id,a.features)) as "featureName"
+		from old_house_master a
+		left join old_house_agent agent on agent.old_master_id = a.id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_agent dt on dt.user_id = agent.user_id
+		left join dsj_company c on dt.company = c.id
+		where agent.user_id = #{userId}	
+		and a.status = 2
+		and a.delete_flag = 2
+		ORDER BY
+		<if test="price != null and price!= ''">a.price asc,</if>
+		<if test="time != null and time!= ''">agent.create_time DESC,</if>
+		<if test="priceHigh != null and priceHigh!= ''">a.price DESC,</if>
+		<if test="timeOld != null and timeOld!= ''">agent.create_time ASC,</if>
+		agent.is_recomend ASC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="findAgentOldHouseCount" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(1) 
+		from old_house_master a
+		left join old_house_agent agent on agent.old_master_id = a.id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_agent dt on dt.user_id = agent.user_id
+		left join dsj_company c on dt.company = c.id
+		where agent.user_id = #{userId}	
+		and a.status = 2
+		and a.delete_flag = 2
+	</select>
+	
+	<select id="findFollow" parameterType="java.util.Map" resultType="com.dsj.modules.oldhouse.vo.OldHouseMasterVo">
+		SELECT d.spray_name AS 'sprayName',c.short_name AS 'companyName',f.id AS 'objectId',<include refid="tableColumns"/>,
+		(select GROUP_CONCAT(typegroupname) from house_group_type where  FIND_IN_SET(id,a.features)) as "featureName"
+		from old_house_master a
+		left join dsj_follow f on f.object_id = a.id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_company c on a.company_type = c.id
+		where f.user_id = #{userId}
+		and f.type = #{type}
+		ORDER BY f.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+		
+		
+	</select>
+	<select id="findFollowCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		from old_house_master a
+		left join dsj_follow f on f.object_id = a.id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_company c on a.company_type = c.id
+		where f.user_id = #{userId}
+		and f.type = #{type}
+	</select>
+	
+	<select id="lookHistory" parameterType="java.util.Map" resultType="com.dsj.modules.oldhouse.vo.OldHouseMasterVo">
+		SELECT d.spray_name AS 'sprayName',c.short_name AS 'companyName',h.create_time AS 'lookTime',<include refid="tableColumns"/>,
+		(select GROUP_CONCAT(typegroupname) from house_group_type where  FIND_IN_SET(id,a.features)) as "featureName"
+		from old_house_master a
+		left join dsj_look_history h on h.object_id = a.id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_company c on a.company_type = c.id
+		
+		where h.user_id = #{userId}
+		and h.type = #{type}
+		and h.create_time &gt; #{time}
+		ORDER BY h.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+
+		
+		
+	</select>
+	<select id="lookHistoryCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		from old_house_master a
+		left join dsj_look_history h on h.object_id = a.id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_company c on a.company_type = c.id
+		where h.user_id = #{userId}
+		and h.type = #{type}
+		and h.create_time &gt; #{time}
+
+	</select>
+	
+	<select id="getOldHouseRecommendById" parameterType="java.util.Map" resultType="com.dsj.modules.oldhouse.vo.OldHouseRecommendVo">
+		select m.id id,m.title title,m.price price,m.build_area buildArea,m.image_url imageUrl, 
+				m.dic_id dicId,d.spray_name dicName,m.hall hall,m.room room,m.floor_num floorNum,m.build_year buildYear,m.floor_type floorType,
+				m.features features,d.area_name3 areaName3,m.unit_price unitPrice
+			from old_house_recommend r  JOIN  old_house_master m ON r.recommend_id=m.id LEFT JOIN dsj_house_directory d on m.dic_id =d.id
+			
+		where  r.house_id=#{id} limit 6
+	</select>
+	
+	<select id="getPcByNamePreMatchding" resultType="com.dsj.modules.oldhouse.vo.OldHouseMasterVo">
+		SELECT 
+		d.spray_name as sprayName,
+		<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		left join dsj_house_directory d on d.id=a.dic_id
+		<where>
+			<if test="deleteFlag != null and deleteFlag != ''"> AND a.delete_flag = #{deleteFlag}</if>
+			<if test="id != null and id != ''">AND a.house_id like CONCAT(#{id},'%')</if>
+			<if test="status != null and status != ''">AND a.status=#{status}</if>
+		</where>
+	</select>
+	
+	<select id="findPcPageOldHouse" parameterType="java.util.Map" resultType="com.dsj.modules.oldhouse.vo.OldHouseMasterVo">
+		SELECT d.spray_name AS 'sprayName',c.short_name AS 'companyName',<include refid="tableColumns"/>,
+		(select GROUP_CONCAT(typegroupname) from house_group_type where  FIND_IN_SET(id,a.features)) as "featureName"
+		from dsj_pc_old_house_page page		
+		left join old_house_master a  on page.object_id = a.house_id
+		left join dsj_agent agent on agent.id = page.agent_id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_company c on agent.company = c.id
+		
+		ORDER BY
+		<if test="price != null and price!= ''">a.price asc,</if>
+		<if test="time != null and time!= ''">a.create_time DESC,</if>
+		<if test="priceHigh != null and priceHigh!= ''">a.price DESC,</if>
+		<if test="timeOld != null and timeOld!= ''">a.create_time ASC,</if>
+		a.id ASC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="findPcPageOldHouseCount" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(1) 
+		from dsj_pc_old_house_page page
+		left join old_house_master a on page.object_id = a.house_id
+		left join dsj_agent agent on agent.id = page.agent_id
+		left join dsj_house_directory d on a.dic_id = d.id
+		left join dsj_company c on agent.company = c.id
+			
+	</select>
+	
+	
+</mapper>

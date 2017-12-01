@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.MasterCrawlerTaskDaoImpl">
+    
+    <sql id="tableName"> old_master_crawler_task a </sql>
+    <sql id="tableNameUpdate"> old_master_crawler_task </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.task_code AS "taskCode",
+		a.type AS "type",
+		a.version AS "version"
+	</sql>
+	
+	<resultMap id="beanMap" type="MasterCrawlerTaskPo">
+		<id column="id" property="id" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="task_code" property="taskCode" />
+		<result column="type" property="type" />
+		<result column="version" property="version" />
+	</resultMap>
+	
+	<sql id="masterCrawlerTaskJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="taskCode != null and taskCode!= ''"> AND a.task_code = #{taskCode}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+	</sql>
+    
+	<select id="getById" resultType="MasterCrawlerTaskPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="masterCrawlerTaskJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="MasterCrawlerTaskPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			create_time,
+			update_time,
+			task_code,
+			type,
+			version
+		) VALUES (
+			#{id},
+			#{createTime},
+			#{updateTime},
+			#{taskCode},
+			#{type},
+			#{version}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="MasterCrawlerTaskPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="taskCode != null">task_code,</if>
+					<if test="type != null">type,</if>
+					<if test="version != null">version,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="taskCode != null">#{taskCode},</if>
+			<if test="type != null">#{type},</if>
+			<if test="version != null">#{version},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="MasterCrawlerTaskPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			update_time = #{updateTime},
+			task_code = #{taskCode},
+			type = #{type},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="MasterCrawlerTaskPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="taskCode != null">task_code = #{taskCode},</if>
+			<if test="type != null">type = #{type},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

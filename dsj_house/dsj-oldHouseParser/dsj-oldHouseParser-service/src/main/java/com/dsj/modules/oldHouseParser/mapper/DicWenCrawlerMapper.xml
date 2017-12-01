@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.DicWenCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_dic_wen_crawler a </sql>
+    <sql id="tableNameUpdate"> old_dic_wen_crawler </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.wen_time AS "wenTime",
+		a.create_time AS "createTime",
+		a.origin_dic_id AS "originDicId",
+		a.content AS "content",
+		a.title AS "title",
+		a.classify_name AS "classifyName",
+		a.origin_wen_id AS "originWenId"
+	</sql>
+	
+	<resultMap id="beanMap" type="DicWenCrawlerPo">
+		<id column="id" property="id" />
+		<result column="wen_time" property="wenTime" />
+		<result column="create_time" property="createTime" />
+		<result column="origin_dic_id" property="originDicId" />
+		<result column="content" property="content" />
+		<result column="title" property="title" />
+		<result column="classify_name" property="classifyName" />
+		<result column="origin_wen_id" property="originWenId" />
+	</resultMap>
+	
+	<sql id="dicWenCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="wenTime != null and wenTime!= ''"> AND a.wen_time = #{wenTime}</if>
+		<if test="originDicId != null and originDicId!= ''"> AND a.origin_dic_id = #{originDicId}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="classifyName != null and classifyName!= ''"> AND a.classify_name = #{classifyName}</if>
+		<if test="originWenId != null and originWenId!= ''"> AND a.origin_wen_id = #{originWenId}</if>
+	</sql>
+    
+	<select id="getById" resultType="DicWenCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="dicWenCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="DicWenCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			wen_time,
+			create_time,
+			origin_dic_id,
+			content,
+			title,
+			classify_name,
+			origin_wen_id
+		) VALUES (
+			#{id},
+			#{wenTime},
+			#{createTime},
+			#{originDicId},
+			#{content},
+			#{title},
+			#{classifyName},
+			#{originWenId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="DicWenCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="wenTime != null">wen_time,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="originDicId != null">origin_dic_id,</if>
+					<if test="content != null">content,</if>
+					<if test="title != null">title,</if>
+					<if test="classifyName != null">classify_name,</if>
+					<if test="originWenId != null">origin_wen_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="wenTime != null">#{wenTime},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="originDicId != null">#{originDicId},</if>
+			<if test="content != null">#{content},</if>
+			<if test="title != null">#{title},</if>
+			<if test="classifyName != null">#{classifyName},</if>
+			<if test="originWenId != null">#{originWenId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="DicWenCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			wen_time = #{wenTime},
+			origin_dic_id = #{originDicId},
+			content = #{content},
+			title = #{title},
+			classify_name = #{classifyName},
+			origin_wen_id = #{originWenId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="DicWenCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="wenTime != null">wen_time = #{wenTime},</if>
+			<if test="originDicId != null">origin_dic_id = #{originDicId},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="title != null">title = #{title},</if>
+			<if test="classifyName != null">classify_name = #{classifyName},</if>
+			<if test="originWenId != null">origin_wen_id = #{originWenId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

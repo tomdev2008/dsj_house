@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.SkuImgDaoImpl">
+    
+    <sql id="tableName"> dsj_sku_img a </sql>
+    <sql id="tableNameUpdate"> dsj_sku_img </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.sku_id AS "skuId",
+		a.image AS "image",
+		a.order_num AS "orderNum",
+		a.delete_flag AS "deleteFlag",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="SkuImgPo">
+		<id column="id" property="id" />
+		<result column="sku_id" property="skuId" />
+		<result column="image" property="image" />
+		<result column="order_num" property="orderNum" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="skuImgJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="skuId != null and skuId!= ''"> AND a.sku_id = #{skuId}</if>
+		<if test="image != null and image!= ''"> AND a.image = #{image}</if>
+		<if test="orderNum != null and orderNum!= ''"> AND a.order_num = #{orderNum}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="SkuImgPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="skuImgJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="SkuImgPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			sku_id,
+			image,
+			order_num,
+			delete_flag,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{skuId},
+			#{image},
+			#{orderNum},
+			#{deleteFlag},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="SkuImgPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="skuId != null">sku_id,</if>
+					<if test="image != null">image,</if>
+					<if test="orderNum != null">order_num,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="skuId != null">#{skuId},</if>
+			<if test="image != null">#{image},</if>
+			<if test="orderNum != null">#{orderNum},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="SkuImgPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			sku_id = #{skuId},
+			image = #{image},
+			order_num = #{orderNum},
+			delete_flag = #{deleteFlag},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="SkuImgPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="skuId != null">sku_id = #{skuId},</if>
+			<if test="image != null">image = #{image},</if>
+			<if test="orderNum != null">order_num = #{orderNum},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

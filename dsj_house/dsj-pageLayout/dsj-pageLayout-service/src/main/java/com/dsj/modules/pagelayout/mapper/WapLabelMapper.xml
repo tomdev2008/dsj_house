@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.WapLabelDaoImpl">
+    
+    <sql id="tableName"> dsj_wap_label a </sql>
+    <sql id="tableNameUpdate"> dsj_wap_label </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.status AS "status",
+		a.name AS "name",
+		a.include_type AS "includeType",
+		a.weight AS "weight",
+		a.create_time AS "createTime",
+		a.update_user AS "updateUser"
+	</sql>
+	
+	<resultMap id="beanMap" type="WapLabelPo">
+		<id column="id" property="id" />
+		<result column="status" property="status" />
+		<result column="name" property="name" />
+		<result column="include_type" property="includeType" />
+		<result column="weight" property="weight" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+	</resultMap>
+	
+	<sql id="wapLabelJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+    	<if test="status != null and status!= ''"> AND a.status = #{status}</if>
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="includeType != null and includeType!= ''"> AND a.include_type = #{includeType}</if>
+		<if test="weight != null and weight!= ''"> AND a.weight = #{weight}</if>
+		<if test="updateUser != null and updateUser!= ''"> AND a.update_user = #{updateUser}</if>
+	</sql>
+    
+	<select id="getById" resultType="WapLabelPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="wapLabelJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id ASC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="WapLabelPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			status,
+			name,
+			include_type,
+			weight,
+			create_time,
+			update_user
+		) VALUES (
+			#{id},
+			#{status},
+			#{name},
+			#{includeType},
+			#{weight},
+			#{createTime},
+			#{updateUser}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="WapLabelPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+   					<if test="status != null">status,</if>
+					<if test="id != null">id,</if>
+					<if test="name != null">name,</if>
+					<if test="includeType != null">include_type,</if>
+					<if test="weight != null">weight,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateUser != null">update_user,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+        	<if test="status != null">#{status},</if>
+			<if test="id != null">#{id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="includeType != null">#{includeType},</if>
+			<if test="weight != null">#{weight},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateUser != null">#{updateUser},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="WapLabelPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			status = #{status},
+			name = #{name},
+			include_type = #{includeType},
+			weight = #{weight},
+			update_user = #{updateUser},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="WapLabelPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+    	 	<if test="status != null">status = #{status},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="includeType != null">include_type = #{includeType},</if>
+			<if test="weight != null">weight = #{weight},</if>
+			<if test="updateUser != null">update_user = #{updateUser},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	
+	
+	
+	<select id="getTypeGroup" resultType="java.lang.String">
+		select name from dsj_wap_type_group
+		order by id ASC
+	</select>
+	
+	<select id="getType" resultType="com.dsj.modules.pagelayout.vo.LabelTypeVo">
+		select id,name,group_id AS "groupId" from dsj_wap_label_type
+		order by id ASC
+	</select>
+	
+	<select id="getWeightAndTypeVo" resultType="com.dsj.modules.pagelayout.vo.WeightAndTypeVo">
+		select name from dsj_wap_label_type 
+		where id in	
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		order by id ASC
+	</select>
+	
+	
+	<select id="getWapIndexPageList" parameterType="java.util.Map" resultType="com.dsj.modules.pagelayout.vo.WapIndexPageListVo">
+
+		select * from(
+		<foreach collection="list" index="index" item="WeightAndTypeVo" >
+			<!-- 1:新房楼盘 -->
+			<if test="WeightAndTypeVo.type==1">
+				select * from ( select 
+				newhouse.name AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				newhouse.id AS 'objectId',
+				t.pic AS 'picture',
+				newhouse.update_time AS 'time',
+				newhouse.create_preson AS 'createUser',
+				1 AS 'type',
+				1 AS 'groupId'
+				FROM dsj_new_house_directory_auth newhouse
+				LEFT JOIN (SELECT GROUP_CONCAT(hpa.picture_url ORDER BY hpa.picture_status, hpa.picture_frist) AS pic,object_id
+				FROM dsj_new_house_picture_auth hpa
+				where hpa.delete_flag = 2
+				GROUP BY object_id
+				) t 
+				ON newhouse.id = t.object_id
+				where newhouse.status in (1,2)
+				and newhouse.is_ture = 2
+				and newhouse.edit = 1
+				ORDER BY newhouse.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t1
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			<!-- 2:经纪人推荐新房楼盘 -->
+			<if test="WeightAndTypeVo.type==2">
+				select * from ( select 
+				newhouse.name AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				newhouse.id AS 'objectId',
+				t.pic AS 'picture',
+				newhouse.update_time AS 'time',
+				dagent.name AS 'createUser',
+				2 AS 'type',
+				1 AS 'groupId'
+				FROM dsj_agent_directory ad				
+				left join dsj_new_house_directory_auth newhouse
+				on ad.newHouse_id = newhouse.id
+				LEFT JOIN (SELECT GROUP_CONCAT(hpa.picture_url ORDER BY hpa.picture_status, hpa.picture_frist) AS pic,object_id
+				FROM dsj_new_house_picture_auth hpa
+				where hpa.delete_flag = 2
+				GROUP BY object_id
+				) t 
+				ON newhouse.id = t.object_id			
+				left join dsj_agent dagent
+				on ad.agent_id = dagent.user_id
+				where newhouse.status in (1,2)
+				and newhouse.is_ture = 2
+				and newhouse.edit = 1
+				ORDER BY ad.create_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t2
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			<!-- 3:优惠新房楼盘 -->
+			<if test="WeightAndTypeVo.type==3">
+				select * from ( select 
+				newhouse.name AS 'content1',
+				newhouse.discount AS 'content2',
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				newhouse.id AS 'objectId',
+				t.pic AS 'picture',
+				newhouse.update_time AS 'time',
+				newhouse.create_preson AS 'createUser',
+				3 AS 'type',
+				1 AS 'groupId'
+				FROM dsj_new_house_directory_auth newhouse
+				LEFT JOIN (SELECT GROUP_CONCAT(hpa.picture_url ORDER BY hpa.picture_status, hpa.picture_frist) AS pic,object_id
+				FROM dsj_new_house_picture_auth hpa
+				where hpa.delete_flag = 2
+				GROUP BY object_id
+				) t 
+				ON newhouse.id = t.object_id
+				where newhouse.discount != ''
+				and newhouse.status in (1,2)
+				and newhouse.is_ture = 2
+				and newhouse.edit = 1
+				ORDER BY newhouse.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t3
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			
+			<!-- 4:最新开盘 -->
+			<if test="WeightAndTypeVo.type==4">
+				select * from ( select 
+				newhouse.name AS 'content1',
+				newhouse.open_date AS 'content2',
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				newhouse.id AS 'objectId',
+				t.pic AS 'picture',
+				newhouse.update_time AS 'time',
+				newhouse.create_preson AS 'createUser',
+				4 AS 'type',
+				1 AS 'groupId'
+				FROM dsj_new_house_directory_auth newhouse
+				LEFT JOIN (SELECT GROUP_CONCAT(hpa.picture_url ORDER BY hpa.picture_status, hpa.picture_frist) AS pic,object_id
+				FROM dsj_new_house_picture_auth hpa
+				where hpa.delete_flag = 2
+				GROUP BY object_id
+				) t 
+				ON newhouse.id = t.object_id
+				where newhouse.status in (1,2)
+				and newhouse.is_ture = 2
+				and newhouse.edit = 1
+				ORDER BY newhouse.open_date DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t4
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			
+			<!-- 5:旅游地产 -->
+			<if test="WeightAndTypeVo.type==5">
+				select * from ( select 
+				newhouse.name AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				newhouse.id AS 'objectId',
+				t.pic AS 'picture',
+				newhouse.update_time AS 'time',
+				newhouse.create_preson AS 'createUser',
+				5 AS 'type',
+				1 AS 'groupId'
+				FROM dsj_new_house_directory_auth newhouse
+				LEFT JOIN (SELECT GROUP_CONCAT(hpa.picture_url ORDER BY hpa.picture_status, hpa.picture_frist) AS pic,object_id
+				FROM dsj_new_house_picture_auth hpa
+				where hpa.delete_flag = 2
+				GROUP BY object_id
+				) t 
+				ON newhouse.id = t.object_id
+				where newhouse.status in (1,2)
+				and newhouse.is_ture = 2
+				and newhouse.edit = 1
+				ORDER BY newhouse.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t5
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			
+			<!-- 6:品牌开发商楼盘 -->
+			<if test="WeightAndTypeVo.type==6">
+				select * from ( select 
+				newhouse.name AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				newhouse.id AS 'objectId',
+				t.pic AS 'picture',
+				newhouse.update_time AS 'time',
+				newhouse.create_preson AS 'createUser',
+				6 AS 'type',
+				1 AS 'groupId'
+				FROM dsj_new_house_directory_auth newhouse
+				LEFT JOIN (SELECT GROUP_CONCAT(hpa.picture_url ORDER BY hpa.picture_status, hpa.picture_frist) AS pic,object_id
+				FROM dsj_new_house_picture_auth hpa
+				where hpa.delete_flag = 2
+				GROUP BY object_id
+				) t 
+				ON newhouse.id = t.object_id
+				where newhouse.status in (1,2)
+				and newhouse.is_ture = 2
+				and newhouse.edit = 1
+				ORDER BY newhouse.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t6
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			<!-- 7:热销楼盘 -->
+			<if test="WeightAndTypeVo.type==7">
+				select * from ( select 
+				newhouse.name AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				newhouse.id AS 'objectId',
+				t.pic AS 'picture',
+				newhouse.update_time AS 'time',
+				newhouse.create_preson AS 'createUser',
+				7 AS 'type',
+				1 AS 'groupId'
+				FROM dsj_new_house_directory_auth newhouse
+				LEFT JOIN (SELECT GROUP_CONCAT(hpa.picture_url ORDER BY hpa.picture_status, hpa.picture_frist) AS pic,object_id
+				FROM dsj_new_house_picture_auth hpa
+				where hpa.delete_flag = 2
+				GROUP BY object_id
+				) t 
+				ON newhouse.id = t.object_id
+				where newhouse.status in (1,2)
+				and newhouse.is_ture = 2
+				and newhouse.edit = 1
+				ORDER BY newhouse.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t7
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			
+			<!-- 8:二手房 -->
+			<if test="WeightAndTypeVo.type==8">
+				select * from ( select 
+				hd.spray_name AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				master.id AS 'objectId',
+				old.pic AS 'picture',
+				master.update_time AS 'time',
+				master.create_person As 'createUser',
+				8 AS 'type',
+				2 AS 'groupId'
+				from old_house_master master		
+				left join dsj_house_directory hd 
+				on master.dic_id = hd.id
+				LEFT JOIN (SELECT GROUP_CONCAT(picture_url) as pic,obj_id from old_house_picture GROUP BY old_house_picture.obj_id) old
+				on master.id = old.obj_id
+				where master.status = 2<!-- 上架 -->
+				ORDER BY master.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t8
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+		
+			<!-- 9:经纪人推荐二手房 -->
+			<if test="WeightAndTypeVo.type==9">
+				select * from ( select 
+				hd.spray_name AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				master.id AS 'objectId',
+				old.pic AS 'picture',
+				agent.update_time AS 'time',
+				at.name As 'createUser',
+				9 AS 'type',
+				2 AS 'groupId'
+				from old_house_master master
+				left join old_house_agent agent 
+				on agent.old_master_id = master.id
+				left join dsj_house_directory hd 
+				on master.dic_id = hd.id
+				LEFT JOIN (SELECT GROUP_CONCAT(picture_url) as pic,obj_id from old_house_picture GROUP BY old_house_picture.obj_id) old
+				on master.id = old.obj_id
+				left join dsj_agent at 
+				on at.user_id = agent.create_person
+				where agent.delete_flag = 2
+				and agent.is_recomend = 1 <!--推荐 -->
+				ORDER BY agent.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t9
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>	
+			</if>
+			<!-- 10:楼盘动态 -->
+			<if test="WeightAndTypeVo.type==10">
+				select * from ( select 
+				house.name AS 'content1',
+				hnews.title AS 'content2',
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				hnews.id AS 'objectId',
+				hnews.picture_url AS 'picture',
+				hnews.audit_time AS 'time',
+				hnews.create_user As 'createUser',
+				10 AS 'type',
+				3 AS 'groupId'
+				from dsj_new_house_news hnews 
+				left join dsj_new_house_directory_auth house
+				on house.id = hnews.house_id
+				where hnews.up_down_line = 1
+				ORDER BY hnews.audit_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t10
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			<!-- 11:经纪人楼盘动态 -->
+			<if test="WeightAndTypeVo.type==11">
+				select * from ( select 
+				house.name AS 'content1',
+				hnews.title AS 'content2',
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				hnews.id AS 'objectId',
+				hnews.picture_url AS 'picture',
+				hnews.audit_time AS 'time',
+				agent.name As 'createUser',
+				11 AS 'type',
+				3 AS 'groupId'
+				from dsj_new_house_news hnews 
+				left join dsj_new_house_directory_auth house on house.id = hnews.house_id
+				left join dsj_agent agent on agent.user_id = hnews.create_user
+				where hnews.up_down_line = 1
+				AND hnews.type=2 <!-- 经纪人发布的 -->
+				ORDER BY hnews.audit_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t11
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+			<!-- 12:经纪人点评-->
+			<if test="WeightAndTypeVo.type==12">
+				select * from ( select 
+				house.name AS 'content1',
+				c.content AS 'content2',
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				c.id AS 'objectId',
+				c.picture AS 'picture',
+				c.create_time AS 'time',
+				agent.name As 'createUser',
+				12 AS 'type',
+				4 AS 'groupId'
+				from dsj_comment c
+				left join dsj_new_house_directory_auth house
+				on house.id = c.house_id
+				left join dsj_agent agent
+				on agent.user_id = c.comment_user
+				where c.object_type = 3<!-- 经纪人发布的 -->
+				and c.del_flag = 2
+				and agent.audit_status = 1
+				ORDER BY c.create_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t12
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>
+		
+			<!-- 13:经纪人个人信息 -->
+			<if test="WeightAndTypeVo.type==13">
+				select * from (
+				select agent.name AS 'content1',
+				agent.workyears AS 'content2',
+				mo.mobile AS 'content3',
+				ag.name AS 'content4',
+				agent.agent_code AS 'content5',
+				agent.skill AS 'content6',
+				agent.user_id AS 'objectId',
+				agent.avatar_url AS 'picture',
+				agent.create_time AS 'time',
+				agent.name As 'createUser',<!-- 随便取，充数 -->
+				13 AS 'type',
+				5 AS 'groupId'
+				from dsj_agent agent 
+				LEFT JOIN dsj_mobile mo on mo.agent_id = agent.id
+				LEFT JOIN dsj_agent_info i on i.agent_id = agent.agent_code
+				LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt;ag.max_score 
+				where agent.audit_status = 1
+				ORDER BY agent.update_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t13
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+				
+			</if>	
+			<!-- 14:经纪人个人动态 -->
+			<if test="WeightAndTypeVo.type==14">
+				select * from (select news.content AS 'content1',
+				1 AS 'content2',<!-- 随便取，充数 -->
+				1 AS 'content3',<!-- 随便取，充数 -->
+				1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				news.id AS 'objectId',
+				news.pictures AS 'picture',
+				news.create_time AS 'time',
+				agent.name AS 'createUser',
+				14 AS 'type',
+				6 AS 'groupId'
+				from dsj_agent_news news
+				left join dsj_agent agent
+				on agent.user_id = news.create_user
+				where news.del_flag = 2
+				and agent.audit_status = 1
+				ORDER BY news.create_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t14
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+			</if>
+			<!-- 权证 -->
+			<if test="WeightAndTypeVo.type==15">
+				select * from (select fw.title AS 'content1',
+				fw.content AS 'content2',
+				dian_zan AS 'content3',
+				read1 AS 'content4',
+				1 AS 'content5',
+				1 AS 'content6',
+				fw.id AS 'objectId',
+				fw.photo AS 'picture',
+				fw.create_time AS 'time',
+				fw.create_user AS 'createUser',
+				15 AS 'type',
+				7 AS 'groupId'
+				from dsj_fw_content fw
+				where fw.status=2
+				ORDER BY fw.create_time DESC 
+				LIMIT #{WeightAndTypeVo.pageFirst} , #{WeightAndTypeVo.weight} ) t15
+				<if test="index==listMaxIndex">
+				</if>
+				<if test="index!=listMaxIndex">
+					UNION
+				</if>
+			</if>
+		</foreach>
+		) n
+		order by n.time DESC
+		
+	</select>
+	
+</mapper>

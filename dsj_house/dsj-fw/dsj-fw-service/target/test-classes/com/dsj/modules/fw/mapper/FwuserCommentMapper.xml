@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.FwuserCommentDaoImpl">
+    
+    <sql id="tableName"> dsj_fwuser_comment a </sql>
+    <sql id="tableNameUpdate"> dsj_fwuser_comment </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.fwuser_id AS "fwuserId",
+		a.spu_id AS "spuId",
+		a.order_id AS "orderId",
+		a.attitude AS "attitude",
+		a.major AS "major",
+		a.speed AS "speed",
+		a.type AS "type",
+		a.content AS "content",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwuserCommentPo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="fwuser_id" property="fwuserId" />
+		<result column="spu_id" property="spuId" />
+		<result column="attitude" property="attitude" />
+		<result column="major" property="major" />
+		<result column="speed" property="speed" />
+		<result column="type" property="type" />
+		<result column="content" property="content" />
+		<result column="create_time" property="createTime" />
+		<result column="company_name" property="companyName" />
+		<result column="name" property="name" />
+		<result column="area" property="area" />
+		<result column="business" property="business" />
+		<result column="deal" property="deal" />
+		<result column="tell_phone" property="tellPhone" />
+	</resultMap>
+	
+	<sql id="fwuserCommentJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+    	<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="fwuserId != null and fwuserId!= ''"> AND a.fwuser_id = #{fwuserId}</if>
+		<if test="spuId != null and spuId!= ''"> AND a.spu_id = #{spuId}</if>
+		<if test="attitude != null and attitude!= ''"> AND a.attitude = #{attitude}</if>
+		<if test="major != null and major!= ''"> AND a.major = #{major}</if>
+		<if test="speed != null and speed!= ''"> AND a.speed = #{speed}</if>
+		<if test="type != null and type != ''"> AND a.type = #{type}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="companyName != null and companyName!= ''"> AND c.company_name LIKE concat('%',#{companyName},'%') </if>
+		<if test="name != null and name!= ''"> AND b.name LIKE concat('%',#{name},'%') </if>
+		<if test="tellPhone != null and tellPhone!= ''"> AND b.tell_phone = #{tellPhone}</if>
+		<if test="phone != null and phone!= ''"> AND c.phone = #{phone}</if>
+		<if test="orderNo != null and orderNo!= ''"> AND b.order_no = #{orderNo}</if>
+		<if test="reviewStatus != null and reviewStatus!= ''"> AND b.review_status = #{reviewStatus}</if>
+		<if test="fwuserId != null and fwuserId != ''"> AND a.fwuser_id = #{fwuserId}</if>
+		
+		
+	</sql>
+    
+	<select id="getById" resultType="FwuserCommentPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwuserCommentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwuserCommentVo">
+SELECT
+	a.id AS "id",
+	a.user_id AS "userId",
+	a.fwuser_id AS "fwuserId",
+	a.spu_id AS "spuId",
+	a.attitude AS "attitude",
+	a.major AS "major",
+	a.speed AS "speed",
+	a.type AS "type",
+	a.create_time AS "createTime",
+	b.area_name AS "areaName",
+	co.company_name AS "companyName",
+	b.`name` AS "name",
+	b.tell_phone AS "tellPhone",
+	b.business AS "business",
+	b.business_name AS "businessName",
+	b.deal AS "deal",
+	f.cout AS "count",
+	CONCAT(
+		round((c.chaPing / f.cout) * 100, 0),
+		'%'
+	) AS 'chaPingLv',
+	CONCAT(
+		round((d.zhongPing / f.cout) * 100, 0),
+		'%'
+	) AS 'zhongPingLv',
+	CONCAT(
+		round((h.haoPing / f.cout) * 100, 0),
+		'%'
+	) AS 'haoPingLv'
+FROM
+	dsj_fwuser_comment a
+LEFT JOIN dsj_property b ON a.fwuser_id = b.id
+LEFT JOIN dsj_company co ON b.company=co.id
+LEFT JOIN (
+	SELECT
+		fwuser_id,
+		count(1) AS cout
+	FROM
+		dsj_fwuser_comment
+	GROUP BY
+		fwuser_id
+) f ON a.fwuser_id = f.fwuser_id
+LEFT JOIN (
+	SELECT
+		fwuser_id,
+		count(1) AS chaPing
+	FROM
+		dsj_fwuser_comment
+	WHERE
+		type = 1
+	GROUP BY
+		fwuser_id
+) c ON a.fwuser_id = c.fwuser_id
+LEFT JOIN (
+	SELECT
+		fwuser_id,
+		count(1) AS zhongPing
+	FROM
+		dsj_fwuser_comment
+	WHERE
+		type = 2
+	GROUP BY
+		fwuser_id
+) d ON a.fwuser_id = d.fwuser_id
+LEFT JOIN (
+	SELECT
+		fwuser_id,
+		count(1) AS haoPing
+	FROM
+		dsj_fwuser_comment
+	WHERE
+		type = 3
+	GROUP BY
+		fwuser_id
+) h ON a.fwuser_id = h.fwuser_id
+		<where>
+			<if test="companyName != null and companyName!= ''"> AND co.company_name LIKE concat('%',#{companyName},'%') </if>
+			<if test="name != null and name!= ''"> AND b.name LIKE concat('%',#{name},'%') </if>
+			<if test="tellPhone != null and tellPhone!= ''"> AND b.tell_phone = #{tellPhone}</if>
+			<if test="minChaPing != null and minChaPing !=''">AND CAST(round((c.chaPing/f.cout)*100) AS decimal(5,2)) &gt;= #{minChaPing} </if>
+			<if test="maxChaPing != null and maxChaPing !=''">AND CAST(round((c.chaPing/f.cout)*100) AS decimal(5,2)) &lt;= #{maxChaPing}  </if>
+			<if test="minZhongPing != null and minZhongPing !=''">AND CAST(round((d.zhongPing/f.cout)*100) AS decimal(5,2)) &gt;= #{minZhongPing}  </if>
+			<if test="maxZhongPing != null and maxZhongPing !=''"> AND CAST(round((d.zhongPing/f.cout)*100) AS decimal(5,2)) &lt;= #{maxZhongPing} </if>
+			<if test="minHaoPing != null and minHaoPing !=''">AND CAST(round((h.haoPing/f.cout)*100) AS decimal(5,2)) &gt;= #{minHaoPing}  </if>
+			<if test="maxHaoPing != null and maxHaoPing !=''">AND CAST(round((h.haoPing/f.cout)*100) AS decimal(5,2)) &lt;= #{maxHaoPing}  </if>
+		</where>
+		group by a.fwuser_id
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+	count(1)
+FROM
+	(
+		SELECT
+			COUNT(1)
+		FROM
+			dsj_fwuser_comment a
+		LEFT JOIN dsj_property b ON a.fwuser_id = b.id
+		LEFT JOIN dsj_company co ON b.company = co.id
+		LEFT JOIN (
+			SELECT
+				fwuser_id,
+				count(1) AS cout
+			FROM
+				dsj_fwuser_comment
+			GROUP BY
+				fwuser_id
+		) f ON a.fwuser_id = f.fwuser_id
+		LEFT JOIN (
+			SELECT
+				fwuser_id,
+				count(1) AS chaPing
+			FROM
+				dsj_fwuser_comment
+			WHERE
+				type = 1
+			GROUP BY
+				fwuser_id
+		) c ON a.fwuser_id = c.fwuser_id
+		LEFT JOIN (
+			SELECT
+				fwuser_id,
+				count(1) AS zhongPing
+			FROM
+				dsj_fwuser_comment
+			WHERE
+				type = 2
+			GROUP BY
+				fwuser_id
+		) d ON a.fwuser_id = d.fwuser_id
+		LEFT JOIN (
+			SELECT
+				fwuser_id,
+				count(1) AS haoPing
+			FROM
+				dsj_fwuser_comment
+			WHERE
+				type = 3
+			GROUP BY
+				fwuser_id
+		) h ON a.fwuser_id = h.fwuser_id
+    	<where>
+			<if test="companyName != null and companyName!= ''"> AND b.company_name LIKE concat('%',#{companyName},'%') </if>
+			<if test="name != null and name!= ''"> AND b.name LIKE concat('%',#{name},'%') </if>
+			<if test="tellPhone != null and tellPhone!= ''"> AND b.tell_phone = #{tellPhone}</if>
+			<if test="minChaPing != null and minChaPing !=''">AND CAST(round((c.chaPing/f.cout)*100) AS decimal(5,2)) &gt;= #{minChaPing} </if>
+			<if test="maxChaPing != null and maxChaPing !=''">AND CAST(round((c.chaPing/f.cout)*100) AS decimal(5,2)) &lt;= #{maxChaPing}  </if>
+			<if test="minZhongPing != null and minZhongPing !=''">AND CAST(round((d.zhongPing/f.cout)*100) AS decimal(5,2)) &gt;= #{minZhongPing}  </if>
+			<if test="maxZhongPing != null and maxZhongPing !=''"> AND CAST(round((d.zhongPing/f.cout)*100) AS decimal(5,2)) &lt;= #{maxZhongPing} </if>
+			<if test="minHaoPing != null and minHaoPing !=''">AND CAST(round((h.haoPing/f.cout)*100) AS decimal(5,2)) &gt;= #{minHaoPing}  </if>
+			<if test="maxHaoPing != null and maxHaoPing !=''">AND CAST(round((h.haoPing/f.cout)*100) AS decimal(5,2)) &lt;= #{maxHaoPing}  </if>
+		</where>
+		GROUP BY
+			a.fwuser_id
+	) x
+	</select>
+	
+	<select id="listNewCommentPage" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwDetailCommentVo">
+		SELECT
+			a.content,
+			DATE_FORMAT(a.create_time, '%Y-%c-%d %h:%i:%s')  as createTime,
+		 a.attitude + a.major + a.speed AS score,
+			b.phone as username,
+			d.avatar,
+			d.realname,
+			c.deal,
+			f.orderCount,
+		f.goodCommentLv as haoPingLv
+		FROM
+			dsj_fwuser_comment a
+		LEFT JOIN dsj_user b ON a.user_id = b.id
+		LEFT JOIN dsj_property c on a.fwuser_id = c.id
+		LEFT JOIN dsj_user d on c.user_id = d.id
+		LEFT JOIN	(
+				SELECT
+							g.fwuser_id as fwuserId,	
+							CONCAT(round((g.totalCount / t.totalCount) * 100,0),'%') AS goodCommentLv,
+							o.orderCount
+						FROM
+							dsj_fwuser_comment a
+						LEFT JOIN (
+							SELECT
+								fwuser_id,
+								count(1) AS totalCount
+							FROM
+								dsj_fwuser_comment
+							WHERE
+								type = 3
+							GROUP BY
+								fwuser_id
+						) g ON g.fwuser_id = a.fwuser_id
+						LEFT JOIN (
+							SELECT
+								fwuser_id,
+								count(1) AS totalCount
+							FROM
+								dsj_fwuser_comment
+							GROUP BY
+								fwuser_id
+						) t ON t.fwuser_id = g.fwuser_id
+						LEFT JOIN (
+							SELECT
+								o2.dbuserid, count(1) AS orderCount
+							FROM
+								dsj_fw_order o1
+							LEFT JOIN dsj_fw_order_detail o2 ON o1.id = o2.order_id
+							WHERE
+								o1. STATUS !=1 and o1. STATUS !=2 and o1. STATUS !=3 
+							GROUP BY
+								o2.dbuserid
+						) o ON t.fwuser_id = o.dbuserid
+				)f on c.id = f.fwuserId
+		<where>
+			<if test="auditStatus != null and auditStatus != ''"> AND c.audit_status=#{auditStatus}</if>
+			<if test="spuId != null and spuId != ''"> AND a.spu_id = #{spuId}</if>
+			<if test="type != null and type !=''">AND a.type = #{type} </if>
+			<if test="fwUserId != null and fwUserId !=''">AND a.fwuser_id = #{fwUserId} </if>
+		</where>
+		GROUP BY a.id
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewCommentPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+			count(1) from 
+		(select a.id 
+		FROM
+			dsj_fwuser_comment a
+		LEFT JOIN dsj_user b ON a.user_id = b.id
+		LEFT JOIN dsj_property c on a.fwuser_id = c.id
+		LEFT JOIN dsj_user d on c.user_id = d.id
+		LEFT JOIN	(
+				SELECT
+							g.fwuser_id as fwuserId,
+							g.totalCount/t.totalCount AS goodCommentLv,
+							o.orderCount
+						FROM
+							dsj_fwuser_comment a
+						LEFT JOIN (
+							SELECT
+								fwuser_id,
+								count(1) AS totalCount
+							FROM
+								dsj_fwuser_comment
+							WHERE
+								type = 1
+							GROUP BY
+								fwuser_id
+						) g ON g.fwuser_id = a.fwuser_id
+						LEFT JOIN (
+							SELECT
+								fwuser_id,
+								count(1) AS totalCount
+							FROM
+								dsj_fwuser_comment
+							GROUP BY
+								fwuser_id
+						) t ON t.fwuser_id = g.fwuser_id
+						LEFT JOIN (
+							SELECT
+								o2.dbuserid, count(1) AS orderCount
+							FROM
+								dsj_fw_order o1
+							LEFT JOIN dsj_fw_order_detail o2 ON o1.id = o2.order_id
+							WHERE
+								o1. STATUS = 3
+							GROUP BY
+								o2.dbuserid
+						) o ON t.fwuser_id = o.dbuserid
+				)f on c.id = f.fwuserId
+		<where>
+			<if test="auditStatus != null and auditStatus != ''"> AND c.audit_status=#{auditStatus}</if>
+			<if test="spuId != null and spuId != ''"> AND a.spu_id = #{spuId}</if>
+			<if test="type != null and type !=''">AND a.type = #{type} </if>
+			<if test="fwUserId != null and fwUserId !=''">AND a.fwuser_id = #{fwUserId} </if>
+		</where>
+		GROUP BY a.id)x
+	</select>
+	
+	<insert id="insert" parameterType="FwuserCommentPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			user_id,fwuser_id,spu_id,order_id,
+			attitude,
+			major,
+			speed,
+			type,
+			content,
+			create_time
+		) VALUES (
+			#{id},
+			#{userId},#{fwuserId},#{spuId},#{orderId},
+			#{attitude},
+			#{major},
+			#{speed},
+			#{type},
+			#{content},
+			#{createTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwuserCommentPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="fwuserId != null">fwuser_id,</if>
+					<if test="spuId != null">spu_id,</if>
+					<if test="orderId != null">order_id,</if>
+					<if test="attitude != null">attitude,</if>
+					<if test="major != null">major,</if>
+					<if test="speed != null">speed,</if>
+					<if test="type != null">type,</if>
+					<if test="content != null">content,</if>
+					<if test="createTime != null">create_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="fwuserId != null">#{fwuserId},</if>
+			<if test="spuId != null">#{spuId},</if>
+			<if test="orderId != null">#{orderId},</if>
+			<if test="attitude != null">#{attitude},</if>
+			<if test="major != null">#{major},</if>
+			<if test="speed != null">#{speed},</if>
+			<if test="type != null">#{type},</if>
+			<if test="content != null">#{content},</if>
+			<if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FwuserCommentPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			user_id = #{userId},
+			fwuser_id = #{fwuserId},
+			attitude = #{attitude},
+			major = #{major},
+			speed = #{speed},
+			type = #{type},
+			content = #{content},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwuserCommentPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="fwuserId != null">fwuser_id = #{fwuserId},</if>
+			<if test="spuId != null">spu_id = #{spuId},</if>
+			<if test="attitude != null">attitude = #{attitude},</if>
+			<if test="major != null">major = #{major},</if>
+			<if test="speed != null">speed = #{speed},</if>
+			<if test="type != null">speed = #{type},</if>
+			<if test="content != null">content = #{content},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	
+	
+	<select id="evaluatePage"  parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwuserCommentVo">
+		SELECT
+			<include refid="tableColumns"/>,
+			b.order_no AS "orderNo",
+			b.order_price AS "orderPrice",
+			c.realname AS "realName",
+			c.username AS "userName",
+			d.`name` AS "name",
+			e.company_name AS "companyName",
+			b.review_status AS "reviewStatus",
+			f.id AS "orderDetailId"
+		FROM
+			<include refid="tableName"/>
+			LEFT JOIN dsj_fw_order b ON b.id=a.order_id
+			LEFT JOIN dsj_user c ON a.user_id=c.id
+			LEFT JOIN dsj_property d ON a.fwuser_id=d.id
+			LEFT JOIN dsj_company e ON d.company=e.id
+			LEFT JOIN dsj_fw_order_detail f ON b.id=f.order_id
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY  a.create_time desc
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	<select id="evaluatePageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			count(1)
+		FROM 
+			 <include refid="tableName"/>
+			LEFT JOIN dsj_fw_order b ON b.id=a.order_id
+			LEFT JOIN dsj_user c ON a.user_id=c.id
+			LEFT JOIN dsj_property d ON a.fwuser_id=d.id
+			LEFT JOIN dsj_company e ON d.company=e.id
+			LEFT JOIN dsj_fw_order_detail f ON b.id=f.order_id
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY  a.create_time desc
+	</select>
+	
+	<select id="getCommentByDetailId" parameterType="java.util.Map" resultType="com.dsj.modules.fw.vo.FwuserCommentVo">
+		SELECT 
+			a.type,a.content,GROUP_CONCAT(d.evaluate_num) as label
+		FROM 
+			dsj_fwuser_comment a
+			INNER JOIN dsj_fw_order b ON a.order_id=b.id
+			LEFT JOIN dsj_fw_order_detail c ON b.id=c.order_id
+			LEFT JOIN dsj_fwuser_com d ON d.comment_id=a.id
+		WHERE c.id=#{orderDetailId} GROUP BY a.id
+	</select>
+	
+	<select id="getByOrderId" parameterType="long" resultType="com.dsj.modules.fw.po.FwuserCommentPo">
+		select <include refid="tableColumns"/> from dsj_fwuser_comment a where a.order_id=#{orderId}
+	</select>
+	
+	
+	<select id="getPingLv" parameterType="long" resultType="com.dsj.modules.fw.vo.FwuserCommentVo">
+		SELECT 
+				f.cout AS "count",
+				c.chaPing AS chaPingCount,
+				d.zhongPing AS zhongPingCount,
+				h.haoPing AS haoPingCount,
+				CONCAT(round((c.chaPing/f.cout)*100,0),'%') AS 'chaPingLv',
+				CONCAT(round((d.zhongPing/f.cout)*100,0),'%') AS 'zhongPingLv',
+				CONCAT(round((h.haoPing/f.cout)*100,0),'%') AS 'haoPingLv'	
+    	FROM 
+				(SELECT fwuser_id,count(1) AS cout FROM dsj_fwuser_comment GROUP BY fwuser_id) f
+			LEFT JOIN (SELECT fwuser_id,count(1) AS chaPing FROM dsj_fwuser_comment WHERE type=1  GROUP BY fwuser_id) c  ON f.fwuser_id=c.fwuser_id
+			LEFT JOIN (SELECT fwuser_id,count(1) AS zhongPing  FROM dsj_fwuser_comment WHERE type=2   GROUP BY fwuser_id) d  ON f.fwuser_id=d.fwuser_id
+			LEFT JOIN (SELECT fwuser_id,count(1) AS haoPing  FROM dsj_fwuser_comment WHERE type=3   GROUP BY fwuser_id) h  ON f.fwuser_id=h.fwuser_id
+		where f.fwuser_id=#{id}
+	</select>
+	
+	<select id="getPingLvBySpu" parameterType="long" resultType="com.dsj.modules.fw.vo.FwuserCommentVo">
+		SELECT
+	f.cout AS "count",
+	c.chaPing AS chaPingCount,
+	d.zhongPing AS zhongPingCount,
+	h.haoPing AS haoPingCount,
+	CONCAT(
+		round((c.chaPing / f.cout) * 100, 0),
+		'%'
+	) AS 'chaPingLv',
+	CONCAT(
+		round((d.zhongPing / f.cout) * 100, 0),
+		'%'
+	) AS 'zhongPingLv',
+	CONCAT(
+		round((h.haoPing / f.cout) * 100, 0),
+		'%'
+	) AS 'haoPingLv'
+FROM
+	(
+		SELECT
+			spu_id,
+			count(1) AS cout
+		FROM
+			dsj_fwuser_comment
+		WHERE
+			fwuser_id IN (
+				SELECT
+					id
+				FROM
+					dsj_property
+				WHERE
+					audit_status = 1
+			)
+		GROUP BY
+			spu_id
+	) f
+LEFT JOIN (
+	SELECT
+		spu_id,
+		count(1) AS chaPing
+	FROM
+		dsj_fwuser_comment
+	WHERE
+		type = 1
+	AND fwuser_id IN (
+		SELECT
+			id
+		FROM
+			dsj_property
+		WHERE
+			audit_status = 1
+	)
+	GROUP BY
+		spu_id
+) c ON f.spu_id = c.spu_id
+LEFT JOIN (
+	SELECT
+		spu_id,
+		count(1) AS zhongPing
+	FROM
+		dsj_fwuser_comment
+	WHERE
+		type = 2
+	AND fwuser_id IN (
+		SELECT
+			id
+		FROM
+			dsj_property
+		WHERE
+			audit_status = 1
+	)
+	GROUP BY
+		spu_id
+) d ON f.spu_id = d.spu_id
+LEFT JOIN (
+	SELECT
+		spu_id,
+		count(1) AS haoPing
+	FROM
+		dsj_fwuser_comment
+	WHERE
+		type = 3
+	AND fwuser_id IN (
+		SELECT
+			id
+		FROM
+			dsj_property
+		WHERE
+			audit_status = 1
+	)
+	GROUP BY
+		spu_id
+) h ON f.spu_id = h.spu_id
+WHERE
+	f.spu_id = #{0}
+
+	
+	</select>
+</mapper>

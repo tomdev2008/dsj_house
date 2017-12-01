@@ -1,0 +1,145 @@
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-开发商</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dsj_agent2.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+      <div id="bingPhone">
+      <!-- header -->
+        <header class="BingHeader">
+          <div class="binglogo"> 
+            <h1>大搜家</h1>
+          </div>
+        </header>
+      <!-- mian -->
+        <main class="BingMain">
+            <div class="BingMainLaft">
+            <p></p>
+            <p><span>大搜家</span><span>专业房企营销平台</span></p>
+          </div>
+          <!-- 登录框 -->
+          <div id="LoginKuang">
+              <!--登录table  -->
+              <h4>开发商登录</h4>
+              <!-- 错误提示 -->
+              <div class="errorHint">
+                您输入的手机号有误，请重新输入
+              </div>
+              <!-- form -->
+              <form class="form-inline">
+                <!-- 账户密码登录 -->
+                <div class="passworgRegister">
+                  <!--账号  -->
+                  <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                      <!-- <div class="input-group-addon"></div> -->
+                      <input type="text" class="form-control ursnameCode" id="exampleInputAmount" placeholder="请输入您的帐号">
+                    </div>
+                  </div>
+                  <!-- 输入密码 -->
+                  <div class="form-group">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                      <!-- <div class="input-group-addon"></div> -->
+                      <input type="text" class="form-control passwordCode" id="exampleInputAmount" placeholder="请输入您的密码">
+                    </div>
+                  </div>
+                  <!-- 验证码 -->
+                  <div class="form-group login">
+                    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control verifyCode" id="exampleInputAmount" placeholder="请输入验证码">
+                      <div class="verifyCodeButton">
+                    	    获取验证码
+                      </div>
+                      <!-- <button type="buttom" class="btn btn-primary verifyCodeButton">获取验证码</button> -->
+                    </div>
+                  </div>
+
+                </div>
+                <!-- 确认登录 -->
+                 <button type="button" class="btn btn-primary countersign">登录</button>
+                <!-- 下次自动登录 -->
+                <div class="checkbox autoRegister">
+                  <label>
+                    <input type="checkbox"> 下次自动登录
+                  </label>
+                  <ul class="forget">
+                    <li><a href="##">忘记密码</a></li>
+                    <li><a href="##" class="color_blue">立即注册</a></li>
+                  </ul>
+                </div>
+              </form>
+          </div>
+        </main>
+            </div>
+      <div class="newhouse_footer login_footer">
+            		<div class="footer_kuang">
+            		<ul class="footer1">
+                		<li><a href="${ctx}/about/page">关于我们</a></li>
+                		<li><a href="${ctx}/about/page">平台协议</a></li>
+               			<li><a href="${ctx}/about/page">合作伙伴</a></li>
+                		<li><a href="http://agent.dasoujia.com">经纪人登录</a></li>
+                  		<li><a href="http://www.dasoujia.com/dsj-developer-back/">开发商登录</a></li>
+                		<li><a href="##">自交易商家登录</a></li>
+                		<li class="phone_lianxi">010-64791771</li>
+            		</ul>
+            		</div>
+            		<div class="modules_kuang">
+            		<ul class="modules_a">
+             			<li><a href="${ctx}/">首页</a></li>
+                		<li><a href="${ctx}/front/newHouse/list">新房</a></li>
+                		<li><a href="${ctx}/ershoufang">二手房</a></li>
+                		<li><a href="${ctx}/front/agent">经纪人</a></li>
+                		<li><a href="${ctx}/warrant/index">自交易</a></li>
+                		<li><a href="${ctx}/front/entrust/sell">业主委托</a></li>
+            		</ul>
+            		</div>
+           			<div class="footer2_kuang">
+            		<ul class="footer2">
+                		<li>北京大搜家信息技术服务有限公司&nbsp;&nbsp;|</li>
+            			<li>网络编号：京ICP备17018930号&nbsp;&nbsp;|</li>
+            			<li>Copyright © 2017 大搜家 All Rights Reserved</li>
+            		</ul>
+            		</div> 
+				</div>
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="js/jquery.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="js/bootstrap.js"></script>
+  </body>
+  <script type="text/javascript">
+    //验证码
+    var mybutton = $(".verifyCodeButton").html();
+    $(".verifyCodeButton").on("click",function () {
+      event.stopPropagation(); 
+      mybutton = 120;
+      $(".verifyCodeButton").addClass("verifyCodeActive").attr("disabled", true);
+      var time = setInterval(function(){
+        mybutton--;
+        $(".verifyCodeButton").html(mybutton+"s重新获取");
+        if(mybutton <= 0){
+          clearInterval(time);
+          $(".verifyCodeButton").removeClass("verifyCodeActive").html("获取验证码").removeAttr("disabled");
+        }
+      },1000);
+    }); 
+  </script>
+</html>

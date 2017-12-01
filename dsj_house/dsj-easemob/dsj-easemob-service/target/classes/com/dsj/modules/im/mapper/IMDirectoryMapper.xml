@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.im.dao.impl.IMDirectoryDaoImpl">
+    
+    <sql id="tableName"> dsj_im_directory a </sql>
+    <sql id="tableNameUpdate"> dsj_im_directory </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.agent_id AS "agentId",
+		a.position AS "position",
+		a.is_duty AS "isDuty"
+	</sql>
+	
+	<resultMap id="beanMap" type="IMDirectoryPo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="agent_id" property="agentId" />
+		<result column="position" property="position" />
+		<result column="is_duty" property="isDuty" />
+	</resultMap>
+	
+	<sql id="loupanImJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="position != null and position!= ''"> AND a.position = #{position}</if>
+		<if test="isDuty != null and isDuty!= ''"> AND a.is_duty = #{isDuty}</if>
+	</sql>
+    
+	<select id="getById" resultType="IMDirectoryPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="loupanImJoins"/>
+		WHERE a.id = #{id}
+	</select>
+  
+    <select id="getVoById" parameterType="java.util.Map" resultType="com.dsj.modules.im.vo.IMDirectoryVo">
+        SELECT 
+          a.id AS "id",
+  		  a.house_id AS "houseId",
+  		  d.id AS "agentId",
+          d.agent_code AS "agentCode",
+          d.name AS "agentName",
+          d.tell_phone AS "tellPhone",
+          d.company AS "company",
+  		  a.position AS "position",
+  		  a.is_duty AS "isDuty"
+        FROM dsj_im_directory a 
+        LEFT JOIN dsj_agent d on d.id = a.agent_id
+        WHERE a.id = #{id}
+    </select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+    
+    <select id="listVoBy" parameterType="java.util.Map" resultType="com.dsj.modules.im.vo.IMDirectoryVo">
+      SELECT 
+        a.id AS "id",
+		a.house_id AS "houseId",
+		d.user_id AS "agentId",
+        d.agent_code AS "agentCode",
+        d.name AS "agentName",
+        d.tell_phone AS "tellPhone",
+        d.company AS "company",
+		a.position AS "position",
+		a.is_duty AS "isDuty"
+      FROM dsj_im_directory a 
+      LEFT JOIN dsj_agent d on d.user_id = a.agent_id
+      <where>
+        <include refid="condition_sql" />
+      </where>
+      ORDER BY a.is_duty desc,a.position
+    </select>
+    
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="IMDirectoryPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_id,
+			agent_id,
+			position,
+			is_duty,
+			update_time,
+			update_person,
+			create_time,
+			create_person
+		) VALUES (
+			#{id},
+			#{houseId},
+			#{agentId},
+			#{position},
+			#{isDuty},
+			NOW(),
+			#{updatePerson},
+			NOW(),
+			#{createPerson}
+		)
+	</insert>
+	
+	<insert id="insertDynamic" parameterType="IMDirectoryPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="position != null">position,</if>
+					<if test="isDuty != null">is_duty,</if>
+					update_time,
+					<if test="updatePerson != null">update_person,</if>
+					create_time,
+					<if test="createPerson != null">create_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="position != null">#{position},</if>
+			<if test="isDuty != null">#{isDuty},</if>
+			NOW(),
+			<if test="updatePerson != null">#{updatePerson},</if>
+			NOW(),
+			<if test="createPerson != null">#{createPerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="IMDirectoryPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_id = #{houseId},
+			agent_id = #{agentId},
+			position = #{position},
+			is_duty = #{isDuty},
+			update_time = NOW(),
+			update_person = #{updatePerson}
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="IMDirectoryPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="position != null">position = #{position},</if>
+			<if test="isDuty != null">is_duty = #{isDuty},</if>
+			update_time = NOW(),
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

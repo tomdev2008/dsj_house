@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldHouseParser.dao.impl.DicDealLogsCrawlerDaoImpl">
+    
+    <sql id="tableName"> old_dic_deal_logs_crawler a </sql>
+    <sql id="tableNameUpdate"> old_dic_deal_logs_crawler </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.create_time AS "createTime",
+		a.origin_house_id AS "originHouseId",
+		a.origin_dic_id AS "originDicId",
+		a.deal_no AS "dealNo",
+		a.room AS "room",
+		a.hall AS "hall",
+		a.floor_type AS "floorType",
+		a.floor_type_name AS "floorTypeName",
+		a.build_area AS "buildArea",
+		a.contract_date AS "contractDate",
+		a.price AS "price",
+		a.unit_price AS "unitPrice",
+		a.source AS "source",
+		a.title AS "title",
+		a.deal_info AS "dealInfo",
+		a.renovation_name AS "renovationName",
+		a.renovation AS "renovation",
+		a.orientations_name AS "orientationsName",
+		a.orientations AS "orientations",
+		a.floor_num AS "floorNum",
+		a.certificate_type AS "certificateType",
+		a.is_elevator AS "isElevator",
+		a.build_year AS "buildYear",
+		a.build_type AS "buildType",
+		a.build_type_name AS "buildTypeName",
+		a.image_url AS "imageUrl",
+		a.origin_image_url AS "originImageUrl",
+		a.compay_type AS "compayType"
+	</sql>
+	
+	<resultMap id="beanMap" type="DicDealLogsCrawlerPo">
+		<id column="id" property="id" />
+		<result column="create_time" property="createTime" />
+		<result column="origin_house_id" property="originHouseId" />
+		<result column="origin_dic_id" property="originDicId" />
+		<result column="deal_no" property="dealNo" />
+		<result column="room" property="room" />
+		<result column="hall" property="hall" />
+		<result column="floor_type" property="floorType" />
+		<result column="floor_type_name" property="floorTypeName" />
+		<result column="build_area" property="buildArea" />
+		<result column="contract_date" property="contractDate" />
+		<result column="price" property="price" />
+		<result column="unit_price" property="unitPrice" />
+		<result column="source" property="source" />
+		<result column="title" property="title" />
+		<result column="deal_info" property="dealInfo" />
+		<result column="renovation_name" property="renovationName" />
+		<result column="renovation" property="renovation" />
+		<result column="orientations_name" property="orientationsName" />
+		<result column="orientations" property="orientations" />
+		<result column="floor_num" property="floorNum" />
+		<result column="certificate_type" property="certificateType" />
+		<result column="is_elevator" property="isElevator" />
+		<result column="build_year" property="buildYear" />
+		<result column="build_type" property="buildType" />
+		<result column="build_type_name" property="buildTypeName" />
+		<result column="image_url" property="imageUrl" />
+		<result column="origin_image_url" property="originImageUrl" />
+		<result column="compay_type" property="compayType" />
+	</resultMap>
+	
+	<sql id="dicDealLogsCrawlerJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="originHouseId != null and originHouseId!= ''"> AND a.origin_house_id = #{originHouseId}</if>
+		<if test="originDicId != null and originDicId!= ''"> AND a.origin_dic_id = #{originDicId}</if>
+		<if test="dealNo != null and dealNo!= ''"> AND a.deal_no = #{dealNo}</if>
+		<if test="room != null and room!= ''"> AND a.room = #{room}</if>
+		<if test="hall != null and hall!= ''"> AND a.hall = #{hall}</if>
+		<if test="floorType != null and floorType!= ''"> AND a.floor_type = #{floorType}</if>
+		<if test="floorTypeName != null and floorTypeName!= ''"> AND a.floor_type_name = #{floorTypeName}</if>
+		<if test="buildArea != null and buildArea!= ''"> AND a.build_area = #{buildArea}</if>
+		<if test="contractDate != null and contractDate!= ''"> AND a.contract_date = #{contractDate}</if>
+		<if test="price != null and price!= ''"> AND a.price = #{price}</if>
+		<if test="unitPrice != null and unitPrice!= ''"> AND a.unit_price = #{unitPrice}</if>
+		<if test="source != null and source!= ''"> AND a.source = #{source}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="dealInfo != null and dealInfo!= ''"> AND a.deal_info = #{dealInfo}</if>
+		<if test="renovationName != null and renovationName!= ''"> AND a.renovation_name = #{renovationName}</if>
+		<if test="renovation != null and renovation!= ''"> AND a.renovation = #{renovation}</if>
+		<if test="orientationsName != null and orientationsName!= ''"> AND a.orientations_name = #{orientationsName}</if>
+		<if test="orientations != null and orientations!= ''"> AND a.orientations = #{orientations}</if>
+		<if test="floorNum != null and floorNum!= ''"> AND a.floor_num = #{floorNum}</if>
+		<if test="certificateType != null and certificateType!= ''"> AND a.certificate_type = #{certificateType}</if>
+		<if test="isElevator != null and isElevator!= ''"> AND a.is_elevator = #{isElevator}</if>
+		<if test="buildYear != null and buildYear!= ''"> AND a.build_year = #{buildYear}</if>
+		<if test="buildType != null and buildType!= ''"> AND a.build_type = #{buildType}</if>
+		<if test="buildTypeName != null and buildTypeName!= ''"> AND a.build_type_name = #{buildTypeName}</if>
+		<if test="imageUrl != null and imageUrl!= ''"> AND a.image_url = #{imageUrl}</if>
+		<if test="originImageUrl != null and originImageUrl!= ''"> AND a.origin_image_url = #{originImageUrl}</if>
+		<if test="compayType != null and compayType!= ''"> AND a.compay_type = #{compayType}</if>
+	</sql>
+    
+	<select id="getById" resultType="DicDealLogsCrawlerPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="dicDealLogsCrawlerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="DicDealLogsCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			create_time,
+			origin_house_id,
+			origin_dic_id,
+			deal_no,
+			room,
+			hall,
+			floor_type,
+			floor_type_name,
+			build_area,
+			contract_date,
+			price,
+			unit_price,
+			source,
+			title,
+			deal_info,
+			renovation_name,
+			renovation,
+			orientations_name,
+			orientations,
+			floor_num,
+			certificate_type,
+			is_elevator,
+			build_year,
+			build_type,
+			build_type_name,
+			image_url,
+			origin_image_url,
+			compay_type
+		) VALUES (
+			#{id},
+			#{createTime},
+			#{originHouseId},
+			#{originDicId},
+			#{dealNo},
+			#{room},
+			#{hall},
+			#{floorType},
+			#{floorTypeName},
+			#{buildArea},
+			#{contractDate},
+			#{price},
+			#{unitPrice},
+			#{source},
+			#{title},
+			#{dealInfo},
+			#{renovationName},
+			#{renovation},
+			#{orientationsName},
+			#{orientations},
+			#{floorNum},
+			#{certificateType},
+			#{isElevator},
+			#{buildYear},
+			#{buildType},
+			#{buildTypeName},
+			#{imageUrl},
+			#{originImageUrl},
+			#{compayType}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="DicDealLogsCrawlerPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="originHouseId != null">origin_house_id,</if>
+					<if test="originDicId != null">origin_dic_id,</if>
+					<if test="dealNo != null">deal_no,</if>
+					<if test="room != null">room,</if>
+					<if test="hall != null">hall,</if>
+					<if test="floorType != null">floor_type,</if>
+					<if test="floorTypeName != null">floor_type_name,</if>
+					<if test="buildArea != null">build_area,</if>
+					<if test="contractDate != null">contract_date,</if>
+					<if test="price != null">price,</if>
+					<if test="unitPrice != null">unit_price,</if>
+					<if test="source != null">source,</if>
+					<if test="title != null">title,</if>
+					<if test="dealInfo != null">deal_info,</if>
+					<if test="renovationName != null">renovation_name,</if>
+					<if test="renovation != null">renovation,</if>
+					<if test="orientationsName != null">orientations_name,</if>
+					<if test="orientations != null">orientations,</if>
+					<if test="floorNum != null">floor_num,</if>
+					<if test="certificateType != null">certificate_type,</if>
+					<if test="isElevator != null">is_elevator,</if>
+					<if test="buildYear != null">build_year,</if>
+					<if test="buildType != null">build_type,</if>
+					<if test="buildTypeName != null">build_type_name,</if>
+					<if test="imageUrl != null">image_url,</if>
+					<if test="originImageUrl != null">origin_image_url,</if>
+					<if test="compayType != null">compay_type,</if>
+					<if test="listedPrice != null">listed_price,</if>
+					
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="originHouseId != null">#{originHouseId},</if>
+			<if test="originDicId != null">#{originDicId},</if>
+			<if test="dealNo != null">#{dealNo},</if>
+			<if test="room != null">#{room},</if>
+			<if test="hall != null">#{hall},</if>
+			<if test="floorType != null">#{floorType},</if>
+			<if test="floorTypeName != null">#{floorTypeName},</if>
+			<if test="buildArea != null">#{buildArea},</if>
+			<if test="contractDate != null">#{contractDate},</if>
+			<if test="price != null">#{price},</if>
+			<if test="unitPrice != null">#{unitPrice},</if>
+			<if test="source != null">#{source},</if>
+			<if test="title != null">#{title},</if>
+			<if test="dealInfo != null">#{dealInfo},</if>
+			<if test="renovationName != null">#{renovationName},</if>
+			<if test="renovation != null">#{renovation},</if>
+			<if test="orientationsName != null">#{orientationsName},</if>
+			<if test="orientations != null">#{orientations},</if>
+			<if test="floorNum != null">#{floorNum},</if>
+			<if test="certificateType != null">#{certificateType},</if>
+			<if test="isElevator != null">#{isElevator},</if>
+			<if test="buildYear != null">#{buildYear},</if>
+			<if test="buildType != null">#{buildType},</if>
+			<if test="buildTypeName != null">#{buildTypeName},</if>
+			<if test="imageUrl != null">#{imageUrl},</if>
+			<if test="originImageUrl != null">#{originImageUrl},</if>
+			<if test="compayType != null">#{compayType},</if>
+			<if test="listedPrice != null">#{listedPrice},</if>
+			
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="DicDealLogsCrawlerPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			origin_house_id = #{originHouseId},
+			origin_dic_id = #{originDicId},
+			deal_no = #{dealNo},
+			room = #{room},
+			hall = #{hall},
+			floor_type = #{floorType},
+			floor_type_name = #{floorTypeName},
+			build_area = #{buildArea},
+			contract_date = #{contractDate},
+			price = #{price},
+			unit_price = #{unitPrice},
+			source = #{source},
+			title = #{title},
+			deal_info = #{dealInfo},
+			renovation_name = #{renovationName},
+			renovation = #{renovation},
+			orientations_name = #{orientationsName},
+			orientations = #{orientations},
+			floor_num = #{floorNum},
+			certificate_type = #{certificateType},
+			is_elevator = #{isElevator},
+			build_year = #{buildYear},
+			build_type = #{buildType},
+			build_type_name = #{buildTypeName},
+			image_url = #{imageUrl},
+			origin_image_url = #{originImageUrl},
+			compay_type = #{compayType},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="DicDealLogsCrawlerPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="originHouseId != null">origin_house_id = #{originHouseId},</if>
+			<if test="originDicId != null">origin_dic_id = #{originDicId},</if>
+			<if test="dealNo != null">deal_no = #{dealNo},</if>
+			<if test="room != null">room = #{room},</if>
+			<if test="hall != null">hall = #{hall},</if>
+			<if test="floorType != null">floor_type = #{floorType},</if>
+			<if test="floorTypeName != null">floor_type_name = #{floorTypeName},</if>
+			<if test="buildArea != null">build_area = #{buildArea},</if>
+			<if test="contractDate != null">contract_date = #{contractDate},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="unitPrice != null">unit_price = #{unitPrice},</if>
+			<if test="source != null">source = #{source},</if>
+			<if test="title != null">title = #{title},</if>
+			<if test="dealInfo != null">deal_info = #{dealInfo},</if>
+			<if test="renovationName != null">renovation_name = #{renovationName},</if>
+			<if test="renovation != null">renovation = #{renovation},</if>
+			<if test="orientationsName != null">orientations_name = #{orientationsName},</if>
+			<if test="orientations != null">orientations = #{orientations},</if>
+			<if test="floorNum != null">floor_num = #{floorNum},</if>
+			<if test="certificateType != null">certificate_type = #{certificateType},</if>
+			<if test="isElevator != null">is_elevator = #{isElevator},</if>
+			<if test="buildYear != null">build_year = #{buildYear},</if>
+			<if test="buildType != null">build_type = #{buildType},</if>
+			<if test="buildTypeName != null">build_type_name = #{buildTypeName},</if>
+			<if test="imageUrl != null">image_url = #{imageUrl},</if>
+			<if test="originImageUrl != null">origin_image_url = #{originImageUrl},</if>
+			<if test="compayType != null">compay_type = #{compayType},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

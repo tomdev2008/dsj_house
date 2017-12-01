@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link href="lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+  </head>
+  <body>
+    
+    <div class="container">
+      <div class="row">
+        <ol class="breadcrumb dsj_breadcrumb">
+          <li><a href="#">大搜家首页</a></li>
+          <li><a href="#">新房</a></li>
+          <li class="active">新房列表</li>
+        </ol>
+      </div>
+      <div class="row">
+        <form id="dsj_form" class="form-horizontal dsj_form">
+		<script id="master_add" type="text/x-handlebars-template">
+		<h4 class="dsj_title">房源基本信息</h4>
+		<input type="hidden" name="id" value="{{houseNewsPo.id}}" class="form-control" >
+		<div class="form-group">
+            <label for="housename" class="col-sm-2 control-label"><span class="dsj_warn">*</span>楼盘名称</label>
+            <div class="col-sm-2">
+         		<select name="houseId" onchange="changeHouseId(this);" class="form-control" data-validate="required" >
+					<option value="" >请选择</option>
+					{{#each authList}}
+						{{#compare ../houseNewsPo.houseId '==' this.id }}
+     						<option value="{{this.id}}" selected="selected">{{ this.name }}</option>
+     					{{else}}
+     						<option value="{{this.id}}" >{{ this.name }}</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+            </div>
+		</div>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-2 control-label">楼盘ID</label>
+            <div class="col-sm-2">
+				<input type="text" id="houseId" value="{{houseNewsPo.houseId}}" readonly="readonly" class="form-control"  placeholder="楼盘ID">
+            </div>
+		</div>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-2 control-label">动态名称</label>
+            <div class="col-sm-2">
+				<input type="text" name="title" value="{{houseNewsPo.title}}" class="form-control" data-validate="required" placeholder="">
+            </div>
+		</div>
+		<div class="form-group">
+			<label for="text" class="col-sm-2 control-label">内容</label>
+			<div class="col-sm-10">
+				<textarea name="content" class="form-control" rows="3">{{houseNewsPo.content}}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="id_number" class="col-sm-2 control-label"><span class="dsj_warn">*</span>显示图片：</label>
+			<div class="col-sm-1" id="filePicker1">
+				<div class="dsj_source_img">
+					<img src="{{houseNewsPo.pictureUrl}}" alt="" id="showImg1" />
+					<div class="add-more">
+						<span>+</span>
+					</div>
+				</div>
+			</div>
+			<input name="pictureUrl" value="{{houseNewsPo.pictureUrl}}" id="licenseUri1"  data-validate="required"  style="width:0px;height:0px;border:0px">
+        </div>
+		{{#compare houseNewsPo.auditStatus '==' 2}}
+		<div class="form-group">
+			<label class="col-sm-2 control-label">上下线</label>
+			<div class="col-sm-2">
+		        <select name="upDownLine" class="form-control">
+					{{#if houseNewsPo.upDownLine}}
+						{{#compare houseNewsPo.upDownLine '==' 3}}
+     						<option value="3" selected="selected">未上线</option>
+							<option value="1" >已上线</option>
+							<option value="2" >已下线</option>
+ 						{{/compare}}
+						{{#compare houseNewsPo.upDownLine '==' 1}}
+     						<option value="3" >未上线</option>
+							<option value="1" selected="selected">已上线</option>
+							<option value="2" >已下线</option>
+ 						{{/compare}}
+						{{#compare houseNewsPo.upDownLine '==' 2}}
+     						<option value="3" >未上线</option>
+							<option value="1" >已上线</option>
+							<option value="2" selected="selected">已下线</option>
+ 						{{/compare}}
+					{{else}}
+						<option value="3" >未上线</option>
+						<option value="1" >已上线</option>
+						<option value="2" >已下线</option>
+					{{/if}}
+				</select>
+		    </div>
+		</div>
+		{{/compare}}
+		{{#compare houseNewsPo.auditStatus '==' 3}}
+		<div class="form-group">
+			<label for="text" class="col-sm-2 control-label">驳回理由</label>
+			<div class="col-sm-10">
+				<textarea name="auditReason" class="form-control" rows="3">{{houseNewsPo.auditReason}}</textarea>
+			</div>
+		</div>
+        {{/compare}}
+ 		<div class="row dsj_button_group">
+            <div class="col-sm-12">
+				<button class="btn btn-default" onclick="saveOrUpdate()" type="button">保存</button>
+				<a class="btn btn-default" onclick="cancel()" role="button">取消</a>
+            </div>
+		</div>
+		</script>
+        </form>
+      </div>
+    </div>
+    <div class="dsj_footer">
+      <div class="container">
+        <div class="dsj_upper_footer">
+          <span>关于我们</span>
+          <span>合作伙伴</span>
+          <span>联系我们</span>
+        </div>
+        <div>
+          <ul class="dsj_lower_footer">
+            <li>北京大搜家信息技术服务有限公司&nbsp;&nbsp;|</li>
+            <li>网络经营许可证 京ICP备11024601号-12&nbsp;&nbsp;|</li>
+            <li>&copy;Copyright&copy;2010-2017 大搜家Dashoujia.com版权所有</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script type="text/javascript" src="js/webuploader.js"></script>
+    <script type="text/javascript" src="js/single-upload.js"></script>
+    <script src="js/dsj_tags.js"></script>
+    <script src="js/formUtils.js"></script>
+    <script src="lib/validate/verify.notify.js"></script>
+    <script src="lib/validate/verify.notify.ext.js"></script>
+    <script src="js/houseNews/house-news-form.js"></script>
+    
+    <script type="text/javascript">
+    var _url="/dsj-agent-back";
+    $(function(){
+		var id = GetQueryString("id"); 
+		var p_url;
+		if(id){ 
+			p_url = _url+"/back/houseNews/to_house_news_form?id="+id
+		}else{ 
+			p_url = _url+"/back/houseNews/to_house_news_form" 
+		}
+		var option = { url : p_url }
+		var fun = new $.fn.originAdd(option);
+		fun._init();
+		
+    })
+    </script>
+    <script src="lib/select2/4.0.3/js/select2.min.js""></script>
+    <script src="js/require.js"></script>
+	<script src="js/common/header.js"></script>
+  </body>
+</html>

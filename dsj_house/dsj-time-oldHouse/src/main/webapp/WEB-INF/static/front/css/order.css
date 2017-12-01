@@ -1,0 +1,114 @@
+ul,li{
+	list-style: none;
+}
+.order_main{
+	width: 97%;
+	height: 100%;
+    background-color: #fff;
+    position: absolute;
+}
+.order_main a{
+	color: #333;
+}
+.order_main a:hover{
+	color:#2775e9;
+}
+.order_main p, .order_main li{
+	margin:0;
+	padding:0;
+}
+.main_sideleft{
+	width: 286px;
+	border:1px solid #333;
+	position: absolute;
+	left:50px;
+	top:50px;
+	padding:30px 0;
+}
+.order_main .sideleft_label{
+	background-color: #fff;
+	position: absolute;
+	top:-20px;
+	left:50px;
+	padding:10px;
+}
+.main_content{
+	width: 750px;
+	height: 577px;
+	position: absolute;
+	top:50px;
+	left: 400px;
+}
+.file_name{
+	width: 100%;
+	position: relative;
+}
+.file_name>span{
+	position: absolute;
+	left: 180px;
+}
+.order_main .nav-stacked li{
+	margin:0;
+	padding:0;
+	padding-left: 50px;
+	padding-bottom: 50px;
+	position: relative;
+}
+.order_main .nav-pills > li > a{
+	border-radius: 0;
+}
+.content_kuang{
+	width: 100%;
+	min-height: 456px;
+	padding:20px;
+	border:1px solid #333;
+	margin-top:20px;
+}
+.content_div>div{
+	width:100%;
+	height: 30px;
+	line-height: 30px;
+}
+.content_div>div>span{
+	width: 120px;
+	text-align: right;
+	display: inline-block;
+	margin-right:20px;
+}
+.buttons{
+	width: 300px;
+	height: 34px;
+	margin-top:30px;
+}
+.buttons>input{
+	margin-right: 30px;
+}
+.progress_s{
+	width: 50px;
+    height: 100%;
+    background: yellow;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../img/correct_active.png) no-repeat  10px top;
+	background-size: 30px 30px;
+}
+.progress_active{
+	background: url(../img/correct.png) no-repeat  10px top;
+	background-size: 30px 30px;
+}
+.progress_s>p{
+	width: 4px;
+    height: 80px;
+    background-color: #c8c8ce;
+    position: absolute;
+    top: 30px;
+    left: 44%;
+}
+.progress_s .p_active{
+	background-color: #247ceb;
+}
+#orderDetail .default_botton{
+	margin-left: 65px;
+    margin-top: 30px;
+}

@@ -1,0 +1,1291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.AgentDaoImpl">
+    
+    <sql id="tableName"> dsj_agent a</sql>
+    <sql id="tableNameUpdate"> dsj_agent </sql>
+    
+  <sql id="tableColumns">
+    a.id AS "id",
+    a.user_id AS "userId",
+    a.avatar_url AS "avatarUrl",
+    a.avatar_re_url AS "avatarReUrl",
+    a.agent_code AS "agentCode",
+    a.apply_time AS "applyTime",
+    a.company AS "company",
+    a.name AS "name",
+    a.tell_phone AS "tellPhone",
+    a.province AS "province",
+    a.city AS "city",
+    a.sort AS "sort",
+    a.area AS "area",
+    a.business AS "business",
+    a.main_community AS "mainCommunity",
+    a.is_sell_new_house AS "isSellNewHouse",
+    a.sell_building AS "sellBuilding",
+    a.id_number AS "idNumber",
+    a.is_external_regist AS "isExternalRegist",
+    a.audit_status AS "auditStatus",
+    a.duty_building AS "dutyBuilding",
+    a.id_card_url AS "idCardUrl",
+    a.id_card_url_back AS "idCardUrlBack",
+    a.card_url AS "cardUrl",
+    a.update_user AS "updateUser",
+    a.create_user AS "createUser",
+    a.audit_user AS "auditUser",
+    a.audit_time AS "auditTime",
+    a.create_time AS "createTime",
+    a.update_time AS "updateTime",
+    a.sex AS "sex",
+    a.birthday AS "birthday",
+    a.star AS "star",
+    a.blood AS "blood",
+    a.email AS "email",
+    a.education AS "education",
+    a.major AS "major",
+    a.signature AS "signature",
+    a.workyears AS "workyears",
+    a.skill AS "skill",
+    a.feature AS "feature",
+    a.background AS "background",
+    a.score AS "score",
+    a.take_look AS "takeLook",
+    a.deal AS "deal"
+  </sql>
+  
+  <sql id="tableColumnsVo">
+    a.id AS "id",
+    a.user_id AS "userId",
+    a.avatar_url AS "avatarUrl",
+    a.avatar_re_url AS "avatarReUrl",
+    a.agent_code AS "agentCode",
+    a.apply_time AS "applyTime",
+    a.company AS "company",
+    a.name AS "name",
+    a.tell_phone AS "tellPhone",
+    a.province AS "province",
+    a.city AS "city",
+    a.sort AS "sort",
+    a.area AS "area",
+    a.business AS "business",
+    a.main_community AS "mainCommunity",
+    a.is_sell_new_house AS "isSellNewHouse",
+    a.sell_building AS "sellBuilding",
+    a.id_number AS "idNumber",
+    a.is_external_regist AS "isExternalRegist",
+    a.audit_status AS "auditStatus",
+    a.duty_building AS "dutyBuilding",
+    a.id_card_url AS "idCardUrl",
+    a.id_card_url_back AS "idCardUrlBack",
+    a.card_url AS "cardUrl",
+    a.update_user AS "updateUser",
+    a.create_user AS "createUser",
+    a.audit_user AS "auditUser",
+    a.audit_time AS "auditTime",
+    a.create_time AS "createTime",
+    a.update_time AS "updateTime",
+    a.sex AS "sex",
+    a.birthday AS "birthday",
+    a.star AS "star",
+    a.blood AS "blood",
+    a.email AS "email",
+    a.education AS "education",
+    a.major AS "major",
+    a.signature AS "signature",
+    a.workyears AS "workyears",
+    a.skill AS "skill",
+    a.feature AS "feature",
+    a.background AS "background",
+    a.score AS "score",
+    a.take_look AS "takeLook",
+    a.deal AS "deal",
+    r.name AS "areaName",
+    t.name AS "businessName",
+    case a.audit_status
+      WHEN 1 THEN '已认证'
+      WHEN 2 THEN '待审核'
+      WHEN 3 THEN '已驳回'
+      WHEN 4 THEN '未认证'
+    end  AS "auditStatusName",
+    case a.is_sell_new_house
+      WHEN 1 THEN '是'
+      else '否'
+    end  AS "isSellNewHouseName",
+    case a.audit_status
+      WHEN 1 THEN '已认证'
+      WHEN 2 THEN '未认证'
+      WHEN 3 THEN '未认证'
+      WHEN 4 THEN '未认证'
+    end  AS "auditName",
+    c.short_name AS "companyName"
+  </sql>
+  
+  <resultMap id="beanMap" type="AgentPo">
+    <id column="id" property="id" />
+    <result column="user_id" property="userId" />
+    <result column="avatar_url" property="avatarUrl" />
+    <result column="avatar_re_url" property="avatarReUrl" />
+    <result column="agent_code" property="agentCode" />
+    <result column="apply_time" property="applyTime" />
+    <result column="company" property="company" />
+    <result column="name" property="name" />
+    <result column="tell_phone" property="tellPhone" />
+    <result column="province" property="province" />
+    <result column="city" property="city" />
+    <result column="sort" property="sort" />
+    <result column="area" property="area" />
+    <result column="business" property="business" />
+    <result column="main_community" property="mainCommunity" />
+    <result column="is_sell_new_house" property="isSellNewHouse" />
+    <result column="sell_building" property="sellBuilding" />
+    <result column="id_number" property="idNumber" />
+    <result column="is_external_regist" property="isExternalRegist" />
+    <result column="audit_status" property="auditStatus" />
+    <result column="duty_building" property="dutyBuilding" />
+    <result column="id_card_url" property="idCardUrl" />
+    <result column="id_card_url_back" property="idCardUrlBack" />
+    <result column="card_url" property="cardUrl" />
+    <result column="update_user" property="updateUser" />
+    <result column="create_user" property="createUser" />
+    <result column="audit_user" property="auditUser" />
+    <result column="audit_time" property="auditTime" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+    <result column="sex" property="sex" />
+    <result column="birthday" property="birthday" />
+    <result column="star" property="star" />
+    <result column="blood" property="blood" />
+    <result column="email" property="email" />
+    <result column="education" property="education" />
+    <result column="major" property="major" />
+    <result column="signature" property="signature" />
+    <result column="workyears" property="workyears" />
+    <result column="skill" property="skill" />
+    <result column="feature" property="feature" />
+    <result column="background" property="background" />
+    <result column="score" property="score" />
+    <result column="take_look" property="takeLook" />
+    <result column="deal" property="deal" />
+  </resultMap>
+  
+  <sql id="agentJoins">
+  </sql>
+    
+    <sql id="condition_sql">  
+    <if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+    <if test="avatarUrl != null and avatarUrl!= ''"> AND a.avatar_url = #{avatarUrl}</if>
+    <if test="avatarReUrl != null and avatarReUrl!= ''"> AND a.avatar_re_url = #{avatarReUrl}</if>
+    <if test="agentCode != null and agentCode!= ''"> AND a.agent_code = #{agentCode}</if>
+    <if test="applyTimeStart != null and applyTimeStart!= ''">
+      <![CDATA[AND a.apply_time > #{applyTimeStart}]]>
+    </if>
+    <if test="applyTimeEnd != null and applyTimeEnd!= ''">
+      <![CDATA[AND a.apply_time < #{applyTimeEnd}]]>
+    </if>
+    <if test="applyTime != null and applyTime!= ''"> AND a.apply_time = #{applyTime}</if>
+    <if test="company != null and company!= ''"> AND a.company = #{company}</if>
+    <if test="name != null and name!= ''"> AND a.name LIKE CONCAT(CONCAT('%', #{name}), '%')</if>
+    <if test="tellPhone != null and tellPhone!= ''"> AND a.tell_phone LIKE CONCAT(CONCAT('%', #{tellPhone}), '%')</if>
+    <if test="province != null and province!= ''"> AND a.province = #{province}</if>
+    <if test="city != null and city!= ''"> AND a.city = #{city}</if>
+    <if test="sort != null and sort!= ''"> AND a.sort in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)</if>
+    <if test="area != null and area!= ''"> AND a.area = #{area}</if>
+    <if test="business != null and business!= ''"> AND a.business = #{business}</if>
+    <if test="mainCommunity != null and mainCommunity!= ''"> AND a.main_community LIKE CONCAT(CONCAT('%', #{mainCommunity}), '%')</if>
+    <if test="isSellNewHouse != null and isSellNewHouse!= ''"> AND a.is_sell_new_house = #{isSellNewHouse}</if>
+    <if test="sellBuilding != null and sellBuilding!= ''"> AND a.sell_building = #{sellBuilding}</if>
+    <if test="idNumber != null and idNumber!= ''"> AND a.id_number = #{idNumber}</if>
+    <if test="isExternalRegist != null and isExternalRegist!= ''"> AND a.is_external_regist = #{isExternalRegist}</if>
+    <if test="auditStatus != null and auditStatus!= ''">  
+        AND a.audit_status = #{auditStatus}     
+    </if>
+    <if test="auditStatus == null or auditStatus == ''">  
+        AND a.audit_status in (1,2,3)   
+    </if>
+    <if test="dutyBuilding != null and dutyBuilding!= ''"> AND a.duty_building = #{dutyBuilding}</if>
+    <if test="idCardUrl != null and idCardUrl!= ''"> AND a.id_card_url = #{idCardUrl}</if>
+    <if test="idCardUrlBack != null and idCardUrlBack!= ''"> AND a.id_card_url_back = #{idCardUrlBack}</if>
+    <if test="cardUrl != null and cardUrl!= ''"> AND a.card_url = #{cardUrl}</if>
+    <if test="updateUser != null and updateUser!= ''"> AND a.update_user = #{updateUser}</if>
+    <if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+    <if test="auditUser != null and auditUser!= ''"> AND a.audit_user = #{auditUser}</if>
+    <if test="auditTime != null and auditTime!= ''"> AND a.audit_time = #{auditTime}</if>
+    <if test="createTimeStart != null and createTimeStart!= ''">
+      <![CDATA[AND a.create_time > #{createTimeStart}]]>
+    </if>
+    <if test="createTimeEnd != null and createTimeEnd!= ''">
+      <![CDATA[AND a.create_time < #{createTimeEnd}]]>
+    </if>
+    
+    
+    <if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+    <if test="sex != null and sex!= ''"> AND a.sex = #{sex}</if>
+    <if test="birthday != null and birthday!= ''"> AND a.birthday = #{birthday}</if>
+    <if test="star != null and star!= ''"> AND a.star = #{star}</if>
+    <if test="blood != null and blood!= ''"> AND a.blood = #{blood}</if>
+    <if test="email != null and email!= ''"> AND a.email = #{email}</if>
+    <if test="education != null and education!= ''"> AND a.education = #{education}</if>
+    <if test="major != null and major!= ''"> AND a.major = #{major}</if>
+    <if test="signature != null and signature!= ''"> AND a.signature = #{signature}</if>
+    <if test="workyears != null and workyears!= ''"> AND a.workyears = #{workyears}</if>
+    <if test="skill != null and skill!= ''"> AND a.skill = #{skill}</if>
+    <if test="feature != null and feature!= ''"> AND a.feature LIKE CONCAT(CONCAT('%', #{feature}), '%')</if>
+    <if test="background != null and background!= ''"> AND a.background = #{background}</if>
+    <if test="score != null and score!= ''"> AND a.score = #{score}</if>
+    <if test="takeLook != null and takeLook!= ''"> AND a.take_look = #{takeLook}</if>
+    <if test="deal != null and deal!= ''"> AND a.deal = #{deal}</if>
+  </sql>
+    
+  <select id="getById" resultType="AgentPo">
+    SELECT 
+      <include refid="tableColumns"/>
+    FROM <include refid="tableName"/> 
+    WHERE a.id = #{id}
+  </select>
+  <select id="getVoById" resultType="com.dsj.modules.system.vo.AgentVo">
+    SELECT 
+      <include refid="tableColumnsVo"/>
+    FROM <include refid="tableName"/> 
+    LEFT JOIN dsj_area r ON a.area = r.area_code
+    LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    LEFT JOIN dsj_user on dsj_user.id = a.user_id
+    LEFT JOIN dsj_company c on a.company = c.id 
+    WHERE a.id = #{id}
+  </select>
+  
+  <select id="getByUserId" resultType="com.dsj.modules.system.vo.AgentVo">
+    SELECT 
+    mo.mobile AS "mobile",
+      <include refid="tableColumnsVo"/>
+    FROM <include refid="tableName"/> 
+    LEFT JOIN dsj_area r ON a.area = r.area_code
+    LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    LEFT JOIN dsj_user on dsj_user.id = a.user_id
+    LEFT JOIN dsj_company c on a.company = c.id 
+    LEFT JOIN dsj_mobile mo on mo.agent_id = a.id
+    WHERE a.user_id = #{userId}
+  </select>
+  
+  <select id="getBy" resultMap="beanMap">
+    SELECT 
+      <include refid="tableColumns"/>
+    FROM <include refid="tableName"/> 
+      <where>
+      <include refid="condition_sql" />
+    </where>
+    </select>
+    
+    <select id="agentId" parameterType="java.util.Map" resultMap="beanMap">
+    SELECT 
+      a.id AS "id",a.tell_phone AS "tellPhone",a.name AS "name",a.company AS "company",a.agent_code AS "agentCode"
+    FROM <include refid="tableName"/> 
+      <where>
+      a.id=#{id}
+    </where>
+    </select>
+  
+  <select id="listAll" resultMap="beanMap">
+      SELECT 
+        <include refid="tableColumns"/>
+      FROM <include refid="tableName"/> 
+      ORDER BY a.id DESC
+    </select>
+    
+    <select id="listBy" resultMap="beanMap">
+      SELECT 
+        <include refid="tableColumns"/>
+      FROM <include refid="tableName"/> 
+      <where>
+      <include refid="condition_sql" />
+    </where>
+      ORDER BY a.id DESC
+    </select>
+  
+  <select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+    SELECT 
+        <include refid="tableColumns"/>
+      FROM <include refid="tableName"/> 
+    <where>
+      <include refid="condition_sql" />
+    </where>
+    ORDER BY a.id
+    LIMIT #{pageFirst} , #{pageSize} 
+  </select>
+  <select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentVo">
+    SELECT 
+        <include refid="tableColumnsVo"/>,
+            t.name,
+            m.mobile as mobile,
+            ts.name as responName,
+            u.username as username,
+            u.realname as realname,
+            i.total_score as totalScore,
+            ag.name as gradeName,
+            ag.small_icon as smallIcon,
+            ag.big_icon as bigIcon,
+            ati.total_count as atiTotalCount,
+            ati.high_count as atiHighCount,
+            ati.mid_count as atiMidCount,
+            ati.bad_count as atiBadCount,
+            pro.total_count as proTotalCount,
+            pro.high_count as proHighCount,
+            pro.mid_count as proMidCount,
+            pro.bad_count as proBadCount 
+    FROM <include refid="tableName"/> 
+    LEFT JOIN dsj_area r ON a.area = r.area_code
+    LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    LEFT JOIN dsj_user u on u.id = a.user_id
+    LEFT JOIN dsj_company c on a.company = c.id 
+    LEFT JOIN dsj_mobile m on a.id = m.agent_id 
+    LEFT JOIN dsj_agent_info i ON i.agent_id = a.agent_code 
+    LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score 
+    LEFT JOIN dsj_agent_evaluate ati ON ati.agent_id = a.agent_code AND ati.paragraph_no=79401 
+    LEFT JOIN dsj_agent_evaluate pro ON pro.agent_id = a.agent_code AND pro.paragraph_no=79402 
+     LEFT JOIN ( select  e.id,di.agent_id,
+    GROUP_CONCAT(h.`name`) as `name` from dsj_agent e LEFT JOIN dsj_im_directory di ON di.agent_id=e.user_id
+    LEFT JOIN dsj_new_house_directory_auth h ON h.id=di.house_id
+    WHERE  di.is_duty=1  
+    GROUP BY di.agent_id  ) AS ts ON ts.agent_id=a.user_id   
+    <where>
+      <include refid="condition_sql" />
+      <if test="delFlag != null and delFlag!= ''"> AND u.del_flag = #{delFlag}</if>
+      <if test="keywords != null and keywords!= ''"> AND (a.name LIKE CONCAT(CONCAT('%', #{keywords}), '%') OR  
+      r.name LIKE CONCAT(CONCAT('%', #{keywords}), '%') OR c.company_name LIKE CONCAT(CONCAT('%', #{keywords}), '%'))</if>
+      <if test="companyId != null and companyId!= ''"> AND c.id = #{companyId}</if>
+      <if test="companyOther != null and companyOther!= ''"> AND c.id NOT IN (11,2,3,9,10)</if>
+    </where>
+    ORDER BY 
+        <if test="sortApplyTime != null and sortApplyTime!= ''">a.apply_time DESC</if>
+        <if test="sort != null and sort!= ''">a.sort DESC </if>
+        <if test="sortId != null and sortId!= ''">a.sort ASC, i.total_score DESC </if>
+        <if test="sortCreateTime != null and sortCreateTime!= ''">a.create_time DESC </if>
+        <if test="yearOrder != null and yearOrder!= ''">a.workyears DESC </if>
+        <if test="scoreOrder != null and scoreOrder!= ''">i.total_score DESC </if>
+        <if test="dealOrder != null and dealOrder!= ''">a.deal DESC </if>
+        <if test="takeOrder != null and takeOrder!= ''">a.take_look DESC </if>
+    LIMIT #{pageFirst} , #{pageSize} 
+  </select>
+  
+  <select id="listPageCount" parameterType="java.util.Map" resultType="long">
+    SELECT 
+      COUNT(1) 
+    FROM <include refid="tableName"/>
+    <where>
+      <include refid="condition_sql"/>
+    </where>
+  </select>
+  
+  <select id="listByNewHouseId" parameterType="long" resultType="com.dsj.modules.system.vo.AgentVo">
+    SELECT 
+        <include refid="tableColumnsVo"/>,
+            m.mobile as mobile,
+            u.username as username,
+            u.realname as realname,
+            i.total_score as totalScore,
+            ag.name as gradeName,
+            ag.small_icon as smallIcon,
+            ag.big_icon as bigIcon,
+            ati.total_count as atiTotalCount,
+            ati.high_count as atiHighCount,
+            ati.mid_count as atiMidCount,
+            ati.bad_count as atiBadCount,
+            pro.total_count as proTotalCount,
+            pro.high_count as proHighCount,
+            pro.mid_count as proMidCount,
+            pro.bad_count as proBadCount 
+      FROM <include refid="tableName"/> 
+      LEFT JOIN dsj_im_directory x ON a.user_id =x.agent_id
+      LEFT JOIN dsj_area r ON a.area = r.area_code
+      LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+      LEFT JOIN dsj_user u on u.id = a.user_id
+      LEFT JOIN dsj_company c on a.company = c.id 
+      LEFT JOIN dsj_mobile m on a.id = m.agent_id 
+      LEFT JOIN dsj_agent_info i ON i.agent_id = a.agent_code 
+      LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score 
+      LEFT JOIN dsj_agent_evaluate ati ON ati.agent_id = a.agent_code AND ati.paragraph_no=79401 
+      LEFT JOIN dsj_agent_evaluate pro ON pro.agent_id = a.agent_code AND pro.paragraph_no=79402   
+      where  u.del_flag = 2 AND x.house_id = #{0}  ORDER BY x.position 
+  </select>
+  
+   <select id="listByMap" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.AgentFrontVo">
+    SELECT 
+        <include refid="tableColumnsVo"/>,
+            m.mobile as mobile,
+            u.username as username,
+            u.realname as realname,
+            i.total_score as totalScore,
+            ag.name as gradeName,
+            ag.small_icon as smallIcon,
+            ag.big_icon as bigIcon,
+            ati.total_count as atiTotalCount,
+            ati.high_count as atiHighCount,
+            ati.mid_count as atiMidCount,
+            ati.bad_count as atiBadCount,
+            pro.total_count as proTotalCount,
+            pro.high_count as proHighCount,
+            pro.mid_count as proMidCount,
+            pro.bad_count as proBadCount,
+            x.is_duty as  isDuty
+      FROM <include refid="tableName"/> 
+      LEFT JOIN dsj_im_directory x ON a.user_id =x.agent_id
+      LEFT JOIN dsj_area r ON a.area = r.area_code
+      LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+      LEFT JOIN dsj_user u on u.id = a.user_id
+      LEFT JOIN dsj_company c on a.company = c.id 
+      LEFT JOIN dsj_mobile m on a.id = m.agent_id 
+      LEFT JOIN dsj_agent_info i ON i.agent_id = a.agent_code 
+      LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score 
+      LEFT JOIN dsj_agent_evaluate ati ON ati.agent_id = a.agent_code AND ati.paragraph_no=79401 
+      LEFT JOIN dsj_agent_evaluate pro ON pro.agent_id = a.agent_code AND pro.paragraph_no=79402    
+      where  u.del_flag = 2 AND x.house_id = #{houseId} order by x.position  limit #{limitNum}
+  </select>
+  
+  <select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+    SELECT 
+      COUNT(1) 
+    FROM <include refid="tableName"/>
+    LEFT JOIN dsj_area r ON a.area = r.area_code
+    LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    LEFT JOIN dsj_user on dsj_user.id = a.user_id
+    LEFT JOIN dsj_company c on a.company = c.id 
+    LEFT JOIN dsj_mobile m on a.id = m.agent_id 
+    <where>
+      <include refid="condition_sql"/>
+      <if test="delFlag != null and delFlag!= ''"> AND dsj_user.del_flag = #{delFlag}</if>
+      <if test="keywords != null and keywords!= ''"> AND (a.name LIKE CONCAT(CONCAT('%', #{keywords}), '%') OR 
+      r.name LIKE CONCAT(CONCAT('%', #{keywords}), '%') OR c.company_name LIKE CONCAT(CONCAT('%', #{keywords}), '%'))</if>
+      <if test="companyId != null and companyId!= ''"> AND c.id = #{companyId}</if>
+      <if test="companyOther != null and companyOther!= ''"> AND c.id NOT IN (1,2,3,9,10)</if>
+    </where>
+  </select>
+  
+  <select id="listAgentList" parameterType="java.util.Map" resultMap="beanMap">
+    SELECT 
+        a.user_id AS id,a.agent_code AS agentCode,a.name,a.tell_phone AS tellPhone,c.company_name as companyName
+      FROM <include refid="tableName"/> 
+      left join dsj_company c on c.id=a.company
+    <where>
+      a.audit_status=#{auditStatus}
+      <if test="maintainName != null and maintainName!= ''"> AND a.name LIKE CONCAT(CONCAT('%', #{maintainName}), '%')</if>
+    </where>
+    ORDER BY a.id DESC 
+    LIMIT #{pageFirst} , #{pageSize} 
+  </select>
+  
+  <select id="listAgentCount" parameterType="java.util.Map" resultType="long">
+    SELECT 
+      COUNT(1) 
+    FROM <include refid="tableName"/>
+    left join dsj_company c on c.id=a.company
+    <where>
+      a.audit_status=#{auditStatus}
+      <if test="maintainName != null and maintainName!= ''"> AND a.name LIKE CONCAT(CONCAT('%', #{maintainName}), '%')</if>
+    </where>
+  </select>
+  <!-- 经纪人推荐楼盘数 -->
+  <select id="selectAgentRecommend" parameterType="java.util.Map" resultType="long">
+      SELECT 
+      COUNT(1) 
+    FROM dsj_agent_directory d
+    <where>
+      d.agent_id=#{agentId}
+    </where>
+  </select>
+  
+  <!-- 经纪人货架展示个数 -->
+  <select id="findShowShelves" parameterType="java.util.Map" resultType="long">
+      SELECT 
+      COUNT(1) 
+    FROM dsj_loupan_show d
+    <where>
+      d.agent_id=#{agentId}
+    </where>
+  </select>
+  <!-- 查询时间最近的展示楼盘 -->
+  <select id="selectDateMin" resultType="com.dsj.modules.system.vo.AgentDirectoryVo">
+      SELECT
+      a.id,
+      a.agent_id AS agentId,
+      a.house_id AS houseId,
+      a.create_time AS createTime
+        FROM dsj_loupan_show a
+        WHERE
+        a.create_time = (
+    SELECT
+      min(b.create_time)
+    FROM
+      dsj_loupan_show b
+      where
+      b.agent_id=#{agentId}
+      )
+  </select>
+  <delete id="deleteShelves" parameterType="java.util.Map">
+     DELETE FROM dsj_loupan_show WHERE id=#{id}
+  </delete>
+  <delete id="deleteShowShelves" parameterType="java.util.Map">
+   DELETE FROM dsj_loupan_show WHERE house_id=#{houseId} and type=#{type}
+  </delete>
+  <!-- 推荐添加 -->
+  <insert id="insertAgentDirectory" parameterType="com.dsj.modules.system.vo.AgentDirectoryVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO dsj_agent_directory 
+          <trim prefix=" (" suffix=")" suffixOverrides=",">
+          <if test="id != null">id,</if>
+          <if test="agentId != null">agent_id,</if>
+          <if test="newHouseId != null">newHouse_id,</if>
+          <if test="createTime != null">create_time,</if>
+      </trim>
+          VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+          <if test="id != null">#{id},</if>
+      <if test="agentId != null">#{agentId},</if>
+      <if test="newHouseId != null">#{newHouseId},</if>
+      <if test="createTime != null">#{createTime},</if>
+        </trim>  
+  </insert>
+  <!-- 货架展示添加 -->
+  <insert id="insertShowShelves" parameterType="com.dsj.modules.system.vo.AgentDirectoryVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO dsj_loupan_show
+          <trim prefix=" (" suffix=")" suffixOverrides=",">
+          <if test="id != null">id,</if>
+          <if test="agentId != null">agent_id,</if>
+          <if test="houseId != null">house_id,</if>
+          <if test="createTime != null">create_time,</if>
+          <if test="type != null">type,</if>
+      </trim>
+          VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+          <if test="id != null">#{id},</if>
+      <if test="agentId != null">#{agentId},</if>
+      <if test="houseId != null">#{houseId},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="type != null">#{type},</if>
+        </trim>  
+  </insert>
+  <!-- 经纪人推荐楼盘 -->
+  <select id="selectAgentDirectoryList" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentDirectoryVo">
+    select 
+    d.id,
+    d.agent_id AS agentId,
+    d.newHouse_id AS newHouseId,
+    d.create_time AS createTime
+     from dsj_agent_directory d
+     <where>
+      d.agent_id=#{agentId}
+    </where>
+  </select>
+  <!-- 查询展示列表 -->
+  <select id="selectListSevlves" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentDirectoryVo">
+    select 
+    d.id,
+    d.agent_id AS agentId,
+    d.newHouse_id AS newHouseId,
+    d.create_time AS createTime
+     from dsj_loupan_show d
+     <where>
+      d.agent_id=#{agentId}
+    </where>
+  </select>
+  <select id="selectAgentDirectory" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentDirectoryVo">
+       SELECT 
+       d.id,
+       d.agent_id AS agentId,
+       d.newHouse_id AS newHouseId,
+       d.create_time AS createTime
+       FROM dsj_agent_directory d
+       <where>
+      d.newHouse_id=#{newHouseId}
+    </where>
+  </select>
+  <select id="selectShowShelves" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentDirectoryVo" >
+        SELECT 
+      d.id,
+       d.agent_id AS agentId,
+       d.house_id AS houseId,
+       d.create_time AS createTime
+       FROM dsj_loupan_show d
+       <where>
+      d.house_id=#{newHouseId} AND
+      d.type=#{type}
+    </where>
+  </select>
+  <insert id="insert" parameterType="AgentPo" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO <include refid="tableNameUpdate"/>(
+      id,
+      user_id,
+      avatar_url,
+      avatar_re_url,
+      agent_code,
+      apply_time,
+      company,
+      name,
+      tell_phone,
+      province,
+      city,
+      sort,
+      area,
+      business,
+      main_community,
+      is_sell_new_house,
+      sell_building,
+      id_number,
+      is_external_regist,
+      audit_status,
+      duty_building,
+      id_card_url,
+      id_card_url_back,
+      card_url,
+      update_user,
+      create_user,
+      audit_user,
+      audit_time,
+      create_time,
+      update_time,
+      sex,
+      birthday,
+      star,
+      blood,
+      email,
+      education,
+      major,
+      signature,
+      workyears,
+      skill,
+      feature,
+      background,
+      score,
+      take_look,
+      deal
+    ) VALUES (
+      #{id},
+      #{userId},
+      #{avatarUrl},
+      #{avatarReUrl},
+      #{agentCode},
+      #{applyTime},
+      #{company},
+      #{name},
+      #{tellPhone},
+      #{province},
+      #{city},
+      #{sort},
+      #{area},
+      #{business},
+      #{mainCommunity},
+      #{isSellNewHouse},
+      #{sellBuilding},
+      #{idNumber},
+      #{isExternalRegist},
+      #{auditStatus},
+      #{dutyBuilding},
+      #{idCardUrl},
+      #{idCardUrlBack},
+      #{cardUrl},
+      #{updateUser},
+      #{createUser},
+      #{auditUser},
+      #{auditTime},
+      #{createTime},
+      #{updateTime},
+      #{sex},
+      #{birthday},
+      #{star},
+      #{blood},
+      #{email},
+      #{education},
+      #{major},
+      #{signature},
+      #{workyears},
+      #{skill},
+      #{feature},
+      #{background},
+      #{score},
+      #{takeLook},
+      #{deal}
+    )
+  </insert>
+  
+  
+  <insert id="insertDynamic" parameterType="AgentPo" keyProperty="id" useGeneratedKeys="true">
+      INSERT INTO  <include refid="tableNameUpdate"/>
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+          <if test="id != null">id,</if>
+          <if test="userId != null">user_id,</if>
+          <if test="avatarUrl != null">avatar_url,</if>
+          <if test="avatarReUrl != null">avatar_re_url,</if>
+          <if test="agentCode != null">agent_code,</if>
+          <if test="applyTime != null">apply_time,</if>
+          <if test="company != null">company,</if>
+          <if test="name != null">name,</if>
+          <if test="tellPhone != null">tell_phone,</if>
+          <if test="province != null">province,</if>
+          <if test="city != null">city,</if>
+          <if test="sort != null">sort,</if>
+          <if test="area != null">area,</if>
+          <if test="business != null">business,</if>
+          <if test="mainCommunity != null">main_community,</if>
+          <if test="isSellNewHouse != null">is_sell_new_house,</if>
+          <if test="sellBuilding != null">sell_building,</if>
+          <if test="idNumber != null">id_number,</if>
+          <if test="isExternalRegist != null">is_external_regist,</if>
+          <if test="auditStatus != null">audit_status,</if>
+          <if test="dutyBuilding != null">duty_building,</if>
+          <if test="idCardUrl != null">id_card_url,</if>
+          <if test="idCardUrlBack != null">id_card_url_back,</if>
+          <if test="cardUrl != null">card_url,</if>
+          <if test="updateUser != null">update_user,</if>
+          <if test="createUser != null">create_user,</if>
+          <if test="auditUser != null">audit_user,</if>
+          <if test="auditTime != null">audit_time,</if>
+          <if test="createTime != null">create_time,</if>
+          <if test="updateTime != null">update_time,</if>
+          <if test="sex != null">sex,</if>
+          <if test="birthday != null">birthday,</if>
+          <if test="star != null">star,</if>
+          <if test="blood != null">blood,</if>
+          <if test="email != null">email,</if>
+          <if test="education != null">education,</if>
+          <if test="major != null">major,</if>
+          <if test="signature != null">signature,</if>
+          <if test="workyears != null">workyears,</if>
+          <if test="skill != null">skill,</if>
+          <if test="feature != null">feature,</if>
+          <if test="background != null">background,</if>
+          <if test="score != null">score,</if>
+          <if test="takeLook != null">take_look,</if>
+          <if test="deal != null">deal,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+      <if test="id != null">#{id},</if>
+      <if test="userId != null">#{userId},</if>
+      <if test="avatarUrl != null">#{avatarUrl},</if>
+      <if test="avatarReUrl != null">#{avatarReUrl},</if>
+      <if test="agentCode != null">#{agentCode},</if>
+      <if test="applyTime != null">#{applyTime},</if>
+      <if test="company != null">#{company},</if>
+      <if test="name != null">#{name},</if>
+      <if test="tellPhone != null">#{tellPhone},</if>
+      <if test="province != null">#{province},</if>
+      <if test="city != null">#{city},</if>
+      <if test="sort != null">#{sort},</if>
+      <if test="area != null">#{area},</if>
+      <if test="business != null">#{business},</if>
+      <if test="mainCommunity != null">#{mainCommunity},</if>
+      <if test="isSellNewHouse != null">#{isSellNewHouse},</if>
+      <if test="sellBuilding != null">#{sellBuilding},</if>
+      <if test="idNumber != null">#{idNumber},</if>
+      <if test="isExternalRegist != null">#{isExternalRegist},</if>
+      <if test="auditStatus != null">#{auditStatus},</if>
+      <if test="dutyBuilding != null">#{dutyBuilding},</if>
+      <if test="idCardUrl != null">#{idCardUrl},</if>
+      <if test="idCardUrlBack != null">#{idCardUrlBack},</if>
+      <if test="cardUrl != null">#{cardUrl},</if>
+      <if test="updateUser != null">#{updateUser},</if>
+      <if test="createUser != null">#{createUser},</if>
+      <if test="auditUser != null">#{auditUser},</if>
+      <if test="auditTime != null">#{auditTime},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+      <if test="sex != null">#{sex},</if>
+      <if test="birthday != null">#{birthday},</if>
+      <if test="star != null">#{star},</if>
+      <if test="blood != null">#{blood},</if>
+      <if test="email != null">#{email},</if>
+      <if test="education != null">#{education},</if>
+      <if test="major != null">#{major},</if>
+      <if test="signature != null">#{signature},</if>
+      <if test="workyears != null">#{workyears},</if>
+      <if test="skill != null">#{skill},</if>
+      <if test="feature != null">#{feature},</if>
+      <if test="background != null">#{background},</if>
+      <if test="score != null">#{score},</if>
+      <if test="takeLook != null">#{takeLook},</if>
+      <if test="deal != null">#{deal},</if>
+        </trim>
+    </insert>
+    
+  
+  <update id="update" parameterType="AgentPo">
+    UPDATE <include refid="tableNameUpdate"/> 
+    SET   
+      user_id = #{userId},
+      avatar_url = #{avatarUrl},
+      avatar_re_url = #{avatarReUrl},
+      agent_code = #{agentCode},
+      apply_time = #{applyTime},
+      company = #{company},
+      name = #{name},
+      tell_phone = #{tellPhone},
+      province = #{province},
+      city = #{city},
+      sort = #{sort},
+      area = #{area},
+      business = #{business},
+      main_community = #{mainCommunity},
+      is_sell_new_house = #{isSellNewHouse},
+      sell_building = #{sellBuilding},
+      id_number = #{idNumber},
+      is_external_regist = #{isExternalRegist},
+      audit_status = #{auditStatus},
+      duty_building = #{dutyBuilding},
+      id_card_url = #{idCardUrl},
+      id_card_url_back = #{idCardUrlBack},
+      card_url = #{cardUrl},
+      update_user = #{updateUser},
+      create_user = #{createUser},
+      audit_user = #{auditUser},
+      audit_time = #{auditTime},
+      update_time = #{updateTime},
+      sex = #{sex},
+      birthday = #{birthday},
+      star = #{star},
+      blood = #{blood},
+      email = #{email},
+      education = #{education},
+      major = #{major},
+      signature = #{signature},
+      workyears = #{workyears},
+      skill = #{skill},
+      feature = #{feature},
+      background = #{background},
+      score = #{score},
+      take_look = #{takeLook},
+      deal = #{deal}
+    WHERE id = #{id} 
+  </update>
+  
+  <update id="updateDynamic" parameterType="AgentPo">
+       UPDATE <include refid="tableNameUpdate"/>  
+       <set>
+      <if test="userId != null">user_id = #{userId},</if>
+      <if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
+      <if test="avatarReUrl != null">avatar_re_url = #{avatarReUrl},</if>
+      <if test="agentCode != null">agent_code = #{agentCode},</if>
+      <if test="applyTime != null">apply_time = #{applyTime},</if>
+      <if test="company != null">company = #{company},</if>
+      <if test="name != null">name = #{name},</if>
+      <if test="tellPhone != null">tell_phone = #{tellPhone},</if>
+      <if test="province != null">province = #{province},</if>
+      <if test="city != null">city = #{city},</if>
+      <if test="sort != null">sort = #{sort},</if>
+      <if test="area != null">area = #{area},</if>
+      <if test="business != null">business = #{business},</if>
+      <if test="mainCommunity != null">main_community = #{mainCommunity},</if>
+      <if test="isSellNewHouse != null">is_sell_new_house = #{isSellNewHouse},</if>
+      <if test="sellBuilding != null">sell_building = #{sellBuilding},</if>
+      <if test="idNumber != null">id_number = #{idNumber},</if>
+      <if test="isExternalRegist != null">is_external_regist = #{isExternalRegist},</if>
+      <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+      <if test="dutyBuilding != null">duty_building = #{dutyBuilding},</if>
+      <if test="idCardUrl != null">id_card_url = #{idCardUrl},</if>
+      <if test="idCardUrlBack != null">id_card_url_back = #{idCardUrlBack},</if>
+      <if test="cardUrl != null">card_url = #{cardUrl},</if>
+      <if test="updateUser != null">update_user = #{updateUser},</if>
+      <if test="createUser != null">create_user = #{createUser},</if>
+      <if test="auditUser != null">audit_user = #{auditUser},</if>
+      <if test="auditTime != null">audit_time = #{auditTime},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+      <if test="sex != null">sex = #{sex},</if>
+      <if test="birthday != null">birthday = #{birthday},</if>
+      <if test="star != null">star = #{star},</if>
+      <if test="blood != null">blood = #{blood},</if>
+      <if test="email != null">email = #{email},</if>
+      <if test="education != null">education = #{education},</if>
+      <if test="major != null">major = #{major},</if>
+      <if test="signature != null">signature = #{signature},</if>
+      <if test="workyears != null">workyears = #{workyears},</if>
+      <if test="skill != null">skill = #{skill},</if>
+      <if test="feature != null">feature = #{feature},</if>
+      <if test="background != null">background = #{background},</if>
+      <if test="score != null">score = #{score},</if>
+      <if test="takeLook != null">take_look = #{takeLook},</if>
+      <if test="deal != null">deal = #{deal},</if>
+      </set>
+      WHERE id = #{id}  
+    </update>
+  
+  <update id="deleteById">
+    DELETE FROM <include refid="tableNameUpdate"/>
+    WHERE id = #{id}
+  </update>
+  
+  <delete id="deleteAgentDircetory" parameterType="java.util.Map">
+    DELETE FROM dsj_agent_directory  WHERE newHouse_id=#{newHouseId} 
+  </delete>
+  
+  <select id="getAgentCode" resultType="java.lang.Integer">
+    select agent_code from dsj_agent
+  </select>
+  <update id="updateResetPwdMany" parameterType="java.util.Map">
+    UPDATE dsj_user
+    SET   
+      password = #{password}
+    WHERE id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+  
+  <update id="updateAuditMany" parameterType="java.util.Map">
+    UPDATE dsj_agent
+    SET   
+      audit_user = #{auditUser},
+      audit_time = #{auditTime},
+      audit_status = #{auditStatus}
+    WHERE id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+  <select id="findPhone" parameterType="java.util.List" resultType="java.util.Map">
+    select tell_phone AS "phone",
+    is_external_regist AS "isExternalRegist"
+    from dsj_agent
+    WHERE id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+  <select id="selectSort" resultMap="beanMap">
+  select * from dsj_agent where sort in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);
+  </select>
+  
+  <select id="selectByName" parameterType="java.util.Map" resultMap="beanMap">
+  select * from dsj_agent where name like CONCAT(CONCAT('%', #{name}), '%') AND audit_status = #{auditStatus} and sort = #{sort}
+  </select>
+  
+  
+  <select id="listNewBy" resultType="java.util.Map" resultMap="beanMap">
+      SELECT 
+        b.realname as name,
+        a.tell_phone as tellPhone,
+        a.agent_code as agentCode,
+        a.id as id
+      FROM dsj_agent a,dsj_user b 
+      where a.user_id = b.id and b.del_flag = #{delFlag} and b.realname like concat(#{preName},'%')
+      ORDER BY a.id DESC
+    </select>
+    
+    <select id="getAgent" resultType="java.util.Map" resultMap="beanMap">
+      SELECT 
+         a.id AS id,
+           a.user_id AS userId,
+       a.name AS name,
+       a.agent_code AS agentCode,
+       d.short_name AS province,
+       a.tell_phone AS tellPhone
+      FROM dsj_agent a
+      left join dsj_company d on d.id=a.company
+      where 
+        a.name LIKE CONCAT(CONCAT('%', #{name}), '%') and a.audit_status=#{auditStatus}
+      ORDER BY a.id DESC
+    </select>
+
+    <select id="getLikeAgent" resultType="com.dsj.modules.system.vo.AgentVo">
+      SELECT 
+         a.id AS id,
+         a.user_id AS userId,
+         a.name AS name,
+         a.agent_code AS agentCode,
+         a.tell_phone AS tellPhone,
+         c.company_name as companyName
+      FROM dsj_agent a
+      LEFT JOIN dsj_company c ON c.id = a.company
+      where 
+         a.name LIKE CONCAT(CONCAT('%', #{name}), '%') and a.audit_status=#{auditStatus}
+      ORDER BY a.id DESC
+    </select>
+    
+    <update id="updateSort" parameterType="java.util.Map">
+    UPDATE dsj_agent
+    SET   
+      <if test="flag==1">
+        sort=sort-1
+      </if>
+      <if test="flag==2">
+        sort=sort+1
+      </if>
+    WHERE id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+
+    
+    <select id="getAgentDirectory" resultType="com.dsj.modules.system.vo.AgentVo">
+       SELECT
+      p.id AS pcAgentId,
+      p.link_address AS linkAddress, 
+      d.user_id AS userId,
+      d.`name`,
+      m.mobile AS tellPhone,
+      d.workyears,
+      d.feature,
+      d.deal,
+      d.take_look AS takeLook,
+      p.picture AS cardUrl,
+      t.`name` AS business,
+      c.short_name AS companyName,
+      i.total_score AS totalScore,
+      ag.name AS agName,
+      ag.small_icon as smallIcon,
+      ag.big_icon as bigIcon
+    FROM
+      dsj_pc_agent_add p
+    LEFT JOIN dsj_agent d ON p.agent_id = d.user_id
+    LEFT JOIN dsj_company c ON c.id = d.company
+    LEFT JOIN dsj_trade_area t ON t.area_code=d.business
+    LEFT JOIN dsj_mobile m ON m.agent_code=d.agent_code
+    LEFT JOIN dsj_agent_info i ON i.agent_id=d.agent_code
+    LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score 
+    GROUP BY p.id
+    </select>
+    
+    <select id="getAgentDirectoryPage" resultType="com.dsj.modules.system.vo.AgentVo">
+       SELECT
+      p.id AS pcAgentId,
+      p.link_address AS linkAddress,
+      d.user_id AS userId,
+      d.`name`,
+      m.mobile AS tellPhone,
+      d.workyears,
+      d.feature,
+      d.deal,
+      d.take_look AS takeLook,
+      p.picture AS cardUrl,
+      t.`name` AS business,
+      c.short_name AS companyName,
+      i.total_score AS totalScore,
+      ag.name AS agName,
+      ag.small_icon as smallIcon,
+      ag.big_icon as bigIcon
+    FROM
+      dsj_pc_agent_add_page p
+    LEFT JOIN dsj_agent d ON p.agent_id = d.user_id
+    LEFT JOIN dsj_company c ON c.id = d.company
+    LEFT JOIN dsj_trade_area t ON t.area_code=d.business
+    LEFT JOIN dsj_mobile m ON m.agent_code=d.agent_code
+    LEFT JOIN dsj_agent_info i ON i.agent_id=d.agent_code
+    LEFT JOIN dsj_agent_grade ag ON i.total_score &gt;= ag.min_score AND i.total_score &lt; ag.max_score 
+    GROUP BY p.id
+    </select>
+    
+    <select id="getAgentBySelect" resultType="com.dsj.modules.system.vo.AgentVo">
+    SELECT 
+      a.id as "id",
+      a.name as "name",
+      a.user_id as "userId",
+      a.tell_phone as "tellPhone",
+      c.company_name as "companyName"
+    FROM dsj_agent a left join dsj_user u on a.user_id = u.id and a.audit_status=#{auditStatus}
+      left outer join dsj_company c on a.company = c.id 
+    where u.del_flag = #{delFlag} and u.user_type = #{userType}
+      and ( a.user_id = #{name} or a.name LIKE CONCAT(CONCAT('%', #{name}), '%')  )
+      LIMIT 0 , 10
+  </select>
+  
+  <select id="getAgentByHouseId" resultType="com.dsj.modules.system.vo.AgentVo">
+    select 
+      a.id as "id",
+      a.name as "name",
+      a.user_id as "userId",
+      a.tell_phone as "tellPhone",
+      c.company_name as "companyName"
+    from dsj_agent a left join dsj_user u on a.user_id = u.id 
+    left outer join dsj_company c on c.id = a.company where u.id in 
+    ( select d.user_id from rent_agent_directory d where d.house_id = #{houseId} )
+    limit 0,1
+  </select>
+  
+  <select id="getVoByRentHouseId" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentVo">
+    select  
+      <include refid="tableColumns"/>,
+      com.company_name as "companyName",
+      u.avatar AS "avatar",
+      u.realname AS "realname",
+      u.phone AS "phone"
+    from dsj_agent a 
+      left join rent_agent_directory rad on rad.user_id = a.user_id 
+      left join dsj_user u on u.id = a.user_id 
+      left join dsj_company com on com.id = a.company 
+    where rad.house_id = #{houseId}
+  </select>
+  <select id="findFollow" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentVo">
+    select <include refid="tableColumnsVoFollow"/>,f.id AS 'objectId'
+    from dsj_agent a LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    left join dsj_company c on c.id = a.company
+    left join dsj_follow f on f.object_id = a.user_id
+    left join dsj_mobile m on m.agent_id = a.id
+    where f.user_id = #{userId}
+    and f.type = #{type}
+    ORDER BY f.create_time DESC 
+    LIMIT #{pageFirst} , #{pageSize} 
+    
+    
+  </select>
+  <select id="findFollowCount" parameterType="java.util.Map" resultType="long">
+    SELECT 
+      COUNT(1) 
+    from dsj_agent a LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    left join dsj_company c on c.id = a.company
+    left join dsj_follow f on f.object_id = a.user_id
+    left join dsj_mobile m on m.agent_id = a.id
+    where f.user_id = #{userId}
+    and f.type = #{type}
+  </select>
+  
+  <select id="lookHistory" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentVo">
+    select <include refid="tableColumnsVoFollow"/>,h.create_time AS 'lookTime'
+    from dsj_agent a LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    left join dsj_company c on c.id = a.company
+    left join dsj_look_history h on h.object_id = a.user_id
+    left join dsj_mobile m on m.agent_id = a.id
+    where h.user_id = #{userId}
+    and h.type = #{type}
+    and h.create_time &gt; #{time}
+    ORDER BY h.create_time DESC 
+    LIMIT #{pageFirst} , #{pageSize} 
+    
+    
+  </select>
+  <select id="lookHistoryCount" parameterType="java.util.Map" resultType="long">
+    SELECT 
+      COUNT(1) 
+    from dsj_agent a LEFT JOIN dsj_trade_area t ON a.business = t.area_code 
+    left join dsj_company c on c.id = a.company
+    left join dsj_look_history h on h.object_id = a.user_id
+    left join dsj_mobile m on m.agent_id = a.id
+    where h.user_id = #{userId}
+    and h.type = #{type}
+    and h.create_time &gt; #{time}
+
+  </select>
+ <select id="getNewHouseAgentDirectory" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentVo">
+    SELECT
+      d.user_id as userId,
+      d.`name`,
+      u.username,
+      u.realname,
+      u.avatar AS avatarReUrl,
+      m.mobile AS mobile,
+      d.workyears,
+      d.feature,
+      d.deal,
+      d.take_look AS takeLook,
+      ar.name as business,
+      c.short_name AS companyName,
+          d.score AS score,
+      d.main_community AS mainCommunity
+    FROM
+      dsj_agent d
+      left join dsj_user u on d.user_id = u.id
+      LEFT JOIN dsj_im_directory i ON d.user_id =i.agent_id
+      LEFT JOIN dsj_company c ON c.id = d.company
+      left join dsj_trade_area ar on ar.id = d.business
+       LEFT JOIN dsj_mobile m on d.id = m .agent_id
+    <where>
+      <if test="is_duty != null and is_duty != ''"> AND i.is_duty = #{is_duty}</if>
+      <if test="newHouseId != null and newHouseId != ''"> AND i.house_id = #{newHouseId}</if>
+    </where>
+ 
+ </select>
+  
+  <sql id="tableColumnsVoFollow">
+    a.id AS "id",
+    a.user_id AS "userId",
+    a.avatar_url AS "avatarUrl",
+    a.avatar_re_url AS "avatarReUrl",
+    a.agent_code AS "agentCode",
+    a.apply_time AS "applyTime",
+    a.company AS "company",
+    a.name AS "name",
+    a.tell_phone AS "tellPhone",
+    a.province AS "province",
+    a.city AS "city",
+    a.sort AS "sort",
+    a.area AS "area",
+    a.business AS "business",
+    a.main_community AS "mainCommunity",
+    a.is_sell_new_house AS "isSellNewHouse",
+    a.sell_building AS "sellBuilding",
+    a.id_number AS "idNumber",
+    a.is_external_regist AS "isExternalRegist",
+    a.audit_status AS "auditStatus",
+    a.duty_building AS "dutyBuilding",
+    a.id_card_url AS "idCardUrl",
+    a.id_card_url_back AS "idCardUrlBack",
+    a.card_url AS "cardUrl",
+    a.update_user AS "updateUser",
+    a.create_user AS "createUser",
+    a.audit_user AS "auditUser",
+    a.audit_time AS "auditTime",
+    a.create_time AS "createTime",
+    a.update_time AS "updateTime",
+    a.sex AS "sex",
+    a.birthday AS "birthday",
+    a.star AS "star",
+    a.blood AS "blood",
+    a.email AS "email",
+    a.education AS "education",
+    a.major AS "major",
+    a.signature AS "signature",
+    a.workyears AS "workyears",
+    a.skill AS "skill",
+    a.feature AS "feature",
+    a.background AS "background",
+    a.score AS "score",
+    a.take_look AS "takeLook",
+    a.deal AS "deal",
+    case a.audit_status
+      WHEN 1 THEN '已通过'
+      WHEN 2 THEN '待审核'
+      WHEN 3 THEN '已驳回'
+      WHEN 4 THEN '未认证'
+    end  AS "auditStatusName",
+    case a.is_sell_new_house
+      WHEN 1 THEN '是'
+      WHEN 0 THEN '否'
+    end  AS "isSellNewHouseName",
+    case a.audit_status
+      WHEN 1 THEN '已认证'
+      WHEN 2 THEN '未认证'
+      WHEN 3 THEN '未认证'
+      WHEN 4 THEN '未认证'
+    end  AS "auditName",
+    t.name AS "businessName",
+    c.short_name AS "companyName",
+    m.mobile AS 'mobile'
+  </sql>
+  <select id="findIsFollow" parameterType="java.util.Map" resultType="int">
+    SELECT 
+      COUNT(1) 
+    from dsj_follow f
+    where f.user_id = #{userId}
+    AND f.object_id = #{objectId}
+    AND f.type = #{type}
+
+  </select>
+  
+  <select id="getRecommend" parameterType="int" resultType="com.dsj.modules.system.vo.RecommendVo">
+    SELECT 
+      house_id AS 'houseId',
+      type AS 'type'
+    from dsj_loupan_show s
+    where s.agent_id = #{userId}
+    ORDER BY s.create_time DESC 
+    LIMIT 0 , 3
+  </select>
+  
+  <select id="getScoreVoById" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.AgentVo">
+      select 
+      a.agent_code AS 'agentCode',
+      a.name AS 'name',
+      a.city AS 'city',
+      b.name AS 'cityName'
+       from  dsj_agent a 
+      left outer join dsj_area b 
+        on a.city = b.id 
+      where a.user_id = #{id}
+  </select>
+  
+</mapper>

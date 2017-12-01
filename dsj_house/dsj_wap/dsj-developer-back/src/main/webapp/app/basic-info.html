@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-开发商</title>
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="css/UploadId.css">
+    <link rel="stylesheet" type="text/css" href="css/crop.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+     <script src="js/bootstrap.js"></script>
+     
+  <link rel="stylesheet" type="text/css" href="css/dsj_agent2.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  
+    <!-- 主体 -->
+    <div class="container">
+      <div class="row">
+        <!-- 进程 
+        <div class="PGress"> 
+          <ul>
+            
+            <li><a href="basic-info.html">企业中心</a>
+             <div class="progressTriangle">
+              <div> 
+              </div>
+            </div></li>
+            <li><a href="##">基本资料</a>
+            </li>
+          </ul>
+        </div>-->
+        <div class="col-sm-2 dev_left_kuang">
+          <ul class="nav nav-pills nav-stacked nav-pills-stacked-example dsj_left_nav">
+            <li role="presentation" class="active"><a href="javascript:void(0);" onclick="init_base(this)">基本资料</a></li>
+            <li role="presentation"><a href="javascript:void(0);" onclick="init_touxiang(this)">企业形象图片</a></li>
+            <li role="presentation"><a href="javascript:void(0);" onclick="init_password(this)">修改密码</a></li>
+          </ul>
+        </div>
+        <div id="dsj_info_container" class=" col-sm-10 dev_right_center">
+        </div>
+      </div>
+
+
+    </div>
+
+    <script id="dsj_base_info_template"  type="text/x-handlebars-template">
+     		
+ 		<form  id="person_from"class="form-horizontal dsj_form">
+        <h4 class="dsj_title">基本资料</h4>
+        <div class="form-group">
+          <label for="beianbianhao" class="col-sm-2 control-label">账号：</label>
+          <div class="col-sm-3">
+            {{username}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">开发商企业名称：</label>
+          <div class="col-sm-3">
+           {{name}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">所在地：</label>
+          <div class="col-sm-10">
+           {{areaName1}} - {{areaName2}} - {{areaName3}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">企业营业执照号：</label>
+          <div class="col-sm-3">
+            {{companyLicenseNum}}
+          </div>
+        </div>
+
+		 <div class="form-group dashed">
+          <label for="inputPassword" class="col-sm-2 control-label">楼盘项目名称：</label>
+          <div class="col-sm-3">
+            {{loupanNames}}
+          </div>
+        </div>        
+	
+		 <div class="form-group has-feedback">
+          <label for="username" class="col-sm-2 control-label"><span class="dsj_warn"></span>管理人姓名：</label>
+          <div class="col-sm-3">
+             <input type="text" class="form-control" name="operationName"  data-validate="required,maxLength50"  value="{{operationName}}">
+          </div>
+        </div>
+
+ 		<div class="form-group">
+          <label for="" class="col-sm-2 control-label">联系电话：</label>
+          <div class="col-sm-3">
+            <p class="form-control-static">{{operationPhone}}<a href="javascript:void(0);;" onclick="toUpdatePhone()" class="dst_line_action">修改</a></p>
+          </div>
+        </div>
+	   <div class="form-group has-feedback">
+          <label for="username" class="col-sm-2 control-label"><span class="dsj_warn"></span>身份证号：</label>
+          <div class="col-sm-3">
+                 <input type="text" class="form-control" name="operationCard"  data-validate="required,people_card" value="{{operationCard}}">
+          </div>
+        </div>
+        <div class="row dsj_button_group">
+          <div class="col-sm-5">
+			<!--
+		  <button onclick="addEveloper()" type="button" class="reset_botton" style="margin-right:20px;border-radius: 2px;">
+        			  取消
+          </button>
+			-->
+          <button onclick="addEveloper()" type="button" class="primary" style="border-radius: 2px;">
+         			   确定
+          </button>
+          </div>
+        </div>
+      </form>
+    </script>
+    <script id="dsj_password_template" type="text/x-handlebars-template">
+      <form id="dsj_passwors_form" class="form-horizontal dsj_form">
+        <h4 class="dsj_title">修改密码</h4>
+        <div class="form-group">
+          <label for="beianbianhao" class="col-sm-1 control-label" >原始密码</label>
+          <div class="col-sm-3">
+            <input type="password" class="form-control" name="password" data-validate="required">
+          </div>
+        </div>
+       <div class="form-group">
+          <label for="beianbianhao" class="col-sm-1 control-label">新密码</label>
+          <div class="col-sm-3">
+           <input type="password" class="form-control" name="password1"  data-validate="required,passwordChar,againPass#start">
+          </div>
+        </div>
+		<div class="form-group">
+          <label for="beianbianhao" class="col-sm-1 control-label">确认密码</label>
+          <div class="col-sm-3">
+           	<input type="password" class="form-control" name="password2" data-validate="required,passwordChar,againPass#end">
+          </div>
+        </div>
+        
+		<div class="row dsj_button_group">
+            <div class="col-sm-5">
+              <input class="primary" type="button" onclick="updatePassword()" value="确认">
+            </div>
+          </div>
+      </form>
+    </script>
+    
+ 
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+   
+    <script src="js/handlebars.js"></script>
+       <script src="js/handlebars-utils.js"></script>
+             <script src="js/webuploader.js"></script>
+    <script src="js/require.js"></script>
+    	 <script src="js/common/base.js"></script>
+    <script src="js/crop.js"></script>
+      <script src="js/common/alertBox.js"></script>
+    <script type="text/javascript">
+    	var resultData;
+    
+    	$(function(){
+    		 require(["text!common/commit.html"], function(tpl) {
+    	  	    	
+     	    	 $('body').append(tpl);
+     	    	 var source=$("#dailog_common_template").html();
+     	    	 var template = Handlebars.compile(source);
+     			 var html    = template();
+     	    	 $('body').append(html);
+     	    	 
+     	    	 $('body').append(tpl);
+     	    	 var source=$("#load_html_template").html();
+     	    	 var template = Handlebars.compile(source);
+     			 var html    = template();
+     	    	 $('body').append(html);
+        	}); 
+    		 
+  		 	$.ajax({
+  		  			type:"post",
+  		  			data:{},
+  		  			dataType:"json",
+  		  			url:_url+"/back/person/eveloper/get_base_info",
+  		  			success:function(resultVo){
+  		  				if(resultVo.status!=200){
+  							alert(resultVo.message);
+  						}else{
+  							resultData=resultVo.data
+  							init_base();
+  						}
+  		  			}
+  		 	})
+    	})
+    	
+    	function init_base(obj){
+    		if(obj!=null){
+   				 changeTab(obj);
+   			}
+    		var source   = $("#dsj_base_info_template").html();
+    	    var template = Handlebars.compile(source);
+    	    var html    = template(resultData);
+    	    $("#dsj_info_container").html ( html);
+    	}
+    	
+    	function init_password(obj){
+    		if(obj!=null){
+    			 changeTab(obj);
+    		}
+    		var source   = $("#dsj_password_template").html();
+    	    var template = Handlebars.compile(source);
+    	    var html    = template();
+    	    $("#dsj_info_container").html ( html);
+    	   
+    	}
+    	
+    	function init_touxiang(obj){
+    		if(obj!=null){
+   			 changeTab(obj);
+   			}
+    		define('jQuery', function() {
+    		    return jQuery;
+    		});
+    		 require(["text!touxiang.html"], function(tpl) {
+    			 $('#dsj_info_container').append(tpl);
+    			 var source=$("#dsj_basic_touxiang_template").html();
+     	    	 var template = Handlebars.compile(source);
+     			 var html    = template();
+     	    	 $('#dsj_info_container').html(html);
+     	    	uploadHeader();
+        	}); 
+    	}
+    	
+    	function changeTab(obj){
+    		parents = $(obj).parent().parents("ul");
+    		parents.find("li").each(function() {
+    			$(this).removeClass("active");
+    		});
+    		if(obj!=null){
+    			$(obj).parent().addClass("active");
+    		}
+    	}
+    	
+    	function updatePassword(){
+    		 $("#dsj_passwors_form").verify();
+    		$("#dsj_passwors_form").validate(function (result) {
+    		  	if(result){
+		    		 setModelContent("确定修改密码吗？","updatePasswordConfirm");
+			   		  $("body").one("click","#updatePasswordConfirm",function(){
+			   			  $.ajax({
+			   		  			type:"post",
+			   		  			async:true,
+			   		  			data:$("#dsj_passwors_form").serialize(),
+			   		  			dataType:"json",
+			   		  			url:_url+"/back/person/eveloper/update_password",
+			   		  			success:function(resultVo){
+			   		  				if(resultVo.status!=200){
+			   							alert(resultVo.message);
+			   							$("#isSureCancel").click();
+			   						}else{
+			   							$("#isSureCancel").click();
+			   							show_box(2,"保存成功");
+			   						}
+			   		  			}
+			   		  		})
+			   		  })
+			   		  $("body").one("click",".close",function(){
+						$("body").off("click","#updatePasswordConfirm");
+			   		  })
+			   		  $("body").one("click","#isSureCancel",function(){
+						$("body").off("click","#updatePasswordConfirm");
+			   		  })
+    			}
+    		 })
+    	}
+    	
+    	function toUpdatePhone(){
+    		openCommonModal("toHtmlModal",_url+"/app/update-phone.html",600);
+    		 //验证码
+    		 var mybutton = $(".verifyCodeButton").html();
+    	}
+    	var resf = false;
+    	function toSendVcode(){
+   		     var myreg = /^[0-9]{11}$/;       
+   		     var phone=$("#phone").val();
+   		     if(myreg.test(phone)){
+   		       	 sendVcode(phone);
+	   		       
+   		     }else{
+   		       $(".errorHint").css("visibility","visible"); 
+   		         $(".errorHint").html("您输入的手机号有误，请重新输入");
+   		     }
+    	}
+    	
+		 function sendVcode(){
+		   $.ajax({
+		         type:"post",
+		         url:_url+"/loginuser/send_vcode_update_phone",
+		         dataType:"json",
+		         data:{"phone":$("#phone").val(),"type":4},
+		         success:function(data){
+		           if(data.status != 200){
+		        	   alert(data.data);
+		           }else{
+		        	   var mybutton = $(".verifyCodeButton").html();
+		        		event.stopPropagation(); 
+		  		         mybutton = 120;
+		  		         $(".verifyCodeButton").addClass("verifyCodeActive").attr("disabled", true);
+		  		         var time = setInterval(function(){
+			  		         mybutton--;
+			  		         $(".verifyCodeButton").html(mybutton+"s重新获取");
+			  		         if(mybutton <= 0){
+			  		             clearInterval(time);
+			  		             $(".verifyCodeButton").removeClass("verifyCodeActive").html("获取验证码").removeAttr("disabled");
+			  		         }
+			  		     },1000);
+		           }
+		         }
+		     });
+		 }
+		 
+		 function updatePhone(){
+			 $.ajax({
+		         type:"post",
+		         url:_url+"/back/person/eveloper/update_phone",
+		         dataType:"json",
+		         data:{"phone":$("#phone").val(),"code":$("#code").val()},
+		         success:function(data){
+		             if(data.status == 200){
+		               	$("#closeId").click();
+		               	location.reload();
+		             }else{
+		            	 $(".errorHint").css("visibility","visible"); 
+		   		         $(".errorHint").html(data.message);
+		             }
+		         }
+		     });
+			 
+		 }
+		 
+		 
+		 function addEveloper(){
+				
+				$("#person_from").verify();
+				 $("#person_from").validate(function (result) {
+					  	if(result){
+					  		$.ajax({
+					  			type:"post",
+					  			async:true,
+					  			data:$("#person_from").serialize(),
+					  			dataType:"json",
+					  			url:_url+"/back/person/eveloper/save_evelopers_update",
+					  			success:function(resultVo){
+					  				if(resultVo.status!=200){
+										 setErrorContent(resultVo.message);
+									}else{
+										show_box(2,"保存成功");
+										setTimeout(function(){
+											location.reload();
+										}, 2000);
+									}
+					  			}
+					  		})
+					  	}
+				 })
+			}
+    </script>
+    <script src="lib/validate/verify.notify.js"></script>
+    <script src="lib/validate/verify.notify.ext.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/person/touxiang.js"></script>
+
+
+  </body>
+</html>

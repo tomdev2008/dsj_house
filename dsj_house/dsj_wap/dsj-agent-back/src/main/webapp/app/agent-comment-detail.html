@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/album_pc.css">
+<link rel="stylesheet" type="text/css" href="css/swiper-3.4.2.min.css">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/album_pc.css">
+<link rel="stylesheet" type="text/css" href="css/swiper-3.4.2.min.css">
+<script type="text/javascript" src="js/fles.js"></script>
+</head>
+<body>
+	<div class="container agent_main_center2">
+		<div class="row"></div>
+		<div class="row">
+			<h4 class="dsj_title">动态详情-全部回复</h4>
+		</div>
+		<div id="dsj_container" class="row"></div>
+	</div>
+	
+	<script id="dsj_agent_news" type="text/x-handlebars-template">
+      <div class="row dsj_update_detail dsj_news_main">
+        <div class="col-xs-1">
+          {{#if avatarUrl}}
+				<img class="img-responsive" src="{{avatarUrl}}?x-oss-process=image/resize,m_mfit,h_73,w_73">
+			{{else}}
+				<img class="img-responsive" src="img/z44@3x.png">
+			{{/if}}
+        </div>
+        <div class="col-xs-11 margin-left20">
+          <p class="dsj_update_title">
+           {{realname}}—{{shortName}}
+          </p>
+          <p class="dsj_update_area">
+            	主营小区：{{mainCommunity}}
+          </p>
+          <p class="dsj_update_content" data-content="{{content}}" data-mark="more">
+			{{#contentLimits content 150 }}
+				{{#convertHtml content}}{{/convertHtml}}
+			{{/contentLimits}}
+          </p>
+			{{#contentLengthLimits content 150 }}
+				<span class="dsj_update_content_more">展开全文</span>
+			{{/contentLengthLimits}}
+		{{#if pictures}}
+          <div class="dsj_update_pic row">
+			{{#each picturesArr}}
+        		<div class="col-xs-4">
+              		<img class="img-responsive" style="height: 95px;" src="{{this}}?x-oss-process=image/resize,m_mfit,h_95,w_90" data-src="{{this}}">
+            	</div>
+       		{{/each}}
+          </div>
+		{{/if}}
+          <p class="dsj_update_time dsj_news_time clearfix">
+			{{#timeSrt-T  createTime}}
+			{{/timeSrt-T}}
+            <span class="pull-right">
+              <a class="dsj_comment"><span class="glyphicon _comment" aria-hidden="true"></span>(<span class="dsj_num">{{commentNum}}</span>)</a>
+              <a class="dsj_thumbup {{#compare 1 '==' clicktype}}thum_Active{{/compare}}"><span   onclick="cllickLike(this,{{id}},1,1);" class="glyphicon _thumbs-up" aria-hidden="true"></span>(<span class="dsj_num">{{likeNum}}</span>)</a>
+              <a class="dsj_thumbdown {{#compare 2 '==' clicktype}}thum_Active{{/compare}}"><span onclick="cllickLike(this,{{id}},1,2);" class="glyphicon _thumbs-down" aria-hidden="true"></span>(<span class="dsj_num">{{negativeNum}}</span>)</span>
+            </a>
+          </p>
+          <div class="dsj_publish clearfix hide">
+            <textarea class="form-control" onkeydown="checkMaxInput(this,100)" placeholder="@{{realname}}"   
+            	onkeyup="checkMaxInput(this,100)" onfocus="checkMaxInput(this,100)" 
+            	onblur="checkMaxInput(this,100);" rows="3"></textarea>
+            <p>
+              <div class="pull-right">
+                	还能再输入<span class="textNum">100</span>字
+                <button type="button" onclick="publishComment(this,{{id}},0);" class="primary">
+                  <span class="glyphicon" aria-hidden="true"></span>
+                	 发布
+                </button>
+              </div>
+            </p>
+          </div>
+          <p class="dsj_all_reply">
+			<a class="toggle_reply" data-id="{{id}}" data-type-id="1" data-userId="{{createUser}}" >全部回复 (<span class="dsj_num">{{commentNum}}</span>)</a>
+		  </p>
+          <div class="dsj_reply hide">
+          </div>
+        </div>
+      </div>
+    </script>
+		<script id="dsj_comment_template" type="text/x-handlebars-template">
+      <div class="row dsj_update_detail">
+        <div class="col-xs-1">
+			{{#if commentUserAvatar}}
+				<img class="img-responsive" src="{{commentUserAvatar}}">
+			{{else}}
+				<img class="img-responsive" src="img/z44@3x.png">
+			{{/if}}
+        </div>
+        <div class="col-xs-11 margin-left20">
+          <p class="dsj_reply_name">
+			{{#compare commentUserType '==' 5  }}
+          		{{#if commentNikename}}
+          			{{commentNikename}}
+          		{{else}}
+          			{{#dealPhoneNum commentUserName2}}
+          			{{/dealPhoneNum}}
+          		{{/if}}
+          	{{else}}
+          		{{#if commentUserName}}
+          			{{commentUserName}}
+          		{{else}}
+          			{{#dealPhoneNum commentUserName2}}
+          			{{/dealPhoneNum}}
+          		{{/if}}
+          	{{/compare}}
+			{{#if replyUserName }}
+				@<span class="at_name">
+					{{#compare replyUserType '==' 5  }}
+		          		{{#if replyNikename}}
+		          			{{replyNikename}}
+		          		{{else}}
+		          			{{#dealPhoneNum replyUserName2}}
+          					{{/dealPhoneNum}}
+		          		{{/if}}
+		          	{{else}}
+		          		{{#if replyUserName}}
+		          			{{replyUserName}}
+		          		{{else}}
+		          			{{#dealPhoneNum replyUserName2}}
+          					{{/dealPhoneNum}}
+		          		{{/if}}
+		          	{{/compare}}
+				</span>
+			{{/if}}
+          </p>
+          <p class="dsj_reply_content">
+            	{{#convertHtml content}}{{/convertHtml}}
+          </p>
+          <p class="dsj_update_time clearfix">
+            {{#timeSrt-T  createTime}}
+			{{/timeSrt-T}}
+            <span class="pull-right">
+              <a class="dsj_comment"><span class="glyphicon huifu " aria-hidden="true">回复</span></a>
+              <a class="dsj_thumbup {{#compare 1 '==' clicktype}}thum_Active{{/compare}}"><span  onclick="cllickLike(this,{{id}},2,1);" class="glyphicon _thumbs-up" aria-hidden="true"></span>(<span class="dsj_num">{{likeNum}}</span>)</a>
+            </a>
+          </p>
+          <div class="dsj_publish clearfix hide">
+            <textarea class="form-control" onkeydown="checkMaxInput(this,100)"  placeholder="@{{#compare commentUserType '==' 5  }}{{#if commentNikename}}{{commentNikename}}{{else}}{{#dealPhoneNum commentUserName2}}{{/dealPhoneNum}}{{/if}}{{else}}{{#if commentUserName}}{{commentUserName}}{{else}}{{#dealPhoneNum commentUserName2}}{{/dealPhoneNum}}{{/if}}{{/compare}}"
+            	onkeyup="checkMaxInput(this,100)" onfocus="checkMaxInput(this,100)" 
+            	onblur="checkMaxInput(this,100);" rows="3" ></textarea>
+            <p>
+              <div class="pull-right">
+                	还能再输入<span class="textNum">100</span>字
+                <button type="button" onclick="publishComment(this,{{objectId}},{{commentUser}});" class="primary">
+                  <span class="glyphicon" aria-hidden="true"></span>
+                 		评论
+                </button>
+              </div>
+            </p>
+          </div>
+        </div>
+      </div>
+    </script>
+	<script id="dsj_page_template" type="text/x-handlebars-template">
+      <div class="row">
+        <div id="dsj_list_page" class="col-xs-12" style="height: 40px;cursor: pointer;">
+        	<div class="load_more text-center">
+        	查看更多
+        	</div>
+        </div>
+      </div>
+    </script>
+    
+    <!-- swiper -->
+	<div id="album_modal" class="album_modal single-ablum modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<img src="img/album/album-close.png">
+					</button>
+				</div>
+				<div class="modal-body" style="padding-bottom: 30px;">
+					<div>
+						<div class="swiper-button-next album-right"></div>
+						<div class="swiper-button-prev album-left"></div>
+						<div class="swiper-container modal-gallery-top" style="width: 1127px; height: 670px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="js/jquery.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.js"></script>
+		<script src="js/handlebars.js"></script>
+		<script src="js/handlebars-utils.js"></script>
+		<script src="js/minganci.js"></script>
+		<script src="js/common/base.js"></script>
+		<script src="js/swiper-3.4.2.min.js"></script>
+		<script src="js/dsj_tags.js"></script>
+		<script src="js/formUtils.js"></script>
+		<script src="js/agent-comment-detail.js"></script>
+		<script src="js/agent-comment-detail2.js"></script>
+	<script type="text/javascript">
+	    var newsId = GetQueryString("id");
+	    var userId = GetQueryString("userId");
+	    
+	    $(function () {
+	    	  
+			$(document).on("click",".dsj_update_content_more",function(argument) {
+	  			if( "more" == $(this).siblings(".dsj_update_content").data("mark")){
+	  				$(this).siblings(".dsj_update_content").html($(this).siblings(".dsj_update_content").attr("data-content"));
+	  				$(this).siblings(".dsj_update_content").data("mark","less");
+	 	  			$(this).text("收起");
+	  			}else if( "less" == $(this).siblings(".dsj_update_content").data("mark")){
+	  				$(this).siblings(".dsj_update_content").html($(this).siblings(".dsj_update_content").attr("data-content").substring(0,150)+"...");
+	  				$(this).siblings(".dsj_update_content").data("mark","more");
+	 	  			$(this).text("展开全文");
+	  			}
+	  		})
+	  		
+	  		var dialogOption = {
+	          container_id : "dsj_container",
+	          dialogTemplate_id : "dsj_agent_news",
+	          pageTemplate_id : "dsj_page_template",
+	          commentTemplate_id : "dsj_comment_template",
+	          url : _url,
+	          newsId : newsId
+	        }
+
+	        var dialogList = new $.fn.DialogList(dialogOption);
+	        dialogList._init();
+	    })
+	    
+	     // swiper
+    $(document).on("click",".dsj_update_pic img",function(e) {
+		var index = $(this).parent().index();
+		var imgList = $(this).closest(".dsj_update_pic").find("img");
+		var str = '<div class="swiper-wrapper">';
+		for (var i = 0; i < imgList.length; i++) {
+			str += '<div class="swiper-slide" style="width:1127px;height: 670px;"><img src="'+imgList[i].getAttribute("data-src")+'"></div>';
+		}
+		str += "</div>";
+		$(".swiper-container").html(str);
+	    $('#album_modal').modal();	
+	    $('#album_modal').one('shown.bs.modal', function (e) {
+	      // do something...
+		    var modalGalleryTop = new Swiper('.modal-gallery-top', {
+		    	nextButton: ' .swiper-button-next.album-right',
+		        prevButton: '.swiper-button-prev.album-left',
+		        spaceBetween: 10,
+		    });
+		    modalGalleryTop.params.control = modalGalleryTop;
+			modalGalleryTop.slideTo(index);
+	    })	
+	});
+
+	</script>
+		<script src="js/require.js"></script>
+		<script src="js/common/header.js"></script>
+</body>
+</html>

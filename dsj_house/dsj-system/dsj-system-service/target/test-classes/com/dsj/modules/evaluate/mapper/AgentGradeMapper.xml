@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.evaluate.dao.impl.AgentGradeDaoImpl">
+    
+    <sql id="tableName"> dsj_agent_grade a </sql>
+    <sql id="tableNameUpdate"> dsj_agent_grade </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.grade_no AS "gradeNo",
+		a.min_score AS "minScore",
+		a.max_score AS "maxScore",
+		a.small_icon AS "smallIcon",
+		a.big_icon AS "bigIcon",
+		a.update_time AS "updateTime",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.create_person AS "createPerson"
+	</sql>
+	
+	<resultMap id="beanMap" type="AgentGradePo">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="grade_no" property="gradeNo" />
+		<result column="min_score" property="minScore" />
+		<result column="max_score" property="maxScore" />
+		<result column="small_icon" property="smallIcon" />
+		<result column="big_icon" property="bigIcon" />
+		<result column="update_time" property="updateTime" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="create_person" property="createPerson" />
+	</resultMap>
+	
+	<sql id="agentGradeJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="gradeNo != null and gradeNo!= ''"> AND a.grade_no = #{gradeNo}</if>
+		<if test="minScore != null and minScore!= ''"> AND a.min_score = #{minScore}</if>
+		<if test="maxScore != null and maxScore!= ''"> AND a.max_score = #{maxScore}</if>
+		<if test="smallIcon != null and smallIcon!= ''"> AND a.small_icon = #{smallIcon}</if>
+		<if test="bigIcon != null and bigIcon!= ''"> AND a.big_icon = #{bigIcon}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+	</sql>
+    
+	<select id="getById" resultType="AgentGradePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="agentGradeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.grade_no 
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="AgentGradePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			name,
+			grade_no,
+			min_score,
+			max_score,
+			small_icon,
+			big_icon,
+			update_time,
+			update_person,
+			create_time,
+			create_person
+		) VALUES (
+			#{id},
+			#{name},
+			#{gradeNo},
+			#{minScore},
+			#{maxScore},
+			#{smallIcon},
+			#{bigIcon},
+			#{updateTime},
+			#{updatePerson},
+			#{createTime},
+			#{createPerson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="AgentGradePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="name != null">name,</if>
+					<if test="gradeNo != null">grade_no,</if>
+					<if test="minScore != null">min_score,</if>
+					<if test="maxScore != null">max_score,</if>
+					<if test="smallIcon != null">small_icon,</if>
+					<if test="bigIcon != null">big_icon,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="updatePerson != null">update_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="createPerson != null">create_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="gradeNo != null">#{gradeNo},</if>
+			<if test="minScore != null">#{minScore},</if>
+			<if test="maxScore != null">#{maxScore},</if>
+			<if test="smallIcon != null">#{smallIcon},</if>
+			<if test="bigIcon != null">#{bigIcon},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="AgentGradePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name = #{name},
+			grade_no = #{gradeNo},
+			min_score = #{minScore},
+			max_score = #{maxScore},
+			small_icon = #{smallIcon},
+			big_icon = #{bigIcon},
+			update_time = #{updateTime},
+			update_person = #{updatePerson},
+			create_person = #{createPerson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="AgentGradePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="name != null">name = #{name},</if>
+			<if test="gradeNo != null">grade_no = #{gradeNo},</if>
+			<if test="minScore != null">min_score = #{minScore},</if>
+			<if test="maxScore != null">max_score = #{maxScore},</if>
+			<if test="smallIcon != null">small_icon = #{smallIcon},</if>
+			<if test="bigIcon != null">big_icon = #{bigIcon},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

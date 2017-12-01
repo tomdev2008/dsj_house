@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.evaluate.dao.impl.AgentEvaluateDaoImpl">
+    
+    <sql id="tableName"> dsj_agent_evaluate a </sql>
+    <sql id="tableNameUpdate"> dsj_agent_evaluate </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+
+		a.agent_id AS "agentId",
+		a.city_name AS "cityName",
+		a.city_code AS "cityCode",
+		a.paragraph AS "paragraph",
+		a.paragraph_no AS "paragraphNo",
+		a.high_count AS "highCount",
+		a.mid_count AS "midCount",
+		a.bad_count AS "badCount",
+		a.total_count AS "totalCount",
+		a.update_time AS "updateTime",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.create_person AS "createPerson"
+	</sql>
+	
+	<resultMap id="beanMap" type="AgentEvaluatePo">
+		<id column="id" property="id" />
+		<result column="agent_name" property="agentName" />
+		<result column="agent_id" property="agentId" />
+		<result column="city_name" property="cityName" />
+		<result column="city_code" property="cityCode" />
+		<result column="paragraph" property="paragraph" />
+		<result column="paragraph_no" property="paragraphNo" />
+		<result column="high_count" property="highCount" />
+		<result column="mid_count" property="midCount" />
+		<result column="bad_count" property="badCount" />
+		<result column="total_count" property="totalCount" />
+		<result column="update_time" property="updateTime" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="create_person" property="createPerson" />
+	</resultMap>
+	
+	<sql id="agentEvaluateJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name LIKE CONCAT(CONCAT('%', #{agentName}), '%')</if>
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="cityName != null and cityName!= ''"> AND a.city_name = #{cityName}</if>
+		<if test="cityCode != null and cityCode!= ''"> AND a.city_code = #{cityCode}</if>
+		<if test="paragraph != null and paragraph!= ''"> AND a.paragraph = #{paragraph}</if>
+		<if test="paragraphNo != null and paragraphNo!= ''"> AND a.paragraph_no = #{paragraphNo}</if>
+		<if test="highCount != null and highCount!= ''"> AND a.high_count = #{highCount}</if>
+		<if test="midCount != null and midCount!= ''"> AND a.mid_count = #{midCount}</if>
+		<if test="badCount != null and badCount!= ''"> AND a.bad_count = #{badCount}</if>
+		<if test="totalCount != null and totalCount!= ''"> AND a.total_count = #{totalCount}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+	</sql>
+    
+	<select id="getById" resultType="AgentEvaluatePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="agentEvaluateJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+  
+    <select id="listPageByParams" parameterType="java.util.Map" resultType="com.dsj.modules.evaluate.vo.AgentEvaluateVo">
+        SELECT 
+            <include refid="tableColumns"/>,
+            CONCAT(CAST(a.high_count*100/a.total_count AS DECIMAL(10,0)), '%') AS highRate,
+            CONCAT(CAST(a.mid_count*100/a.total_count AS DECIMAL(10,0)), '%') AS midRate,
+            CONCAT(CAST(a.bad_count*100/a.total_count AS DECIMAL(10,0)), '%') AS badRate,
+            j.name as "agentName"
+        FROM <include refid="tableName"/> 
+        LEFT JOIN dsj_agent j ON a.agent_id=j.agent_code 
+        <where>
+            <include refid="condition_sql" />
+            <if test="minHighRate != null and minHighRate!= ''"> AND CAST(a.high_count*100/a.total_count AS DECIMAL(10,0)) &gt;= #{minHighRate}</if>
+            <if test="maxHighRate != null and maxHighRate!= ''"> AND CAST(a.high_count*100/a.total_count AS DECIMAL(10,0)) &lt;= #{maxHighRate}</if>
+            <if test="minMidRate != null and minMidRate!= ''"> AND CAST(a.mid_count*100/a.total_count AS DECIMAL(10,0)) &gt;= #{minMidRate}</if>
+            <if test="maxMidRate != null and maxMidRate!= ''"> AND CAST(a.mid_count*100/a.total_count AS DECIMAL(10,0)) &lt;= #{maxMidRate}</if>
+            <if test="minDadRate != null and minBaseScore!= ''"> AND CAST(a.bad_count*100/a.total_count AS DECIMAL(10,0)) &gt;= #{minDadRate}</if>
+            <if test="maxBadRate != null and maxBadRate!= ''"> AND CAST(a.bad_count*100/a.total_count AS DECIMAL(10,0)) &lt;= #{maxBadRate}</if>
+        </where>
+        ORDER BY a.id DESC 
+        LIMIT #{pageFirst} , #{pageSize} 
+    </select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+    <select id="listPageCountByParams" parameterType="java.util.Map" resultType="long">
+        SELECT 
+            COUNT(1) 
+        FROM <include refid="tableName"/>
+        LEFT JOIN dsj_agent j ON a.agent_id=j.agent_code 
+        <where>
+            <include refid="condition_sql"/>
+            <if test="minHighRate != null and minHighRate!= ''"> AND CAST(a.high_count*100/a.total_count AS DECIMAL(10,0)) &gt;= #{minHighRate}</if>
+            <if test="maxHighRate != null and maxHighRate!= ''"> AND CAST(a.high_count*100/a.total_count AS DECIMAL(10,0)) &lt;= #{maxHighRate}</if>
+            <if test="minMidRate != null and minMidRate!= ''"> AND CAST(a.mid_count*100/a.total_count AS DECIMAL(10,0)) &gt;= #{minMidRate}</if>
+            <if test="maxMidRate != null and maxMidRate!= ''"> AND CAST(a.mid_count*100/a.total_count AS DECIMAL(10,0)) &lt;= #{maxMidRate}</if>
+            <if test="minDadRate != null and minBaseScore!= ''"> AND CAST(a.bad_count*100/a.total_count AS DECIMAL(10,0)) &gt;= #{minDadRate}</if>
+            <if test="maxBadRate != null and maxBadRate!= ''"> AND CAST(a.bad_count*100/a.total_count AS DECIMAL(10,0)) &lt;= #{maxBadRate}</if>
+        </where>
+    </select>
+	
+	<insert id="insert" parameterType="AgentEvaluatePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			agent_name,
+			agent_id,
+			city_name,
+			city_code,
+			paragraph,
+			paragraph_no,
+			high_count,
+			mid_count,
+			bad_count,
+			total_count,
+			update_time,
+			update_person,
+			create_time,
+			create_person
+		) VALUES (
+			#{id},
+			#{agentName},
+			#{agentId},
+			#{cityName},
+			#{cityCode},
+			#{paragraph},
+			#{paragraphNo},
+			#{highCount},
+			#{midCount},
+			#{badCount},
+			#{totalCount},
+			#{updateTime},
+			#{updatePerson},
+			#{createTime},
+			#{createPerson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="AgentEvaluatePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="cityName != null">city_name,</if>
+					<if test="cityCode != null">city_code,</if>
+					<if test="paragraph != null">paragraph,</if>
+					<if test="paragraphNo != null">paragraph_no,</if>
+					<if test="highCount != null">high_count,</if>
+					<if test="midCount != null">mid_count,</if>
+					<if test="badCount != null">bad_count,</if>
+					<if test="totalCount != null">total_count,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="updatePerson != null">update_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="createPerson != null">create_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="cityName != null">#{cityName},</if>
+			<if test="cityCode != null">#{cityCode},</if>
+			<if test="paragraph != null">#{paragraph},</if>
+			<if test="paragraphNo != null">#{paragraphNo},</if>
+			<if test="highCount != null">#{highCount},</if>
+			<if test="midCount != null">#{midCount},</if>
+			<if test="badCount != null">#{badCount},</if>
+			<if test="totalCount != null">#{totalCount},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="AgentEvaluatePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			agent_name = #{agentName},
+			agent_id = #{agentId},
+			city_name = #{cityName},
+			city_code = #{cityCode},
+			paragraph = #{paragraph},
+			paragraph_no = #{paragraphNo},
+			high_count = #{highCount},
+			mid_count = #{midCount},
+			bad_count = #{badCount},
+			total_count = #{totalCount},
+			update_time = #{updateTime},
+			update_person = #{updatePerson},
+			create_person = #{createPerson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="AgentEvaluatePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="cityName != null">city_name = #{cityName},</if>
+			<if test="cityCode != null">city_code = #{cityCode},</if>
+			<if test="paragraph != null">paragraph = #{paragraph},</if>
+			<if test="paragraphNo != null">paragraph_no = #{paragraphNo},</if>
+			<if test="highCount != null">high_count = #{highCount},</if>
+			<if test="midCount != null">mid_count = #{midCount},</if>
+			<if test="badCount != null">bad_count = #{badCount},</if>
+			<if test="totalCount != null">total_count = #{totalCount},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getRankAndScore" parameterType="int" resultType="java.util.Map">
+		select 
+		i.total_score AS totalScore,
+		ag.name AS name,
+		ag.grade_no AS gradeNo,
+		ag.small_icon AS smallIcon,
+		ag.big_icon AS bigIcon
+		from dsj_agent_info i
+		LEFT JOIN dsj_agent_grade ag 
+		ON i.total_score &gt;= ag.min_score AND i.total_score &lt;ag.max_score 
+		where i.agent_id = #{agentId}
+	</select>
+	
+</mapper>

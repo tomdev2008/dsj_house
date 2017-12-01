@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.PcRentHouseDaoImpl">
+    
+    <sql id="tableName"> dsj_pc_rent_house a </sql>
+    <sql id="tableNameUpdate"> dsj_pc_rent_house </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.link_address AS "linkAddress",
+		a.picture AS "picture",
+		a.object_id AS "objectId",
+		a.rent_name AS "rentName"
+	</sql>
+	
+	<resultMap id="beanMap" type="PcRentHousePo">
+		<id column="id" property="id" />
+		<result column="link_address" property="linkAddress" />
+		<result column="picture" property="picture" />
+		<result column="object_id" property="objectId" />
+		<result column="rent_name" property="rentName" />
+	</resultMap>
+	
+	<sql id="pcRentHouseJoins">
+	</sql>
+    
+    <sql id="condition_sql">
+        <if test="id != null and id!= ''"> AND a.id = #{id}</if>	
+		<if test="linkAddress != null and linkAddress!= ''"> AND a.link_address = #{linkAddress}</if>
+		<if test="picture != null and picture!= ''"> AND a.picture = #{picture}</if>
+		<if test="objectId != null and objectId!= ''"> AND a.object_id = #{objectId}</if>
+		<if test="rentName != null and rentName!= ''"> AND a.rent_name = #{rentName}</if>
+	</sql>
+    
+	<select id="getById" resultType="PcRentHousePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="pcRentHouseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="getRentHouse" resultMap="beanMap">
+	    SELECT 
+	        a.id,
+			a.link_address,
+			a.picture,
+			a.object_id,
+			a.rent_name
+	   FROM	<include refid="tableName"/>
+	</select>
+	
+	<insert id="insert" parameterType="PcRentHousePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			link_address,
+			picture,
+			object_id,
+			rent_name
+		) VALUES (
+			#{id},
+			#{linkAddress},
+			#{picture},
+			#{objectId},
+			#{rentName}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="PcRentHousePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="linkAddress != null">link_address,</if>
+					<if test="picture != null">picture,</if>
+					<if test="objectId != null">object_id,</if>
+					<if test="rentName != null">rent_name,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="linkAddress != null">#{linkAddress},</if>
+			<if test="picture != null">#{picture},</if>
+			<if test="objectId != null">#{objectId},</if>
+			<if test="rentName != null">#{rentName},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="PcRentHousePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			link_address = #{linkAddress},
+			picture = #{picture},
+			object_id=#{objectId},
+			rent_name=#{rentName},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="PcRentHousePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="objectId != null">object_id = #{objectId},</if>
+			<if test="rentName != null">rent_name = #{rentName},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	<update id="updateRentHousePage">
+	 UPDATE dsj_pc_rent_house_page  
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="objectId != null">object_id = #{objectId},</if>
+			<if test="rentName != null">rent_name = #{rentName},</if>
+    	</set>
+    	WHERE pid = #{id}  
+	</update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

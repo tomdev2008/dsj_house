@@ -1,0 +1,106 @@
+.component {
+	position: relative;
+	padding: 2em;
+	width: 380px;
+	height: 380px;
+	/* Header */
+	overflow: hidden;
+}
+
+.component.small {
+	position: relative;
+	padding: 4em;
+	width: 258px;
+	height: 292px;
+	/* Header */
+	overflow: hidden;
+}
+
+.resize-container {
+	position: relative;
+	display: inline-block;
+	cursor: move;
+	margin: 0 auto;
+}
+
+.resize-container img {
+	display: block;
+}
+
+.resize-container:hover img, .resize-container:active img {
+	outline: 2px dashed rgba(222, 60, 80, .9);
+}
+
+.resize-handle-ne, .resize-handle-se, .resize-handle-nw,
+	.resize-handle-sw {
+	position: absolute;
+	display: block;
+	width: 10px;
+	height: 10px;
+	background: rgba(222, 60, 80, .9);
+	z-index: 999;
+}
+
+.resize-handle-nw {
+	top: -5px;
+	left: -5px;
+	cursor: nw-resize;
+}
+
+.resize-handle-sw {
+	bottom: -5px;
+	left: -5px;
+	cursor: sw-resize;
+}
+
+.resize-handle-ne {
+	top: -5px;
+	right: -5px;
+	cursor: ne-resize;
+}
+
+.resize-handle-se {
+	bottom: -5px;
+	right: -5px;
+	cursor: se-resize;
+}
+
+.overlay {
+	position: absolute;
+	margin: auto;
+	top: -22px;
+    left: -22px;
+	bottom: 0;
+	right: 0;
+	z-index: 999;
+	width: 300px;
+	height: 300px;
+	border: solid 2px rgba(222, 60, 80, .9);
+	box-sizing: content-box;
+	pointer-events: none;
+}
+
+.small .overlay {
+	width: 100px;
+    height: 150px;
+    top: -37px;
+    left: -55px;
+}
+
+.btn-crop {
+	position: absolute;
+	vertical-align: bottom;
+	right: 5px;
+	bottom: 5px;
+	padding: 6px 10px;
+	z-index: 999;
+	background-color: #de3c50;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+}
+
+.btn-crop img {
+	vertical-align: middle;
+	margin-left: 8px;
+}

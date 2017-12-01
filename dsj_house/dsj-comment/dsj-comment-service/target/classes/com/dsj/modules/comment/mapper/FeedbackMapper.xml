@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.comment.dao.impl.FeedbackDaoImpl">
+    
+    <sql id="tableName"> dsj_feedback a </sql>
+    <sql id="tableNameUpdate"> dsj_feedback </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.content AS "content",
+		a.create_time AS "createTime",
+		a.create_user AS "createUser"
+	</sql>
+	
+	<resultMap id="beanMap" type="com.dsj.modules.comment.po.FeedbackPo">
+		<id column="id" property="id" />
+		<result column="content" property="content" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+	</resultMap>
+	
+	<sql id="feedbackJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+	</sql>
+	
+	<sql id="condition_sql_two">	
+			<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+			<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+	</sql>
+    
+	<select id="getById" resultType="FeedbackPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="feedbackJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<select id="listNewPageList" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.FeedbackVo">
+		SELECT
+			<include refid="tableColumns" />,
+			b.realname AS userName,
+			b.phone AS tellPhone
+		FROM
+			<include refid="tableName"/>
+			LEFT JOIN dsj_user b ON a.create_user = b.id
+		<where>
+			<include refid="condition_sql_two"/>
+		</where>
+		ORDER BY a.create_time DESC
+		LIMIT #{pageFirst} , #{pageSize}
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+			count(1)
+		FROM
+			<include refid="tableName"/>
+			LEFT JOIN dsj_user b ON a.create_user = b.id
+		<where>
+			<include refid="condition_sql_two"/>
+		</where>
+		ORDER BY a.create_time DESC
+	</select>
+	
+	
+	<insert id="insert" parameterType="FeedbackPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			content,
+			create_time,
+			create_user
+		) VALUES (
+			#{id},
+			#{content},
+			#{createTime},
+			#{createUser}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FeedbackPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="content != null">content,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="createUser != null">create_user,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="content != null">#{content},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="createUser != null">#{createUser},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FeedbackPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			content = #{content},
+			create_user = #{createUser}
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FeedbackPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="content != null">content = #{content},</if>
+			<if test="createUser != null">create_user = #{createUser},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

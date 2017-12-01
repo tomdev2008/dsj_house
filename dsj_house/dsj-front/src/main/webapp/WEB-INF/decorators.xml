@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/freemarker/layouts">
+	
+<excludes>
+		<pattern>/static/*</pattern>
+		<pattern>/map/*</pattern>
+		<pattern>/login/*</pattern>
+		
+</excludes>
+	<decorator name="default" page="default.ftl">
+		<pattern>/ershoufang</pattern>
+		<pattern>/oldmaster</pattern>
+		<pattern>/front/newHouse/*</pattern>
+		<pattern>/front/warrant/*</pattern>
+		<pattern>/front/personCenter/*</pattern>
+		<pattern>/front/entrust/*</pattern>
+		<pattern>/front/agentIndex/*</pattern>
+		<pattern>/front/agentNews/*</pattern>
+		<pattern>/front/comment/*</pattern>
+		<pattern>/front/houseNews/*</pattern>
+		<pattern>/houseDirectory/*</pattern>
+        <pattern>/front/agent</pattern>
+         <pattern>/front/agent/*</pattern>
+         <pattern>/about/page</pattern>
+	</decorator>
+	
+</decorators>

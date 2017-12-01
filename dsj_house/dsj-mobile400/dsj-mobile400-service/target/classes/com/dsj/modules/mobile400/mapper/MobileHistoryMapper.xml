@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.mobile400.dao.impl.MobileHistoryDaoImpl">
+    
+    <sql id="tableName"> dsj_mobile_history a </sql>
+    <sql id="tableNameUpdate"> dsj_mobile_history </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.mobile_id AS "mobileId",
+		a.mobile AS "mobile",
+		a.status AS "status",
+		a.house_id AS "houseId",
+		a.house_name AS "houseName",
+		a.agent_id AS "agentId",
+		a.agent_name AS "agentName",
+		a.create_time AS "createTime",
+		a.property_id AS "propertyId",
+		a.property_name AS "propertyName"
+	</sql>
+	
+	<resultMap id="beanMap" type="MobileHistoryPo">
+		<id column="id" property="id" />
+		<result column="mobile_id" property="mobileId" />
+		<result column="mobile" property="mobile" />
+		<result column="status" property="status" />
+		<result column="house_id" property="houseId" />
+		<result column="house_name" property="houseName" />
+		<result column="agent_id" property="agentId" />
+		<result column="agent_name" property="agentName" />
+		<result column="create_time" property="createTime" />
+		<result column="property_id" property="propertyId" />
+		<result column="property_name" property="propertyName" />
+	</resultMap>
+	
+	<sql id="mobileHistoryJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="mobileId != null and mobileId!= ''"> AND a.mobile_id = #{mobileId}</if>
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="houseName != null and houseName!= ''"> AND a.house_name = #{houseName}</if>
+		<if test="agentId != null and agentId!= ''"> AND a.agent_id = #{agentId}</if>
+		<if test="agentName != null and agentName!= ''"> AND a.agent_name = #{agentName}</if>
+		<if test="propertyId != null and propertyId!= ''"> AND a.property_id = #{propertyId}</if>
+		<if test="propertyName != null and propertyName!= ''"> AND a.property_name = #{propertyName}</if>
+	</sql>
+    
+	<select id="getById" resultType="MobileHistoryPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="mobileHistoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="MobileHistoryPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			mobile_id,
+			status,
+			house_id,
+			house_name,
+			agent_id,
+			agent_name,
+			create_time
+		) VALUES (
+			#{id},
+			#{mobileId},
+			#{status},
+			#{houseId},
+			#{houseName},
+			#{agentId},
+			#{agentName},
+			#{createTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="MobileHistoryPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="mobileId != null">mobile_id,</if>
+					<if test="mobile != null">mobile,</if>
+					<if test="status != null">status,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="houseName != null">house_name,</if>
+					<if test="agentId != null">agent_id,</if>
+					<if test="agentName != null">agent_name,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="propertyId != null">property_id,</if>
+					<if test="propertyName != null">property_name,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="mobileId != null">#{mobileId},</if>
+			<if test="mobile != null">#{mobile},</if>
+			<if test="status != null">#{status},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="houseName != null">#{houseName},</if>
+			<if test="agentId != null">#{agentId},</if>
+			<if test="agentName != null">#{agentName},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="propertyId != null">#{propertyId},</if>
+			<if test="propertyName != null">#{propertyName},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="MobileHistoryPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			mobile_id = #{mobileId},
+			house_id = #{houseId},
+			house_name = #{houseName},
+			agent_id = #{agentId},
+			agent_name = #{agentName},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="MobileHistoryPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="mobileId != null">mobile_id = #{mobileId},</if>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="houseName != null">house_name = #{houseName},</if>
+			<if test="agentId != null">agent_id = #{agentId},</if>
+			<if test="agentName != null">agent_name = #{agentName},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

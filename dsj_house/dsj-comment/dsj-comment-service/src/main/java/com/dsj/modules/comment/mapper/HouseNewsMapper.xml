@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.comment.dao.impl.HouseNewsDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_news a</sql>
+    <sql id="tableNameUpdate"> dsj_new_house_news </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.house_id AS "houseId",
+		a.title AS "title",
+		a.content AS "content",
+		a.contentst AS "contentst",
+		a.picture_url AS "pictureUrl",
+		a.audit_status AS "auditStatus",
+		a.create_time AS "createTime",
+		a.create_user AS "createUser",
+		a.audit_user AS "auditUser",
+		a.audit_time AS "auditTime",
+		a.audit_reason AS "auditReason",
+		a.update_time AS "updateTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick",
+		a.pccount AS "pccount",
+		a.up_down_line AS "upDownLine"
+	</sql>
+	
+	<sql id="tableColumnsVo">
+		a.id AS "id",
+		a.type AS "type",
+		a.house_id AS "houseId",
+		a.title AS "title",
+		a.content AS "content",
+		a.contentst AS "contentst",
+		a.picture_url AS "pictureUrl",
+		a.audit_status AS "auditStatus",
+		a.create_time AS "createTime",
+		a.create_user AS "createUser",
+		a.audit_user AS "auditUser",
+		a.audit_time AS "auditTime",
+		a.audit_reason AS "auditReason",
+		a.update_time AS "updateTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick",
+		a.pccount AS "pccount",
+		a.up_down_line AS "upDownLine",
+		u.realname AS "userName",
+		h.name AS "houseName",
+		h.developers AS "developersName",
+		case a.audit_status
+			WHEN 1 THEN '待审核'
+			WHEN 2 THEN '已通过'
+			WHEN 3 THEN '已驳回'
+		end AS "auditStatusName",
+		case a.up_down_line
+			WHEN 1 THEN '已上线'
+			WHEN 2 THEN '已下线'
+			WHEN 3 THEN '未上线'
+		end  AS "upDownLineName"	
+	</sql>
+	
+	<sql id="tableColumnsVoTwo">
+		a.id AS "id",
+		a.type AS "type",
+		a.house_id AS "houseId",
+		a.title AS "title",
+		a.content AS "content",
+		a.contentst AS "contentst",
+		a.picture_url AS "pictureUrl",
+		a.audit_status AS "auditStatus",
+		a.create_time AS "createTime",
+		a.create_user AS "createUser",
+		a.audit_user AS "auditUser",
+		a.audit_time AS "auditTime",
+		a.audit_reason AS "auditReason",
+		a.update_time AS "updateTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick",
+		a.pccount AS "pccount",
+		a.up_down_line AS "upDownLine",
+		h.name AS "houseName",
+		h.is_ture AS "isTure",
+		case a.audit_status
+			WHEN 1 THEN '待审核'
+			WHEN 2 THEN '已通过'
+			WHEN 3 THEN '已驳回'
+			WHEN 4 THEN '未提交'
+		end AS "auditStatusName",
+		case a.up_down_line
+			WHEN 1 THEN '已上线'
+			WHEN 2 THEN '已下线'
+			WHEN 3 THEN '未上线'
+		end  AS "upDownLineName",
+		case h.is_ture
+			WHEN 1 THEN '未上架'
+			WHEN 2 THEN '已上架'
+			WHEN 3 THEN '已下架'
+			WHEN 3 THEN '已删除'
+		end  AS "isTureName",
+		case u.user_type
+			WHEN 1 THEN '管理员'
+			WHEN 2 THEN '经纪人'
+			WHEN 3 THEN '开发商'
+			WHEN 4 THEN '品牌公寓'
+			WHEN 5 THEN '普通会员'
+		end  AS "userTypeName",
+		u.realname AS "userName"
+	</sql>
+	
+	<sql id="tableColumnsVoThree">
+		a.id AS "id",
+		a.type AS "type",
+		a.house_id AS "houseId",
+		a.title AS "title",
+		a.content AS "content",
+		a.contentst AS "contentst",
+		a.picture_url AS "pictureUrl",
+		a.audit_status AS "auditStatus",
+		a.create_time AS "createTime",
+		a.create_user AS "createUser",
+		a.audit_user AS "auditUser",
+		a.audit_time AS "auditTime",
+		a.audit_reason AS "auditReason",
+		a.update_time AS "updateTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick",
+		a.pccount AS "pccount",
+		a.up_down_line AS "upDownLine",
+		case a.audit_status
+			WHEN 1 THEN '待审核'
+			WHEN 2 THEN '已通过'
+			WHEN 3 THEN '已驳回'
+			WHEN 4 THEN '未提交'
+		end AS "auditStatusName",
+		case a.up_down_line
+			WHEN 1 THEN '已上线'
+			WHEN 2 THEN '已下线'
+			WHEN 3 THEN '未上线'
+		end  AS "upDownLineName",
+		u.realname AS "userName",
+		c.company_name AS "companyName",
+		c.short_name AS "shortName"
+	</sql>
+	
+	<sql id="tableDeveloperVo">
+		a.id AS "id",
+		a.type AS "type",
+		a.house_id AS "houseId",
+		a.title AS "title",
+		a.content AS "content",
+		a.contentst AS "contentst",
+		a.picture_url AS "pictureUrl",
+		a.audit_status AS "auditStatus",
+		a.create_time AS "createTime",
+		a.create_user AS "createUser",
+		a.audit_user AS "auditUser",
+		a.audit_time AS "auditTime",
+		a.audit_reason AS "auditReason",
+		a.update_time AS "updateTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick",
+		a.pccount AS "pccount",
+		a.up_down_line AS "upDownLine",
+		case a.audit_status
+			WHEN 1 THEN '待审核'
+			WHEN 2 THEN '已通过'
+			WHEN 3 THEN '已驳回'
+			WHEN 4 THEN '未提交'
+		end AS "auditStatusName",
+		case a.up_down_line
+			WHEN 1 THEN '已上线'
+			WHEN 2 THEN '已下线'
+			WHEN 3 THEN '未上线'
+		end  AS "upDownLineName",
+		u.realname AS "userName",
+		eveloper.name AS "companyName",
+		h.name houseName
+	</sql>
+	
+	<resultMap id="beanMap" type="HouseNewsPo">
+		<id column="id" property="id" />
+		<result column="type" property="type" />
+		<result column="house_id" property="houseId" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="contentst" property="contentst" />
+		<result column="picture_url" property="pictureUrl" />
+		<result column="audit_status" property="auditStatus" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" />
+		<result column="audit_user" property="auditUser" />
+		<result column="audit_time" property="auditTime" />
+		<result column="audit_reason" property="auditReason" />
+		<result column="update_time" property="updateTime" />
+		<result column="del_flag" property="delFlag" />
+		<result column="stick" property="stick" />
+		<result column="pccount" property="pccount" />
+		<result column="up_down_line" property="upDownLine" />
+	</resultMap>
+	
+	<sql id="houseNewsJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+    	<if test="id != null and id!= ''"> AND a.id = #{id}</if>
+    	<if test="userName != null and userName!= ''"> AND u.realname LIKE CONCAT(CONCAT('%', #{userName}), '%')</if>
+    	<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="content != null and content!= ''"> AND a.content like concat('%',#{content},'%')</if>
+		<if test="contentst != null and contentst != ''"> AND a.contentst like contentst('%',#{contentst},'%')</if>
+		<if test="pictureUrl != null and pictureUrl!= ''"> AND a.picture_url = #{pictureUrl}</if>
+		<if test="auditStatus != null and auditStatus!= ''"> AND a.audit_status = #{auditStatus}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+		<if test="auditUser != null and auditUser!= ''"> AND a.audit_user = #{auditUser}</if>
+		<if test="auditTime != null and auditTime!= ''"> AND a.audit_time = #{auditTime}</if>
+		<if test="auditReason != null and auditReason!= ''"> AND a.audit_reason = #{auditReason}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="stick != null and stick!= ''"> AND a.stick = #{stick}</if>
+		<if test="pccount != null and pccount != ''"> AND a.pccount = #{pccount}</if>
+		<if test="upDownLine != null and upDownLine!= ''"> AND a.up_down_line = #{upDownLine}</if>
+		<if test="createTimeStart != null and createTimeStart!= ''">
+			<![CDATA[AND a.create_time > #{createTimeStart}]]>
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!= ''">
+			<![CDATA[AND a.create_time < #{createTimeEnd}]]>
+		</if>
+	</sql>
+	
+	<sql id="condition_two">	
+		<if test="houseName != null and houseName != ''">
+		 	AND  h.name like CONCAT(CONCAT('%', #{houseName}), '%')
+		</if>
+		<if test="houseId != null and houseId != ''"> AND a.house_id = #{houseId}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="auditStatus != null and auditStatus!= ''"> AND a.audit_status = #{auditStatus}</if>
+		<if test="createUser != null and createUser!= ''"> 
+			AND ( a.create_user = #{createUser} or h.maintain_person = #{createUser} )
+		</if>
+		<if test="auditUser != null and auditUser!= ''"> AND a.audit_user = #{auditUser}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="upDownLine != null and upDownLine!= ''"> AND a.up_down_line = #{upDownLine}</if>
+		<if test="isTure != null and isTure != ''"> AND h.is_ture = #{isTure}</if>
+		<if test="createTimeStart != null and createTimeStart!= ''">
+			<![CDATA[AND a.create_time > #{createTimeStart}]]>
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!= ''">
+			<![CDATA[AND a.create_time < #{createTimeEnd}]]>
+		</if>
+	</sql>
+	
+	<sql id="condition_three">	
+		<if test="auditStatus != null and auditStatus!= ''"> AND a.audit_status = #{auditStatus}</if>
+		<if test="auditUser != null and auditUser!= ''"> AND a.audit_user = #{auditUser}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="upDownLine != null and upDownLine!= ''"> AND a.up_down_line = #{upDownLine}</if>
+		<if test="userType != null and userType != ''"> AND u.user_type = #{userType}</if>
+	</sql>
+	
+	<!-- 经纪人楼盘动态查询  -->
+	<select id="listHouseNewsPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.HouseNewsVo">
+		SELECT 
+    		<include refid="tableColumnsVoTwo"/>
+    	FROM <include refid="tableName"/> 
+    		left join dsj_new_house_directory_auth h on a.house_id = h.id 
+			left join dsj_user u on a.create_user = u.id 
+		<where>
+			<include refid="condition_two" />
+		</where>
+		<if test="userName != null and userName != ''"> and u.username like CONCAT(CONCAT('%', #{userName}), '%')</if>	
+		ORDER BY a.stick DESC, 
+		<if test="agentBackOrder != null and agentBackOrder != ''">a.update_time DESC, </if>
+		a.audit_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listHouseNewsCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			left join dsj_new_house_directory_auth h on a.house_id = h.id 
+			left join dsj_user u on a.create_user = u.id 
+		<where>
+			<include refid="condition_two"/>
+		</where>
+		<if test="userName != null and userName != ''"> and u.realname like CONCAT(CONCAT('%', #{userName}), '%')</if>	
+	</select>
+	
+	<!-- 经纪人业内动态查询  -->
+	<select id="listIndustryNewsPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.HouseNewsVo">
+		SELECT 
+    		<include refid="tableColumnsVoThree"/>
+    	FROM <include refid="tableName"/> 
+			left join dsj_user u on a.create_user = u.id 
+			left join dsj_agent agent on agent.user_id = u.id 
+			left outer join dsj_company c on agent.company = c.id 
+		<where>
+			<include refid="condition_three" />
+		</where>
+		ORDER BY a.update_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listIndustryNewsCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			left join dsj_user u on a.create_user = u.id 
+			left join dsj_agent agent on agent.user_id = u.id 
+			left outer join dsj_company c on agent.company = c.id 
+		<where>
+			<include refid="condition_three"/>
+		</where>
+	</select>
+	
+	<!-- PC楼盘动态查询  -->
+	<select id="listPCHouseNewsPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.HouseNewsVo">
+		SELECT 
+    		<include refid="tableColumns"/>,
+    		u.realname as "userName"
+    	FROM <include refid="tableName"/> 
+    		left outer join dsj_user u on u.id = a.create_user
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.stick DESC, a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPCHouseNewsCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<sql id="developer_condition">	
+		<if test="name != null and name != ''"> 
+			AND (h.name like CONCAT(CONCAT('%', #{name}), '%') or h.code like CONCAT(CONCAT('%', #{name}), '%') )
+		</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="auditStatus != null and auditStatus!= ''"> AND a.audit_status = #{auditStatus}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+		<if test="auditUser != null and auditUser!= ''"> AND a.audit_user = #{auditUser}</if>
+		<if test="auditTime != null and auditTime!= ''"> AND a.audit_time = #{auditTime}</if>
+		<if test="auditReason != null and auditReason!= ''"> AND a.audit_reason = #{auditReason}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="upDownLine != null and upDownLine!= ''"> AND a.up_down_line = #{upDownLine}</if>
+		<if test="isTure != null and isTure != ''"> AND h.is_ture = #{isTure}</if>
+		<if test="industry != null and industry != ''"> AND u.user_type != 3</if>
+		<if test="createTimeStart != null and createTimeStart!= ''">
+			<![CDATA[AND a.create_time > #{createTimeStart}]]>
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!= ''">
+			<![CDATA[AND a.create_time < #{createTimeEnd}]]>
+		</if>
+	</sql>
+    
+	<select id="getById" resultType="HouseNewsPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="houseNewsJoins"/>
+		WHERE 
+		a.id = #{id}
+	</select>
+	
+	<select id="getVoById" resultType="com.dsj.modules.comment.vo.HouseNewsVo">
+		SELECT 
+			<include refid="tableColumnsVo"/>
+		FROM <include refid="tableName"/> 
+		left join dsj_user u on a.create_user = u.id 
+		left join dsj_new_house_directory_auth h on a.house_id = h.id
+		where a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+  	
+  	<select id="getOneBy" resultType="com.dsj.modules.comment.vo.HouseNewsVo" parameterType="java.util.Map" >
+		SELECT 
+			<include refid="tableColumns"/> ,
+			u.realname as "userName" 
+		FROM <include refid="tableName"/> 
+			left outer join dsj_user u on u.id = a.create_user 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.stick DESC, a.audit_time DESC 
+		limit 1
+  	</select>
+  	
+  	<select id="getHouseNewsCountBy" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.HouseNewsVo">
+		SELECT 
+    		<include refid="tableColumnsVo"/>
+    	FROM <include refid="tableName"/> 
+    	left OUTER join dsj_user u on a.create_user = u.id
+		left OUTER join dsj_new_house_directory_auth h on a.house_id = h.id
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<if test="houseName != null and houseName!= ''"> AND h.name LIKE CONCAT(CONCAT('%', #{houseName}), '%')</if>
+		<if test="developersName != null and developersName!= ''"> AND h.developers LIKE CONCAT(CONCAT('%', #{developersName}), '%')</if>
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/> 
+    	left OUTER join dsj_user u on a.create_user = u.id
+		left OUTER join dsj_new_house_directory_auth h on a.house_id = h.id
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+		<if test="houseName != null and houseName!= ''"> AND h.name LIKE CONCAT(CONCAT('%', #{houseName}), '%')</if>
+		<if test="developersName != null and developersName!= ''"> AND h.developers LIKE CONCAT(CONCAT('%', #{developersName}), '%')</if>
+	</select>
+	
+	<insert id="insert" parameterType="HouseNewsPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			type,
+			house_id,
+			title,
+			content,
+			contentst,
+			picture_url,
+			audit_status,
+			create_time,
+			create_user,
+			audit_user,
+			audit_time,
+			audit_reason,
+			update_time,
+			del_flag,
+			stick,
+			pccount,
+			up_down_line
+		) VALUES (
+			#{id},
+			#{type},
+			#{houseId},
+			#{title},
+			#{content},
+			#{contentst},
+			#{pictureUrl},
+			#{auditStatus},
+			#{createTime},
+			#{createUser},
+			#{auditUser},
+			#{auditTime},
+			#{auditReason},
+			#{updateTime},
+			#{delFlag},
+			#{stick},
+			#{pccount},
+			#{upDownLine}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="HouseNewsPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="type != null">type,</if>
+					<if test="houseId != null">house_id,</if>
+					<if test="title != null">title,</if>
+					<if test="content != null">content,</if>
+					<if test="contentst != null">contentst,</if>
+					<if test="pictureUrl != null">picture_url,</if>
+					<if test="auditStatus != null">audit_status,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="createUser != null">create_user,</if>
+					<if test="auditUser != null">audit_user,</if>
+					<if test="auditTime != null">audit_time,</if>
+					<if test="auditReason != null">audit_reason,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="delFlag != null">del_flag,</if>
+					<if test="stick != null">stick,</if>
+					<if test="pccount != null">pccount,</if>
+					<if test="upDownLine != null">up_down_line,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="type != null">#{type},</if>
+			<if test="houseId != null">#{houseId},</if>
+			<if test="title != null">#{title},</if>
+			<if test="content != null">#{content},</if>
+			<if test="contentst != null">#{contentst},</if>
+			<if test="pictureUrl != null">#{pictureUrl},</if>
+			<if test="auditStatus != null">#{auditStatus},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="createUser != null">#{createUser},</if>
+			<if test="auditUser != null">#{auditUser},</if>
+			<if test="auditTime != null">#{auditTime},</if>
+			<if test="auditReason != null">#{auditReason},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="delFlag != null">#{delFlag},</if>
+			<if test="stick != null">#{stick},</if>
+			<if test="pccount != null">#{pccount},</if>
+			<if test="upDownLine != null">#{upDownLine},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="HouseNewsPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 
+			type = #{type},	
+			house_id = #{houseId},
+			title = #{title},
+			content = #{content},
+			contentst = #{contentst},
+			picture_url = #{pictureUrl},
+			audit_status = #{auditStatus},
+			create_user = #{createUser},
+			audit_user = #{auditUser},
+			audit_time = #{auditTime},
+			audit_reason = #{auditReason},
+			update_time = #{updateTime},
+			del_flag = #{delFlag},
+			stick = #{stick},
+			pccount = #{pccount},
+			up_down_line = #{upDownLine},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="HouseNewsPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+    	 	<if test="type != null">type = #{type},</if>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="title != null">title = #{title},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="contentst != null">contentst = #{contentst},</if>
+			<if test="pictureUrl != null">picture_url = #{pictureUrl},</if>
+			<if test="auditStatus != null">audit_status = #{auditStatus},</if>
+			<if test="createUser != null">create_user = #{createUser},</if>
+			<if test="auditUser != null">audit_user = #{auditUser},</if>
+			<if test="auditTime != null">audit_time = #{auditTime},</if>
+			<if test="auditReason != null">audit_reason = #{auditReason},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="delFlag != null">del_flag = #{delFlag},</if>
+			<if test="stick != null">stick = #{stick},</if>
+			<if test="pccount != null">pccount = #{pccount},</if>
+			<if test="upDownLine != null">up_down_line = #{upDownLine},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		UPDATE <include refid="tableNameUpdate"/> SET 
+			del_flag = #{DEL_FLAG_DELETE} , update_time = now()
+		WHERE id = #{id}
+	</update>
+	
+	
+	<update id="downByIds" parameterType="java.util.Map">
+		UPDATE dsj_new_house_news SET
+		up_down_line = #{upDownLine} ,stick = #{stick},update_time = now()
+		WHERE id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	<update id="updateAuditMany" parameterType="java.util.Map">
+ 		UPDATE dsj_new_house_news
+		SET 	
+			audit_user = #{auditUser},
+			audit_time = #{auditTime},
+			audit_status = #{auditStatus},
+			update_time = now(), 
+			audit_reason = #{auditReason},
+			up_down_line = #{upDownLine}
+		WHERE id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+ 	</update>
+ 	
+ 	<select id="listDeveloperHouseNewsPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.HouseNewsVo">
+		SELECT 
+    		<include refid="tableDeveloperVo"/>
+    	FROM <include refid="tableName"/> 
+			left join dsj_user u on a.create_user = u.id 
+			left join dsj_evelopers eveloper on eveloper.user_id = u.id 
+			left join dsj_new_house_directory_auth h on a.house_id = h.id
+		<where>
+			<include refid="developer_condition" />
+		</where>
+		ORDER BY a.stick DESC, a.update_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listDeveloperHouseNewsPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			left join dsj_user u on a.create_user = u.id 
+			left join dsj_evelopers eveloper on eveloper.user_id = u.id 
+			left join dsj_new_house_directory_auth h on a.house_id = h.id
+		<where>
+			<include refid="developer_condition"/>
+		</where>
+	</select>
+	
+	<update id="updateRemoveStick" parameterType="java.util.Map">
+		update <include refid="tableNameUpdate"/> 
+		set stick = #{stick} , update_time = now()
+		where (
+			 house_id in ( select h.id from dsj_new_house_directory_auth h 
+			where maintain_person = #{agentId} )
+			 or 
+			 create_user = #{agentId} 
+			  )
+	</update>
+	
+	<update id="updateAddStick" parameterType="java.util.Map">
+		update <include refid="tableNameUpdate"/>  
+		set stick = #{stick} , update_time = now()
+		where id = #{id}
+	</update>
+	
+	<update id="updateDeleteFlag">
+		UPDATE  <include refid="tableNameUpdate"/>
+		SET del_flag = #{delFlag} , update_time = now() WHERE id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 			#{item}  
+		</foreach>  
+	</update>
+	
+	<update id="updateLineFlag">
+		UPDATE  <include refid="tableNameUpdate"/>
+		SET up_down_line = #{upDownLine}, stick = #{stick}, update_time = now()  WHERE id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 			#{item}  
+		</foreach>  
+	</update>
+	
+	
+	<update id="updateDeleteByCreateUserIds" parameterType="java.util.Map">
+		UPDATE dsj_new_house_news SET
+		del_flag = #{deleteFlag}
+		WHERE create_user in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	<select id="getRelatedNews" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.HouseNewsVo">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.pccount DESC 
+		LIMIT 0,6
+	</select>
+	
+</mapper>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-开发商</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- 头部 -->
+    
+    <!-- 主体 -->
+    <div class="container">
+      <div class="row">
+        <!-- 进程 -->
+        <div class="PGress"> 
+         
+        </div>
+      </div>
+      
+        <div class="row person-detail">
+      <script id="dsj_person_detail_template" type="text/x-handlebars-template">
+    
+        <h4 class="person-detail-title">
+          完善资料
+        </h4>
+        <p class="person-detail-info">
+          当前您还未进行身份验证，请在<span>24小时</span>内完善资料进行身份认证；若未及时认证，平台将限制该账号的部分功能。
+        </p>
+        <div class="person-detail-step clearfix">
+          <div class="col-sm-1">
+			{{#compare name "==" null}}
+          		  <img id="companyId" class="img-responsive" src="./img/id.png">
+			{{else}}
+				<img class="img-responsive" src="./img/correct.png"> 
+			{{/compare}}
+          <!--   <img class="img-responsive" src="./img/correct.png"> -->
+          </div>
+          <div class="col-sm-10">
+            <p class="step-tile"><span>*</span>完善企业信息</p>
+            <p class="step-detail">完善个人信息有助于您获得客户更多信任</p>
+          </div>
+          <div class="col-sm-1">
+			{{#compare status "==" 4}}
+            <span class="pull-right step-action" ><a href="javascript:void(0);" onclick="to_company()">编辑</a></span>
+			{{/compare}}
+          </div>
+        </div>
+        <div class="person-detail-step clearfix">
+          <div class="col-sm-1">
+            {{#compare operationName "==" null}}
+          		  <img  class="img-responsive" src="./img/id.png">
+			{{else}}
+				<img class="img-responsive" src="./img/correct.png"> 
+			{{/compare}}
+          </div>
+          <div class="col-sm-10">
+            <p class="step-tile"><span>*</span>完善管理人信息</p>
+            <p class="step-detail">完善管理人信息有助于您获得客户更多信任</p>
+          </div>
+          <div class="col-sm-1">
+			{{#compare status "==" 4}}
+            <span class="pull-right step-action" ><a href="javascript:void(0);" onclick="to_person()">编辑</a></span>
+			{{/compare}}
+          </div>
+        </div>
+     
+        <div class="col-sm-12 step-button">
+          <!-- Button trigger modal -->
+			
+ 			{{#compare status '==' 4  }}
+				{{#compare  hasCommitAudit "==" true }}
+          		  	 <button type="button" class="btn dsj_button btn-primary" onclick="commitAudit()" data-toggle="modal" data-target="#myModal">
+            			提交审核
+         		 	 </button>	
+				{{/compare}}
+			{{/compare}}
+
+
+			{{#compare status '==' 4  }}
+				{{#compare  hasCommitAudit "==" false }}
+          		  	 <button type="button" style="background-color:#ececec"  class="btn dsj_button btn-primary"  >
+            			提交审核
+         		 	 </button>	
+				{{/compare}}
+			{{/compare}}
+	
+			{{#compare status "==" 1}}
+				 <button type="button" style="background-color:#ececec" class="btn dsj_button btn-primary"  data-toggle="modal" data-target="#myModal">
+          		  待审核
+         		 </button>
+			{{/compare}}
+         
+          
+        
+          <span class="dsj_warn"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>注：完善两项信息后提交审核</span>
+
+        </div>
+       </script>
+        </div>
+    </div>
+    <div class="dsj_footer">
+      <div class="container">
+        <div class="dsj_upper_footer">
+          <span>关于我们</span>
+          <span>合作伙伴</span>
+          <span>联系我们</span>
+        </div>
+        <div>
+          <ul class="dsj_lower_footer">
+            <li>北京大搜家信息技术服务有限公司&nbsp;&nbsp;|</li>
+            <li>网络经营许可证 京ICP备11024601号-12&nbsp;&nbsp;|</li>
+            <li>&copy;Copyright&copy;2010-2017 大搜家Dashoujia.com版权所有</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+      <script src="js/handlebars-utils.js"></script>
+     <script src="js/require.js"></script>
+      <script src="js/common/base.js"></script>
+      <script src="js/common/header.js"></script>
+    <script type="text/javascript">
+    	function to_company(){
+    		location=_url+"/app/complete-info.html";
+    	}
+    	function to_person(){
+    		location=_url+"/app/person-info.html";
+    	}
+    	  require(["text!common/commit.html"], function(tpl) {
+  	    	
+ 	    	 $('body').append(tpl);
+ 	    	 var source=$("#dailog_common_template").html();
+ 	    	 var template = Handlebars.compile(source);
+ 			 var html    = template();
+ 	    	 $('body').append(html);
+    	}); 
+    	  
+    	 require(["text!common/commit.html"], function(tpl) {
+    	    	
+  	    	 $('body').append(tpl);
+  	    	 var source=$("#error_html_template").html();
+  	    	 var template = Handlebars.compile(source);
+  			 var html    = template();
+  	    	 $('body').append(html);
+     	}); 
+    	  
+    	function commitAudit(){
+	   		setModelContent("确定提交审核？","auditConfirm");
+	   		  $("body").on("click","#auditConfirm",function(){
+	   			  $.ajax({
+	   		  			type:"post",
+	   		  			data:{},
+	   		  			dataType:"json",
+	   		  			url:_url+"/back/person/eveloper/audit",
+	   		  			success:function(resultVo){
+	   		  				if(resultVo.status!=200){
+	   							alert(resultVo.message);
+	   						}else{
+	   							location.reload();
+	   						}
+	   		  			}
+	   		  		})
+	   		  })
+    	}
+    	
+    	$(function(){
+    		  $.ajax({
+ 		  			type:"post",
+ 		  			data:{},
+ 		  			dataType:"json",
+ 		  			url:_url+"/back/person/eveloper/get_base_info",
+ 		  			success:function(resultVo){
+ 		  				if(resultVo.status!=200){
+ 							alert(resultVo.message);
+ 						}else{
+ 							
+ 				 	    	 var source=$("#dsj_person_detail_template").html();
+ 				 	    	 var template = Handlebars.compile(source);
+ 				 			 var html    = template(resultVo.data);
+ 				 	    	 $('.person-detail').append(html);
+ 						}
+ 		  			}
+ 		  		})
+    	})
+    </script>
+  	
+  </body>
+</html>

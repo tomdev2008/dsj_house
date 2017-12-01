@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.oldhouse.dao.impl.OldHouseRequireDaoImpl">
+    
+    <sql id="tableName"> old_house_require a </sql>
+    <sql id="tableNameUpdate"> old_house_require </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.require_useranme AS "requireUseranme",
+		a.require_phone AS "requirePhone",
+		a.trading_area AS "tradingArea",
+		a.building_name AS "buildingName",
+		a.house_type AS "houseType",
+		a.budget_min AS "budgetMin",
+		a.budget_max AS "budgetMax",
+		a.status AS "status",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.create_person AS "createPerson",
+		a.update_person AS "updatePerson"
+	</sql>
+	
+	<resultMap id="beanMap" type="OldHouseRequirePo">
+		<id column="id" property="id" />
+		<result column="require_useranme" property="requireUseranme" />
+		<result column="require_phone" property="requirePhone" />
+		<result column="trading_area" property="tradingArea" />
+		<result column="building_name" property="buildingName" />
+		<result column="house_type" property="houseType" />
+		<result column="budget_min" property="budgetMin" />
+		<result column="budget_max" property="budgetMax" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_person" property="updatePerson" />
+	</resultMap>
+	
+	<sql id="oldHouseRequireJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="requireUseranme != null and requireUseranme!= ''"> AND a.require_useranme = #{requireUseranme}</if>
+		<if test="requirePhone != null and requirePhone!= ''"> AND a.require_phone = #{requirePhone}</if>
+		<if test="tradingArea != null and tradingArea!= ''"> AND a.trading_area = #{tradingArea}</if>
+		<if test="buildingName != null and buildingName!= ''"> AND a.building_name = #{buildingName}</if>
+		<if test="houseType != null and houseType!= ''"> AND a.house_type = #{houseType}</if>
+		<if test="budgetMin != null and budgetMin!= ''"> AND a.budget_min = #{budgetMin}</if>
+		<if test="budgetMax != null and budgetMax!= ''"> AND a.budget_max = #{budgetMax}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+	</sql>
+	
+	<sql id="condition_sql_two">	
+		<if test="buildingName != null and buildingName!= ''"> AND a.building_name like concat('%',#{buildingName},'%')</if>
+		<if test="status != null and status!= ''"> AND a.status = #{status}</if>
+		<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+	</sql>
+    
+	<select id="getById" resultType="OldHouseRequirePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="oldHouseRequireJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql_two" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql_two"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OldHouseRequirePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			require_useranme,
+			require_phone,
+			trading_area,
+			building_name,
+			house_type,
+			budget_min,
+			budget_max,
+			status,
+			create_time,
+			update_time,
+			create_person,
+			update_person
+		) VALUES (
+			#{id},
+			#{requireUseranme},
+			#{requirePhone},
+			#{tradingArea},
+			#{buildingName},
+			#{houseType},
+			#{budgetMin},
+			#{budgetMax},
+			#{status},
+			#{createTime},
+			#{updateTime},
+			#{createPerson},
+			#{updatePerson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OldHouseRequirePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="requireUseranme != null">require_useranme,</if>
+					<if test="requirePhone != null">require_phone,</if>
+					<if test="tradingArea != null">trading_area,</if>
+					<if test="buildingName != null">building_name,</if>
+					<if test="houseType != null">house_type,</if>
+					<if test="budgetMin != null">budget_min,</if>
+					<if test="budgetMax != null">budget_max,</if>
+					<if test="status != null">status,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePerson != null">update_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="requireUseranme != null">#{requireUseranme},</if>
+			<if test="requirePhone != null">#{requirePhone},</if>
+			<if test="tradingArea != null">#{tradingArea},</if>
+			<if test="buildingName != null">#{buildingName},</if>
+			<if test="houseType != null">#{houseType},</if>
+			<if test="budgetMin != null">#{budgetMin},</if>
+			<if test="budgetMax != null">#{budgetMax},</if>
+			<if test="status != null">#{status},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="OldHouseRequirePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			require_useranme = #{requireUseranme},
+			require_phone = #{requirePhone},
+			trading_area = #{tradingArea},
+			building_name = #{buildingName},
+			house_type = #{houseType},
+			budget_min = #{budgetMin},
+			budget_max = #{budgetMax},
+			update_time = #{updateTime},
+			create_person = #{createPerson},
+			update_person = #{updatePerson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OldHouseRequirePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="requireUseranme != null">require_useranme = #{requireUseranme},</if>
+			<if test="requirePhone != null">require_phone = #{requirePhone},</if>
+			<if test="tradingArea != null">trading_area = #{tradingArea},</if>
+			<if test="buildingName != null">building_name = #{buildingName},</if>
+			<if test="houseType != null">house_type = #{houseType},</if>
+			<if test="budgetMin != null">budget_min = #{budgetMin},</if>
+			<if test="budgetMax != null">budget_max = #{budgetMax},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateOldHouseRequire" parameterType="java.util.Map">
+	    UPDATE <include refid="tableNameUpdate"/> SET 
+	      status = #{status}  WHERE id in 
+	    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 				#{item}  
+		</foreach>
+	</update>
+	
+</mapper>

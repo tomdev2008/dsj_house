@@ -1,0 +1,156 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.dsj</groupId>
+		<artifactId>dsj-common-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../../dsj-common/dsj-common-parent</relativePath>
+	</parent>
+
+	<artifactId>dsj-oldHouseParser-service</artifactId>
+	<packaging>jar</packaging>
+
+	<name>dsj-oldHouseParser-service</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<log4j.leve>debug</log4j.leve>
+		<log4j.ale>debug</log4j.ale>
+	</properties>
+	
+	
+
+	<build>
+		<finalName>dsj-oldHouseParser-service</finalName>
+
+		<!-- Junit 读取不到 xml 问题 -->
+		<testResources>
+			<testResource>
+				<directory>src/main/java</directory>
+				<includes>
+                    <include>**/*.xml</include>
+                </includes>
+			</testResource>
+		</testResources>
+
+       <!-- 打包xml及其他资源文件 -->
+		<resources>
+			<resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+			<resource>
+				<targetPath>${project.build.directory}/classes</targetPath>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+			<!-- 结合com.alibaba.dubbo.container.Main -->
+			<resource>
+				<targetPath>${project.build.directory}/classes/META-INF/spring</targetPath>
+				<directory>src/main/resources/spring</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>spring-context.xml</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<pluginManagement>
+			<plugins>
+				<!-- 解决Maven插件在Eclipse内执行了一系列的生命周期引起冲突 -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[2.0,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
+
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-common-utils</artifactId>
+			<version>${dsj-common-utils.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-common-config</artifactId>
+			<version>${dsj-common-config.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-common-core</artifactId>
+			<version>${dsj-common-core.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-other-api</artifactId>
+			<version>${dsj-other-api.version}</version>
+		</dependency>
+		
+			
+		
+		<dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-oldHouseParser-api</artifactId>
+			<version>${dsj-oldHouseParser-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-oldHouse-api</artifactId>
+			<version>${dsj-oldHouse-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dsj</groupId>
+			<artifactId>dsj-solr-api</artifactId>
+			<version>${dsj-solr-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>2.0.5</version>
+		</dependency>
+	</dependencies>
+	
+	
+</project>
+

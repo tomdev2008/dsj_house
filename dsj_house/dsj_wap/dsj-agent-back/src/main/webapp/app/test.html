@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script src="js/jquery.js"></script>
+</head>
+<body>
+
+aa
+<script type="text/javascript">
+		$(function(){
+			$.ajax({
+		        url : 'http://localhost:7070/dsj-agent-back/back/oldHouse/master/test',
+		        data : {},
+		        dataType: 'json',
+		        type : 'POST',
+		        xhrFields: {
+		            withCredentials: true
+		        },
+		        crossDomain: true,
+		        contentType: "application/json",
+		    	success:function(result){
+					alert(result.message);
+				}
+		})
+		})
+</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.other.dao.impl.GroupTypeDaoImpl">
+    
+    <sql id="tableName"> house_group_type a </sql>
+    <sql id="tableNameUpdate"> house_group_type </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.typegroupname AS "typegroupname",
+		a.parent_id AS "parentId",
+		a.sort AS "sort",
+		a.del AS "del"
+	</sql>
+	
+	<resultMap id="beanMap" type="GroupTypePo">
+		<id column="id" property="id" />
+		<result column="typegroupname" property="typegroupname" />
+		<result column="parent_id" property="parentId" />
+		<result column="sort" property="sort" />
+		<result column="del" property="del" />
+	</resultMap>
+	
+	<sql id="groupTypeJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="typegroupname != null and typegroupname!= ''"> AND a.typegroupname = #{typegroupname}</if>
+		<if test="parentId != null"> AND a.parent_id = #{parentId}</if>
+		<if test="sort != null"> AND a.sort = #{sort}</if>
+		<if test="del != null and del!= ''"> AND a.del = #{del}</if>
+	</sql>
+    
+	<select id="getById" resultType="GroupTypePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="groupTypeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.sort ASC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="GroupTypePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			typegroupname,
+			parent_id,
+			sort,
+			del
+		) VALUES (
+			#{id},
+			#{typegroupname},
+			#{parentId},
+			#{sort},
+			#{del}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="GroupTypePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="typegroupname != null">typegroupname,</if>
+					<if test="parentId != null">parent_id,</if>
+					<if test="sort != null">sort,</if>
+					<if test="del != null">del,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="typegroupname != null">#{typegroupname},</if>
+			<if test="parentId != null">#{parentId},</if>
+			<if test="sort != null">#{sort},</if>
+			<if test="del != null">#{del},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="GroupTypePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			typegroupname = #{typegroupname},
+			parent_id = #{parentId},
+			sort = #{sort},
+			del = #{del},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="GroupTypePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="typegroupname != null">typegroupname = #{typegroupname},</if>
+			<if test="parentId != null">parent_id = #{parentId},</if>
+			<if test="sort != null">sort = #{sort},</if>
+			<if test="del != null">del = #{del},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getDictrait" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	where a.parent_id = #{parentId} and a.sort != 0 order by a.sort ASC limit 0 ,#{count} 
+  	</select>
+  	
+  	<select id="getGroupTypeBackMapByPid" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	where a.parent_id = #{parentId} and del = #{del} and id  &lt; 484
+  	</select>
+  	
+	
+</mapper>

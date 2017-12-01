@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://code.alibabatech.com/schema/dubbo  
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="dsj-time-oldHouser" />
+
+	<!-- 超时时间，重试次数 -->
+	<dubbo:provider delay="-1" timeout="300000" retries="0"/>
+	<dubbo:consumer timeout="400000" retries="0" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<!-- 注册中心地址 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" />
+
+	<!--
+    id：服务引用spring的BeanID，必填
+    interface：服务接口名（包名+类名），必填
+    group：服务分组，必需和服务提供方一致
+    check：启动时检查提供者是否存在，false报错，false忽略，默认false，建议配置
+    timeout：服务方法调用超时时间（毫秒），默认1000
+    retries：远程服务调用重试次数，不包括第一次调用，不需要重试设为0
+    version：服务版本，建议使用两位数字版本，通常在接口不兼容时版本号才需要升级，建议配置
+
+ -->
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.HouseMasterCrawlerService" id="houseMasterCrawlerService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.ZydcOldhouseFlagService" id="zydcOldhouseFlagService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.HouseAlikeCommunityTempService" id="houseAlikeCommunityTempService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.MtfcOldhouseFlagService" id="mtfcOldhouseFlagService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.HouseLianjiaCommunityService" id="houseLianjiaCommunityService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.HouseAlikeCommunityService" id="houseAlikeCommunityService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.other.service.HouseDirectoryService" id="houseDirectoryService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.other.service.HousePictureService" id="housePictureService" check="false"  version="1.0"/>
+     
+     
+    
+    <dubbo:reference interface="com.dsj.modules.oldHouseParser.service.OldHousePictureCrawlerService" id="oldHousePictureCrawlerService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.HousePictureCrawlerService" id="housePictureCrawlerService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.OldMasterLianjiaAreaService" id="oldMasterLianjiaAreaService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.IpPoolService" id="ipPoolService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.biz.IpPoolBiz" id="ipPoolBiz" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.biz.HouseMasterCrawlerBiz" id="houseMasterCrawlerBiz" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.DicDealLogsCrawlerService" id="dicDealLogsCrawlerService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.DicWenCrawlerService" id="dicWenCrawlerService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.DicHouseTypeCrawlerService" id="dicHouseTypeCrawlerService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.oldHouseParser.service.MasterCrawlerTaskService" id="masterCrawlerTaskService" check="false"  version="1.0"/>
+	
+
+	<dubbo:reference interface="com.dsj.modules.oldhouse.service.OldHouseMasterService" id="oldHouseMasterService" check="false"  version="1.0"/>
+
+
+</beans>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.fw.dao.impl.OrderNodeJdDaoImpl">
+    
+    <sql id="tableName"> dsj_order_node_jd a </sql>
+    <sql id="tableNameUpdate"> dsj_order_node_jd </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.order_id AS "orderId",
+		a.order_detail_id AS "orderDetailId",
+		a.node_id AS "nodeId",
+		a.node_name AS "nodeName",
+		a.pcname AS pcname,
+		a.status AS "status",
+		a.isauth AS "isauth",
+		a.deal_user_id AS "dealUserId",
+		a.deal_user_name AS "dealUserName",
+		a.deal_time AS "dealTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="OrderNodeJdPo">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="order_detail_id" property="orderDetailId" />
+		<result column="node_id" property="nodeId" />
+		<result column="node_name" property="nodeName" />
+		<result column="pcname" property="pcname" />
+		<result column="status" property="status" />
+		<result column="isauth" property="isauth" />
+		<result column="deal_user_id" property="dealUserId" />
+		<result column="deal_user_name" property="dealUserName" />
+		<result column="deal_time" property="dealTime" />
+	</resultMap>
+	
+	<sql id="orderNodeJdJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="orderId != null and orderId!= ''"> AND a.order_id = #{orderId}</if>
+		<if test="orderDetailId != null and orderDetailId!= ''"> AND a.order_detail_id = #{orderDetailId}</if>
+		<if test="nodeId != null and nodeId!= ''"> AND a.node_id = #{nodeId}</if>
+		<if test="nodeName != null and nodeName!= ''"> AND a.node_name = #{nodeName}</if>
+		<if test="pcname != null and pcname != ''"> AND a.pcname = #{pcname}</if>
+		<if test="dealUserId != null and dealUserId!= ''"> AND a.deal_user_id = #{dealUserId}</if>
+		<if test="dealUserName != null and dealUserName!= ''"> AND a.deal_user_name = #{dealUserName}</if>
+		<if test="dealTime != null and dealTime!= ''"> AND a.deal_time = #{dealTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="OrderNodeJdPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="orderNodeJdJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id 
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id 
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="OrderNodeJdPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			order_id,
+			order_detail_id,
+			node_id,
+			node_name,
+			pcname,
+			status,
+			deal_user_id,
+			deal_user_name,
+			deal_time
+		) VALUES (
+			#{id},
+			#{orderId},
+			#{orderDetailId},
+			#{nodeId},
+			#{nodeName},
+			#{pcname},
+			#{status},
+			#{dealUserId},
+			#{dealUserName},
+			#{dealTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="OrderNodeJdPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="orderId != null">order_id,</if>
+					<if test="orderDetailId != null">order_detail_id,</if>
+					<if test="nodeId != null">node_id,</if>
+					<if test="nodeName != null">node_name,</if>
+					<if test="pcname != null">pcname,</if>
+					<if test="status != null">status,</if>
+					<if test="isauth != null">isauth,</if>
+					<if test="dealUserId != null">deal_user_id,</if>
+					<if test="dealUserName != null">deal_user_name,</if>
+					<if test="dealTime != null">deal_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="orderId != null">#{orderId},</if>
+			<if test="orderDetailId != null">#{orderDetailId},</if>
+			<if test="nodeId != null">#{nodeId},</if>
+			<if test="nodeName != null">#{nodeName},</if>
+			<if test="pcname != null">#{pcname},</if>
+			<if test="status != null">#{status},</if>
+			<if test="isauth != null">#{isauth},</if>
+			<if test="dealUserId != null">#{dealUserId},</if>
+			<if test="dealUserName != null">#{dealUserName},</if>
+			<if test="dealTime != null">#{dealTime},</if>
+        </trim>
+    </insert>
+    
+    <insert id="batchInsert" parameterType="java.util.List">  
+	    INSERT INTO <include refid="tableNameUpdate"/>
+	    (
+	    	order_id,
+	    	order_detail_id,
+	    	node_id,
+	    	node_name,
+	    	pcname,
+	    	isauth,
+			status)
+        VALUES 
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	   	( 
+			#{item.orderId},
+			#{item.orderDetailId},
+			#{item.nodeId},
+			#{item.nodeName},
+			#{item.pcname},
+			#{item.isauth},
+			#{item.status})
+	    </foreach>  
+	</insert>  
+	
+	<update id="update" parameterType="OrderNodeJdPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			order_id = #{orderId},
+			order_detail_id = #{orderDetailId},
+			node_id = #{nodeId},
+			node_name = #{nodeName},
+			pcname = #{pcname},
+			deal_user_id = #{dealUserId},
+			deal_user_name = #{dealUserName},
+			deal_time = #{dealTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="OrderNodeJdPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="orderId != null">order_id = #{orderId},</if>
+			<if test="orderDetailId != null">order_detail_id = #{orderDetailId},</if>
+			<if test="nodeId != null">node_id = #{nodeId},</if>
+			<if test="nodeName != null">node_name = #{nodeName},</if>
+			<if test="pcname != null">pcname = #{pcname},</if>
+			<if test="dealUserId != null">deal_user_id = #{dealUserId},</if>
+			<if test="dealUserName != null">deal_user_name = #{dealUserName},</if>
+			<if test="dealTime != null">deal_time = #{dealTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+    
+    <update id="updateByOrderDetailId" parameterType="OrderNodeJdPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+    	 	<if test="status != null">status = #{status},</if>
+			<if test="dealUserId != null">deal_user_id = #{dealUserId},</if>
+			<if test="dealUserName != null">deal_user_name = #{dealUserName},</if>
+			<if test="dealTime != null">deal_time = #{dealTime},</if>
+    	</set>
+    	WHERE order_detail_id = #{orderDetailId}  and node_id = #{nodeId}
+    </update>
+    
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

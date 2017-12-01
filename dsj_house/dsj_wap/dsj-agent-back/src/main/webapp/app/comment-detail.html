@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script type="text/javascript" src="js/fles.js"></script>
+</head>
+<body>
+
+	<div class="container">
+		<div class="row"></div>
+		<div class="row">
+			<form id="dsj_form" class="form-horizontal dsj_form">
+				<script id="master_add" type="text/x-handlebars-template">
+		<h4 class="dsj_title">我的点评</h4>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-1 control-label">点评时间</label>
+            <div class="col-sm-1">
+				<input type="text" name="title" value="{{createTime}}" class="form-control" readonly="readonly" >
+            </div>
+		</div>
+		<div class="form-group">
+            <label for="housename"  class="col-sm-1 control-label">楼盘名称</label>
+            <div class="col-sm-1">
+				<input type="text" name="title" value="{{houseName}}" class="form-control" readonly="readonly" >
+            </div>
+		</div>
+		<div class="form-group">
+			<label for="text" class="col-sm-1 control-label">内容</label>
+			<div class="col-sm-10">
+				<!--{{#convertHtml content}}{{/convertHtml}}-->
+				<textarea name="content" readonly="readonly" class="form-control" data-validate="required" rows="3">{{#convertHtml content}}{{/convertHtml}}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="id_number" class="col-sm-1 control-label"><span class="dsj_warn"></span>图片：</label>
+			
+			
+		{{#if picture}}
+          <div>
+			{{#each pictureArray}}
+        		<div class="col-xs-2">
+              		<img class="img-responsive" style="height: 95px;" src="{{this}}">
+            	</div>
+       		{{/each}}
+          </div>
+		{{/if}}
+			
+        </div>
+ 		<div class="row dsj_button_group">
+            <div class="col-sm-12">
+				<a class="btn btn-default" onclick="cancel()" role="button">返回</a>
+            </div>
+		</div>
+		</script>
+			</form>
+		</div>
+	</div>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script type="text/javascript" src="js/webuploader.js"></script>
+	<script type="text/javascript" src="js/single-upload.js"></script>
+	<script src="js/dsj_tags.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="lib/validate/verify.notify.js"></script>
+	<script src="lib/validate/verify.notify.ext.js"></script>
+
+	<script type="text/javascript">
+    $(function(){
+		var id = GetQueryString("id"); 
+		
+		$.ajax({
+            type: "GET",
+            url: _url+"/back/comment/getAgentCommentById" ,
+            async:false,
+            data:{ id : id },
+            dataType: "json",
+            success: function(data){
+               render(data.data);
+            }
+		 });
+		
+    })
+    
+    function render (data){
+		var source = $("#master_add").html();
+        var template = Handlebars.compile(source);
+	    var html = template(data);
+        $("#dsj_form").prepend(html);
+	}
+    
+    function cancel (){
+    	location = _url+"/app/comment.html";
+	}
+    
+    </script>
+	<script src="lib/select2/4.0.3/js/select2.min.js""></script>
+	<script src="js/require.js"></script>
+	<script src="js/common/header.js"></script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.comment.dao.impl.AgentNewsDaoImpl">
+    
+    <sql id="tableName"> dsj_agent_news a </sql>
+    <sql id="tableNameUpdate"> dsj_agent_news </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.content AS "content",
+		a.pictures AS "pictures",
+		a.comment_num AS "commentNum",
+		a.negative_num AS "negativeNum",
+		a.like_num AS "likeNum",
+		a.create_user AS "createUser",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick"
+	</sql>
+	
+	<sql id="tableColumnsVo">
+		a.id AS "id",
+		a.content AS "content",
+		a.pictures AS "pictures",
+		a.comment_num AS "commentNum",
+		a.negative_num AS "negativeNum",
+		a.like_num AS "likeNum",
+		a.create_user AS "createUser",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick",				
+		t.tell_phone AS "tellPhone",
+		t.agent_code AS "agentCode",
+		t.name AS "name",
+		t.company AS "company"
+	</sql>
+	
+	<sql id="tableColumnsVoTwo">
+		a.id AS "id",
+		a.content AS "content",
+		a.pictures AS "pictures",
+		a.comment_num AS "commentNum",
+		a.negative_num AS "negativeNum",
+		a.like_num AS "likeNum",
+		a.create_user AS "createUser",
+		a.create_time AS "createTime",
+		a.del_flag AS "delFlag",
+		a.stick AS "stick",				
+		t.tell_phone AS "tellPhone",
+		t.agent_code AS "agentCode",
+		t.name AS "name",
+		t.company AS "company",
+		t.main_community AS "mainCommunity",
+		c.company_name AS "companyName",
+		c.short_name AS "shortName",
+		u.avatar AS "avatarUrl",
+		u.username as "username",
+		u.realname as "realname",
+		m.mobile as "mobile400"
+	</sql>
+	
+	<resultMap id="beanMap" type="AgentNewsPo">
+		<id column="id" property="id" />
+		<result column="content" property="content" />
+		<result column="pictures" property="pictures" />
+		<result column="comment_num" property="commentNum" />
+		<result column="negative_num" property="negativeNum" />
+		<result column="like_num" property="likeNum" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="del_flag" property="delFlag" />
+		<result column="stick" property="stick" />
+	</resultMap>
+	
+	<sql id="agentNewsJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="pictures != null and pictures!= ''"> AND a.pictures = #{pictures}</if>
+		<if test="commentNum != null and commentNum!= ''"> AND a.comment_num = #{commentNum}</if>
+		<if test="negativeNum != null and negativeNum!= ''"> AND a.negative_num = #{negativeNum}</if>
+		<if test="likeNum != null and likeNum!= ''"> AND a.like_num = #{likeNum}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="stick != null and stick!= ''"> AND a.stick = #{stick}</if>
+		<if test="createTimeStart != null and createTimeStart!= ''">
+			<![CDATA[AND a.create_time > #{createTimeStart}]]>
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!= ''">
+			<![CDATA[AND a.create_time < #{createTimeEnd}]]>
+		</if>
+	</sql>
+	
+	<sql id="condition_two">	
+		<if test="id != null and id!= ''"> AND a.id = #{id}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="pictures != null and pictures!= ''"> AND a.pictures = #{pictures}</if>
+		<if test="commentNum != null and commentNum!= ''"> AND a.comment_num = #{commentNum}</if>
+		<if test="negativeNum != null and negativeNum!= ''"> AND a.negative_num = #{negativeNum}</if>
+		<if test="likeNum != null and likeNum!= ''"> AND a.like_num = #{likeNum}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+		<if test="delFlag != null and delFlag!= ''"> AND a.del_flag = #{delFlag}</if>
+		<if test="stick != null and stick!= ''"> AND a.stick = #{stick}</if>
+	</sql>
+    
+	<select id="getById" resultType="AgentNewsPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="agentNewsJoins"/>
+		WHERE a.id = #{id} 
+	</select>
+	
+	<select id="getVoById" resultType="com.dsj.modules.comment.vo.AgentNewsVo">
+		SELECT 
+			<include refid="tableColumnsVo"/>
+		FROM dsj_agent t,<include refid="tableName"/> 
+		<include refid="agentNewsJoins"/>
+		WHERE a.id = #{id} and t.user_id = a.create_user
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+		<select id="listNewPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.AgentNewsVo">
+		SELECT 
+    		<include refid="tableColumnsVo"/>
+    	FROM dsj_agent t,<include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<if test="tellPhone != null and tellPhone!= ''"> AND t.tell_phone = #{tellPhone}</if>
+		<if test="agentCode != null and agentCode!= ''"> 
+			AND t.agent_code LIKE CONCAT(CONCAT('%', #{agentCode}), '%')
+		</if>
+		and t.user_id = a.create_user
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM dsj_agent t, <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+		<if test="tellPhone != null and tellPhone!= ''"> AND t.tell_phone = #{tellPhone}</if>
+		<if test="agentCode != null and agentCode!= ''"> 
+			AND t.agent_code LIKE CONCAT(CONCAT('%', #{agentCode}), '%')
+		</if>
+		and t.user_id = a.create_user
+	</select>
+	
+	<select id="listAgentNewsPage" parameterType="java.util.Map" resultType="com.dsj.modules.comment.vo.AgentNewsVo">
+		SELECT 
+    		<include refid="tableColumnsVoTwo"/>
+    		<if test="clickUser != null and clickUser != ''"> 
+    			, dcc.type as "clicktype"
+    		</if>
+    	FROM dsj_agent t left join <include refid="tableName"/> on t.user_id = a.create_user 
+    		left join dsj_company c on t.company = c.id 
+    		left join dsj_user u on t.user_id = u.id 
+    		LEFT outer JOIN dsj_mobile m on t.id = m.agent_id
+    		<if test="clickUser != null and clickUser != ''"> 
+    			LEFT OUTER JOIN 
+				(select id, obj_type,obj_id,type from dsj_click_count
+					 where obj_type = 1 and create_preson = #{clickUser} group by obj_id ) as dcc 
+				on dcc.obj_id = a.id 
+    		</if>
+		<where>
+			<include refid="condition_two" />
+		</where>
+		<choose>
+            <when test="industry != null and industry !=''">
+                ORDER BY a.create_time DESC 
+            </when>
+            <otherwise>
+                ORDER BY a.stick DESC, a.create_time DESC 
+            </otherwise>
+        </choose>
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listAgentNewsCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM dsj_agent t 
+			left join <include refid="tableName"/> on t.user_id = a.create_user 
+    		left join dsj_company c on t.company = c.id 
+    		left join dsj_user u on t.user_id = u.id 
+    		LEFT outer JOIN dsj_mobile m on t.id = m.agent_id
+		<where>
+			<include refid="condition_two"/>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="AgentNewsPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			content,
+			pictures,
+			comment_num,
+			negative_num,
+			like_num,
+			create_user,
+			create_time,
+			del_flag,
+			stick
+		) VALUES (
+			#{id},
+			#{content},
+			#{pictures},
+			#{commentNum},
+			#{negativeNum},
+			#{likeNum},
+			#{createUser},
+			#{createTime},
+			#{delFlag},
+			#{stick}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="AgentNewsPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="content != null">content,</if>
+					<if test="pictures != null">pictures,</if>
+					<if test="commentNum != null">comment_num,</if>
+					<if test="negativeNum != null">negative_num,</if>
+					<if test="likeNum != null">like_num,</if>
+					<if test="createUser != null">create_user,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="delFlag != null">del_flag,</if>
+					<if test="stick != null">stick,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="content != null">#{content},</if>
+			<if test="pictures != null">#{pictures},</if>
+			<if test="commentNum != null">#{commentNum},</if>
+			<if test="negativeNum != null">#{negativeNum},</if>
+			<if test="likeNum != null">#{likeNum},</if>
+			<if test="createUser != null">#{createUser},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="delFlag != null">#{delFlag},</if>
+			<if test="stick != null">#{stick},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="AgentNewsPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			content = #{content},
+			pictures = #{pictures},
+			comment_num = #{commentNum},
+			negative_num = #{negativeNum},
+			like_num = #{likeNum},
+			create_user = #{createUser},
+			del_flag = #{delFlag},
+			stick = #{stick},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="AgentNewsPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="content != null">content = #{content},</if>
+			<if test="pictures != null">pictures = #{pictures},</if>
+			<if test="commentNum != null">comment_num = #{commentNum},</if>
+			<if test="negativeNum != null">negative_num = #{negativeNum},</if>
+			<if test="likeNum != null">like_num = #{likeNum},</if>
+			<if test="createUser != null">create_user = #{createUser},</if>
+			<if test="delFlag != null">del_flag = #{delFlag},</if>
+			<if test="stick != null">stick = #{stick},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		UPDATE <include refid="tableNameUpdate"/> SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+ 	<select id="getNewsByUserId" parameterType="java.util.Map" resultMap="beanMap">
+		select * from dsj_agent_news where user_id = #{userId}
+		ORDER BY create_time DESC 
+		LIMIT #{begin} , #{size} 
+	</select>
+	
+	<update id="updateRemoveStick" parameterType="java.util.Map">
+		update dsj_agent_news 
+		set stick = #{stick}
+		where create_user = #{createUser}
+	</update>
+	
+	<update id="updateAddStick" parameterType="java.util.Map">
+		update dsj_agent_news 
+		set stick = #{stick}
+		where id = #{id}
+	</update>
+	
+	<update id="deleteAgentNewsByIds" parameterType="java.util.Map">
+		UPDATE dsj_agent_news SET
+		del_flag = #{delFlag}
+		WHERE id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+</mapper>

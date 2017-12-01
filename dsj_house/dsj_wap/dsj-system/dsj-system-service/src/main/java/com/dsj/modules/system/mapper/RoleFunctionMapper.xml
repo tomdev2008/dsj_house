@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.RoleFunctionDaoImpl">
+    
+    <sql id="tableName"> dsj_role_function a </sql>
+    <sql id="tableNameUpdate"> dsj_role_function </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.role_id AS "roleId",
+		a.func_id AS "funcId"
+	</sql>
+	
+	<resultMap id="beanMap" type="RoleFunctionPo">
+		<id column="id" property="id" />
+		<result column="role_id" property="roleId" />
+		<result column="func_id" property="funcId" />
+	</resultMap>
+	
+	<sql id="roleFunctionJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="roleId != null and roleId!= ''"> AND a.role_id = #{roleId}</if>
+		<if test="funcId != null and funcId!= ''"> AND a.func_id = #{funcId}</if>
+	</sql>
+    
+	<select id="getById" resultType="RoleFunctionPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="roleFunctionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	<select id="findRolefuncionList" parameterType="java.util.Map" resultMap="beanMap">
+	    SELECT 
+	       <include refid="tableColumns"/>
+	    FROM <include refid="tableName"/>
+	     <where>
+	        <include refid="condition_sql"/>
+	     </where>
+	       ORDER BY a.id DESC 
+	</select>
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="RoleFunctionPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			role_id,
+			func_id
+		) VALUES (
+			#{id},
+			#{roleId},
+			#{funcId}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="RoleFunctionPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="roleId != null">role_id,</if>
+					<if test="funcId != null">func_id,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="roleId != null">#{roleId},</if>
+			<if test="funcId != null">#{funcId},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="RoleFunctionPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			role_id = #{roleId},
+			func_id = #{funcId},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="RoleFunctionPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="roleId != null">role_id = #{roleId},</if>
+			<if test="funcId != null">func_id = #{funcId},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	<!-- 删除角色权限中间表 -->
+	<delete id="deleteByRoleId" parameterType="java.util.Map">
+	 DELETE FROM <include refid="tableNameUpdate"/> where role_id=#{roleId} 
+	</delete>
+	
+	
+	<!-- 批量添加角色权限中间表 -->
+	 <insert id="insertRoleFunction" parameterType="java.util.List"> 
+     INSERT INTO <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="list != null">role_id,</if>
+			<if test="list != null">func_id,</if>
+        </trim> 
+        VALUES
+       <foreach collection="list" item="item" index="index" separator=","> 
+        (#{item.roleId},#{item.funcId}) 
+       </foreach> 
+   </insert> 
+ 
+</mapper>

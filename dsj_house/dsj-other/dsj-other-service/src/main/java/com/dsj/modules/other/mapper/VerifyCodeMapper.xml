@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.other.dao.impl.VerifyCodeDaoImpl">
+    
+    <sql id="tableName"> dsj_verify_code a </sql>
+    <sql id="tableNameUpdate"> dsj_verify_code </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.verify_code AS "verifyCode",
+		a.phone AS "phone",
+		a.type AS "type",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="VerifyCodePo">
+		<id column="id" property="id" />
+		<result column="verify_code" property="verifyCode" />
+		<result column="phone" property="phone" />
+		<result column="type" property="type" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<sql id="verifyCodeJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="verifyCode != null and verifyCode!= ''"> AND a.verify_code = #{verifyCode}</if>
+		<if test="phone != null and phone!= ''"> AND a.phone = #{phone}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+	</sql>
+    
+	<select id="getById" resultType="VerifyCodePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="verifyCodeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="VerifyCodePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			verify_code,
+			phone,
+			type,
+			create_time
+		) VALUES (
+			#{id},
+			#{verifyCode},
+			#{phone},
+			#{type},
+			#{createTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="VerifyCodePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="verifyCode != null">verify_code,</if>
+					<if test="phone != null">phone,</if>
+					<if test="type != null">type,</if>
+					<if test="createTime != null">create_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="verifyCode != null">#{verifyCode},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="type != null">#{type},</if>
+			<if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="VerifyCodePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			verify_code = #{verifyCode},
+			phone = #{phone},
+			type = #{type},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="VerifyCodePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="verifyCode != null">verify_code = #{verifyCode},</if>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="type != null">type = #{type},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getByLast" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+		order by a.create_time desc limit 1
+  	</select>
+	
+</mapper>

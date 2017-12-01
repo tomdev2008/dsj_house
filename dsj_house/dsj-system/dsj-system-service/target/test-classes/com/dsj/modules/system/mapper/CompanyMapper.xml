@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.CompanyDaoImpl">
+    
+    <sql id="tableName"> dsj_company a </sql>
+    <sql id="tableNameUpdate"> dsj_company </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.company_name AS "companyName",
+		a.short_name AS "shortName",
+		a.city AS "city",
+		a.ico AS "ico",
+		a.introduce AS "introduce",
+		a.company_type AS "companyType",
+		a.service_type AS "serviceType",
+		a.create_preson AS "createPreson",
+		a.update_preson AS "updatePreson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.delete_flag AS "deleteFlag"
+	</sql>
+	
+	<resultMap id="beanMap" type="CompanyPo">
+		<id column="id" property="id" />
+		<result column="company_name" property="companyName" />
+		<result column="short_name" property="shortName" />
+		<result column="city" property="city" />
+		<result column="ico" property="ico" />
+		<result column="introduce" property="introduce" />
+		<result column="company_type" property="companyType" />
+		<result column="service_type" property="serviceType" />
+		<result column="create_preson" property="createPreson" />
+		<result column="update_preson" property="updatePreson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="delete_flag" property="deleteFlag" />
+	</resultMap>
+	
+	<sql id="companyJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="companyName != null and companyName!= ''"> AND a.company_name LIKE CONCAT(CONCAT('%', #{companyName}), '%')</if>
+		<if test="shortName != null and shortName!= ''"> AND a.short_name = #{shortName}</if>
+		<if test="city != null and city!= ''"> AND a.city = #{city}</if>
+		<if test="ico != null and ico!= ''"> AND a.ico = #{ico}</if>
+		<if test="introduce != null and introduce!= ''"> AND a.introduce = #{introduce}</if>
+		<if test="companyType != null and companyType!= ''"> AND a.company_type = #{companyType}</if>
+		<if test="serviceType != null and serviceType!= ''"> AND a.service_type = #{serviceType}</if>
+		<if test="createPreson != null and createPreson!= ''"> AND a.create_preson = #{createPreson}</if>
+		<if test="updatePreson != null and updatePreson!= ''"> AND a.update_preson = #{updatePreson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+	</sql>
+    
+	<select id="getById" resultType="CompanyPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="companyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="listNewPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="CompanyPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			company_name,
+			short_name,
+			city,
+			ico,
+			introduce,
+			company_type,
+			service_type,
+			create_preson,
+			update_preson,
+			create_time,
+			update_time,
+			delete_flag
+		) VALUES (
+			#{id},
+			#{companyName},
+			#{shortName},
+			#{city},
+			#{ico},
+			#{introduce},
+			#{companyType},
+			#{serviceType},
+			#{createPreson},
+			#{updatePreson},
+			#{createTime},
+			#{updateTime},
+			#{deleteFlag}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="CompanyPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="companyName != null">company_name,</if>
+					<if test="shortName != null">short_name,</if>
+					<if test="city != null">city,</if>
+					<if test="ico != null">ico,</if>
+					<if test="introduce != null">introduce,</if>
+					<if test="companyType != null">company_type,</if>
+					<if test="serviceType != null">service_type,</if>
+					<if test="createPreson != null">create_preson,</if>
+					<if test="updatePreson != null">update_preson,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="companyName != null">#{companyName},</if>
+			<if test="shortName != null">#{shortName},</if>
+			<if test="city != null">#{city},</if>
+			<if test="ico != null">#{ico},</if>
+			<if test="introduce != null">#{introduce},</if>
+			<if test="companyType != null">#{companyType},</if>
+			<if test="serviceType != null">#{serviceType},</if>
+			<if test="createPreson != null">#{createPreson},</if>
+			<if test="updatePreson != null">#{updatePreson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="CompanyPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			company_name = #{companyName},
+			short_name = #{shortName},
+			city = #{city},
+			ico = #{ico},
+			introduce = #{introduce},
+			company_type = #{companyType},
+			service_type = #{serviceType},
+			create_preson = #{createPreson},
+			update_preson = #{updatePreson},
+			update_time = #{updateTime},
+			delete_flag = #{deleteFlag},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="CompanyPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="companyName != null">company_name = #{companyName},</if>
+			<if test="shortName != null">short_name = #{shortName},</if>
+			<if test="city != null">city = #{city},</if>
+			<if test="ico != null">ico = #{ico},</if>
+			<if test="introduce != null">introduce = #{introduce},</if>
+			<if test="companyType != null">company_type = #{companyType},</if>
+			<if test="serviceType != null">service_type = #{serviceType},</if>
+			<if test="createPreson != null">create_preson = #{createPreson},</if>
+			<if test="updatePreson != null">update_preson = #{updatePreson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

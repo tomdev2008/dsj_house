@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.rent.dao.impl.RentHouseOriginDaoImpl">
+    
+    <sql id="tableName"> rent_house_origin a </sql>
+    <sql id="tableNameUpdate"> rent_house_origin </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.dic_id AS "dicId",
+		a.room_name AS "roomName",
+		a.rent_type AS "rentType",
+		a.rent_price AS "rentPrice",
+		a.pay_type AS "payType",
+		a.door AS "door",
+		a.hall AS "hall",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.house_floor AS "houseFloor",
+		a.total_floors AS "totalFloors",
+		a.wy_type AS "wyType",
+		a.zx_type AS "zxType",
+		a.orientation AS "orientation",
+		a.gender_type AS "genderType",
+		a.area AS "area",
+		a.detail_point AS "detailPoint",
+		a.house_title AS "houseTitle",
+		a.house_desc AS "houseDesc",
+		a.issue_date AS "issueDate",
+		a.picture_url AS "pictureUrl",
+		a.status AS "status",
+		a.delete_flag AS "deleteFlag",
+		a.create_person AS "createPerson",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="tableColumns_vo">
+		a.id AS "id",
+		a.dic_id AS "dicId",
+		a.room_name AS "roomName",
+		a.rent_type AS "rentType",
+		a.rent_price AS "rentPrice",
+		a.pay_type AS "payType",
+		a.door AS "door",
+		a.hall AS "hall",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.house_floor AS "houseFloor",
+		a.total_floors AS "totalFloors",
+		a.wy_type AS "wyType",
+		a.zx_type AS "zxType",
+		a.orientation AS "orientation",
+		a.gender_type AS "genderType",
+		a.area AS "area",
+		a.detail_point AS "detailPoint",
+		a.house_title AS "houseTitle",
+		a.house_desc AS "houseDesc",
+		a.issue_date AS "issueDate",
+		a.picture_url AS "pictureUrl",
+		a.status AS "status",
+		a.delete_flag AS "deleteFlag",
+		a.create_person AS "createPerson",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		dic.card_name AS "cardName",
+		dic.area_name1 AS "areaName1",
+		dic.area_name2 AS "areaName2",
+		dic.area_name3 AS "areaName3",
+		dic.trading_area_name AS "tradingAreaName",
+		case a.status
+			WHEN 1 THEN '未上架'
+			WHEN 2 THEN '上架'
+			WHEN 3 THEN '下架'
+		end  AS "statusName",
+		case a.rent_type
+			WHEN 1 THEN '整租'
+			WHEN 2 THEN '合租'
+		end  AS "rentTypeName",
+		dic.spray_name AS "sprayName",
+		dic.dimension AS "dimension",
+		dic.accuracy AS "accuracy"
+	</sql>
+	
+	<resultMap id="beanMap" type="RentHouseOriginPo">
+		<id column="id" property="id" />
+		<result column="dic_id" property="dicId" />
+		<result column="room_name" property="roomName" />
+		<result column="rent_type" property="rentType" />
+		<result column="rent_price" property="rentPrice" />
+		<result column="pay_type" property="payType" />
+		<result column="door" property="door" />
+		<result column="hall" property="hall" />
+		<result column="toilet" property="toilet" />
+		<result column="kitchen" property="kitchen" />
+		<result column="house_floor" property="houseFloor" />
+		<result column="total_floors" property="totalFloors" />
+		<result column="wy_type" property="wyType" />
+		<result column="zx_type" property="zxType" />
+		<result column="orientation" property="orientation" />
+		<result column="gender_type" property="genderType" />
+		<result column="area" property="area" />
+		<result column="detail_point" property="detailPoint" />
+		<result column="house_title" property="houseTitle" />
+		<result column="house_desc" property="houseDesc" />
+		<result column="issue_date" property="issueDate" />
+		<result column="picture_url" property="pictureUrl" />
+		<result column="status" property="status" />
+		<result column="delete_flag" property="deleteFlag" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_person" property="updatePerson" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="rentHouseOriginJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="dicId != null and dicId!= ''"> AND a.dic_id = #{dicId}</if>
+		<if test="roomName != null and roomName!= ''"> AND a.room_name = #{roomName}</if>
+		<if test="rentType != null and rentType!= ''"> AND a.rent_type = #{rentType}</if>
+		<if test="rentPrice != null and rentPrice!= ''"> AND a.rent_price = #{rentPrice}</if>
+		<if test="payType != null and payType!= ''"> AND a.pay_type = #{payType}</if>
+		<if test="door != null and door!= ''"> AND a.door = #{door}</if>
+		<if test="hall != null and hall!= ''"> AND a.hall = #{hall}</if>
+		<if test="toilet != null and toilet!= ''"> AND a.toilet = #{toilet}</if>
+		<if test="kitchen != null and kitchen != ''"> AND a.kitchen = #{kitchen}</if>
+		<if test="houseFloor != null and houseFloor!= ''"> AND a.house_floor = #{houseFloor}</if>
+		<if test="totalFloors != null and totalFloors!= ''"> AND a.total_floors = #{totalFloors}</if>
+		<if test="wyType != null and wyType!= ''"> AND a.wy_type = #{wyType}</if>
+		<if test="zxType != null and zxType!= ''"> AND a.zx_type = #{zxType}</if>
+		<if test="orientation != null and orientation!= ''"> AND a.orientation = #{orientation}</if>
+		<if test="genderType != null and genderType!= ''"> AND a.gender_type = #{genderType}</if>
+		<if test="area != null and area!= ''"> AND a.area = #{area}</if>
+		<if test="detailPoint != null and detailPoint!= ''"> AND a.detail_point = #{detailPoint}</if>
+		<if test="houseTitle != null and houseTitle!= ''"> AND a.house_title = #{houseTitle}</if>
+		<if test="houseDesc != null and houseDesc!= ''"> AND a.house_desc = #{houseDesc}</if>
+		<if test="issueDate != null and issueDate!= ''"> AND a.issue_date = #{issueDate}</if>
+		<if test="deleteFlag != null and deleteFlag!= ''"> AND a.delete_flag = #{deleteFlag}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+	
+	<sql id="condition_sql_vo">	
+		<if test="deleteFlag != null and deleteFlag != ''"> AND a.delete_flag = #{deleteFlag} </if>
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+		<if test="areaCode1 != null and areaCode1 != ''"> AND dic.area_code1 = #{areaCode1}</if>
+		<if test="areaCode2 != null and areaCode2 != ''"> AND dic.area_code2 = #{areaCode2}</if>
+		<if test="areaCode3 != null and areaCode3 != ''"> AND dic.area_code3 = #{areaCode3}</if>
+		<if test="tradingAreaId != null and tradingAreaId != ''"> AND dic.trading_area_id = #{tradingAreaId}</if>
+		<if test="areaMin != null and areaMin != ''"> AND a.area &gt;= #{areaMin}</if>
+		<if test="areaMax != null and areaMax != ''"> AND a.area &lt;= #{areaMax}</if>
+		<if test="rentPriceMin != null and rentPriceMin != ''"> AND a.rent_price &gt;= #{rentPriceMin}</if>
+		<if test="rentPriceMax != null and rentPriceMax != ''"> AND a.rent_price &lt;= #{rentPriceMax}</if>
+		<if test="doorMin != null and doorMin != ''"> AND a.door &gt;= #{doorMin}</if>
+		<if test="doorMax != null and doorMax != ''"> AND a.door &lt;= #{doorMax}</if>
+		<if test="startCreateTime != null and startCreateTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startCreateTime},'%Y-%m-%d')]]></if>
+    	<if test="endCreateTime != null and endCreateTime != ''"><![CDATA[ AND a.create_time<=STR_TO_DATE(#{endCreateTime},'%Y-%m-%d')]]> </if>
+	</sql>
+	
+	<sql id="condition_sql_agent">	
+		<if test="houseNameOrId != null and houseNameOrId != ''">
+			AND ( dic.spray_name like CONCAT(CONCAT('%', #{houseNameOrId}), '%') 
+			or a.id = #{houseNameOrId} )
+		</if>
+		<if test="deleteFlag != null and deleteFlag != ''"> AND a.delete_flag = #{deleteFlag} </if>
+		<if test="agentUser != null and agentUser != ''"> 
+			AND ( rad.user_id = #{agentUser} or a.create_person = #{agentUser} )
+		</if>
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+		<if test="areaMin != null and areaMin != ''"> AND a.area &gt;= #{areaMin}</if>
+		<if test="areaMax != null and areaMax != ''"> AND a.area &lt;= #{areaMax}</if>
+		<if test="rentPriceMin != null and rentPriceMin != ''"> AND a.rent_price &gt;= #{rentPriceMin}</if>
+		<if test="rentPriceMax != null and rentPriceMax != ''"> AND a.rent_price &lt;= #{rentPriceMax}</if>
+		<if test="doorMin != null and doorMin != ''"> AND a.door &gt;= #{doorMin}</if>
+		<if test="doorMax != null and doorMax != ''"> AND a.door &lt;= #{doorMax}</if>
+		<if test="startCreateTime != null and startCreateTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startCreateTime},'%Y-%m-%d')]]></if>
+    	<if test="endCreateTime != null and endCreateTime != ''"><![CDATA[ AND a.create_time<=STR_TO_DATE(#{endCreateTime},'%Y-%m-%d')]]> </if>
+	</sql>
+	
+	<sql id="tableColumns_vo_detail">
+		a.id AS "id",
+		a.dic_id AS "dicId",
+		a.room_name AS "roomName",
+		a.rent_type AS "rentType",
+		a.rent_price AS "rentPrice",
+		a.pay_type AS "payType",
+		a.door AS "door",
+		a.hall AS "hall",
+		a.toilet AS "toilet",
+		a.kitchen AS "kitchen",
+		a.house_floor AS "houseFloor",
+		a.total_floors AS "totalFloors",
+		a.wy_type AS "wyType",
+		a.zx_type AS "zxType",
+		a.orientation AS "orientation",
+		a.gender_type AS "genderType",
+		a.area AS "area",
+		a.detail_point AS "detailPoint",
+		a.house_title AS "houseTitle",
+		a.house_desc AS "houseDesc",
+		a.issue_date AS "issueDate",
+		a.picture_url AS "pictureUrl",
+		a.status AS "status",
+		a.delete_flag AS "deleteFlag",
+		a.create_person AS "createPerson",
+		a.update_person AS "updatePerson",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		dic.card_name AS "cardName",
+		dic.area_name1 AS "areaName1",
+		dic.area_name2 AS "areaName2",
+		dic.area_name3 AS "areaName3",
+		dic.trading_area_name AS "tradingAreaName",
+		dic.spray_name AS "sprayName",
+		user.realname AS "agentName",
+		user.avatar AS "avatar",
+		user.phone AS "agentPhone",
+		com.company_name AS "companyName"
+	</sql>
+	
+	<!-- 前台查询租房列表   多条件 -->
+	<select id="listDetailOriginPage" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		SELECT 
+    		<include refid="tableColumns_vo_detail"/>
+    	FROM <include refid="tableName"/> 
+    		left join dsj_house_directory dic on a.dic_id = dic.id 
+    		left join rent_agent_directory rad on rad.house_id = a.id 
+    		left join dsj_subway_obj subo on subo.obj_id = dic.id 
+    		left join dsj_subway sub on sub.id = subo.subway_id 
+    		left join dsj_agent agent on agent.user_id = rad.user_id 
+    		left join dsj_user user on user.id = rad.user_id 
+    		left join dsj_company com on com.id = agent.company 
+		<where>
+			<include refid="condition_sql_vo" />
+		</where>
+		ORDER BY 
+			<if test="order_id != null and order_id != ''"> a.id #{order_id} </if>
+			<if test="order_id != null and order_id != ''"> a.id #{order_id} </if>
+			<if test="order_id != null and order_id != ''"> a.id #{order_id} </if>
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	<select id="listDetailOriginCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+    		LEFT JOIN rent_agent_directory rad ON rad.house_id = a.id 
+    		left join dsj_agent agent on agent.user_id = rad.user_id
+    		left join dsj_user user on user.id = rad.user_id 
+    		left join dsj_company com on com.id = agent.company 
+		<where>
+			<include refid="condition_sql_vo" />
+		</where>
+	</select>
+	
+	<!-- 经纪人查询租房列表  -->
+	<select id="listAgentRentOriginPage" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		SELECT 
+    		<include refid="tableColumns_vo"/>,
+    		rad.recommend AS "recommend",
+    		if( dls.id , 1 ,2) as "show"
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN rent_agent_directory rad ON rad.house_id = a.id 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+    		left outer join dsj_loupan_show dls on dls.house_id = a.id 
+    		 	and dls.type = 3 
+    		 <if test="agentUser != null and agentUser != ''">
+    		 	and dls.agent_id = #{agentUser} 
+    		 </if>
+		<where>
+			<include refid="condition_sql_agent" />
+		</where>
+		ORDER BY a.id DESC LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	<select id="listAgentRentOriginPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			LEFT JOIN rent_agent_directory rad ON rad.house_id = a.id 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+    		left outer join dsj_loupan_show dls on dls.house_id = a.id 
+    		 	and dls.type = 3 
+    		 <if test="agentUser != null and agentUser != ''">
+    		 	and dls.agent_id = #{agentUser} 
+    		 </if>
+		<where>
+			<include refid="condition_sql_agent"/>
+		</where>
+	</select>
+	
+	<select id="getById" resultType="RentHouseOriginPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="rentHouseOriginJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<select id="getRentHouse"  resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+	  SELECT
+          p.id AS pcRentId,
+		  h.id,
+		  p.picture AS pictureUrl,
+		  h.door AS door,
+		  h.hall AS hall,
+		  h.toilet AS toilet,
+		  h.rent_price AS rentPrice,
+		  h.area,
+		  d.address AS address,
+		  p.rent_name AS roomName
+		FROM
+			dsj_pc_rent_house p
+		LEFT JOIN rent_house_origin h ON p.object_id = h.id
+		LEFT JOIN dsj_house_directory d ON d.id=h.dic_id
+	</select>
+	
+	<select id="getRentHouseListPage"  resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+	  SELECT
+          p.id AS pcRentId,
+		  h.id,
+		  p.picture AS pictureUrl,
+		  h.door AS door,
+		  h.hall AS hall,
+		  h.toilet AS toilet,
+		  h.rent_price AS rentPrice,
+		  h.area,
+		  d.address AS address,
+		  p.rent_name AS roomName
+		FROM
+			dsj_pc_rent_house_page p
+		LEFT JOIN rent_house_origin h ON p.object_id = h.id
+		LEFT JOIN dsj_house_directory d ON d.id=h.dic_id
+	</select>
+	
+	<insert id="insert" parameterType="RentHouseOriginPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			dic_id,
+			room_name,
+			rent_type,
+			rent_price,
+			pay_type,
+			door,
+			hall,
+			toilet,
+			kitchen,
+			house_floor,
+			total_floors,
+			wy_type,
+			zx_type,
+			orientation,
+			gender_type,
+			area,
+			detail_point,
+			house_title,
+			house_desc,
+			issue_date,
+			picture_url,
+			status,
+			delete_flag,
+			create_person,
+			update_person,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{dicId},
+			#{roomName},
+			#{rentType},
+			#{rentPrice},
+			#{payType},
+			#{door},
+			#{hall},
+			#{toilet},
+			#{kitchen},
+			#{houseFloor},
+			#{totalFloors},
+			#{wyType},
+			#{zxType},
+			#{orientation},
+			#{genderType},
+			#{area},
+			#{detailPoint},
+			#{houseTitle},
+			#{houseDesc},
+			#{issueDate},
+			#{pictureUrl},
+			#{status},
+			#{deleteFlag},
+			#{createPerson},
+			#{updatePerson},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="RentHouseOriginPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="dicId != null">dic_id,</if>
+					<if test="roomName != null">room_name,</if>
+					<if test="rentType != null">rent_type,</if>
+					<if test="rentPrice != null">rent_price,</if>
+					<if test="payType != null">pay_type,</if>
+					<if test="door != null">door,</if>
+					<if test="hall != null">hall,</if>
+					<if test="toilet != null">toilet,</if>
+					<if test="kitchen != null">kitchen,</if>
+					<if test="houseFloor != null">house_floor,</if>
+					<if test="totalFloors != null">total_floors,</if>
+					<if test="wyType != null">wy_type,</if>
+					<if test="zxType != null">zx_type,</if>
+					<if test="orientation != null">orientation,</if>
+					<if test="genderType != null">gender_type,</if>
+					<if test="area != null">area,</if>
+					<if test="detailPoint != null">detail_point,</if>
+					<if test="houseTitle != null">house_title,</if>
+					<if test="houseDesc != null">house_desc,</if>
+					<if test="issueDate != null">issue_date,</if>
+					<if test="pictureUrl != null">picture_url,</if>
+					<if test="status != null">status,</if>
+					<if test="deleteFlag != null">delete_flag,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePerson != null">update_person,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="dicId != null">#{dicId},</if>
+			<if test="roomName != null">#{roomName},</if>
+			<if test="rentType != null">#{rentType},</if>
+			<if test="rentPrice != null">#{rentPrice},</if>
+			<if test="payType != null">#{payType},</if>
+			<if test="door != null">#{door},</if>
+			<if test="hall != null">#{hall},</if>
+			<if test="toilet != null">#{toilet},</if>
+			<if test="kitchen != null">#{kitchen},</if>
+			<if test="houseFloor != null">#{houseFloor},</if>
+			<if test="totalFloors != null">#{totalFloors},</if>
+			<if test="wyType != null">#{wyType},</if>
+			<if test="zxType != null">#{zxType},</if>
+			<if test="orientation != null">#{orientation},</if>
+			<if test="genderType != null">#{genderType},</if>
+			<if test="area != null">#{area},</if>
+			<if test="detailPoint != null">#{detailPoint},</if>
+			<if test="houseTitle != null">#{houseTitle},</if>
+			<if test="houseDesc != null">#{houseDesc},</if>
+			<if test="issueDate != null">#{issueDate},</if>
+			<if test="pictureUrl != null">#{pictureUrl},</if>
+			<if test="status != null">#{status},</if>
+			<if test="deleteFlag != null">#{deleteFlag},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="RentHouseOriginPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			dic_id = #{dicId},
+			room_name = #{roomName},
+			rent_type = #{rentType},
+			rent_price = #{rentPrice},
+			pay_type = #{payType},
+			door = #{door},
+			hall = #{hall},
+			toilet = #{toilet},
+			kitchen = #{kitchen},
+			house_floor = #{houseFloor},
+			total_floors = #{totalFloors},
+			wy_type = #{wyType},
+			zx_type = #{zxType},
+			orientation = #{orientation},
+			gender_type = #{genderType},
+			area = #{area},
+			detail_point = #{detailPoint},
+			house_title = #{houseTitle},
+			house_desc = #{houseDesc},
+			issue_date = #{issueDate},
+			picture_url = #{pictureUrl},
+			status = #{status},
+			delete_flag = #{deleteFlag},
+			create_person = #{createPerson},
+			update_person = #{updatePerson},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="RentHouseOriginPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="dicId != null">dic_id = #{dicId},</if>
+			<if test="roomName != null">room_name = #{roomName},</if>
+			<if test="rentType != null">rent_type = #{rentType},</if>
+			<if test="rentPrice != null">rent_price = #{rentPrice},</if>
+			<if test="payType != null">pay_type = #{payType},</if>
+			<if test="door != null">door = #{door},</if>
+			<if test="hall != null">hall = #{hall},</if>
+			<if test="toilet != null">toilet = #{toilet},</if>
+			<if test="kitchen != null">kitchen = #{kitchen},</if>
+			<if test="houseFloor != null">house_floor = #{houseFloor},</if>
+			<if test="totalFloors != null">total_floors = #{totalFloors},</if>
+			<if test="wyType != null">wy_type = #{wyType},</if>
+			<if test="zxType != null">zx_type = #{zxType},</if>
+			<if test="orientation != null">orientation = #{orientation},</if>
+			<if test="genderType != null">gender_type = #{genderType},</if>
+			<if test="area != null">area = #{area},</if>
+			<if test="detailPoint != null">detail_point = #{detailPoint},</if>
+			<if test="houseTitle != null">house_title = #{houseTitle},</if>
+			<if test="houseDesc != null">house_desc = #{houseDesc},</if>
+			<if test="issueDate != null">issue_date = #{issueDate},</if>
+			<if test="pictureUrl != null">picture_url = #{pictureUrl},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 后台查询租房列表  -->
+	<select id="listRentOriginPage" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		SELECT 
+    		<include refid="tableColumns_vo"/>
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		<where>
+			<include refid="condition_sql_vo" />
+		</where>
+		ORDER BY a.id DESC LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	<select id="listRentOriginPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+			LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		<where>
+			<include refid="condition_sql_vo"/>
+		</where>
+	</select>
+	
+	<update id="updateOriginStatus">
+		UPDATE  <include refid="tableNameUpdate"/>
+		SET status = #{status} WHERE  id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 				#{item}  
+		</foreach>
+	</update>
+	
+	<update id="updateDeleteFlag">
+		UPDATE  <include refid="tableNameUpdate"/>
+		SET delete_flag = #{deleteFlag} , update_person = #{updatePerson}  WHERE id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+ 			#{item}  
+		</foreach>  
+	</update>
+	
+	<select id="getRentHouseList" resultType="java.util.Map" resultMap="beanMap">
+    	SELECT 
+    		a.id AS id,
+		   a.room_name AS roomName
+    	FROM rent_house_origin a
+    	where 
+        a.room_name LIKE CONCAT(CONCAT('%', #{name}), '%') and a.status=#{status}
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<update id="saveAgentOrigin" >
+		insert into rent_agent_directory 
+		( house_type , house_id , user_id, is_duty , recommend , create_person , update_time )	
+		values 
+		( #{houseType},#{houseId},#{userId},#{isDuty},#{recommend},#{creatUser},#{creatTime})
+	</update>
+	
+	<update id="deleteAgentOrigin" >
+		DELETE FROM rent_agent_directory  WHERE 
+			house_type = #{houseType} and house_id = #{houseId}
+	</update>
+	
+	<select id="getVoById" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		SELECT 
+    		<include refid="tableColumns_vo"/>
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		where a.id = #{id}
+	</select>
+	
+	<select id="findFollow" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		select t.typegroupname AS 'payTypeName',f.id AS 'objectId',agent.name AS 'agentName',agent.tell_phone AS 'agentPhone',
+		company.short_name AS 'companyName',agent.avatar_url AS 'avatar',
+		<include refid="tableColumns_vo"/>
+		from rent_house_origin a LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		left join dsj_follow f on f.object_id = a.id
+		left join house_group_type t on a.pay_type = t.id
+		left join rent_agent_directory ad on ad.house_id = a.id
+		left join dsj_agent agent on agent.user_id = ad.user_id
+		left join dsj_company company on company.id = agent.company
+		where f.user_id = #{userId}
+		and f.type = #{type}
+		ORDER BY f.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+		
+		
+	</select>
+	<select id="findFollowCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		from rent_house_origin a LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		left join dsj_follow f on f.object_id = a.id
+		left join house_group_type t on a.pay_type = t.id
+		where f.user_id = #{userId}
+		and f.type = #{type}
+	</select>
+	
+	<select id="lookHistory" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		select t.typegroupname AS 'payTypeName',agent.name AS 'agentName',agent.tell_phone AS 'agentPhone',
+		company.short_name AS 'companyName',agent.avatar_url AS 'avatar',
+		<include refid="tableColumns_vo"/>,h.create_time AS 'lookTime'
+		from rent_house_origin a LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		left join dsj_look_history h on h.object_id = a.id
+		left join house_group_type t on a.pay_type = t.id
+		left join rent_agent_directory ad on ad.house_id = a.id
+		left join dsj_agent agent on agent.user_id = ad.user_id
+		left join dsj_company company on company.id = agent.company
+		where h.user_id = #{userId}
+		and h.type = #{type}
+		and h.create_time &gt; #{time}
+		ORDER BY h.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+		
+		
+	</select>
+	<select id="lookHistoryCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		from rent_house_origin a LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		left join dsj_look_history h on h.object_id = a.id
+		left join house_group_type t on a.pay_type = t.id
+		where h.user_id = #{userId}
+		and h.type = #{type}
+		and h.create_time &gt; #{time}
+
+	</select>
+	
+	<select id="getSameVillageList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+		where  a.dic_id = #{dicId} 
+			and a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			order by ABS(a.rent_price - #{rentPrice}) ASC , a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<select id="getSameTradeList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		where  dic.trading_area_id = #{tradingId} 
+			and a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			order by ABS(a.rent_price - #{rentPrice}) ASC , a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<select id="getSimilarList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		where a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			and ABS(a.rent_price - #{rentPrice}) &lt;= #{price}
+			order by 
+			( ABS( dic.dimension - #{dimension}) + ABS( dic.accuracy - #{accuracy}) )  ASC ,
+			 a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<select id="getLateList" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+    		a.id 
+    	FROM <include refid="tableName"/> 
+		where a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+			and a.id != #{houseId}
+			order by a.update_time DESC
+			limit 0, #{size}
+	</select>
+	
+	<select id="getRecommendList" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		SELECT 
+    		<include refid="tableColumns_vo"/>
+    	FROM <include refid="tableName"/> 
+    		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+    		LEFT JOIN rent_house_recommend r ON r.recommend_id = a.id 
+		where r.house_id = #{houseId} and a.delete_flag = #{deleteFlag}
+			and a.status = #{status} order by r.id limit 0, #{size}
+	</select>
+	
+	<update id="deleteRentRecommend" >
+		delete from rent_house_recommend where house_id = #{id}
+	</update>
+	
+	<insert id="updateRentRecommend" parameterType="java.util.Map" keyProperty="id" useGeneratedKeys="true">
+	    INSERT INTO rent_house_recommend
+	    (	
+	    	house_id,
+			recommend_id,
+			create_time
+		)
+        VALUES 
+        <foreach collection="ids" item="item" index="index" separator="," > 
+	   	(	
+	   		#{houseId},
+			#{item},
+	        now()
+		)
+	    </foreach>  
+	</insert>  
+	
+	<select id="listCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		where  a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+	</select>
+	
+	<select id="selectByLimit" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		a.id AS "id",
+    		a.rent_price AS "rentPrice",
+    		a.dic_id AS "dicId"
+    	FROM <include refid="tableName"/> 
+		where  a.delete_flag = #{deleteFlag}
+			and a.status = #{status}
+		ORDER BY a.id DESC 
+		LIMIT #{startNum} , #{endNum} 
+	</select>
+	
+	<select id="getRentByCity" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentCountMapInfoVo">
+		select  count(dic.area_code3) as "count", 
+				dic.area_code3 as "id",
+				dic.area_name3 as "name", 
+				dic.dimension as "dimension",
+				dic.accuracy as "accuracy"
+		from rent_house_origin o 
+			left join dsj_house_directory dic on o.dic_id = dic.id
+			where dic.area_code2 = #{id} 
+			group by dic.area_code3 
+	</select>
+	
+	<select id="getRentByCounty" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentCountMapInfoVo">
+		select  count(dic.trading_area_id) as "count", 
+				dic.trading_area_id as "id",
+				dic.trading_area_name as "name", 
+				dic.dimension as "dimension",
+				dic.accuracy as "accuracy"
+		from rent_house_origin o 
+			left join dsj_house_directory dic on o.dic_id = dic.id
+			where dic.area_code3 = #{id} 
+			group by dic.trading_area_id 
+	</select>
+	
+	<select id="getRentByTrade" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentCountMapInfoVo">
+		select  count(dic.id) as "count", 
+				dic.id as "id",
+				dic.spray_name as "name", 
+				dic.dimension as "dimension",
+				dic.accuracy as "accuracy"
+		from rent_house_origin o 
+			left join dsj_house_directory dic on o.dic_id = dic.id
+			where dic.trading_area_id = #{id}
+			group by dic.id 
+	</select>
+	
+	<select id="findAgentRentHouse" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.RentHouseOriginVo">
+		select t.typegroupname AS 'payTypeName',c.short_name AS 'companyName',<include refid="tableColumns_vo"/>
+		from rent_house_origin a 
+		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		LEFT JOIN rent_agent_directory d ON a.id = d.house_id 
+		left join house_group_type t on a.pay_type = t.id
+		left join dsj_agent agent on agent.user_id = d.user_id 
+		left join dsj_company c on c.id = agent.company
+		where d.user_id = #{userId}
+		ORDER BY 
+		<if test="price != null and price!= ''">a.rent_price asc,</if>
+		<if test="time != null and time!= ''">d.update_time DESC,</if>
+		d.recommend ASC 
+		LIMIT #{pageFirst} , #{pageSize} 
+		
+		
+	</select>
+	<select id="findAgentRentHouseCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		from rent_house_origin a 
+		LEFT JOIN dsj_house_directory dic ON a.dic_id = dic.id 
+		LEFT JOIN rent_agent_directory d ON a.id = d.house_id 
+		left join house_group_type t on a.pay_type = t.id
+		left join dsj_agent agent on agent.user_id = d.user_id 
+		left join dsj_company c on c.id = agent.company
+		where d.user_id = #{userId}
+
+	</select>
+	
+	<update id="updateOriginRecommend" parameterType="java.util.Map" >
+		update rent_agent_directory set 
+			recommend = #{recommend}
+			where user_id = #{userId} and house_id = #{houseId}
+	</update>
+	
+	<select id="getCountRecommend" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		from rent_agent_directory a 
+		where a.user_id = #{userId} and a.recommend = #{recommend} 
+			and a.house_type = #{houseType}
+	</select>
+	
+	<select id="getCountShow" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(1) 
+		from dsj_loupan_show a 
+		where a.agent_id = #{agentId} 
+	</select>
+	
+	<insert id="saveAgentShow" parameterType="java.util.Map" keyProperty="id" useGeneratedKeys="true">
+	    INSERT INTO dsj_loupan_show ( agent_id,house_id,create_time,type ) 
+	    			VALUES  (	 #{agentId}, #{houseId}, now(), #{type} )
+	</insert> 
+	
+	<update id="deleteAgentShow" >
+		DELETE FROM dsj_loupan_show WHERE 
+			agent_id = #{agentId} and house_id = #{houseId} and type = #{type}
+	</update> 
+	
+	<select id="getRentHouseSolrByIds" resultType="com.dsj.modules.solr.vo.RentHouseIndexFiled">
+    	SELECT
+    		a.id AS "id",
+			a.dic_id AS "dicId",
+			a.room_name AS "roomName",
+			a.rent_type AS "rentType",
+			a.rent_price AS "price",
+			a.pay_type AS "payType",
+			a.door AS "room",
+			a.hall AS "hall",
+			a.house_floor AS "floorNum",
+			a.total_floors AS "totalFloors",
+			a.wy_type AS "wyType",
+			a.zx_type AS "renovation",
+			a.orientation AS "orientations",
+			a.gender_type AS "genderType",
+			a.area AS "buildArea",
+			a.detail_point AS "detailPoint",
+			a.house_title AS "title",
+			a.picture_url AS "imageUrl",
+			a.status AS "status",
+			a.delete_flag AS "deleteFlag",
+			a.create_person AS "createPerson",
+			a.update_person AS "updatePerson",
+			a.create_time AS "createTime",
+			a.update_time AS "updateTime",
+			d.spray_name dicName,
+			d.area_code1 areaCode1,
+			d.area_code2 areaCode2,
+			d.area_code3 areaCode3,
+			d.area_name1 areaName1,
+			d.area_name2 areaName2,
+			d.area_name3 areaName3,
+			d.trading_area_name tradingAreaName,
+			d.trading_area_id tradingAreaId,
+			d.dimension dimension,
+			d.accuracy accuracy,
+			da.dimension areaDimension,
+			da.accuracy areaAccuracy,
+			t.dimension tradeDimension,
+			t.accuracy tradeAccuracy,
+			agent.id agentId,
+			agent.tell_phone phonel,
+			u.realname agentName,
+			u.avatar agentAvatar,
+			com.company_name agentCompany
+    	from rent_house_origin a 
+    		LEFT JOIN dsj_house_directory d on a.dic_id =d.id 
+    		LEFT JOIN dsj_trade_area t on d.trading_area_id=t.id 
+    		LEFT JOIN dsj_area da on da.area_code=t.parent_id
+    		left outer join rent_agent_directory rad on rad.house_id = a.id 
+			left outer join dsj_user u on u.id = rad.user_id 
+			left outer join dsj_agent agent on rad.user_id = agent.user_id
+			left outer join dsj_company com on com.id = agent.company 
+    	 WHERE a.id in
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+	 			#{item}  
+			</foreach>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="getWarrantList" resultType="com.dsj.modules.rent.vo.WarrantOriginVo">
+  	   SELECT
+          p.id,
+          p.link_address as linkAddress,
+		  p.picture,
+		  p.label
+		FROM
+			dsj_pc_warrant p
+  	</select>
+  	
+  	<select id="getWarrant" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.WarrantOriginVo">
+  	 SELECT
+          p.id,
+          p.link_address as linkAddress,
+		  p.picture,
+		  p.label
+		FROM
+			dsj_pc_warrant p
+			WHERE p.id = #{id}
+  	</select>
+  	
+  	<update id="updateWarrant" parameterType="com.dsj.modules.rent.vo.WarrantOriginVo">
+  	    UPDATE dsj_pc_warrant
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="label != null">label = #{label},</if>
+    	</set>
+    	WHERE id = #{id}  
+  	</update>
+  	
+  	<select id="getWarrantVo" parameterType="java.util.Map" resultType="com.dsj.modules.rent.vo.WarrantOriginVo">
+  	    SELECT
+          p.id,
+          p.link_address as linkAddress,
+		  p.picture,
+		  p.label
+		FROM
+			dsj_pc_warrant p
+			WHERE p.id = #{id}
+  	</select>
+  	
+  	<update id="updateWarrantPage" parameterType="com.dsj.modules.rent.vo.WarrantOriginVo">
+  	    UPDATE dsj_pc_warrant_page  
+    	 <set>
+			<if test="linkAddress != null">link_address = #{linkAddress},</if>
+			<if test="picture != null">picture = #{picture},</if>
+			<if test="label != null">label = #{label},</if>
+    	</set>
+    	WHERE pid = #{id}  
+  	</update>
+</mapper>

@@ -1,0 +1,172 @@
+.album_modal .modal-dialog {
+	width: 1190px;
+	height: 862px;
+	margin-top: 70px;
+}
+.album_modal.housetype .modal-dialog,
+.album_modal.single-ablum .modal-dialog {
+	margin-top: 120px;
+}
+.album_modal .modal-dialog .modal-content{
+	background-color: #f8fafb;
+}
+.album_modal.housetype .modal-dialog .modal-content{
+	background-color: #f7f7f7;
+}
+.album_modal .modal-dialog .modal-content .modal-header{
+	background-color: #f8fafb;
+	padding: 30px;
+	padding-bottom: 5px;
+	border: none;
+}
+.album_modal.housetype .modal-dialog .modal-content .modal-header{
+	padding: 0 0 15px 0;
+}
+.album_modal.single-ablum .swiper-slide img{
+	height: 100%;
+	display: inline-block;
+}
+.album_modal.single-ablum .swiper-slide {
+	text-align: center;
+}
+.album_modal .modal-dialog .modal-content .modal-header .album-option{
+	line-height: 1.29;
+	display: inline-block;
+	cursor: pointer;
+	padding: 8px 30px;
+	line-height: 1.29;
+	background-color: #ffffff;
+	border: solid 1px #e5e5e5;
+	color: #333333;
+	margin-right: 20px;
+}
+.album_modal .modal-dialog .modal-content .modal-header .album-option.active,
+.album_modal .modal-dialog .modal-content .modal-header .album-option:hover{
+	color: #ffffff;
+	background-color: #2775e9;
+	border: solid 1px #2775e9;
+}
+.album_modal .modal-dialog .modal-gallery-top .swiper-slide {
+	width: 1127px;
+	height: 670px;
+	background-color: #ffffff;
+	border: solid 1px #e5e5e5;
+}
+.album_modal .modal-dialog .modal-gallery-thumbs .swiper-slide {
+	width: 114px;
+	height: 70px;
+	background-color: #d8d8d8;
+}
+
+.loupan-album p {
+	margin-top: 10px;
+}
+
+.album-tip {
+	font-size: 14px;
+	color: #333333;
+}
+.album_modal .modal-dialog .close {
+	position: absolute;
+	margin-top: -2px;
+	top: -60px;
+	right: 0px;
+	z-index: 2000;
+}
+.album_modal .modal-dialog .album-left {
+	width: 41px;
+	height: 74px;
+	-moz-background-size: 41px 74px;
+	 -webkit-background-size: 41px 74px; 
+	 background-size: 41px 74px; 
+	left: -75px;
+	background-image:url(../img/album/album-left.png)
+}
+.album_modal .modal-dialog .album-right {
+	width: 41px;
+	height: 74px;
+	-moz-background-size: 41px 74px;
+	 -webkit-background-size: 41px 74px; 
+	 background-size: 41px 74px; 
+	right: -75px;
+	background-image:url(../img/album/album-right.png)
+}
+
+.album_modal .modal-dialog .album-left-small {
+	width: 16px;
+	height: 27px;
+	-moz-background-size: 16px 27px;
+	-webkit-background-size: 16px 27px; 
+	background-size: 16px 27px; 
+	top: 46px;
+	left: 14px;
+	background-image:url(../img/album/album-left-small.png)
+}
+.album_modal .modal-dialog .album-right-small {
+	width: 16px;
+	height: 27px;
+	-moz-background-size: 16px 27px;
+	-webkit-background-size: 16px 27px; 
+	background-size: 16px 27px; 
+	top: 46px;
+	right: 14px;
+	background-image:url(../img/album/album-right-small.png)
+}
+
+.album_modal.housetype .modal-dialog .modal-content .swiper-slide img{
+	float: left;
+	width: 550px;
+	height: 670px;
+	background-color: #ffffff;
+	border: solid 1px #e5e5e5;
+}
+.album_modal.housetype .modal-dialog .modal-content .swiper-slide {
+	width: 550px;
+	height: 670px;
+	background-color: #f7f7f7;
+	border: none;
+
+}
+
+.album_modal.housetype .modal-dialog {
+    height: 736px;
+}
+
+.album_modal.housetype .swiper-slide .housetype-swiper {
+	float: left;
+	margin-left: 56px;
+	padding-top: 25px;
+	width: 500px;
+}
+.album_modal.housetype .swiper-slide .housetype-swiper .housetype-swiper-title{
+	font-size: 24px;
+	color: #333333;
+
+}
+.album_modal.housetype .swiper-slide .housetype-swiper .housetype-swiper-subtitle{
+	font-size: 16px;
+	color: #333333;
+	margin-top: 25px;
+	margin-bottom: 30px;
+
+}
+.album_modal.housetype .swiper-slide .housetype-swiper .housetype-swiper-spec{
+
+}
+.album_modal.housetype .swiper-slide .housetype-swiper .housetype-swiper-spec .spec-title{
+	width: 100px;
+	font-size: 14px;
+	color: #333333;
+	font-weight: bold;
+	line-height: 2.71;
+	display: inline-block;
+}
+.album_modal.housetype .swiper-slide .housetype-swiper .housetype-swiper-spec .spec-content{
+	color: #666666;
+	line-height: 2.71;
+}
+
+.price {
+	color: #ff5a12;
+}
+

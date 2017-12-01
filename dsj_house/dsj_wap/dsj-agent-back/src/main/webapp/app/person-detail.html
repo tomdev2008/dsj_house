@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+    <script type="text/javascript" src="js/fles.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.src.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    	.row{
+    		margin:0;padding:0;
+    	}
+    </style>
+  </head>
+  <body>
+    
+    <!-- 主体 -->
+    <div class="container">
+      <div class="row">
+      <div class="row person-detail">
+        
+      </div>
+    </div>
+    <script id="dsj_detail_template" type="text/x-handlebars-template">
+      <h4 class="person-detail-title">
+        完善资料
+      </h4>
+      <p class="person-detail-info">
+        {{{info auditStatus}}}
+      </p>
+      <div class="person-detail-step clearfix">
+        <div class="col-sm-1">
+          <img class="img-responsive" src="{{pic name 'name'}}">
+        </div>
+        <div class="col-sm-10">
+          <p class="step-tile"><span>*</span>{{desc name 'name'}}</p>
+          <p class="step-detail">完善个人信息有助于您获得客户更多信任</p>
+        </div>
+        <div class="col-sm-1">
+          <span class="pull-right step-action">{{{button auditStatus 'name' name}}}</span>
+        </div>
+      </div>
+	<div class="person-detail-step clearfix">
+        <div class="col-sm-1">
+          <img class="img-responsive" src="{{pic idCardUrl 'id'}}">
+        </div>
+        <div class="col-sm-10">
+          <p class="step-tile"><span>*</span>{{desc idCardUrl 'id'}}</p>
+          <p class="step-detail">上传证件照有助于您获得客户更多信任</p>
+        </div>
+        <div class="col-sm-1">
+          <span class="pull-right step-action">{{{button auditStatus 'id' idCardUrl}}}</span>
+        </div>
+      </div>
+	<div class="person-detail-step clearfix">
+        <div class="col-sm-1">
+          <img class="img-responsive" src="{{pic avatarUrl 'avatar'}}">
+        </div>
+        <div class="col-sm-10">
+          <p class="step-tile"><span>*</span>{{desc avatarUrl 'avatar'}}</p>
+          <p class="step-detail">上传头像有助于您获得客户更多信任</p>
+        </div>
+        <div class="col-sm-1">
+          <span class="pull-right step-action">{{{button auditStatus 'avatar' avatarUrl}}}</span>
+        </div> 
+      </div>
+      <div class="col-sm-12 step-button">
+        <!-- Button trigger modal -->
+        {{{btn auditStatus name idCardUrl avatarUrl}}}
+        
+        <!-- Modal -->
+        <div class="dsj_modal modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <span class="dsj_modal_content">
+                  <img src="./img/invalid-name.jpg">
+                  <span class="dsj_modal_text">确认提交认证</span>
+                </span>
+              </div>
+              <div class="modal-footer text-center">
+                <button type="button" class="btn dsj_button btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="goAuth" class="btn dsj_button btn-primary" data-dismiss="modal">确定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/require.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/common/header.js"></script>
+    <script src="js/alertBox.js"></script>
+    <script type="text/javascript">
+    Handlebars.registerHelper({  
+
+        "desc" : function(p1,p2){
+            if(p1!=""&&p1!=null){
+              return '已完善'
+            }else{
+                if(p2=='name'){
+                    return "完善个人信息";
+                }else if(p2=="avatar"){
+                    return "上传头像";
+                }else if(p2=="id"){
+                    return "上传证件照";
+                }
+            }
+        },
+        "pic" : function(p1,p2){
+            if(p1!=""&&p1!=null){
+              return './img/correct.png'
+            }else{
+                if(p2=='name'){
+                    return "./img/avator.png";
+                }else if(p2=="avatar"){
+                    return "./img/photo.png";
+                }else if(p2=="id"){
+                    return "./img/id.png";
+                }
+            }
+        },
+        "info" : function(p1){
+            if(p1==2){
+                return "您的账号正在审核";
+            }else if(p1==3){
+                return "您申请的认证被驳回，请修改";
+            }else if(p1==4){
+                return "当前您还未进行身份验证，请在<span>24小时</span>内完善资料进行身份认证；若未及时认证，该账号的部分功能将无法开启。";
+            }
+
+        },
+        "button" : function(p1,p2,p3){
+            if(p1==2){
+                return '';
+            }else if(p1==3){
+                if(p2=='name'){
+                    return "<a href='person-fullinfo.html'>修改</a>";
+                }else if(p2=='id'){
+                    return "<a href='person-id.html'>修改</a>";
+                }else if(p2=='avatar'){
+                    return "<a href='person-touxiang.html'>修改</a>";
+                }
+            }else if(p1==4){
+                if(p2=='name'){
+                    if(p3!=''){
+                        return "<a href='person-fullinfo.html'>修改</a>";
+                    }else{
+                        return "<a href='person-fullinfo.html'>编辑</a>";
+                    }                    
+                }else if(p2=='id'){
+                    if(p3!=''){
+                        return "<a href='person-id.html'>修改</a>";
+                    }else{
+                        return "<a href='person-id.html'>编辑</a>";
+                    } 
+                }else if(p2=='avatar'){
+                    if(p3!=''){
+                        return "<a href='person-touxiang.html'>修改</a>";
+                    }else{
+                        return "<a href='person-touxiang.html'>编辑</a>";
+                    } 
+                }
+            }
+        },
+        "btn" : function(p1,p2,p3,p4){
+            if(p1==2){
+                return "<a type='button' class='dsj_button btn btn-primary' id='goIndexPage'>去首页</a>";
+            }else if(p1==4||p1==3){
+            	console.log(p2);
+            	console.log(p3);
+            	console.log(p4);
+                if(p2!=''&&p3!=''&&p4!=''&&p2!=null&&p4!=null&&p3!=null){
+                    return "<a type='button' class='dsj_button btn btn-primary' id='goIndexPage'>稍候认证</a>"+
+                        "<button type='button' class='dsj_button btn btn-primary' data-toggle='modal' data-target='#myModal'>提交审核</button>"+
+                        "<span class='dsj_warn'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>注：完善三项信息后提交审核</span>";
+                }else{
+                    return "<a type='button' class='dsj_button btn btn-primary' id='goIndexPage'>稍候认证</a>"+
+                    "<button type='button' class='dsj_button btn'>提交审核</button>"+
+                    "<span class='dsj_warn'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>注：完善三项信息后提交审核</span>";
+                }
+            }
+
+        },
+
+
+
+    }) 
+
+     $(function(){
+    	$("#successBox").on('click',function(){
+    		window.location.href="person-detail.html";
+    	})
+    })
+    
+    	var userId = '';
+    	var id = '';
+      $(document).ready(function(){
+    	var status1=0;
+    	var status2=0;
+    	var status3=0;
+    	var option = {
+    			info:'',
+    			pic:{
+    				name:'',
+    				id:'',
+    				touxiang:''
+    			},
+    			button:{
+    				name:'',
+    				id:'',
+    				touxiang:''
+    			}
+    	};
+        var source   = $("#dsj_detail_template").html();
+        var template = Handlebars.compile(source);
+
+			$.ajax({
+				type:"post",
+				url:_url+"/back/frame/system/agent/getAgentInfo",
+				data:{r:Math.random()},
+				datatype:"json",
+				success:function(result){
+					if(result.status!=200){
+						 setErrorContent(result.message);
+					}else{
+						id = result.data.id;
+						
+						option=result.data;
+						var html =  template(option);
+		        $(".person-detail").append(html);
+                //模板渲染之后绑定事件
+		        $("#goIndexPage").on("click",function(){
+		        	window.location.href="agent-index.html";
+		        })
+		        $("#goAuth").click(function(){
+		        	$.ajax({
+						type:"post",
+						url:_url+"/back/frame/system/agent/goAuth",
+						data:{
+							userId:userId,
+							id:id
+						},
+						datatype:"json",
+						success:function(result){
+							if(result.status!=200){
+								 setErrorContent(result.message);
+							}else{
+								$("#successBox").on("click",function(){
+									window.location.href="agent-index.html";
+								})
+								show_box(3,"工作人员会在24小时内审核，审核结果会短信通知您");
+							}
+						}
+		        	})
+		      	});				
+				}
+				
+			}
+		})    
+      });
+      require(["text!common/commit.html"], function(tpl) {
+	    	 $('body').append(tpl);
+	    	 var source=$("#dailog_common_template").html();
+	    	 var template = Handlebars.compile(source);
+			 var html = template();
+	    	 $('body').append(html);
+	    	 
+	    	 $(function(){
+	    	    	$("#successBox").on('click',function(){
+	    	    		window.location.href="person-detail.html";
+	    	    	})
+	    	    })
+		}); 
+
+    </script>
+  </body>
+</html>

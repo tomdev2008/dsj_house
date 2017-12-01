@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.RoleDaoImpl">
+    
+    <sql id="tableName"> dsj_role a </sql>
+    <sql id="tableNameUpdate"> dsj_role </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.name_code AS "nameCode",
+		a.name AS "name",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="RolePo">
+		<id column="id" property="id" />
+		<result column="name_code" property="nameCode" />
+		<result column="name" property="name" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="roleJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="nameCode != null and nameCode!= ''"> AND a.name_code = #{nameCode}</if>
+		<if test="name != null and name!= ''"> AND a.name = #{name}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+	</sql>
+    
+	<select id="getById" resultType="RolePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="roleJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="getRoleCodeName" parameterType="java.util.Map" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageRoleList" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageRoleCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	
+	<insert id="insert" parameterType="RolePo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			name_code,
+			name,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{nameCode},
+			#{name},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="RolePo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="nameCode != null">name_code,</if>
+					<if test="name != null">name,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="nameCode != null">#{nameCode},</if>
+			<if test="name != null">#{name},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="RolePo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			name_code = #{nameCode},
+			name = #{name},
+			update_time = #{updateTime},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="RolePo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="nameCode != null">name_code = #{nameCode},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 获取关联的所有角色name名称 -->
+	<select id="getRoleNames" parameterType="long" resultType="string">
+			SELECT
+				a.name_code
+			FROM
+				dsj_role a,
+				dsj_user_role b
+			WHERE
+				 b.role_id=a.id and b.user_id =#{_parameter}
+	</select>
+	
+	<!-- 获取用户关联的所有角色 -->
+	<select id="getRoles" parameterType="java.util.List" resultType="RolePo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM
+			dsj_role a
+		WHERE a.name_code in	
+		<foreach collection="list" index="index" item="nameCode" open="(" separator="," close=")">
+			#{nameCode}
+		</foreach>
+	</select>
+	
+	<delete id="deleteRoleId" parameterType="java.util.Map">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</delete>
+</mapper>

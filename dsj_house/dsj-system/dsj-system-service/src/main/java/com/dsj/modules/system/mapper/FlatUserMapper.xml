@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.FlatUserDaoImpl">
+    
+    <sql id="tableName"> dsj_flat_user a </sql>
+    <sql id="tableNameUpdate"> dsj_flat_user </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.flat_name AS "flatName",
+		a.province_code AS "provinceCode",
+		a.city_code AS "cityCode",
+		a.business_licence AS "businessLicence",
+		a.business_licence_photo AS "businessLicencePhoto",
+		a.undertaking AS "undertaking",
+		a.contact AS "contact",
+		a.contact_phone AS "contactPhone",
+		a.contact_id_card AS "contactIdCard",
+	</sql>
+	
+	<resultMap id="beanMap" type="FlatUserPo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="flat_name" property="flatName" />
+		<result column="province_code" property="provinceCode" />
+		<result column="city_code" property="cityCode" />
+		<result column="business_licence" property="businessLicence" />
+		<result column="business_licence_photo" property="businessLicencePhoto" />
+		<result column="undertaking" property="undertaking" />
+		<result column="contact" property="contact" />
+		<result column="contact_phone" property="contactPhone" />
+		<result column="contact_id_card" property="contactIdCard" />
+	</resultMap>
+	
+	<sql id="flatUserJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="flatName != null and flatName!= ''"> AND a.flat_name LIKE CONCAT(CONCAT('%', #{flatName}), '%');</if>
+		<if test="provinceCode != null and provinceCode!= ''"> AND a.province_code = #{provinceCode}</if>
+		<if test="cityCode != null and cityCode!= ''"> AND a.city_code = #{cityCode}</if>
+		<if test="businessLicence != null and businessLicence!= ''"> AND a.business_licence = #{businessLicence}</if>
+		<if test="businessLicencePhoto != null and businessLicencePhoto ''"> AND a.business_licence_photo = #{businessLicencePhoto}</if>
+		<if test="undertaking != null and undertaking!= ''"> AND a.undertaking = #{undertaking}</if>
+		<if test="contact != null and contact!= ''"> AND a.contact = #{contact}</if>
+		<if test="contactPhone != null and contactPhone!= ''"> AND a.contact_phone = #{contactPhone}</if>
+		<if test="contactIdCard != null and contactIdCard!= ''"> AND a.contact_id_card = #{contactIdCard}</if>
+        <if test="startTime != null and startTime ''"> AND a.applyTime <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime != null and endTime ''"> AND a.applyTime <![CDATA[ <= ]]> #{endTime}</if>
+	</sql>
+	
+	<sql id="condition_sql_two">	
+		<if test="startTime != null and startTime != ''"><![CDATA[  AND a.create_time >=STR_TO_DATE(#{startTime},'%Y-%m-%d')]]></if>
+		<if test="endTime != null and endTime != ''"><![CDATA[  AND a.create_time <=STR_TO_DATE(#{endTime},'%Y-%m-%d')]]></if>
+		<if test="flatName != null and flatName != ''"> AND b.flat_name like concat('%',#{flatName},'%') </if>
+		<if test="provinceCode != null and provinceCode != ''"> AND b.province_code = #{provinceCode}</if>
+		<if test="cityCode != null and cityCode != ''"> AND b.city_code = #{cityCode}</if>
+		<if test="contact != null and contact!= ''"> AND b.contact like concat('%',#{contact},'%')</if>
+		<if test="contactPhone != null and contactPhone!= ''"> AND b.contact_phone like concat('%',#{contactPhone},'%')</if>
+		<if test="username != null and username != ''"> AND a.username like concat('%',#{username},'%')</if>
+		<if test="status != null and status != ''"> AND a.status = #{status}</if>
+		<if test="delFlag != null and delFlag != ''"> AND a.del_flag = #{delFlag}</if>
+	</sql>
+    
+	<select id="getById" resultType="FlatUserPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="flatUserJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="FlatUserPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			user_id,
+			flat_name,
+			province_code,
+			city_code,
+			business_licence,
+			business_licence_photo,
+			undertaking,
+			contact,
+			contact_phone,
+			contact_id_card
+		) VALUES (
+			#{id},
+			#{userId},
+			#{flatName},
+			#{provinceCode},
+			#{cityCode},
+			#{businessLicence},
+			#{businessLicencePhoto},
+			#{undertaking},
+			#{contact},
+			#{contactPhone},
+			#{contactIdCard}
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FlatUserPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="userId != null">user_id,</if>
+			<if test="flatName != null">flat_name,</if>
+			<if test="provinceCode != null">province_code,</if>
+			<if test="cityCode != null">city_code,</if>
+			<if test="businessLicence != null">business_licence,</if>
+			<if test="businessLicencePhoto != null">business_licence_photo,</if>
+			<if test="undertaking != null">undertaking,</if>
+			<if test="contact != null">contact,</if>
+			<if test="contactPhone != null">contact_phone,</if>
+			<if test="contactIdCard != null">contact_id_card,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="flatName != null">#{flatName},</if>
+			<if test="provinceCode != null">#{provinceCode},</if>
+			<if test="cityCode != null">#{cityCode},</if>
+			<if test="businessLicence != null">#{businessLicence},</if>
+			<if test="businessLicencePhoto != null">#{businessLicencePhoto},</if>
+			<if test="undertaking != null">#{undertaking},</if>
+			<if test="contact != null">#{contact},</if>
+			<if test="contactPhone != null">#{contactPhone},</if>
+			<if test="contactIdCard != null">#{contactIdCard},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="FlatUserPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			user_id = #{userId},
+			flat_name = #{flatName},
+			province_code = #{provinceCode},
+			city_code = #{cityCode},
+			business_licence = #{businessLicence},
+			business_licence_photo = #{businessLicencePhoto},
+			undertaking = #{undertaking},
+			contact = #{contact},
+			contact_phone = #{contactPhone},
+			contact_id_card = #{contactIdCard},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FlatUserPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="flatName != null">flat_name = #{flatName},</if>
+			<if test="provinceCode != null">province_code = #{provinceCode},</if>
+			<if test="cityCode != null">city_code = #{cityCode},</if>
+			<if test="businessLicence != null">business_licence = #{businessLicence},</if>
+			<if test="businessLicencePhoto != null">business_licence_photo = #{businessLicencePhoto},</if>
+			<if test="undertaking != null">undertaking = #{undertaking},</if>
+			<if test="contact != null">contact = #{contact},</if>
+			<if test="contactPhone != null">contact_phone = #{contactPhone},</if>
+			<if test="contactIdCard != null">contact_id_card = #{contactIdCard},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+    
+    <update id="updateFlatsAudit" parameterType="java.util.Map">
+        UPDATE <include refid="tableNameUpdate"/> SET 
+          status = #{status}
+        WHERE id in (${ids})
+    </update>
+	
+	<update id="deleteById">
+		UPDATE <include refid="tableNameUpdate"/> SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+  
+    <update id="deleteByIds">
+        UPDATE <include refid="tableNameUpdate"/> SET 
+          del_flag = #{DEL_FLAG_DELETE}
+        WHERE id in (${ids})
+    </update>
+    
+    <select id="listNewPageList" parameterType="java.util.Map" resultType="com.dsj.modules.system.vo.FlatUserVo">
+		SELECT
+			a.id AS id,
+			a.username AS username,
+			a.create_time AS createTime,
+			a.`status`,
+			b.flat_name as flatName,
+			b.contact AS contact,
+			b.contact_phone AS contactPhone,
+			c.full_name AS fullName
+		FROM
+			dsj_user a
+		INNER JOIN dsj_flat_user b ON a.id = b.user_id
+		LEFT JOIN dsj_area c ON b.city_code = c.area_code
+		<where>
+			<include refid="condition_sql_two" />
+		</where>
+		ORDER BY a.create_time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT
+			count(1)
+		FROM
+			dsj_user a
+		INNER JOIN dsj_flat_user b ON a.id = b.user_id
+			<where>
+				<include refid="condition_sql_two" />
+			</where>
+	</select>
+    
+    <select id="getVoById" parameterType="long" resultType="com.dsj.modules.system.vo.FlatUserVo">
+  			SELECT
+			<include refid="tableColumns"/>
+			b.username AS username,
+			b.status AS status,
+			b.del_flag as delFlag,
+		    b.create_time AS createTime
+		FROM
+			dsj_user b
+		INNER JOIN dsj_flat_user a ON b.id = a.user_id
+  		WHERE a.user_id = #{0}
+ 	 </select>
+	
+</mapper>

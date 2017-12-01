@@ -1,0 +1,20 @@
+ function addSmallMobile(type,channel){
+	 $("#popup_box").show();
+	 $.ajax({
+			type:"post",
+			url:_ctx+"/back/mobileManager/house/addMobile",
+			data:{
+				type:type,
+				channel:channel
+			},
+			datatype:"json",
+			success:function(result){
+				$("#popup_box").hide();
+				if(result.status!=200){
+					 setErrorContent(result.message);
+				}else{
+					$("#search_btn").click();
+				}
+			}
+		})
+ }

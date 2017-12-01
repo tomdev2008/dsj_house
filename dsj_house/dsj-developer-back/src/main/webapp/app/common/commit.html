@@ -1,0 +1,123 @@
+  <script id="dailog_common_template" type="text/x-handlebars-template">
+     
+      <!-- 确认 -->
+      <div class="dsj_modal modal fade" id="isSureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <span class="dsj_modal_content">
+                <img src="./img/question.png">
+                <span class="dsj_modal_text" id="alertModelText"></span>
+              </span>
+            </div>
+            <div class="modal-footer text-center">
+              <button type="button" id="isSureCancel" class="btn btn-default" data-dismiss="modal">否</button>
+              <button type="button" name="confirm" class="btn btn-primary">是</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+</script>
+
+
+  <script id="load_html_template" type="text/x-handlebars-template">
+     
+      <!-- 确认 -->
+      <div class="dsj_modal modal fade" id="toHtmlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content popss">
+            
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    
+</script>
+
+<script id="error_html_template" type="text/x-handlebars-template">
+     
+      <!--共用错误提示model-->
+      <div class="dsj_modal modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content" id="error-modal-content">
+            <div class="modal-header">
+			  <span>提示</span>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <span class="dsj_modal_content">
+                <span class="dsj_modal_text" id="errorText"></span>
+              </span>
+            </div>
+            <div class="modal-footer text-center">
+              <button type="button" id="sureButton" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+</script>
+
+<div id="popup_box" style="display:none">
+        <!-- <div class=" box_style box_affirm" style="display:none">
+            <span class="box_close"></span>
+            <div class="box_kuang">
+                <div class="box_title"> 
+                    <span>确定下架吗?</span>
+                </div> 
+                <p class="hint">下架后，房源将不再展示在前端页面</p>
+                <form>
+                <div class=" buttons">
+                        <button type="reset" class="btn reset_botton">确定</button>    
+                        <button type="submit" class="btn submit_botton">取消</button>
+                    </div>  
+                </form>
+            </div>
+        </div>  -->
+        <div class="box_style box_affirm" >
+            <span class="box_close"></span>
+            <div class="box_kuang">
+                <div class="box_title"> 
+                    <span id="affirm_text">您确定要将此房源发布吗?</span>
+                </div> 
+                <form>
+                <div class=" buttons">
+                        <button type="reset" class="btn reset_botton">取消</button>    
+                        <button type="button" class="btn submit_botton">确定</button>
+                    </div>  
+                </form>
+            </div>
+        </div> 
+        <div class=" box_style box_defeated" style="display:none">
+            <span id="fail_box_close" class="box_close"></span>
+            <div class="box_kuang">
+                <div class="box_title "> 
+                    <span id="failMsg">很抱歉，提交失败，请稍后再试</span>
+                </div> 
+                <form>
+                    <div class=" buttons">    
+                        <button id="fail_submit_botton" type="button" class="btn submit_botton">确定</button>
+                    </div>  
+                </form>
+            </div>
+        </div>
+        <div class=" box_style box_succeed" style="display:none">
+            <span class="box_close"></span>
+            <div class="box_kuang">
+                <div class="box_title "> 
+                    <span id="successMsg">成功</span>
+                </div> 
+                <form>
+                    <div class=" buttons">    
+                        <button type="button" class="btn submit_botton" id="successBox">确定</button>
+                    </div>  
+                </form>
+            </div>       
+        </div>
+</div>

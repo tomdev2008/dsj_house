@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="js/fles.js"></script>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>大搜家-经纪人</title>
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dsj_agent.css" rel="stylesheet">
+    <link href="lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+      </div>
+      <div class="row">
+      	<div id="dsj_info_container" class="col-sm-10">
+        </div>
+        
+      </div>
+    </div>
+    <script id="dsj_info_template" type="text/x-handlebars-template">
+	    <form id="dsj_form" class="form-horizontal dsj_form">
+		    <h4 class="dsj_title">房源基本信息</h4>
+		    <div class="form-group">
+		      <label for="inputPassword" class="col-sm-2 control-label">租房类型</label>
+		      <div class="col-sm-6">
+				{{#compare rentOrigin.rentType '==' 2 }}
+					<label class="radio-inline">
+		          		<input type="radio" name="rentType" value="1"> 整租
+		        	</label>
+		        	<label class="radio-inline">
+		          		<input type="radio" name="rentType" checked value="2"> 合租
+		        	</label>
+     			{{else}}
+     				<label class="radio-inline">
+		          		<input type="radio" name="rentType" checked value="1"> 整租
+		        	</label>
+		        	<label class="radio-inline">
+		          		<input type="radio" name="rentType" value="2"> 合租
+		        	</label>
+ 				{{/compare}}
+		      </div>
+		    </div>
+			<div class="form-group">
+		      <label for="inputPassword" class="col-sm-2 control-label">房源id</label>
+		      <div class="col-sm-2">
+		        <input type="text" value="{{rentOrigin.id}}" class="form-control" placeholder="房源id" readonly="readonly">
+				<input id="id" name="id" value="{{rentOrigin.id}}" class="form-control" type="hidden" placeholder="房源id" readonly="readonly">
+		      </div>
+		    </div>
+		    <div class="form-group">
+            	<label for="housename" class="col-sm-2 control-label"><span class="dsj_warn">*</span>小区名称</label>
+            	<div class="col-sm-2">
+         			<select id="dicSelectId" class="form-control" name="dicId" class="js-example-basic-multiple" >
+						{{#if dic}}
+ 							<option value="{{dic.id}}">{{dic.sprayName}}</option>
+						{{/if}}
+					</select>
+            	</div>
+          	</div>
+		    <div class="form-group">
+		      <label for="inputPassword" class="col-sm-2 control-label">房屋户型</label>
+		      <div class="col-sm-1">
+		        <select name="door" class="form-control">
+					{{#each roomMap}}
+        				{{#compare ../rentOrigin.door '==' @key }}
+     						<option value="{{@key}}" selected="selected">{{ this }}室</option>
+     					{{else}}
+     						<option value="{{@key}}" >{{ this }}室</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+		      </div>
+		      <div class="col-sm-1">
+		        <select name="hall" class="form-control">
+					{{#each roomMap}}
+        				{{#compare ../rentOrigin.hall '==' @key }}
+     						<option value="{{@key}}" selected="selected">{{ this }}厅</option>
+     					{{else}}
+     						<option value="{{@key}}" >{{ this }}厅</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+		      </div>
+		      <div class="col-sm-1">
+		        <select name="toilet" class="form-control">
+					{{#each roomMap}}
+        				{{#compare ../rentOrigin.toilet '==' @key }}
+     						<option value="{{@key}}" selected="selected">{{ this }}卫</option>
+     					{{else}}
+     						<option value="{{@key}}" >{{ this }}卫</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+		      </div>
+			  <div class="col-sm-1">
+		        <select name="kitchen" class="form-control">
+					{{#each roomMap}}
+						{{#compare ../rentOrigin.kitchen '==' @key }}
+     						<option value="{{@key}}" selected="selected">{{ this }}厨</option>
+     					{{else}}
+     						<option value="{{@key}}" >{{ this }}厨</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="inputPassword" class="col-sm-2 control-label">楼层</label>
+		      <div class="col-sm-2">
+		        <input type="text" name="houseFloor" value="{{rentOrigin.houseFloor}}" class="form-control" placeholder="所在楼层">
+		      </div>
+			  <div class="col-sm-2">
+		        <input type="text" name="totalFloors" value="{{rentOrigin.totalFloors}}" class="form-control" placeholder="总楼层">
+		      </div>
+		    </div>
+			<div class="form-group">
+		      	<label class="col-sm-2 control-label">装修</label>
+		      	<div class="col-sm-2">
+		        	<select name="zxType" class="form-control">
+						{{#each renvationMap}}
+							{{#compare ../rentOrigin.zxType '==' @key }}
+     							<option value="{{@key}}" selected="selected">{{ this }}</option>
+     						{{else}}
+     							<option value="{{@key}}" >{{ this }}</option>
+ 							{{/compare}}
+        				{{/each}}
+					</select>
+		      	</div>
+		    </div>
+			<div class="form-group">
+		      	<label class="col-sm-2 control-label">房屋类型</label>
+		      	<div class="col-sm-2">
+		        	<select name="wyType" class="form-control">
+						{{#each houseTypeMap}}
+							{{#compare ../rentOrigin.wyType '==' @key }}
+     							<option value="{{@key}}" selected="selected">{{ this }}</option>
+     						{{else}}
+     							<option value="{{@key}}" >{{ this }}</option>
+ 							{{/compare}}
+        				{{/each}}
+					</select>
+		      	</div>
+		    </div>
+			<div class="form-group">
+		      	<label class="col-sm-2 control-label">朝向</label>
+		      	<div class="col-sm-2">
+		        	<select name="orientation" class="form-control">
+						{{#each orientationsMap}}
+							{{#compare ../rentOrigin.orientation '==' @key }}
+     							<option value="{{@key}}" selected="selected">{{ this }}</option>
+     						{{else}}
+     							<option value="{{@key}}" >{{ this }}</option>
+ 							{{/compare}}
+        				{{/each}}
+					</select>
+		      	</div>
+		    </div>
+		    <div class="form-group">
+		      <label for="inputPassword" class="col-sm-2 control-label">建筑面积</label>
+		      <div class="col-sm-2">
+		        <input type="text" name="area" value="{{rentOrigin.area}}" class="form-control" data-validate="isNumber">
+		      </div>
+		    </div>
+		<div class="form-group">
+            <label for="" class="col-sm-2 control-label">房屋配置</label>
+            <div class="col-sm-10">
+              <div class="dropdown dsj_tag">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dsj_dropdown" aria-haspopup="true" aria-expanded="true">
+               		 添加房屋配置标签
+                <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <p>注:请如实填写实际情况</p>
+                  <div class="pl12">
+					{{#each houseDeployMap}}
+                    <label class="checkbox-inline">
+						{{#checkedbox @key ../rentOrigin.detailPoint }}
+							<input type="checkbox" name="detailPoint" onchange="setDirectoryName(this,'{{@key}}','detailPointName')"  value="{{@key}}" checked="checked">{{this}}
+						{{else}}
+							<input type="checkbox" name="detailPoint" onchange="setDirectoryName(this,'{{@key}}','detailPointName')"  value="{{@key}}">{{this}}
+						{{/checkedbox}}
+                    </label>
+                   	{{/each}}
+					<input type="text" id="detailPointNameValidate"  style="width: 0px; border: 0px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+			<div class="form-group" id="genderType">
+		      <label for="inputPassword" class="col-sm-2 control-label">性别限制</label>
+		      <div class="col-sm-2">
+		        <select name="genderType" class="form-control">
+					{{#each sexTypeMap}}
+						{{#compare ../rentOrigin.genderType '==' @key }}
+     						<option value="{{@key}}" selected="selected">{{ this }}</option>
+     					{{else}}
+     						<option value="{{@key}}" >{{ this }}</option>
+ 						{{/compare}}
+        			{{/each}}
+				</select>
+		      </div>
+		    </div>
+		    <h4 class="dsj_title">价格信息</h4>
+		    <div class="form-group">
+		      	<label for="inputPassword" class="col-sm-2 control-label">*租金</label>
+		      	<div class="col-sm-2">
+		        	<input type="text" name="rentPrice" value="{{rentOrigin.rentPrice}}" class="form-control" placeholder="单位（元）" data-validate="required,isNumber">
+		      	</div>
+		    </div>
+			<div class="form-group">
+		      	<label class="col-sm-2 control-label">付款方式</label>
+		      	<div class="col-sm-2">
+		        	<select name="payType" class="form-control">
+						{{#each payTypeMap}}
+							{{#compare ../rentOrigin.payType '==' @key }}
+     							<option value="{{@key}}" selected="selected">{{ this }}</option>
+     						{{else}}
+     							<option value="{{@key}}" >{{ this }}</option>
+ 							{{/compare}}
+        				{{/each}}
+					</select>
+		      	</div>
+		    </div>
+		    <h4 class="dsj_title">详细信息</h4>
+			<div class="form-group">
+		      	<label for="inputPassword" class="col-sm-2 control-label">*房源标题</label>
+		      	<div class="col-sm-2">
+		        	<input type="text" name="houseTitle" value="{{rentOrigin.houseTitle}}" class="form-control" placeholder="单位（元）" data-validate="required">
+		      	</div>
+		    </div>
+		    <div class="form-group">
+		      <label for="text" class="col-sm-2 control-label">房源描述</label>
+		      <div class="col-sm-10">
+		        <textarea name="houseDesc" class="form-control" rows="3">{{rentOrigin.houseDesc}}</textarea>
+		      </div>
+		    </div>
+
+			<div class="row dsj_button_group">
+            <div class="col-sm-12">
+				<button class="btn btn-default" onclick="cancel()" type="button">取消</button>
+				{{#compare show '==' 'y' }}
+					{{else}}
+					<button class="btn btn-default" onclick="saveOrUpdate()" type="button">保存</button>
+					<button class="btn btn-default" onclick="saveOrUpdate(1)" type="button">下一步</button>
+				{{/compare}}
+            </div>
+          </div>
+		
+		</form>
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-utils.js"></script>
+    <script src="js/dsj_tags.js"></script>
+    <script src="js/formUtils.js"></script>
+    <script src="lib/validate/verify.notify.js"></script>
+    <script src="lib/validate/verify.notify.ext.js"></script>
+	<script src="js/common/base.js"></script>
+    <script src="js/rentHouse/origin_add.js"></script>
+    <script type="text/javascript">
+    $(function(){
+		var id = GetQueryString("id");
+		var show = GetQueryString("show");
+		var p_url;
+		if(id){ p_url = _url+"/back/rentHouse/general/origin/to_origin_add?id="+id+"&show="+show ;
+		}else{ p_url = _url+"/back/rentHouse/general/origin/to_origin_add"; }
+		var option = { url : p_url }
+		var fun = new $.fn.originAdd(option);
+		fun._init();
+		$('input[checked="checked"]').each(function(){
+	    	$(this).trigger("show.dsj")
+	    })
+    })
+    //回写checkbox选中显示
+    $(function(){
+    	$('.dsj_tag [type="checkbox"]',function (e) {
+    	    var value = $(this).val();
+    	    if ($(this).prop('checked')) {
+    	      var span = $('<span data-id="dsj_tag_'+value+'">'+$.trim($(this).parent().text())+'<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>');
+    	      span.data("value",value);
+    	      $('.dsj_tag button').parent().append(span)
+    	    } 
+    	    else {
+    	      $('[data-id="dsj_tag_'+value+'"]').remove();
+    	    }
+    	})
+    })
+    </script>
+    <script src="lib/select2/4.0.3/js/select2.min.js"></script>
+    <script src="js/require.js"></script>
+    <script src="js/common/header.js"></script>
+  </body>
+</html>

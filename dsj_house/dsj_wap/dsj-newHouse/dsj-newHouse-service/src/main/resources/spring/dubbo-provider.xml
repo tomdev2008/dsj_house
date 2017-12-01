@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+            http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://code.alibabatech.com/schema/dubbo  
+            http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="dsj-system-service" />
+	
+	<!-- 超时时间，重试次数 -->
+	<dubbo:provider delay="-1" timeout="120000" retries="0" threadpool="fixed" threads="100"/>
+	<dubbo:consumer timeout="300000" retries="0" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" />
+
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="dubbo" port="${dubbo.newHouse.port}" />
+  
+	<!--
+		interface：服务接口名（包名+类名），必填
+		ref：服务对象实现引用（spring注册BeanID），必填
+		group：服务分组，当一个接口有多个实现，可以用分组区分，可选（有多实现介意必填）
+		version：服务版本，建议使用两位数字版本，通常在接口不兼容时版本号才需要升级，建议配置 -->
+	<!-- 暴露后台管理admin_role服务  -->
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseDirectoryAuthService" ref="newHouseDirectoryAuthServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseDirectoryAuthHistoryService" ref="newHouseDirectoryAuthHistoryServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseDirectorySortService" ref="newHouseDirectorySortServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseOpenHandTimeAuthService" ref="newHouseOpenHandTimeAuthServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseOpenHandTimeAuthHistoryService" ref="newHouseOpenHandTimeAuthHistoryServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHousePictureAuthService" ref="newHousePictureAuthServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHousePictureAuthHistoryService" ref="newHousePictureAuthHistoryServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseTypeAuthService" ref="newHouseTypeAuthServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseTypeAuthHistoryService" ref="newHouseTypeAuthHistoryServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseWyMsgAuthService" ref="newHouseWyMsgAuthServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseWyMsgAuthHistoryService" ref="newHouseWyMsgAuthHistoryServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseSubwayAuthService" ref="newHouseSubwayAuthServiceImpl" version="1.0"/>
+	<dubbo:service interface="com.dsj.modules.newhouse.service.NewHouseSubwayAuthHistoryService" ref="newHouseSubwayAuthHistoryServiceImpl" version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.other.service.SubwayService" id="subwayService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.comment.service.HouseNewsService" id="houseNewsService" check="false"  version="1.0"/>
+	<dubbo:reference interface="com.dsj.modules.system.service.AgentService" id="agentService" check="false"  version="1.0"/>
+	
+	<dubbo:reference interface="com.dsj.modules.system.service.UserService" id="userService" version="1.0" check="false"/>
+	<dubbo:reference interface="com.dsj.modules.solr.service.NewHouseIndexService" id="newHouseIndexServiceImpl" check="false"  version="1.0"/>
+    <dubbo:reference interface="com.dsj.modules.other.service.SubwayObjService" id="subwayObjService" check="false"  version="1.0"/>
+</beans>  

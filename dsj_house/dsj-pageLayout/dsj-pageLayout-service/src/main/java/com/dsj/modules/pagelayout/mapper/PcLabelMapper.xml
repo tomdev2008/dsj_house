@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.pagelayout.dao.impl.PcLabelDaoImpl">
+    
+    <sql id="tableName"> dsj_pc_label a </sql>
+    <sql id="tableNameUpdate"> dsj_pc_label </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.label AS "label",
+		a.type AS "type"
+	</sql>
+	
+	<resultMap id="beanMap" type="PcLabelPo">
+		<id column="id" property="id" />
+		<result column="label" property="label" />
+		<result column="type" property="type" />
+	</resultMap>
+	
+	<sql id="pcLabelJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="label != null and label!= ''"> AND a.label = #{label}</if>
+		<if test="type != null and type!= ''"> AND a.type = #{type}</if>
+	</sql>
+    
+	<select id="getById" resultType="PcLabelPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="pcLabelJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id ASC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="PcLabelPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			label,
+			type
+		) VALUES (
+			#{id},
+			#{label},
+			#{type}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="PcLabelPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="label != null">label,</if>
+					<if test="type != null">type,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="label != null">#{label},</if>
+			<if test="type != null">#{type},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="PcLabelPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			label = #{label},
+			type = #{type},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="PcLabelPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="label != null">label = #{label},</if>
+			<if test="type != null">type = #{type},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	
+</mapper>

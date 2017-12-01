@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.newhouse.dao.impl.NewHouseDirectorySortDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_directory_sort a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_directory_sort </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.sort_val AS "sortVal",
+		a.loupan_id AS "loupanId",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.create_person AS "createPerson",
+		a.update_person AS "updatePerson"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHouseDirectorySortPo">
+		<id column="id" property="id" />
+		<result column="sort_val" property="sortVal" />
+		<result column="loupan_id" property="loupanId" />
+		<result column="loupan_name" property="loupanName" />
+		<result column="address" property="address" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="create_person" property="createPerson" />
+		<result column="update_person" property="updatePerson" />
+	</resultMap>
+	
+	<sql id="newHouseDirectorySortJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="sortVal != null and sortVal!= ''"> AND a.sort_val = #{sortVal}</if>
+		<if test="loupanId != null and loupanId!= ''"> AND a.loupan_id = #{loupanId}</if>
+		<if test="loupanName != null and loupanName!= ''"> AND a.loupan_name = #{loupanName}</if>
+		<if test="address != null and address!= ''"> AND a.address = #{address}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="createPerson != null and createPerson!= ''"> AND a.create_person = #{createPerson}</if>
+		<if test="updatePerson != null and updatePerson!= ''"> AND a.update_person = #{updatePerson}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHouseDirectorySortPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="newHouseDirectorySortJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	<select id="selectLouPanList" resultMap="beanMap">
+	    SELECT
+	        a.id AS id,
+	        a.sort_val AS sortVal, 
+    		a.loupan_id AS loupanId,
+    		d.name AS loupanName,
+    		d.address AS address 
+    	FROM dsj_new_house_directory_sort a 
+    		LEFT JOIN dsj_new_house_directory_auth d 
+    		ON  a.loupan_id=d.id
+    		WHERE d.is_ture=2
+	</select>
+	
+	<select id="selectOne" parameterType="java.util.Map" resultMap="beanMap">
+	    SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="NewHouseDirectorySortPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			sort_val,
+			loupan_id,
+			loupan_name,
+			address,
+			create_time,
+			update_time,
+			create_person,
+			update_person
+		) VALUES (
+			#{id},
+			#{sortVal},
+			#{loupanId},
+			#{loupanName},
+			#{address},
+			#{createTime},
+			#{updateTime},
+			#{createPerson},
+			#{updatePerson}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NewHouseDirectorySortPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="sortVal != null">sort_val,</if>
+					<if test="loupanId != null">loupan_id,</if>
+					<if test="loupanName != null">loupan_name,</if>
+					<if test="address != null">address,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="createPerson != null">create_person,</if>
+					<if test="updatePerson != null">update_person,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="sortVal != null">#{sortVal},</if>
+			<if test="loupanId != null">#{loupanId},</if>
+			<if test="loupanName != null">#{loupanName},</if>
+			<if test="address != null">#{address},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="createPerson != null">#{createPerson},</if>
+			<if test="updatePerson != null">#{updatePerson},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="NewHouseDirectorySortPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			sort_val = #{sortVal},
+			loupan_id = #{loupanId},
+			loupan_name=#{loupanName},
+			address=#{address},
+			update_time = #{updateTime},
+			create_person = #{createPerson},
+			update_person = #{updatePerson},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateNewHouseSort" parameterType="java.util.Map">
+	   UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="loupanId != null">loupan_id = #{loupanId},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+    	</set>
+    	WHERE sort_val = #{sortVal}  
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHouseDirectorySortPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="sortVal != null">sort_val = #{sortVal},</if>
+			<if test="loupanId != null">loupan_id = #{loupanId},</if>
+			<if test="loupanName != null">loupan_name = #{loupanName},</if>
+			<if test="address != null">address = #{address},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="createPerson != null">create_person = #{createPerson},</if>
+			<if test="updatePerson != null">update_person = #{updatePerson},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteSort" parameterType="java.util.Map">
+	    DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE sort_val = #{sortVal}
+	</delete>
+</mapper>

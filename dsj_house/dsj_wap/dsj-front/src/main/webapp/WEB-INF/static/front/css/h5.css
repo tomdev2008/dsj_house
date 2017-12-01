@@ -1,0 +1,333 @@
+#dsj{
+	position: fixed;
+	top:0;
+	left:0;
+	right: 0;
+	bottom: 0;
+}
+#dsj input:focus{
+	outline:none;
+}
+.min_box{
+	padding:0.213333rem 0.4rem;
+	border-radius: 0.4rem;
+	position: absolute;
+	z-index: 999;
+	background-color: rgba(0,0,0,0.5);
+	color:#fff;
+	font-size: 0.373333rem;
+	bottom: 1.866667rem;
+	left: 50%;
+	display:none;
+}
+.evaluate_kuang input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: rgb(153,153,153);
+    opacity:1;
+    font-size:0.32rem;
+}
+
+.evaluate_kuang input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: rgb(153,153,153);
+    opacity:1;
+    font-size:0.32rem;
+}
+
+.evaluate_kuang input:-ms-input-placeholder{
+    color: rgb(153,153,153);
+    opacity:1;
+    font-size:0.32rem;
+}
+
+.evaluate_kuang input::-webkit-input-placeholder{
+    color: rgb(153,153,153);
+    opacity:1;
+    font-size:0.32rem;
+}
+.h5_header{
+	width: 100%;
+	height: 1.306667rem;
+	font-size: 34px;
+	color:#333;
+	text-align: center;
+	line-height: 1.306667rem;
+	background-color: #fff;
+	border-bottom: 1px solid rgb(238,238,238);
+	position: fixed;
+	top:0;
+}
+.h5_main{
+	width: 100%;
+	overflow: scroll;
+	position: absolute;
+	top:1.306667rem;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.h5_module{
+	width: 100%;
+	font-size: 0.32rem;
+	color:#333;
+	padding:0.453333rem 0.4rem 0.533333rem 0.4rem;
+	border-bottom: 0.266667rem solid #f5f5f5;
+	overflow: hidden;
+}
+.mo_left{
+	float: left;
+	margin-right: 0.266667rem;
+	width: 2.0rem;
+	height: 2.666667rem;
+	border:0.08rem solid #c8ccd5;
+}
+.mo_left>img{
+	width: 100%;
+	height: 100%;
+}
+.mo_right{
+	float: left;
+}
+.agent_name{
+	overflow: hidden;
+	margin-bottom: 0.266667rem;
+}
+.agent_name>h4{
+	font-size: 0.4rem;
+	color:#333;
+	font-weight: bold;
+	float: left;
+}
+.grade_icon{
+	float: left;
+	height:0.533333rem;
+	line-height: 0.533333rem;
+	font-size: 0.266667rem;
+	color:rgb(102,102,102);
+	margin-left: 0.266667rem;
+	background-size: 0.293333rem 0.386667rem;
+}
+.grade_icon>img{
+	width: 0.213333rem;
+	height:0.266667rem;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.grade_icon>span{
+	font-size:0.266667rem;
+	color:rgb(102,102,102);
+}
+.agent_sign{
+	overflow: hidden;
+}
+.agent_approve{
+	float: left;
+	text-indent: 0.373333rem;
+	font-size: 0.32rem;
+	color:rgb(102,102,102);
+	background: url(../img/h5/v.png) no-repeat  left center;
+	background-size: 0.24rem 0.24rem;
+}
+.agent_score{
+	float: left;
+	font-size: 0.32rem;
+	color:rgb(102,102,102);
+	margin-left: 0.266667rem;
+}
+.agent_score>strong{
+	color:rgb(255,90,18);
+	margin-left: 0.133333rem;
+}
+.mo_right>p{
+	margin-top: 0.266667rem;
+}
+.labelling{
+	padding-top:0.266667rem;
+}
+.labelling>span{
+	display: inline-block;
+	padding: 0.066667rem;
+	margin-right: 0.133333rem;
+}
+.marl_30{
+	margin-left: 0.4rem;
+}
+.marl_18{
+	margin-left: 0.24rem;
+}
+.color_0{
+	background-color:  #fefbe4;
+}
+.color_1{
+	background-color: #eff4ff;
+}
+.color_2{
+ 	background-color: #fff1eb;
+}
+.color_3{
+	background-color: #ecfdf4;
+}
+.form_kuang{
+	width: 100%;
+	padding:0 0.4rem;
+}
+.traverse_line{
+	width: 100%;
+	height: 1.333333rem;
+	position: relative;
+}
+.t_line{
+	width: 100%;
+	height: 1px;
+	background-color: #e9e9e9;
+	position: absolute;
+	top:50%;
+}
+.t_content{
+	width: 2.533333rem;
+	text-align: center;
+	font-size: 0.32rem;
+	color:rgb(153,153,153);
+	background-color: #fff;
+	position: absolute;
+	top:50%;
+	left: 50%;
+	-webkit-transform:translate(-50%,-50%);
+	transform: translate(-50%,-50%);
+}
+.dsj_menu{
+	width: 100%;
+	font-size: 0.373333rem;
+	color:#333; 
+	overflow: hidden;
+}
+.dsj_menu>li{
+	width: 100%;
+	overflow: hidden;
+}
+.dsj_menu>li>h3{
+	font-size: 0.4rem;
+	float: left;
+}
+.smile_kuang{
+	float: left;
+
+}
+.smile_kuang>label{
+	width: 1.506667rem;
+	height: 0.6rem;
+	line-height: 0.6rem;
+	text-align: right;
+	float: left;
+	background: url(../img/h5/h.png) no-repeat  left center;
+	background-size:0.6rem 0.6rem;
+	margin-left: 1.013333rem;
+}
+.smile_kuang>label>input,.more>label>input{
+	display: none;
+}
+.single{
+	margin-bottom: 0.666667rem;
+}
+.more{
+	margin-bottom: 0.133333rem;
+}
+.more>label{
+	height: 0.666667rem;
+	line-height: 0.666667rem;
+	border:1px solid rgb(233,233,233);
+	float: left;
+	text-indent: 0.266667rem;
+	position: relative;
+	padding-right: 0.666667rem;
+	border-radius: 0.4rem;
+	margin-right: 0.346667rem;
+	margin-bottom: 0.533333rem;
+
+}
+.more>label:nth-child(3n){
+	margin-right: 0;
+}
+.praise_icon{
+	display: inline-block;
+	width: 0.666667rem;
+	height: 0.666667rem;
+	background: url(../img/h5/zan-h.png) no-repeat center;
+	position: absolute;
+	background-size: 0.28rem 0.28rem;
+}
+.textarea_kung{
+	position: relative;
+}
+.textarea_kung>textarea{
+	width: 100%;
+	height: 1.946667rem;
+	border-color: rgb(169, 169, 169);
+	padding:0.266667rem;
+	font-size: 0.32rem;
+	color:rgb(153,153,153);
+}
+.textarea_kung>textarea:focus{
+	border-color: rgb(39,117,233);
+}
+.residue_kuang{
+	font-size: 0.32rem;
+	color:rgb(153,153,153);
+	position: absolute;
+	right: 0.266667rem;
+	bottom: 0.266667rem;
+}
+.btn_input{
+	width: 100%;
+	height: 1.333333rem;
+	line-height: 1.333333rem;
+	text-align: center;
+	background-color: #ebeff2;
+	border:none;
+	color:#d2d6d8;
+	font-size: 0.453333rem;
+	margin-left:-0.4rem;
+	position: absolute;
+	bottom: 0;
+}
+.btn_input_active{
+	background-color:rgb(39,117,233);
+	color:#fff;
+}
+.smile_kuang .tiptop_smile_active{
+	background-image: url(../img/h5/hao.png);
+	color:rgb(255,100,64);
+}
+.smile_kuang .good_smile{
+	background-image: url(../img/h5/z.png);
+}
+.smile_kuang .good_smile_active{
+	background-image: url(../img/h5/zhong.png);
+	color:rgb(255,189,47);
+
+}
+.smile_kuang .bad_smile{
+	background-image: url(../img/h5/x.png);
+}
+.smile_kuang .bad_smile_active{
+	background-image: url(../img/h5/cha.png);
+}
+.bad_icon>label>.praise_icon{
+	background-image: url(../img/h5/nozan-h.png);
+}
+.more .praise_icon_active{
+	background-color: #eff4ff;
+	color:#3e7bde;
+	border-color: #2775e9;
+}
+.praise_icon_active>span{
+	background-image: url(../img/h5/zan.png);
+}
+.bad_icon .praise_icon_active >span{
+	background-image: url(../img/h5/nozan.png);
+	
+}
+.you_suggest{
+	width: 100%;
+	min-height: 1.333333rem;
+	color:#333;
+	font-size: 0.373333rem;
+}

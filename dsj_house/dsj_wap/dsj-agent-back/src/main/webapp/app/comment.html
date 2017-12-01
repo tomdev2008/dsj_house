@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>大搜家-经纪人</title>
+
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/dsj_agent.css" rel="stylesheet">
+<link href="css/bootstrap-table.css" rel="stylesheet">
+<script type="text/javascript" src="js/fles.js"></script>
+</head>
+<body>
+
+	<div class="container">
+		<div class="row"></div>
+		<div class="row">
+			<h4 class="dsj_title">我的点评</h4>
+		</div>
+		<div class="row dsj_search">
+			<form id="dsj_form" class="form-inline">
+				<div class="form-group" style="position: relative;">
+					<span class="wenzi6">创建时间:</span> <input id="LAY_demorange_s"
+						class="form-control layDateClass laydate-icon" placeholder="开始时间"
+						name="startCreateTime" style="width: 120px; height: 33px">
+					<span class="wenzi2">~</span> <input id="LAY_demorange_e"
+						class="form-control layDateClass laydate-icon" placeholder="结束时间"
+						name="endCreateTime" style="width: 120px; height: 33px">
+				</div>
+				<div class="form-group">
+					<label for="project_name">楼盘名称</label> <input type="text"
+						name="name" class="form-control" placeholder="按关键字搜索">
+				</div>
+				<button id="search-button" type="button" class="btn btn-primary">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					搜索
+				</button>
+				<button id="reset-button" type="button" class="btn btn-primary">
+					重置</button>
+
+			</form>
+		</div>
+		<div id="container_id" class="row"></div>
+	</div>
+
+	<script id="dsj_table_row" type="text/x-handlebars-template">
+      <tr >
+		<td	>{{index}}</td>
+		<td	>{{createTime}}</td>
+		<td	>{{houseName}}</td>
+		<td	>{{#convertHtml content}}{{/convertHtml}}</td>
+		<td	><a onclick="commentDetail({{id}});">查看</a></td>
+      </tr>
+	</script>
+	<script id="dsj_page_template" type="text/x-handlebars-template">
+      <div class="row">
+        <div id="dsj_list_page" class="col-xs-12">
+          <nav aria-label="page" class="pull-right">
+            <p class="dsj_page"><span class="dsj_current_page">{{currentPage}}</span>/{{totalPage}}</p>
+            <ul class="pagination">
+              <li><a class="prev" aria-label="Previous"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
+              <li><a class="next" aria-label="Next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </script>
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/daterangepicker.js"></script>
+	<script src="js/handlebars.js"></script>
+	<script src="js/require.js"></script>
+	<script src="js/formUtils.js"></script>
+	<script src="js/common/base.js"></script>
+	<script src="js/common/header.js"></script>
+	<script src="lib/layui/layui.js"></script>
+	<script src="js/common/laydate.js"></script>
+	<script src="js/handlebars-utils.js"></script>
+	<script src="js/bootstrap-table.js"></script>
+	<script src="js/bootstrap-table-zh-CN.min.js"></script>
+	<script src="js/bootstrap-table.js"></script>
+	<script src="js/bootstrap-table-zh-CN.min.js"></script>
+	<script src="js/houseComment/house-comment.js"></script>
+	<script type="text/javascript">
+      $(function () {
+    	//加载时间插件
+  		//setLayDate();
+    	  
+    	var houseOption = {
+   		  container_id : "container_id",
+             dialogTemplate_id : "dsj_table_row",
+             pageTemplate_id : "dsj_page_template",
+             url : _url
+			}
+           var houseList = new $.fn.HouseComment(houseOption);
+           houseList._init();
+           $('#search-button').click(function() {
+             houseList._init();
+           })
+	        $('#reset-button').click(function() {
+	        	$("body").find(".form-group").find("input").val("");
+	        	$("body").find(".form-group").find("select").val("");
+	        })
+           
+        require(["text!common/commit.html"], function(tpl) {
+  	    	 $('body').append(tpl);
+  	    	 var source=$("#dailog_common_template").html();
+  	    	 var template = Handlebars.compile(source);
+  			 var html = template();
+  	    	 $('body').append(html);
+    		}); 
+         })
+         
+    </script>
+</body>
+</html>

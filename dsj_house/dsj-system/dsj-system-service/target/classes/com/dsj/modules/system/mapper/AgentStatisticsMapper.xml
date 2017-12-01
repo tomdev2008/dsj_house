@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.system.dao.impl.AgentStatisticsDaoImpl">
+    
+    <sql id="tableName"> agent_statistics a </sql>
+    <sql id="tableNameUpdate"> agent_statistics </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.time AS "time",
+		a.house_news_num AS "houseNewsNum",
+		a.agent_news_num AS "agentNewsNum",
+		a.agent_news_reply_num AS "agentNewsReplyNum",
+		a.agent_news_like_num AS "agentNewsLikeNum",
+		a.house_remark_num AS "houseRemarkNum",
+		a.house_remark_reply_num AS "houseRemarkReplyNum",
+		a.house_remark_like_num AS "houseRemarkLikeNum",
+		a.agent_grade AS "agentGrade",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<resultMap id="beanMap" type="AgentStatisticsPo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="time" property="time" />
+		<result column="house_news_num" property="houseNewsNum" />
+		<result column="agent_news_num" property="agentNewsNum" />
+		<result column="agent_news_reply_num" property="agentNewsReplyNum" />
+		<result column="agent_news_like_num" property="agentNewsLikeNum" />
+		<result column="house_remark_num" property="houseRemarkNum" />
+		<result column="house_remark_reply_num" property="houseRemarkReplyNum" />
+		<result column="house_remark_like_num" property="houseRemarkLikeNum" />
+		<result column="agent_grade" property="agentGrade" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<sql id="agentStatisticsJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="time != null and time!= ''"> AND a.time = #{time}</if>
+		<if test="houseNewsNum != null and houseNewsNum!= ''"> AND a.house_news_num = #{houseNewsNum}</if>
+		<if test="agentNewsNum != null and agentNewsNum!= ''"> AND a.agent_news_num = #{agentNewsNum}</if>
+		<if test="agentNewsReplyNum != null and agentNewsReplyNum!= ''"> AND a.agent_news_reply_num = #{agentNewsReplyNum}</if>
+		<if test="agentNewsLikeNum != null and agentNewsLikeNum!= ''"> AND a.agent_news_like_num = #{agentNewsLikeNum}</if>
+		<if test="houseRemarkNum != null and houseRemarkNum!= ''"> AND a.house_remark_num = #{houseRemarkNum}</if>
+		<if test="houseRemarkReplyNum != null and houseRemarkReplyNum!= ''"> AND a.house_remark_reply_num = #{houseRemarkReplyNum}</if>
+		<if test="houseRemarkLikeNum != null and houseRemarkLikeNum!= ''"> AND a.house_remark_like_num = #{houseRemarkLikeNum}</if>
+		<if test="agentGrade != null and agentGrade!= ''"> AND a.agent_grade = #{agentGrade}</if>
+	</sql>
+    
+	<select id="getById" resultType="AgentStatisticsPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="agentStatisticsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	<resultMap id="newBeanMap" type="AgentStatisticsPo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="time" property="time" />
+		<result column="house_news_num" property="houseNewsNum" />
+		<result column="agent_news_num" property="agentNewsNum" />
+		<result column="agent_news_reply_num" property="agentNewsReplyNum" />
+		<result column="agent_news_like_num" property="agentNewsLikeNum" />
+		<result column="house_remark_num" property="houseRemarkNum" />
+		<result column="house_remark_reply_num" property="houseRemarkReplyNum" />
+		<result column="house_remark_like_num" property="houseRemarkLikeNum" />
+		<result column="agent_grade" property="agentGrade" />
+		<result column="create_time" property="createTime" />
+		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<result column="companyName" property="companyName" />
+		
+	</resultMap>
+	<select id="listNewPage" parameterType="java.util.Map" resultMap="newBeanMap">
+		SELECT 
+		agent.name as name,
+		agent.tell_phone as phone,
+		c.short_name as companyName,
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	left join dsj_agent agent
+    	on a.user_id = agent.user_id
+    	left join dsj_company c
+    	on c.id = agent.company
+		<where>
+			<include refid="condition_sql1" />
+		</where>
+		ORDER BY a.time DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listNewPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		left join dsj_agent agent
+    	on a.user_id = agent.user_id
+    	left join dsj_company c
+    	on c.id = agent.company
+		<where>
+			<include refid="condition_sql1"/>
+		</where>
+	</select>
+	
+	<sql id="condition_sql1">	
+		<if test="userId != null and userId!= ''"> AND a.user_id = #{userId}</if>
+		<if test="timeStart != null and timeStart!= ''"> AND a.time&gt;=#{timeStart}</if>
+		<if test="timeEnd != null and timeEnd!= ''"> AND a.time&lt;=#{timeEnd}</if>
+		<if test="timeYesterday != null and timeYesterday!= ''"> AND a.time&lt;#{timeYesterday}</if>
+		<if test="houseNewsNum != null and houseNewsNum!= ''"> AND a.house_news_num = #{houseNewsNum}</if>
+		<if test="agentNewsNum != null and agentNewsNum!= ''"> AND a.agent_news_num = #{agentNewsNum}</if>
+		<if test="agentNewsReplyNum != null and agentNewsReplyNum!= ''"> AND a.agent_news_reply_num = #{agentNewsReplyNum}</if>
+		<if test="agentNewsLikeNum != null and agentNewsLikeNum!= ''"> AND a.agent_news_like_num = #{agentNewsLikeNum}</if>
+		<if test="houseRemarkNum != null and houseRemarkNum!= ''"> AND a.house_remark_num = #{houseRemarkNum}</if>
+		<if test="houseRemarkReplyNum != null and houseRemarkReplyNum!= ''"> AND a.house_remark_reply_num = #{houseRemarkReplyNum}</if>
+		<if test="houseRemarkLikeNum != null and houseRemarkLikeNum!= ''"> AND a.house_remark_like_num = #{houseRemarkLikeNum}</if>
+		<if test="agentGrade != null and agentGrade!= ''"> AND a.agent_grade = #{agentGrade}</if>
+		<if test="name != null and name!= ''"> AND agent.name LIKE CONCAT(CONCAT('%', #{name}), '%')</if>
+		<if test="phone != null and phone!= ''"> AND a.tell_phone = #{phone}</if>
+		<if test="companyName != null and companyName!= ''"> AND c.short_name LIKE CONCAT(CONCAT('%', #{companyName}), '%')</if>
+	</sql>
+	
+	
+	<insert id="insert" parameterType="AgentStatisticsPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			user_id,
+			time,
+			house_news_num,
+			agent_news_num,
+			agent_news_reply_num,
+			agent_news_like_num,
+			house_remark_num,
+			house_remark_reply_num,
+			house_remark_like_num,
+			agent_grade,
+			create_time
+		) VALUES (
+			#{id},
+			#{userId},
+			#{time},
+			#{houseNewsNum},
+			#{agentNewsNum},
+			#{agentNewsReplyNum},
+			#{agentNewsLikeNum},
+			#{houseRemarkNum},
+			#{houseRemarkReplyNum},
+			#{houseRemarkLikeNum},
+			#{agentGrade},
+			#{createTime}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="AgentStatisticsPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="userId != null">user_id,</if>
+					<if test="time != null">time,</if>
+					<if test="houseNewsNum != null">house_news_num,</if>
+					<if test="agentNewsNum != null">agent_news_num,</if>
+					<if test="agentNewsReplyNum != null">agent_news_reply_num,</if>
+					<if test="agentNewsLikeNum != null">agent_news_like_num,</if>
+					<if test="houseRemarkNum != null">house_remark_num,</if>
+					<if test="houseRemarkReplyNum != null">house_remark_reply_num,</if>
+					<if test="houseRemarkLikeNum != null">house_remark_like_num,</if>
+					<if test="agentGrade != null">agent_grade,</if>
+					<if test="createTime != null">create_time,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="time != null">#{time},</if>
+			<if test="houseNewsNum != null">#{houseNewsNum},</if>
+			<if test="agentNewsNum != null">#{agentNewsNum},</if>
+			<if test="agentNewsReplyNum != null">#{agentNewsReplyNum},</if>
+			<if test="agentNewsLikeNum != null">#{agentNewsLikeNum},</if>
+			<if test="houseRemarkNum != null">#{houseRemarkNum},</if>
+			<if test="houseRemarkReplyNum != null">#{houseRemarkReplyNum},</if>
+			<if test="houseRemarkLikeNum != null">#{houseRemarkLikeNum},</if>
+			<if test="agentGrade != null">#{agentGrade},</if>
+			<if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="AgentStatisticsPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			user_id = #{userId},
+			time = #{time},
+			house_news_num = #{houseNewsNum},
+			agent_news_num = #{agentNewsNum},
+			agent_news_reply_num = #{agentNewsReplyNum},
+			agent_news_like_num = #{agentNewsLikeNum},
+			house_remark_num = #{houseRemarkNum},
+			house_remark_reply_num = #{houseRemarkReplyNum},
+			house_remark_like_num = #{houseRemarkLikeNum},
+			agent_grade = #{agentGrade},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="AgentStatisticsPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="userId != null">user_id = #{userId},</if>
+			<if test="time != null">time = #{time},</if>
+			<if test="houseNewsNum != null">house_news_num = #{houseNewsNum},</if>
+			<if test="agentNewsNum != null">agent_news_num = #{agentNewsNum},</if>
+			<if test="agentNewsReplyNum != null">agent_news_reply_num = #{agentNewsReplyNum},</if>
+			<if test="agentNewsLikeNum != null">agent_news_like_num = #{agentNewsLikeNum},</if>
+			<if test="houseRemarkNum != null">house_remark_num = #{houseRemarkNum},</if>
+			<if test="houseRemarkReplyNum != null">house_remark_reply_num = #{houseRemarkReplyNum},</if>
+			<if test="houseRemarkLikeNum != null">house_remark_like_num = #{houseRemarkLikeNum},</if>
+			<if test="agentGrade != null">agent_grade = #{agentGrade},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 历史Start -->
+	<select id="getHouseNews" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(news.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_new_house_news news 
+		WHERE news.type = 2
+		and news.create_time&lt;DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY user,time
+	</select>
+	<select id="getAgentNews" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(news.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_agent_news news 
+		WHERE news.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY news.create_user,time
+	</select>
+	<select id="getAgentNewsReply" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(c.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_comment c 
+		LEFT JOIN dsj_agent_news news
+		on c.object_id = news.id
+		WHERE c.object_type=1
+		and c.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY user,time
+	</select>
+	<select id="getAgentNewsLike" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(count.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_click_count count 
+		LEFT JOIN dsj_agent_news news
+		on count.obj_id = news.id
+		WHERE count.obj_type=1
+		and count.type=1
+		and count.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY user,time
+	</select>
+	<select id="getHouseRemark" resultType="java.util.Map">
+		SELECT 
+		c.comment_user user,
+		DATE_FORMAT(c.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_comment c 
+		WHERE c.object_type=3
+		and c.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY user,time
+	</select>
+	<select id="getHouseRemarkReply" resultType="java.util.Map">
+		SELECT 
+		com.comment_user user,
+		DATE_FORMAT(c.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_comment c 
+		LEFT JOIN dsj_comment com
+		on c.object_id = com.id
+		LEFT JOIN dsj_user u 
+		on u.id = com.comment_user
+		WHERE c.object_type=2
+		and u.user_type = 2
+		and c.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY user,time
+	</select>
+	<select id="getHouseRemarkLike" resultType="java.util.Map">
+		SELECT 
+		com.comment_user user,
+		DATE_FORMAT(count.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_click_count count 
+		LEFT JOIN dsj_comment com
+		on count.obj_id = com.id
+		WHERE count.obj_type=2
+		and count.type=1
+		and com.object_type =3
+		and count.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY user,time
+	</select>
+	<select id="getAgentGrade" resultType="java.util.Map">
+		SELECT 
+		agent.user_id user,
+		DATE_FORMAT(score.create_time,'%Y-%m-%d') as time,
+		SUM(score.score) as number
+		FROM dsj_agent_daily_score score 
+		LEFT JOIN dsj_agent agent
+		on score.agent_id = agent.agent_code
+		WHERE score.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		GROUP BY user,time
+	</select>
+	<!-- 历史End -->
+	
+	<!-- 昨日Start -->
+	<select id="getHouseNewsYesterday" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(news.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_new_house_news news 
+		WHERE news.type = 2
+		and news.create_time&lt;DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and news.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY user,time
+	</select>
+	<select id="getAgentNewsYesterday" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(news.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_agent_news news 
+		WHERE news.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and news.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY news.create_user,time
+	</select>
+	<select id="getAgentNewsReplyYesterday" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(c.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_comment c 
+		LEFT JOIN dsj_agent_news news
+		on c.object_id = news.id
+		WHERE c.object_type=1
+		and c.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and c.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY user,time
+	</select>
+	<select id="getAgentNewsLikeYesterday" resultType="java.util.Map">
+		SELECT 
+		news.create_user user,
+		DATE_FORMAT(count.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_click_count count 
+		LEFT JOIN dsj_agent_news news
+		on count.obj_id = news.id
+		WHERE count.obj_type=1
+		and count.type=1
+		and count.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and count.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY user,time
+	</select>
+	<select id="getHouseRemarkYesterday" resultType="java.util.Map">
+		SELECT 
+		c.comment_user user,
+		DATE_FORMAT(c.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_comment c 
+		WHERE c.object_type=3
+		and c.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and c.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY user,time
+	</select>
+	<select id="getHouseRemarkReplyYesterday" resultType="java.util.Map">
+		SELECT 
+		com.comment_user user,
+		DATE_FORMAT(c.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_comment c 
+		LEFT JOIN dsj_comment com
+		on c.object_id = com.id
+		LEFT JOIN dsj_user u 
+		on u.id = com.comment_user
+		WHERE c.object_type=2
+		and u.user_type = 2
+		and c.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and c.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY user,time
+	</select>
+	<select id="getHouseRemarkLikeYesterday" resultType="java.util.Map">
+		SELECT 
+		com.comment_user user,
+		DATE_FORMAT(count.create_time,'%Y-%m-%d') as time,
+		count(*) as number
+		FROM dsj_click_count count 
+		LEFT JOIN dsj_comment com
+		on count.obj_id = com.id
+		WHERE count.obj_type=2
+		and count.type=1
+		and com.object_type =3
+		and count.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and count.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY user,time
+	</select>
+	<select id="getAgentGradeYesterday" resultType="java.util.Map">
+		SELECT 
+		agent.user_id user,
+		DATE_FORMAT(score.create_time,'%Y-%m-%d') as time,
+		SUM(score.score) as number
+		FROM dsj_agent_daily_score score 
+		LEFT JOIN dsj_agent agent
+		on score.agent_id = agent.agent_code
+		WHERE score.create_time&lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and score.create_time&gt;=date_sub(DATE_FORMAT(NOW(),'%Y-%m-%d'),interval 1 day)
+		GROUP BY user,time
+	</select>
+	
+	<!-- 昨日End -->
+	
+	
+	
+	
+</mapper>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.newhouse.dao.impl.NewHouseWyMsgAuthDaoImpl">
+    
+    <sql id="tableName"> dsj_new_house_wy_msg_auth a </sql>
+    <sql id="tableNameUpdate"> dsj_new_house_wy_msg_auth </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.house_id AS "houseId",
+		a.wy_type AS "wyType",
+		a.wy_type_name AS "wyTypeName",
+		a.reference_price_min AS "referencePriceMin",
+		a.reference_price_max AS "referencePriceMax",
+		a.total_price_min AS "totalPriceMin",
+		a.total_price_max AS "totalPriceMax",
+		a.payments AS "payments",
+		a.month_pay AS "monthPay",
+		a.property_right AS "propertyRight",
+		a.property_right_name AS "propertyRightName",
+		a.plot_ratio AS "plotRatio",
+		a.property_fee AS "propertyFee"
+	</sql>
+	
+	<resultMap id="beanMap" type="NewHouseWyMsgAuthPo">
+		<id column="id" property="id" />
+		<result column="house_id" property="houseId" />
+		<result column="wy_type" property="wyType" />
+		<result column="reference_price_min" property="referencePriceMin" />
+		<result column="reference_price_max" property="referencePriceMax" />
+		<result column="total_price_min" property="totalPriceMin" />
+		<result column="total_price_max" property="totalPriceMax" />
+		<result column="payments" property="payments" />
+		<result column="month_pay" property="monthPay" />
+		<result column="property_right" property="propertyRight" />
+		<result column="plot_ratio" property="plotRatio" />
+		<result column="property_fee" property="propertyFee" />
+	</resultMap>
+	
+	<sql id="newHouseWyMsgAuthJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+		<if test="houseId != null and houseId!= ''"> AND a.house_id = #{houseId}</if>
+		<if test="wyType != null and wyType!= ''"> AND a.wy_type = #{wyType}</if>
+		<if test="referencePriceMin != null and referencePriceMin!= ''"> AND a.reference_price_min = #{referencePriceMin}</if>
+		<if test="referencePriceMax != null and referencePriceMax!= ''"> AND a.reference_price_max = #{referencePriceMax}</if>
+		<if test="totalPriceMin != null and totalPriceMin!= ''"> AND a.total_price_min = #{totalPriceMin}</if>
+		<if test="totalPriceMax != null and totalPriceMax!= ''"> AND a.total_price_max = #{totalPriceMax}</if>
+		<if test="payments != null and payments!= ''"> AND a.payments = #{payments}</if>
+		<if test="monthPay != null and monthPay!= ''"> AND a.month_pay = #{monthPay}</if>
+		<if test="propertyRight != null and propertyRight!= ''"> AND a.property_right = #{propertyRight}</if>
+		<if test="plotRatio != null and plotRatio!= ''"> AND a.plot_ratio = #{plotRatio}</if>
+		<if test="propertyFee != null and propertyFee!= ''"> AND a.property_fee = #{propertyFee}</if>
+	</sql>
+    
+	<select id="getById" resultType="NewHouseWyMsgAuthPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="newHouseWyMsgAuthJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id 
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+	
+	<insert id="insert" parameterType="NewHouseWyMsgAuthPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			house_id,
+			wy_type,
+			reference_price_min,
+			reference_price_max,
+			total_price_min,
+			total_price_max,
+			payments,
+			month_pay,
+			property_right,
+			plot_ratio,
+			property_fee
+		) VALUES (
+			#{id},
+			#{houseId},
+			#{wyType},
+			#{referencePriceMin},
+			#{referencePriceMax},
+			#{totalPriceMin},
+			#{totalPriceMax},
+			#{payments},
+			#{monthPay},
+			#{propertyRight},
+			#{plotRatio},
+			#{propertyFee}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="NewHouseWyMsgAuthPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="houseId != null">house_id,</if>
+					<if test="wyType != null">wy_type,</if>
+					<if test="wyTypeName != null">wy_type_name,</if>
+					<if test="referencePriceMin != null and referencePriceMin!=''">reference_price_min,</if>
+					<if test="referencePriceMin ==''">reference_price_min,</if>
+					<if test="referencePriceMax != null and referencePriceMax !=''">reference_price_max,</if>
+					<if test="referencePriceMax ==''">reference_price_max,</if>
+					<if test="totalPriceMin != null and totalPriceMin!=''">total_price_min,</if>
+					<if test="totalPriceMin ==''">total_price_min,</if>
+					<if test="totalPriceMax != null and totalPriceMax !=''">total_price_max,</if>
+					<if test="totalPriceMax ==''">total_price_max,</if>
+					<if test="payments != null and payments !=''">payments,</if>
+					<if test="payments ==''">payments,</if>
+					<if test="monthPay != null and monthPay !=''">month_pay,</if>
+					<if test="monthPay ==''">month_pay,</if>
+					<if test="propertyRight != null">property_right,</if>
+					<if test="propertyRightName != null">property_right_name,</if>
+					<if test="plotRatio != null">plot_ratio,</if>
+					<if test="propertyFee != null">property_fee,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="houseId != null">#{houseId},</if>
+			<if test="wyType != null">#{wyType},</if>
+			<if test="wyTypeName != null">#{wyTypeName},</if>
+			<if test="referencePriceMin != null  and referencePriceMin!=''">#{referencePriceMin},</if>
+			<if test="referencePriceMin == ''">null,</if>
+			<if test="referencePriceMax != null  and referencePriceMax !=''">#{referencePriceMax},</if>
+			<if test="referencePriceMax==''">null,</if>
+			<if test="totalPriceMin != null and totalPriceMin !=''">#{totalPriceMin},</if>
+			<if test="totalPriceMin ==''">null,</if>
+			<if test="totalPriceMax != null and totalPriceMax !=''">#{totalPriceMax},</if>
+			<if test="totalPriceMax ==''">null,</if>
+			<if test="payments != null and payments !=''">#{payments},</if>
+			<if test="payments ==''">null,</if>
+			<if test="monthPay != null and monthPay !=''">#{monthPay},</if>
+			<if test="monthPay ==''">null,</if>
+			<if test="propertyRight != null">#{propertyRight},</if>
+			<if test="propertyRightName != null">#{propertyRightName},</if>
+			<if test="plotRatio != null">#{plotRatio},</if>
+			<if test="propertyFee != null">#{propertyFee},</if>
+        </trim>
+    </insert>
+    
+	
+	<update id="update" parameterType="NewHouseWyMsgAuthPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			house_id = #{houseId},
+			wy_type = #{wyType},
+			reference_price_min = #{referencePriceMin},
+			reference_price_max = #{referencePriceMax},
+			total_price_min = #{totalPriceMin},
+			total_price_max = #{totalPriceMax},
+			payments = #{payments},
+			month_pay = #{monthPay},
+			property_right = #{propertyRight},
+			plot_ratio = #{plotRatio},
+			property_fee = #{propertyFee},
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="NewHouseWyMsgAuthPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="houseId != null">house_id = #{houseId},</if>
+			<if test="wyType != null">wy_type = #{wyType},</if>
+			<if test="referencePriceMin != null">reference_price_min = #{referencePriceMin},</if>
+			<if test="referencePriceMax != null">reference_price_max = #{referencePriceMax},</if>
+			<if test="totalPriceMin != null">total_price_min = #{totalPriceMin},</if>
+			<if test="totalPriceMax != null">total_price_max = #{totalPriceMax},</if>
+			<if test="payments != null">payments = #{payments},</if>
+			<if test="monthPay != null">month_pay = #{monthPay},</if>
+			<if test="propertyRight != null">property_right = #{propertyRight},</if>
+			<if test="plotRatio != null">plot_ratio = #{plotRatio},</if>
+			<if test="propertyFee != null">property_fee = #{propertyFee},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteByNewHouseId" parameterType="long">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE house_id = #{0}
+	</update>
+	<update id="updateNewHouseId" parameterType="java.util.Map">
+		update <include refid="tableNameUpdate"/> set house_id =#{yesId} where house_id=#{noId}
+	</update>
+	
+	<insert id="saveList" parameterType="java.util.Map">  
+	    INSERT INTO <include refid="tableNameUpdate"/>(
+			house_id,
+			wy_type,
+			wy_type_name,
+			reference_price_min,
+			reference_price_max,
+			total_price_min,
+			total_price_max,
+			payments,
+			month_pay,
+			property_right,
+			property_right_name,
+			plot_ratio,
+			property_fee
+		) VALUES 
+	    <foreach collection="wyMsgList" item="item" index="index" separator="," >  
+	        (
+			#{newHouseId},
+			#{item.wyType},
+			#{item.wyTypeName},
+			#{item.referencePriceMin},
+			#{item.referencePriceMax},
+			#{item.totalPriceMin},
+			#{item.totalPriceMax},
+			#{item.payments},
+			#{item.monthPay},
+			#{item.propertyRight},
+			#{item.propertyRightName},
+			#{item.plotRatio},
+			#{item.propertyFee}
+	      )  
+	    </foreach>  
+	</insert> 
+	
+	<select id="listRecommendNewHouseBysq" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseRecommendVo">
+		SELECT
+			b.house_id as recommendNewHouseId
+		FROM
+			dsj_new_house_directory_auth a
+		right JOIN dsj_new_house_wy_msg_auth b ON a.id = b.house_id
+		WHERE
+			a.is_ture = 2 and a.id!= #{houseId} and a.status = 2 and a.edit = 1
+			<if test="tradingArea != null">AND a.trading_area = #{tradingArea} </if>
+			<if test="minRefrencePrice != null">
+				AND !ISNULL(b.reference_price_min) order by ABS( #{minRefrencePrice} -b.reference_price_min) desc
+		 	</if>
+		 	<if test="minTotalPrice != null">
+				AND !ISNULL(b.total_price_min) order by ABS( #{minTotalPrice} - b.total_price_min) desc
+		 	</if>
+		 	<if test="aroundMinPrice != null">
+				AND !ISNULL(a.around_min_price) order by ABS( #{aroundMinPrice} -a.around_min_price) desc
+		 	</if>
+	</select>
+	
+	<select id="listRecommendNewHouseBysq2" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseRecommendVo">
+		SELECT
+			b.house_id as recommendNewHouseId
+		FROM
+			dsj_new_house_directory_auth a
+		right JOIN dsj_new_house_wy_msg_auth b ON a.id = b.house_id
+		WHERE
+			a.is_ture = 2 and a.id!= #{houseId} and a.status = 2 and a.edit = 1
+			<if test="tradingArea != null">AND a.trading_area != #{tradingArea} </if>
+			<if test="areaLevalThree != null">AND a.area_leval_three = #{areaLevalThree}</if>
+			<if test="minRefrencePrice != null">
+				AND !ISNULL(b.reference_price_min) order by ABS( #{minRefrencePrice} -b.reference_price_min) desc
+		 	</if>
+		 	<if test="minTotalPrice != null">
+				AND !ISNULL(b.total_price_min) order by ABS( #{minTotalPrice} - b.total_price_min) desc
+		 	</if>
+		 	<if test="aroundMinPrice != null">
+				AND !ISNULL(a.around_min_price) order by ABS( #{aroundMinPrice} -a.around_min_price) desc
+		 	</if>
+	</select>
+	
+	<select id="listRecommendNewHouseBysq3" parameterType="java.util.Map" resultType="com.dsj.modules.newhouse.vo.NewHouseRecommendVo">
+		SELECT
+			b.house_id as recommendNewHouseId
+		FROM
+			dsj_new_house_directory_auth a
+		right JOIN dsj_new_house_wy_msg_auth b ON a.id = b.house_id
+		WHERE
+			a.is_ture = 2 and a.id!= #{houseId} and a.status = 2 and a.edit = 1
+			<if test="tradingArea != null">AND a.trading_area != #{tradingArea} </if>
+			<if test="areaLevalThree != null">AND a.area_leval_three != #{areaLevalThree}</if>
+			<if test="minRefrencePrice != null">
+				AND !ISNULL(b.reference_price_min) order by ABS( #{minRefrencePrice} -b.reference_price_min) desc
+		 	</if>
+		 	<if test="minTotalPrice != null">
+				AND !ISNULL(b.total_price_min) order by ABS( #{minTotalPrice} - b.total_price_min) desc
+		 	</if>
+		 	<if test="aroundMinPrice != null">
+				AND !ISNULL(a.around_min_price) order by ABS( #{aroundMinPrice} -a.around_min_price) desc
+		 	</if>
+	</select>
+	
+	
+	<select id="getMinRefrencePrice" parameterType="java.util.Map" resultType="java.lang.Double">
+		SELECT
+			min(reference_price_min)
+		FROM
+			dsj_new_house_wy_msg_auth
+		WHERE
+			house_id = #{houseId} and !ISNULL(reference_price_min)
+		
+	</select>
+	
+	<select id="getMinTotalPrice" parameterType="java.util.Map" resultType="java.lang.Double">
+		SELECT
+			min(total_price_min)
+		FROM
+			dsj_new_house_wy_msg_auth
+		WHERE
+			house_id = #{houseId} and !ISNULL(total_price_min)
+		
+	</select>
+</mapper>

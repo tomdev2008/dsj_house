@@ -1,0 +1,80 @@
+#album_modal .modal-dialog {
+	width: 1190px;
+}
+
+#album_modal .modal-dialog .modal-gallery-top .swiper-slide {
+	width: 1127px;
+	height: 670px;
+	background-color: #ffffff;
+	border: solid 1px #e5e5e5;
+}
+
+#album_modal .modal-dialog .modal-gallery-thumbs .swiper-slide {
+	width: 114px;
+	height: 70px;
+	background-color: #d8d8d8;
+}
+
+.loupan-album p {
+	margin-top: 10px;
+}
+
+.album-tip {
+	font-size: 14px;
+	color: #333333;
+}
+
+.loupan-album .album-item:hover {
+	box-shadow: 0px 0px 10px 0px #888888;
+	cursor: pointer;
+}
+
+.loupan-album .album-item.no-hover:hover {
+	box-shadow: none;
+	cursor: pointer;
+}
+
+.loupan-album .album-item {
+	position: relative;
+	padding: 10px 0 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-bottom: 75%;
+}
+
+.loupan-album .album-item img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.loupan-album a {
+	margin-top: 10px;
+}
+
+.loupan-album .album-item>.set-cover {
+	cursor: pointer;
+	line-height: 2;
+	color: #ffffff;
+	background-color: #ccc;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	bottom: 0;
+	z-index: 5;
+}
+
+.loupan-album .album-item>.set-cover:hover {
+	background-color: #2775e9;
+}
+
+.loupan-album .album-item>.album_checkbox {
+	position: absolute;
+	right: -2px;
+	top: -4px;
+	zoom: 150%;
+	z-index: 2;
+}

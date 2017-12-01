@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsj.modules.comment.dao.impl.FwContentDaoImpl">
+    
+    <sql id="tableName"> dsj_fw_content a </sql>
+    <sql id="tableNameUpdate"> dsj_fw_content </sql>
+    
+	<sql id="tableColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.content AS "content",
+		a.photo AS "photo",
+		a.status AS "status",
+		a.create_user AS "createUser",
+		a.create_time AS "createTime",
+		a.update_user AS "updateUser",
+		a.update_time AS "updateTime",
+		a.dian_zan AS "dianZan",
+		a.read1 AS "read1"
+	</sql>
+	
+	<resultMap id="beanMap" type="FwContentPo">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="photo" property="photo" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+		<result column="dian_zan" property="dianZan" />
+		<result column="read1" property="read1" />
+	</resultMap>
+	
+	<sql id="fwContentJoins">
+	</sql>
+    
+    <sql id="condition_sql">	
+    	<if test="createTimeStart != null and createTimeStart!= ''"><![CDATA[AND a.create_time > #{createTimeStart}]]></if>
+		<if test="createTimeEnd != null and createTimeEnd!= ''"><![CDATA[AND a.create_time < #{createTimeEnd}]]></if>
+		<if test="title != null and title!= ''"> AND a.title = #{title}</if>
+		<if test="content != null and content!= ''"> AND a.content = #{content}</if>
+		<if test="photo != null and photo!= ''"> AND a.photo = #{photo}</if>
+		<if test="createUser != null and createUser!= ''"> AND a.create_user = #{createUser}</if>
+		<if test="updateUser != null and updateUser!= ''"> AND a.update_user = #{updateUser}</if>
+		<if test="updateTime != null and updateTime!= ''"> AND a.update_time = #{updateTime}</if>
+		<if test="status != null and status!= ''"> AND a.status = #{status}</if>
+		<if test="dianZan != null and dianZan!= ''"> AND a.dian_zan = #{dianZan}</if>
+		<if test="read1 != null and read1!= ''"> AND a.read1 = #{read1}</if>
+	</sql>
+    
+	<select id="getById" resultType="FwContentPo">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+		<include refid="fwContentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getBy" resultMap="beanMap">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+  	</select>
+	
+	<select id="listAll" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	ORDER BY a.id DESC
+  	</select>
+  	
+  	<select id="listBy" resultMap="beanMap">
+    	SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+    	<where>
+			<include refid="condition_sql" />
+		</where>
+    	ORDER BY a.id DESC
+  	</select>
+	
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		SELECT 
+    		<include refid="tableColumns"/>
+    	FROM <include refid="tableName"/> 
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		ORDER BY a.id DESC 
+		LIMIT #{pageFirst} , #{pageSize} 
+	</select>
+	
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		SELECT 
+			COUNT(1) 
+		FROM <include refid="tableName"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>	
+	
+	<insert id="insert" parameterType="FwContentPo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO <include refid="tableNameUpdate"/>(
+			id,
+			title,
+			content,
+			photo,
+			status,
+			create_user,
+			create_time,
+			update_user,
+			update_time,
+			dian_zan,
+			read1
+		) VALUES (
+			#{id},
+			#{title},
+			#{content},
+			#{photo},
+			#{status},
+			#{createUser},
+			#{createTime},
+			#{updateUser},
+			#{updateTime},
+			#{dianZan},
+			#{read1}
+		)
+	</insert>
+	
+	
+	<insert id="insertDynamic" parameterType="FwContentPo" keyProperty="id" useGeneratedKeys="true">
+   		INSERT INTO  <include refid="tableNameUpdate"/>
+   		<trim prefix=" (" suffix=")" suffixOverrides=",">
+					<if test="id != null">id,</if>
+					<if test="title != null">title,</if>
+					<if test="content != null">content,</if>
+					<if test="photo != null">photo,</if>
+					<if test="status != null">status,</if>
+					<if test="createUser != null">create_user,</if>
+					<if test="createTime != null">create_time,</if>
+					<if test="updateUser != null">update_user,</if>
+					<if test="updateTime != null">update_time,</if>
+					<if test="dianZan != null">dian_zan,</if>
+					<if test="read1 != null">read1,</if>
+        </trim> 
+        VALUES
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="title != null">#{title},</if>
+			<if test="content != null">#{content},</if>
+			<if test="photo != null">#{photo},</if>
+			<if test="status != null">#{status},</if>
+			<if test="createUser != null">#{createUser},</if>
+			<if test="createTime != null">#{createTime},</if>
+			<if test="updateUser != null">#{updateUser},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			<if test="dianZan != null">#{dianZan},</if>
+			<if test="read1 != null">#{read1},</if>
+        </trim>
+    </insert>
+    
+    
+    <update id="downByIds" parameterType="java.util.Map">
+		UPDATE dsj_fw_content SET
+		status = #{upDownLine}
+		WHERE id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	<update id="update" parameterType="FwContentPo">
+		UPDATE <include refid="tableNameUpdate"/> 
+		SET 	
+			title = #{title},
+			content = #{content},
+			photo = #{photo},
+			create_user = #{createUser},
+			update_user = #{updateUser},
+			update_time = #{updateTime},
+			dian_zan = #{dinaZan},
+			read1 = #{read1}
+		WHERE id = #{id} 
+	</update>
+	
+	<update id="updateDynamic" parameterType="FwContentPo">
+   		 UPDATE <include refid="tableNameUpdate"/>  
+    	 <set>
+			<if test="title != null">title = #{title},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="photo != null">photo = #{photo},</if>
+			<if test="createUser != null">create_user = #{createUser},</if>
+			<if test="updateUser != null">update_user = #{updateUser},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="dianZan != null">dian_zan = #{dianZan},</if>
+			<if test="read1 != null">read1 = #{read1},</if>
+    	</set>
+    	WHERE id = #{id}  
+    </update>
+	
+	<update id="deleteById">
+		DELETE FROM <include refid="tableNameUpdate"/>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
